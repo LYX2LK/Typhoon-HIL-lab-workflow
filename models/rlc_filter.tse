@@ -1,0 +1,348 @@
+version = 4.2
+
+//
+// Saved by sw version: 2026.3
+//
+
+model "rlc circuit" {
+    configuration {
+        hil_device = "HIL101"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = .5e-6
+        fine_auto_sim_step = False
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        dma_enable = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_term_var_location = "local"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        excluded_component_from_locking_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        solver_type = "DAE"
+        integration_method = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = warning
+    }
+
+    component Subsystem "My model" {
+        component "core/Capacitor" C {
+            capacitance = "0.0005"
+        }
+        [
+            position = 2192, 2064
+            rotation = right
+        ]
+
+        component "core/Inductor" L {
+            inductance = "1e-05"
+        }
+        [
+            position = 2096, 2016
+            rotation = right
+        ]
+
+        component "core/Resistor" Rin {
+            resistance = "5.0"
+        }
+        [
+            position = 1840, 1904
+        ]
+
+        component "core/Resistor" R {
+            resistance = "0.1"
+        }
+        [
+            position = 2192, 1968
+            rotation = right
+        ]
+
+        component "core/Ground" gnd {
+        }
+        [
+            position = 1760, 2176
+        ]
+
+        component "core/Current Measurement" I {
+        }
+        [
+            position = 1984, 1904
+        ]
+
+        component "core/Voltage Source" Vs1 {
+            R2 = "0.1"
+            param_set = ""
+        }
+        [
+            position = 1760, 2024
+            rotation = right
+        ]
+
+        component "core/Voltage Measurement" Va1 {
+        }
+        [
+            position = 2312, 2008
+            rotation = right
+        ]
+
+        component "core/Voltage RMS" Vrms1 {
+        }
+        [
+            position = 2432, 2008
+            rotation = right
+        ]
+
+        junction Junction3 pe
+        [
+            position = 2096, 2128
+        ]
+
+        junction Junction5 pe
+        [
+            position = 2096, 1904
+        ]
+
+        junction Junction6 pe
+        [
+            position = 1760, 2128
+        ]
+
+        junction Junction7 pe
+        [
+            position = 2192, 1904
+        ]
+
+        junction Junction8 pe
+        [
+            position = 2192, 2128
+        ]
+
+        junction Junction9 pe
+        [
+            position = 2312, 1904
+        ]
+
+        junction Junction10 pe
+        [
+            position = 2312, 2128
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">RLC filter</p></body></html> ENDCOMMENT 
+        [
+            position = 1752, 1824
+        ]
+
+        connect I.n_node Junction5 as Connection2
+        [
+            breakpoints = 2064, 1904; 2064, 1904
+        ]
+        connect Junction10 Junction8 as Connection33
+        connect Junction3 Junction8 as Connection26
+        [
+            breakpoints = 2096, 2128; 2144, 2128; 2144, 2128
+        ]
+        connect Junction5 Junction7 as Connection23
+        [
+            breakpoints = 2096, 1904; 2144, 1904; 2144, 1904
+        ]
+        connect Junction5 L.p_node as Connection7
+        [
+            breakpoints = 2096, 1952; 2096, 1952
+        ]
+        connect Junction6 Junction3 as Connection19
+        [
+            breakpoints = 1760, 2128; 1936, 2128; 1936, 2128
+        ]
+        connect Junction7 R.p_node as Connection24
+        [
+            breakpoints = 2192, 1904; 2192, 1920; 2192, 1920
+        ]
+        connect Junction8 C.n_node as Connection27
+        [
+            breakpoints = 2192, 2128; 2192, 2112; 2192, 2112
+        ]
+        connect Junction9 Junction7 as Connection30
+        connect L.n_node Junction3 as Connection8
+        [
+            breakpoints = 2096, 2096; 2096, 2096
+        ]
+        connect R.n_node C.p_node as Connection9
+        [
+            breakpoints = 2192, 2016; 2192, 2016
+        ]
+        connect Rin.n_node I.p_node as Connection11
+        [
+            breakpoints = 1920, 1904; 1920, 1904
+        ]
+        connect Va1.n_node Junction10 as Connection34
+        connect Va1.p_node Junction9 as Connection31
+        connect Vrms1.n_node Junction10 as Connection32
+        connect Vrms1.p_node Junction9 as Connection29
+        connect Vs1.n_node Junction6 as Connection20
+        connect Vs1.p_node Rin.p_node as Connection17
+        connect gnd.node Junction6 as Connection18
+        [
+            breakpoints = 1760, 2144; 1760, 2144
+        ]
+    }
+
+    default {
+        "core/Capacitor" {
+            signal_access = "inherit"
+            capacitance = "1e-6"
+            initial_voltage = "0"
+            pole_shift_ignore = "False"
+            visible = "True"
+        }
+
+        "core/Inductor" {
+            signal_access = "inherit"
+            inductance = "1e-3"
+            initial_current = "0.0"
+            pole_shift_ignore = "False"
+            visible = "True"
+        }
+
+        "core/Resistor" {
+            resistance = "1"
+            param_set = ""
+        }
+
+        "core/Voltage Source" {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            dtsm_switch_name = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/Current Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Voltage Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Voltage RMS" {
+            signal_access = "inherit"
+            op_mode = "PLL based"
+            frequency = "50"
+            pin_to_system_cpu = "True"
+            Tfast = "100e-6"
+            Tslow = "200e-6"
+            sig_output = "False"
+            execution_rate = "inherit"
+            feed_forward = "False"
+            nd_msr_estimation = "false"
+        }
+    }
+}

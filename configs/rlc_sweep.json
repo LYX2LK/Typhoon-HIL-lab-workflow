@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "model": "rlc_filter",
+  "backend": "virtual_hil",
+  "source": {
+    "rms_v": 10,
+    "frequency_hz": 1000,
+    "phase_deg": 0
+  },
+  "circuit": {
+    "rin_ohm": 5,
+    "branch_r_ohm": 0.1,
+    "l_h": 0.00001,
+    "c_f": 0.0005
+  },
+  "capture": {
+    "settle_s": 0.05,
+    "duration_s": 0.02,
+    "sample_rate_hz": 20000,
+    "wall_timeout_s": 60
+  },
+  "acceptance": {
+    "relative_rms_error": 0.03,
+    "min_samples": 256
+  },
+  "sweep": {
+    "parameter": "rin_ohm",
+    "values": [
+      1,
+      5,
+      10
+    ]
+  }
+}

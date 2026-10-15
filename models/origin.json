@@ -1,0 +1,14 @@
+{
+  "rlc_filter": {
+    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\basic electrical circuits\\rlc circuit\\rlc circuit.tse",
+    "sha256": "adc82b101b540b48e7f4db60d6dd891230a4afe3b02d96fa933456fab0b150e5",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example"
+  },
+  "loopback": {
+    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\tests\\10_basic_model\\model.tse",
+    "sha256": "0e2d8bddcebb83b280a2ebc2e4a1cfeddb142a64f361431d4992879fe09f4f93",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example"
+  }
+}
