@@ -22,19 +22,19 @@ def _positive(value, name, allow_zero=False):
     return value
 
 
-def load_waveforms(csv_path: Path) -> dict[str, list[float]]:
+def load_waveforms(csv_path: Path, columns=COLUMNS) -> dict[str, list[float]]:
     """Reject invalid samples, gaps and misaligned time grids; no interpolation."""
-    data = {name: [] for name in COLUMNS}
+    data = {name: [] for name in columns}
     with Path(csv_path).open('r', encoding='utf-8-sig', newline='') as handle:
         reader = csv.DictReader(handle)
-        if reader.fieldnames is None or set(reader.fieldnames) != set(COLUMNS):
-            raise ValueError(f'CSV columns must be exactly {", ".join(COLUMNS)}')
-        if len(reader.fieldnames) != len(COLUMNS):
+        if reader.fieldnames is None or set(reader.fieldnames) != set(columns):
+            raise ValueError(f'CSV columns must be exactly {", ".join(columns)}')
+        if len(reader.fieldnames) != len(columns):
             raise ValueError('CSV contains duplicate columns')
         for line, row in enumerate(reader, start=2):
             if None in row:
                 raise ValueError(f'Unexpected extra CSV values at line {line}')
-            for name in COLUMNS:
+            for name in columns:
                 try:
                     value = float(row[name])
                 except (TypeError, ValueError) as exc:
@@ -42,12 +42,12 @@ def load_waveforms(csv_path: Path) -> dict[str, list[float]]:
                 if not math.isfinite(value):
                     raise ValueError(f'Non-finite value at line {line}, column {name}')
                 data[name].append(value)
-    if len(data[COLUMNS[0]]) < 2:
+    if len(data[columns[0]]) < 2:
         raise ValueError('At least two waveform samples are required')
-    for name in COLUMNS[:2]:
+    for name in columns[:2]:
         if any(b <= a for a, b in zip(data[name], data[name][1:])):
             raise ValueError(f'{name} must be strictly increasing')
-    relative, simulation = data[COLUMNS[0]], data[COLUMNS[1]]
+    relative, simulation = data[columns[0]], data[columns[1]]
     if relative[0] < -1e-10 or simulation[0] < -1e-10:
         raise ValueError('Time coordinates must be nonnegative')
     step = median(b - a for a, b in zip(relative, relative[1:]))
@@ -89,7 +89,7 @@ def expected_rlc_rms(config: dict) -> dict:
             'input_impedance_ohm': {'real': total.real, 'imaginary': total.imag}}
 
 
-def analyze(csv_path: Path, config: dict) -> dict:
+def analyze_rlc(csv_path: Path, config: dict) -> dict:
     """Return deterministic JSON metrics; invalid data raises ValueError.
 
     A valid capture outside tolerance returns status='failed'.
@@ -152,3 +152,8 @@ def analyze(csv_path: Path, config: dict) -> dict:
                           'assumptions': ['linear ideal L and C', 'sinusoidal source', 'steady state', 'node branches are L and series R-C'], **reference},
             'analysis': {'rms_method': 'sqrt(sum(x*x)/N)', 'window': 'all raw captured samples',
                          'filtering': 'none', 'interpolation': 'none', 'missing_values': 'reject', 'warnings': warnings}}
+
+
+def analyze(csv_path: Path, config: dict) -> dict:
+    from .adapters import get_adapter
+    return get_adapter(config.get("model", "rlc_filter")).analyze(csv_path, config)

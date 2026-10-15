@@ -11,7 +11,7 @@ def number(value, name, low, high):
         raise ValueError(f"{name} must be finite and in [{low}, {high}]")
     return float(value)
 
-def validate_config(raw, sweep=False):
+def _validate_rlc(raw, sweep=False):
     c = deepcopy(raw)
     expected = {"schema_version", "model", "backend", "source", "circuit", "capture", "acceptance"}
     if sweep:
@@ -65,3 +65,10 @@ def validate_config(raw, sweep=False):
 
 def load_config(path,sweep=False):
     return validate_config(json.loads(Path(path).read_text(encoding="utf-8")),sweep=sweep)
+
+
+def validate_config(raw, sweep=False):
+    from .adapters import get_adapter
+    if not isinstance(raw, dict):
+        raise ValueError("configuration must be an object")
+    return get_adapter(raw.get("model")).validate(raw, sweep=sweep)

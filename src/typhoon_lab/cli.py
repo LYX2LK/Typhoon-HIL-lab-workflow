@@ -20,6 +20,7 @@ def verify_run(run_dir,write=True):
     run_dir=Path(run_dir).resolve()
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
     problems=[]
+    child_experiment_problems=[]
     for rel,expected in manifest.get("artifacts",{}).items():
         p=(run_dir/rel).resolve()
         if not p.is_relative_to(run_dir) or not p.is_file(): problems.append(f"missing or invalid artifact: {rel}")
@@ -34,22 +35,48 @@ def verify_run(run_dir,write=True):
             config=load_config(run_dir/"config.json")
             actual=analyze(run_dir/"waveforms.csv",config)
             stored=json.loads((run_dir/"metrics.json").read_text(encoding="utf-8"))
-            for key in ["status","signals","capture","checks"]:
+            for key in (list(actual) if config["schema_version"]==2 else ["status","signals","capture","checks"]):
                 if actual.get(key)!=stored.get(key): problems.append(f"recomputed metrics differ: {key}")
             if manifest["status"]!=stored["status"]: problems.append("manifest status differs from metrics")
+            if manifest.get("model", "rlc_filter")!=config["model"] or manifest.get("backend")!=config["backend"]:
+                problems.append("manifest identity differs from config")
+            if config["schema_version"]==2:
+                events=json.loads((run_dir/"events.json").read_text(encoding="utf-8"))
+                if events!={"schema_version":2,"planned":config["events"],"events":actual["events"]}:
+                    problems.append("event record differs from waveform recomputation")
+                if manifest.get("events")!=actual["events"]:
+                    problems.append("manifest events differ from waveform recomputation")
+                from .adapters.boost import BoostAdapter
+                schedule=BoostAdapter().describe_schedule(config)
+                if manifest.get("event_schedule")!=schedule: problems.append("event schedule differs from config")
+                for rel in ("waveforms.csv","metrics.json","config.json","capture.json","events.json"):
+                    if rel not in manifest.get("artifacts",{}): problems.append(f"required artifact is not hashed: {rel}")
         except Exception as exc: problems.append(f"metric recomputation error: {exc}")
+    elif manifest.get("kind")=="run":
+        problems.append("run has no metrics.json for recomputation")
     elif manifest.get("kind")=="smoke" and (run_dir/"readings.json").exists():
         readings=json.loads((run_dir/"readings.json").read_text(encoding="utf-8"))
         passed=all(math.isclose(x["input"],x["measured"],rel_tol=0,abs_tol=1e-6) for x in readings)
         if (manifest["status"]=="passed")!=passed: problems.append("loopback readings do not support the recorded status")
     elif manifest.get("kind")=="sweep":
+        states=[]
         for case in manifest.get("cases",[]):
             path=(run_dir/case["relative_dir"]).resolve()
             if not path.is_relative_to(run_dir): problems.append("case path leaves sweep directory");continue
             result=verify_run(path,write=False)
-            problems.extend(f"{case['case_id']}: {e}" for e in result["problems"])
+            problems.extend(f"{case['case_id']}: {e}" for e in result["record_problems"])
+            state=result["experiment_status"];states.append(state)
+            if case.get("status")!=state: problems.append(f"case status differs: {case['case_id']}")
+            if state!="passed": child_experiment_problems.append(f"{case['case_id']}: experiment status is {state}")
+        if not states: problems.append("sweep has no cases")
+        expected="passed" if states and all(x=="passed" for x in states) else ("error" if "error" in states else "failed")
+        if states and manifest.get("status")!=expected: problems.append("sweep status differs from case results")
+    record_problems=list(problems)
+    problems.extend(child_experiment_problems)
     if manifest.get("status")!="passed": problems.append(f"experiment status is {manifest.get('status')}")
     result={"checked_at":now(),"status":"passed" if not problems else "failed","problems":problems,
+            "record_status":"passed" if not record_problems else "failed", "record_problems":record_problems,
+            "experiment_status":manifest.get("status"),
             "artifact_count":len(manifest.get("artifacts",{})),
             "scope":"artifact hashes and metric recomputation; not an independent hardware validation"}
     if write: write_json(run_dir/"verification.json",result)
@@ -58,7 +85,8 @@ def verify_run(run_dir,write=True):
 def main(argv=None):
     parser=argparse.ArgumentParser(description="Typhoon Virtual HIL teaching workflow")
     sub=parser.add_subparsers(dest="command",required=True)
-    for name in ["doctor","inspect","smoke"]: sub.add_parser(name)
+    for name in ["doctor","smoke"]: sub.add_parser(name)
+    p=sub.add_parser("inspect");p.add_argument("--model",choices=["rlc_filter","boost_closed_loop"],default="rlc_filter")
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
@@ -77,7 +105,7 @@ def main(argv=None):
             print(json.dumps(info,ensure_ascii=False,indent=2));return 0
         if args.command=="inspect":
             from .runtime import inspect_model
-            with runtime_lock(): info=inspect_model()
+            with runtime_lock(): info=inspect_model(args.model)
             print(json.dumps(info,ensure_ascii=False,indent=2));return 0
         if args.command=="verify":
             result=verify_run(resolve_project_file(args.run_dir))
@@ -87,7 +115,7 @@ def main(argv=None):
             from .reporting import write_report,write_sweep_report
             path=resolve_project_file(args.run_dir)
             manifest=json.loads((path/"manifest.json").read_text(encoding="utf-8"))
-            report_names={"report.html","report.md","waveforms.png","comparison.csv","comparison.png"}
+            report_names={"report.html","report.md","waveforms.png","response_detail.png","comparison.csv","comparison.png"}
             for rel,expected in manifest.get("artifacts",{}).items():
                 if rel in report_names: continue
                 artifact=(path/rel).resolve()
@@ -102,11 +130,12 @@ def main(argv=None):
                 manifest["artifacts"][output.relative_to(path).as_posix()]=sha256(output)
             report_revision=uuid.uuid4().hex[:8]
             report_hashes={}
-            for source in [PROJECT/"src"/"typhoon_lab"/"reporting.py",PROJECT/"src"/"typhoon_lab"/"analysis.py",PROJECT/"src"/"typhoon_lab"/"cli.py"]:
-                target=path/"report_code_snapshot"/report_revision/source.name
+            for source in sorted((PROJECT/"src").rglob("*.py")):
+                source_relative=source.relative_to(PROJECT/"src")
+                target=path/"report_code_snapshot"/report_revision/source_relative
                 target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
                 relative=target.relative_to(path).as_posix()
-                manifest["artifacts"][relative]=sha256(target);report_hashes[source.name]=sha256(target)
+                manifest["artifacts"][relative]=sha256(target);report_hashes[source_relative.as_posix()]=sha256(target)
             manifest["report_generator_sha256"]=report_hashes
             manifest["report_regenerated_at"]=now()
             write_json(path/"manifest.json",manifest)
@@ -119,7 +148,7 @@ def main(argv=None):
         elif args.command=="run":
             config=load_config(resolve_project_file(args.config))
             from .runtime import execute_case
-            path=new_run("rlc")
+            path=new_run("rlc" if config["model"]=="rlc_filter" else config["model"])
             with runtime_lock(): manifest=execute_case(path,config)
         elif args.command=="sweep":
             config=load_config(resolve_project_file(args.config),sweep=True)

@@ -1,46 +1,74 @@
-# 实测验收记录
+# 验证状态与实测结论
 
-本记录供组员判断当前项目已经验证到哪一步，并找到可复查的证据。时间为 2026-10-14，运行清单使用中国标准时间偏移 `+08:00`。本次验证使用 Typhoon HIL Control Center 2026.3 的 Virtual HIL。
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-15**，模式为 THCC 2026.3 Virtual HIL。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
 
-## 验证项目与证据
+脚本与记录检查通过。RLC 基准、扫描及 Boost 基准、参考阶跃满足预设判据；两项 Boost 输入扰动的最大输出偏差超出 10%，实验为 failed。组员独立复现仍待执行。
 
-| 项目 | 当前结论 | 证据与适用范围 |
+## 已验证能力
+
+| 项目 | 结论与依据 |
+|---|---|
+| 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
+| 脚本逻辑 | [完整测试](../results/20261015-112422-v2-validation-dd212b/unit-tests.json) 54 项通过，失败、错误、跳过均为 0；[日志](../results/20261015-112422-v2-validation-dd212b/unit-tests.log) |
+| 运行与记录 | 最小回环、两个模型的全部指定工况均实际执行；七项最终记录复算一致，配置、模型、CSV 与指标保持不变，见 [核验记录](../results/20261015-112422-v2-validation-dd212b/final-checks.json) |
+| 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
+| 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
+| 既有记录兼容 | 在已保存 RLC 记录副本上完成 verify→report→verify，原目录哈希未变，见 [兼容检查](../results/20261015-112422-v2-validation-dd212b/historical-compatibility.json) |
+
+脚本测试、实际 Virtual HIL 运行和人员独立复现是不同的验证项目。HIL101、Pro 1 表示编译目标与配置；本页的运行证据对应 Virtual HIL。
+
+## 实际运行与记录复核
+
+| 实验 | 实验状态 | 记录一致性 | 实际产物 |
 |---|---|---|
-| 环境检查 `doctor` | 通过 | [环境检查记录](../results/environment.json) 与 [基准运行清单](../results/20261014-211038-rlc-18c288/manifest.json)：配套 Python 3.11.4、API 1.32.1、TyphoonTest 1.35.6 和解释器路径已检查，项目模块导入通过 |
-| 模型检查 `inspect` | 通过 | [模型检查记录](../results/inspection.json)、[模型来源记录](../models/origin.json) 与 [基准运行清单](../results/20261014-211038-rlc-18c288/manifest.json) 的实际元件参数回读；组件为顶层 Rin/R/L/C，源 Vs1，信号 I/Va1 |
-| 最小仿真 `smoke` | 通过 | [运行清单](../results/20261014-212943-smoke-a2a022/manifest.json)、[实际读数](../results/20261014-212943-smoke-a2a022/readings.json)、[日志](../results/20261014-212943-smoke-a2a022/run.log)：输入 -10/0/10，Probe1 分别读到 -10/0/10，仿真已停止 |
-| RLC 基准 `run` | 通过 | [原始波形](../results/20261014-211038-rlc-18c288/waveforms.csv)、[指标](../results/20261014-211038-rlc-18c288/metrics.json)、[报告](../results/20261014-211038-rlc-18c288/report.html)：采得 400 点、20 kHz，实际参数和正弦源设置已回读 |
-| 三工况扫描 `sweep` | 通过 | [汇总 CSV](../results/20261014-211142-sweep-db63f4/comparison.csv)、[运行清单](../results/20261014-211142-sweep-db63f4/manifest.json)、[总报告](../results/20261014-211142-sweep-db63f4/report.html)：Rin=1/5/10 Ω 均通过配置判据，各自保存原始数据 |
-| 基准复算 `verify` | 通过 | [复算结果](../results/20261014-211038-rlc-18c288/verification.json)：21:22:31 复核报告重建后的 63 个产物，文件摘要检查及指标重算通过，问题列表为空 |
-| 扫描复算 `verify` | 通过 | [复算结果](../results/20261014-211142-sweep-db63f4/verification.json)：21:22:34 复核报告重建后的 201 个产物，覆盖全部工况，问题列表为空 |
-| 图表 QA | 通过 | [基准波形图](../results/20261014-211038-rlc-18c288/waveforms.png) 与 [扫描比较图](../results/20261014-211142-sweep-db63f4/comparison.png) 已打开检查，坐标单位、图例、线型、采样显示及报告数值对应正常 |
-| 脚本单元测试 | 通过 | [测试记录](../results/unit-tests.json)、[测试日志](../results/unit-tests.log)：24 项测试通过，失败、错误和跳过均为 0；覆盖配置、确定性分析、来源记录及异常报告 |
+| 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
+| RLC 基准 | passed | passed | [记录](../results/20261015-113040-rlc-ea344a/report.html) |
+| RLC 三工况扫描 | passed | passed | [记录](../results/20261015-113104-sweep-1a2086/report.html) |
+| Boost 基准 | passed | passed | [记录](../results/20261015-113207-boost_closed_loop-e9ac14/report.html) |
+| Boost 参考阶跃 | passed | passed | [记录](../results/20261015-113237-boost_closed_loop-9e116c/report.html) |
+| Boost 输入跌落 | failed | passed | [记录](../results/20261015-113307-boost_closed_loop-caf1cc/report.html) |
+| Boost 输入升高 | failed | passed | [记录](../results/20261015-113336-boost_closed_loop-ec9253/report.html) |
 
-## 基准数值
+record_status 表示文件与指标复算是否一致，experiment_status 表示实验执行和性能判据的结果。记录一致而性能未达标时，总 status 为 failed，verify 退出码为 1。
 
-输入源为 10 V RMS、1000 Hz、0°；Rin=5 Ω、R=0.1 Ω、L=10 µH、C=500 µF。以下值直接摘自基准 `metrics.json`：
+## RLC 数值核对
 
-| 信号 | 实测 RMS | 稳态解析 RMS | 相对误差 | 本次判定 |
+条件为 10 V RMS、1000 Hz、0°；Rin=5 Ω、R=0.1 Ω、L=10 µH、C=500 µF。实际采集 400 点、20 kHz，按全部捕获样本计算 RMS；允许相对误差为 3%。公式与窗口定义见 [RLC 说明](experiments.md)。
+
+| 信号 | 实测 RMS | 解析 RMS | 相对误差 | 状态 |
 |---|---:|---:|---:|---|
-| 源电流 I | 1.997625500 A | 1.997672528 A | 0.002354% | 通过 |
-| 节点电压 Va1 | 0.152952074 V | 0.152645824 V | 0.200628% | 通过 |
+| 电流 I / A | 1.997625439 | 1.997672528 | 0.002357% | passed |
+| 节点电压 Va1 / V | 0.152952070 | 0.152645824 | 0.200626% | passed |
 
-本版允许 RMS 相对误差为 3%。400 点对应的相邻采样间隔为 50 µs，采集窗口为 20 ms。原始 CSV 的列为 `t_relative_s`、`t_simulation_s`、`I_A`、`Va1_V`，分别记录采集相对时间、仿真时间、电流和电压。
-
-## 扫描数值
-
-以下值来自扫描 `comparison.csv`。扫描中的 Rin=5 Ω 是独立运行，与上表基准分别保存记录。
-
-| Rin | 电流 RMS / A | 电压 RMS / V | 电流相对误差 | 电压相对误差 | 状态 |
+| Rin / Ω | 电流 RMS / A | 节点电压 RMS / V | 电流相对误差 | 电压相对误差 | 状态 |
 |---:|---:|---:|---:|---:|---|
-| 1 Ω | 9.918259850 | 0.759365311 | 0.010918% | 0.186043% | passed |
-| 5 Ω | 1.997615796 | 0.152951996 | 0.002840% | 0.200577% | passed |
-| 10 Ω | 0.999429991 | 0.076524261 | 0.001679% | 0.202566% | passed |
+| 1 | 9.918259404 | 0.759365298 | 0.010922% | 0.186041% | passed |
+| 5 | 1.997615788 | 0.152951998 | 0.002840% | 0.200578% | passed |
+| 10 | 0.999430006 | 0.076524264 | 0.001677% | 0.202571% | passed |
 
-各工况的完整文件分别位于扫描目录的 `cases/case_01_rin_1`、`cases/case_02_rin_5`、`cases/case_03_rin_10`。随 Rin 增大，当前三个工况的电流和节点电压 RMS 下降；其解释对应 [实验说明](experiments.md) 中的稳态阻抗关系。
+基准与扫描中的 Rin=5 Ω 为独立运行，各自保留原始数据。
 
-## 后续需要完成的交接
+## Boost 动态结果
 
-上述记录验证了当前软件安装、指定模型和脚本流程。第一位组员的 GUI 实际点选、自然语言任务的独立复现及教程交接仍待 [交接验收](handoff.md) 中填写。真实控制器与实体 HIL 的连接情况尚未确认，后续使用时建立对应设备的验证记录。
+四个工况均采集 1.5 s、10 kHz、15,000 点。最终均值窗口为 [1.4,1.5) s，动态事件前窗口为 [0.4,0.5) s。模型和判据定义见 [Boost 说明](boost-experiments.md)。
 
-`HIL101`、`Pro 1` 表示模型编译目标和配置；本次执行模式为 Virtual HIL。运行清单中的代码快照、模型副本、实际源设置与文件摘要可用于追溯本次实验；`verify` 的数值复算依据同一份原始数据和分析逻辑。单元测试检查脚本行为，真实仿真证据由 smoke、基准和扫描记录提供。
+| 工况 | 最终均值 / V | 稳态相对误差 | 调节／恢复 / s | 超调或最大偏差 | 状态 |
+|---|---:|---:|---:|---:|---|
+| Boost 基准 | 50.000340 | 0.000680% | — | — | passed |
+| 参考 50→60 V | 59.998315 | 0.002809% | 0.2489 | 0.02968% | passed |
+| 输入 35→28 V | 49.995309 | 0.009381% | 0.3307 | 18.20093% | failed |
+| 输入 35→38.5 V | 50.009795 | 0.019589% | 0.2119 | 16.66905% | failed |
+
+参考超调以 10 V 阶跃幅值归一化；输入扰动最大偏差以 50 V 归一化。两项扰动的事件、最终误差和恢复时间通过，最大偏差分别为 18.20093% 和 16.66905%，超过固定的 10%。官方 PI 参数与原判据保持不变，越限项和失败状态均留在报告中。
+
+三次动态事件的首变采样时刻均为 0.5000005 s，相邻样本检测区间约为 (0.4999005,0.5000005] s，默认分辨率为 100 µs。完整图保留启动瞬态，动态细节图标出局部时间范围。
+
+## 待验事项
+
+| 项目 | 状态与完成方式 |
+|---|---|
+| 组员独立复现 | 待执行；按 [交接流程](handoff.md) 记录实际执行者、机器、任务与结果 |
+| GUI 手动操作路径 | 待组员实际点选核对；步骤见 [首次实验](first-experiment.md) |
+| 电机模型、实体 HIL 与外部控制器 | 尚未接入；按具体模型、设备和任务建立验证记录 |
+
+完整命令、数据核对与审查材料见 [当日验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。

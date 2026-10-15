@@ -60,40 +60,50 @@ def wait_sim(hil,target,budget_s):
         time.sleep(.05)
 
 def component_values(api):
-    output={}
-    for key,item_name,prop_name in [
-        ("rin_ohm","Rin","resistance"),("branch_r_ohm","R","resistance"),
-        ("l_h","L","inductance"),("c_f","C","capacitance")
-    ]:
-        item=api.get_item(item_name)
-        if item is None: raise ValueError(f"model is missing required component {item_name}")
-        output[key]=float(api.get_property_value(api.prop(item,prop_name)))
-    return output
+    from .adapters import get_adapter
+    return get_adapter("rlc_filter").inspect_parameters(api)
 
-def inspect_model():
+
+def inspect_model(model_id="rlc_filter"):
+    from .adapters import get_adapter
+    adapter=get_adapter(model_id)
     api,_=api_modules()
-    path=PROJECT/"models"/"rlc_filter.tse"
+    path=PROJECT/"models"/f"{model_id}.tse"
     require(api.load(filename=str(path)),"load model for inspection")
-    result={"model":"rlc_filter","source_model":str(path),"source_sha256":sha256(path),
-            "circuit":component_values(api),
+    result={"model":model_id,"source_model":str(path),"source_sha256":sha256(path),
+            "circuit":adapter.inspect_parameters(api),
             "model_settings":{k:api.get_model_property_value(k) for k in
                               ["hil_device","hil_configuration_id","simulation_time_step"]},
             "components":[api.get_name(x) for x in api.get_items()],
+            "capture_signals":list(adapter.signals),"units":adapter.units,"per_run_changes":adapter.changes,
             "scope":"schematic inspection; compilation and simulation are separate checks"}
-    write_json(RESULTS/"inspection.json",result)
+    write_json(RESULTS/("inspection.json" if model_id=="rlc_filter" else f"inspection_{model_id}.json"),result)
     return result
 
-def source_copy(run_dir,smoke=False):
-    key="loopback" if smoke else "rlc_filter"
+
+def source_copy(run_dir,smoke=False,model_id="rlc_filter"):
+    key="loopback" if smoke else model_id
     source=PROJECT/"models"/f"{key}.tse"
     origin=json.loads((PROJECT/"models"/"origin.json").read_text(encoding="utf-8"))[key]
     if sha256(source)!=origin["sha256"]:
         raise ValueError(f"teaching template {source.name} differs from recorded origin")
     destination=Path(run_dir)/"model.tse"
     shutil.copy2(source,destination)
+    if "panel" in origin:
+        panel=PROJECT/"models"/f"{key}.cus"
+        if sha256(panel)!=origin["panel"]["sha256"]:
+            raise ValueError("teaching panel differs from recorded origin")
+        shutil.copy2(panel,Path(run_dir)/"official_panel.cus")
     return destination,origin
 
+
 def no_active_simulation(hil):
+    """Query running state only when the API session has a loaded model."""
+    model_path = hil.get_model_file_path()
+    if model_path is None:
+        return
+    if not isinstance(model_path, str) or not model_path:
+        raise RuntimeError("cannot determine the API session loaded model")
     if hil.is_simulation_running() is True:
         raise RuntimeError("the API session already has a running simulation; stop it before a teaching run")
 
@@ -147,32 +157,26 @@ def execute_smoke(run_dir):
     return manifest
 
 def execute_case(run_dir,config):
-    manifest={"schema_version":1,"kind":"run","model":"rlc_filter","backend":"virtual_hil",
+    from .adapters import get_adapter
+    adapter=get_adapter(config["model"])
+    manifest={"schema_version":adapter.schema_version,"kind":"run","model":adapter.model_id,"backend":"virtual_hil",
               "started_at":now(),"status":"error"}
     api=hil=None;write_report=None;started=capturing=False
     try:
         write_json(Path(run_dir)/"config.json",config)
+        if adapter.schema_version==2:
+            write_json(Path(run_dir)/"events.json",{"schema_version":2,"planned":config["events"],"events":[]})
         from .analysis import analyze
         from .reporting import write_report
         api,hil=api_modules()
         manifest["environment"]=environment()
         manifest["code_sha256"]=snapshot_code(run_dir)
         no_active_simulation(hil)
-        model_path,origin=source_copy(run_dir)
+        model_path,origin=source_copy(run_dir,model_id=adapter.model_id)
         manifest["model_origin"]=origin
-        require(api.load(filename=str(model_path)),"load RLC model")
-        for key,item_name,prop_name in [
-            ("rin_ohm","Rin","resistance"),("branch_r_ohm","R","resistance"),
-            ("l_h","L","inductance"),("c_f","C","capacitance")
-        ]:
-            item=api.get_item(item_name)
-            if item is None: raise ValueError(f"required component {item_name} was not found")
-            api.set_property_value(api.prop(item,prop_name),str(config["circuit"][key]))
-        actual=component_values(api)
-        for key,value in actual.items():
-            if not math.isclose(value,config["circuit"][key],rel_tol=1e-12):
-                raise ValueError(f"model read-back mismatch for {key}")
-        manifest["actual_model_parameters"]=actual
+        require(api.load(filename=str(model_path)),"load teaching model")
+        manifest["actual_model_parameters"]=adapter.prepare(api,config)
+        if adapter.changes: manifest["model_changes"]=adapter.changes
         require(api.save_as(filename=str(model_path)),"save case model")
         note(run_dir,"Compiling case model")
         require(api.compile(),"compile case model")
@@ -183,52 +187,56 @@ def execute_case(run_dir,config):
         sources=[x for device in hil.get_sources() for x in device]
         signals=[x for device in hil.get_analog_signals() for x in device]
         manifest["discovered_sources"]=sources;manifest["discovered_signals"]=signals
-        if "Vs1" not in sources or any(x not in signals for x in ["I","Va1"]):
-            raise ValueError("compiled model is missing the teaching source or capture signals")
-        s=config["source"]
-        require(hil.set_source_sine_waveform("Vs1",rms=s["rms_v"],frequency=s["frequency_hz"],
-                                           phase=s["phase_deg"],harmonics_pu=()),"set sine source")
-        settings=hil.get_source_settings("Vs1");manifest["actual_source_settings"]=settings
-        for key,expected in [("rms",s["rms_v"]),("frequency",s["frequency_hz"]),("phase",s["phase_deg"])]:
-            if settings is None or not math.isclose(float(settings[key]),expected,rel_tol=1e-10,abs_tol=1e-10):
-                raise ValueError(f"source read-back mismatch for {key}")
+        if any(x not in sources for x in adapter.sources) or any(x not in signals for x in adapter.signals):
+            raise ValueError("compiled model is missing required sources or capture signals")
+        manifest.update(adapter.initialize(hil,config))
+        manifest["event_schedule"]=adapter.schedule(hil,config)
         dt=float(hil.get_sim_step());c=config["capture"]
         decimation=max(1,round(1/(c["sample_rate_hz"]*dt)))
         rate=1/(dt*decimation);n=int(round(c["duration_s"]*rate/2))*2
-        if not 256<=n<=100000 or rate<20*s["frequency_hz"]:
-            raise ValueError("actual capture sampling falls outside validated teaching limits")
-        if not math.isclose(n/rate*s["frequency_hz"],round(n/rate*s["frequency_hz"]),abs_tol=1e-5):
-            raise ValueError("quantized sampling would not capture complete source cycles")
-        require(hil.start_simulation(),"start RLC simulation");started=True
-        manifest["settled_at_simulation_s"]=wait_sim(hil,c["settle_s"],c["wall_timeout_s"])
+        if not 256<=n<=100000:
+            raise ValueError("actual sample count falls outside validated teaching limits")
+        adapter.check_sampling(rate,n,config)
         buffer=[]
-        require(hil.start_capture([decimation,2,n,False],["Forced"],[["I","Va1"],[]],
-                                 dataBuffer=buffer,timeFormat="absolute"),"start waveform capture")
-        capturing=True;deadline=time.monotonic()+c["wall_timeout_s"]
+        def arm_capture():
+            require(hil.start_capture([decimation,len(adapter.signals),n,False],["Forced"],[list(adapter.signals),[]],
+                                     dataBuffer=buffer,timeFormat="absolute"),"start waveform capture")
+        if adapter.capture_before_start:
+            arm_capture();capturing=True
+        require(hil.start_simulation(),"start teaching simulation");started=True
+        if not adapter.capture_before_start:
+            manifest["settled_at_simulation_s"]=wait_sim(hil,c["settle_s"],c["wall_timeout_s"])
+            arm_capture();capturing=True
+        deadline=time.monotonic()+c["wall_timeout_s"]
         while hil.capture_in_progress():
             if time.monotonic()>deadline: raise TimeoutError("capture exceeded its wall-clock budget")
+            if hil.is_simulation_running() is not True: raise RuntimeError("simulation stopped during capture")
             time.sleep(.05)
         capturing=False
         if hil.timeout_occurred() or not buffer:
             raise RuntimeError("waveform capture finished without complete data")
         names,values,times=buffer[0]
         y=np.asarray(values,dtype=float);rel=np.asarray(times["x_data"],dtype=float)
-        if list(names)!=["I","Va1"] or y.shape!=(2,n) or rel.shape!=(n,):
+        if list(names)!=list(adapter.signals) or y.shape!=(len(adapter.signals),n) or rel.shape!=(n,):
             raise ValueError("capture returned unexpected signal order or shape")
         trigger=times["trigger_timestamp_sim_time"]
         if trigger is None: raise ValueError("capture did not return a simulation trigger time")
         sim=rel+float(trigger)*1e-9
         np.savetxt(Path(run_dir)/"waveforms.csv",np.column_stack([rel,sim,y.T]),delimiter=",",
-                   header="t_relative_s,t_simulation_s,I_A,Va1_V",comments="",fmt="%.17g")
-        info={"signal_names":list(names),"units":{"I_A":"A","Va1_V":"V"},"simulation_step_s":dt,
+                   header=",".join(("t_relative_s","t_simulation_s",*adapter.columns)),comments="",fmt="%.17g")
+        info={"signal_names":list(names),"units":adapter.units,"simulation_step_s":dt,
               "decimation":decimation,"sample_rate_hz":rate,"number_of_samples":n,"sample_window_s":n/rate,
               "trigger_timestamp_sim_time_ns":trigger,
               "trigger_timestamp_utc_time_ns":times.get("trigger_timestamp_utc_time"),
               "capture_wall_recorded_at":now(),
               "utc_trigger_note":"Virtual HIL may return null; no UTC trigger time is inferred"}
         write_json(Path(run_dir)/"capture.json",info);manifest["capture"]=info
+        require(hil.stop_simulation(),"stop captured simulation");started=False
         note(run_dir,f"Captured {n} samples at {rate:g} samples/s")
         metrics=analyze(Path(run_dir)/"waveforms.csv",config)
+        if adapter.schema_version==2:
+            manifest["events"]=metrics["events"]
+            write_json(Path(run_dir)/"events.json",{"schema_version":2,"planned":config["events"],"events":metrics["events"]})
         write_json(Path(run_dir)/"metrics.json",metrics);manifest["status"]=metrics["status"]
     except Exception as exc:
         manifest["error"]=f"{type(exc).__name__}: {exc}";note(run_dir,traceback.format_exc())

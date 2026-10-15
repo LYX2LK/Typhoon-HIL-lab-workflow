@@ -10,5 +10,15 @@
     "sha256": "0e2d8bddcebb83b280a2ebc2e4a1cfeddb142a64f361431d4992879fe09f4f93",
     "thcc_version": "2026.3",
     "kind": "official_teaching_example"
+  },
+  "boost_closed_loop": {
+    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\boost closed loop\\boost closed loop.tse",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example",
+    "sha256": "924107471b1b13d7ad0bf94e043078ac3c93ceff0fbdc8a5aa310e9e92b7e5e3",
+    "panel": {
+      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\boost closed loop\\boost closed loop.cus",
+      "sha256": "2855cfa9b9c88ce0f9a6ca75f6625fb020143ff589fa07dda3830302ba345197"
+    }
   }
 }

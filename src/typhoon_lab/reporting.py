@@ -93,11 +93,11 @@ def _metadata(manifest):
     return [(name, json.dumps(value, ensure_ascii=False, sort_keys=True) if isinstance(value, (dict, list)) else str(value)) for name, value in rows] or [('运行元数据', '见 manifest.json')]
 
 
-def _write(run_dir, title, status, html_parts, markdown_parts):
+def _write(run_dir, title, status, html_parts, markdown_parts, scope=SCOPE):
     esc = html.escape
-    document = f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><style>{CSS}</style></head><body><main><h1>{esc(title)}</h1><p class="status">实验状态：{esc(_status(status))}</p><p class="scope">{esc(SCOPE)}</p>'
+    document = f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><style>{CSS}</style></head><body><main><h1>{esc(title)}</h1><p class="status">实验状态：{esc(_status(status))}</p><p class="scope">{esc(scope)}</p>'
     document += ''.join(html_parts) + '<footer>图表保存全部原始采样点，连续线只连接相邻采样点。未做平滑、滤波、插值或缺失值补齐。HTML 的图像与样式已内嵌，无网络依赖。原始数据链接指向同目录文件。仿真时刻为模型内时间，未补造缺失的 UTC 时戳。</footer></main></body></html>'
-    markdown = f'# {title}\n\n实验状态：**{_status(status)}**\n\n{SCOPE}\n\n' + '\n\n'.join(markdown_parts)
+    markdown = f'# {title}\n\n实验状态：**{_status(status)}**\n\n{scope}\n\n' + '\n\n'.join(markdown_parts)
     markdown += '\n\n图表保存全部原始采样点，未做平滑、滤波、插值或缺失值补齐。仿真时刻为模型内时间，未补造缺失的 UTC 时戳。\n'
     output = [run_dir / 'report.html', run_dir / 'report.md']
     output[0].write_text(document, encoding='utf-8')
@@ -105,7 +105,7 @@ def _write(run_dir, title, status, html_parts, markdown_parts):
     return output
 
 
-def write_report(run_dir: Path, manifest: dict) -> list[Path]:
+def _write_rlc_report(run_dir: Path, manifest: dict) -> list[Path]:
     run_dir = Path(run_dir)
     metrics, config = _json(run_dir / 'metrics.json'), _json(run_dir / 'config.json')
     status = manifest.get('status') or metrics.get('status') or 'error'
@@ -246,3 +246,8 @@ def write_sweep_report(run_dir: Path, manifest: dict) -> list[Path]:
     mp.append('## 运行来源\n\n' + _md_table(('字段', '记录'), _metadata(manifest)) + '\n\n[比较表 CSV](comparison.csv) · [manifest.json](manifest.json)')
     outputs.extend(_write(run_dir, 'RLC 参数扫描报告', status, hp, mp))
     return outputs
+
+
+def write_report(run_dir: Path, manifest: dict) -> list[Path]:
+    from .adapters import get_adapter
+    return get_adapter(manifest.get("model", "rlc_filter")).report(Path(run_dir), manifest)

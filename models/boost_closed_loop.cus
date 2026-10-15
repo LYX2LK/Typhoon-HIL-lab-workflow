@@ -1,0 +1,1076 @@
+<ui_settings>
+    <version>2.8</version>
+    <model_locked>True</model_locked>
+    <canvas_bg_color>#ffffff</canvas_bg_color>
+    <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
+# available for use in all Macro and Expression scripts.
+# This code is always executed after Custom UI is loaded and prior simulation start.
+
+# HIL Control Panel API
+
+
+# Variable 'SETTINGS_DIR' holds directory where loaded settings .cus file is located.
+# Also you can call 'get_settings_dir_path()' function in any
+# Macro and Expression scripts to get the same directory.
+SETTINGS_DIR = get_settings_dir_path()
+]]></initialization_code>
+    <components>
+        <component_data>
+                <id>4c0795c183b411ee8f621c1bb5b9283b</id>
+                <name><![CDATA[Image component]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[images\background.svg]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <widget_settings>
+                    <x>32</x>
+                    <y>48</y>
+                    <width>1200</width>
+                    <height>550</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>True</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>b9e5634ff11a11e59c34448a5b20426f</id>
+                <name><![CDATA[Boost control]]></name>
+                <type>Group</type>
+                <description><![CDATA[None]]></description>
+                <components_ids><![CDATA[['bfe07470f11a11e5a1bb448a5b20426f', '533a908f063111e6ab238ca982b03a50', 'cd44c861063111e6ac6d8ca982b03a50']]]></components_ids>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
+# available for use in all Macro and Expression scripts of the components owned by this widget.
+# This code is always executed prior simulation start.
+]]></initialization_code>
+                <widget_settings>
+                    <x>496</x>
+                    <y>408</y>
+                    <width>304</width>
+                    <height>192</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <collapsed>False</collapsed>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>bfe07470f11a11e5a1bb448a5b20426f</id>
+                <name><![CDATA[Reference Voltage]]></name>
+                <type>KnobMacro</type>
+                <description><![CDATA[None]]></description>
+                <on_use_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+hil.set_scada_input_value('Reference', inputValue)
+]]></on_use_code>
+                <on_start_code active="True"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_start_code>
+                <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
+# HIL API is imported as 'hil'
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_stop_code>
+                <on_timer_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed periodically each 1000ms.
+# NOTE: Only read functions are available from the HIL API
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_timer_code>
+                <on_start_code_source><![CDATA[Macro code]]></on_start_code_source>
+                <inputValue><![CDATA[50.0]]></inputValue>
+                <min>40.0</min>
+                <max>100.0</max>
+                <step>1.0</step>
+                <widget_settings>
+                    <x>160</x>
+                    <y>0</y>
+                    <width>128</width>
+                    <height>152</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>af8c59cff11b11e5b51a448a5b20426f</id>
+                <name><![CDATA[Vout]]></name>
+                <type>Gauge</type>
+                <description><![CDATA[None]]></description>
+                <data_type>Analog signal</data_type>
+                <code><![CDATA[#----------------------- MANDATORY IMPORT --------------------------
+# HIL Control Panel API
+
+# NOTE: Only read functions are available from HIL Control Panel API
+#-------------------------------------------------------------------
+
+# mandatory variable used for storing value
+# that will be displayed
+displayValue = 0.0
+
+]]></code>
+                <signal_name><![CDATA[Vout]]></signal_name>
+                <unit><![CDATA[V]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <updateRate>500</updateRate>
+                <decimals>2</decimals>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>1248</x>
+                    <y>40</y>
+                    <width>248</width>
+                    <height>144</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>True</color_range>
+                    <min>0.0</min>
+                    <max>100.0</max>
+                    <warning_range>(90.0, 95.0, 0.0, 0.0)</warning_range>
+                    <critical_range>(95.0, 110.0, 0.0, 0.0)</critical_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>ea8a4030f11e11e58ff2448a5b20426f</id>
+                <name><![CDATA[Iout]]></name>
+                <type>Gauge</type>
+                <description><![CDATA[None]]></description>
+                <data_type>Analog signal</data_type>
+                <code><![CDATA[#----------------------- MANDATORY IMPORT --------------------------
+# HIL Control Panel API
+
+# NOTE: Only read functions are available from HIL Control Panel API
+#-------------------------------------------------------------------
+
+# mandatory variable used for storing value
+# that will be displayed
+displayValue = 0.0
+
+]]></code>
+                <signal_name><![CDATA[Iout]]></signal_name>
+                <unit><![CDATA[A]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <updateRate>500</updateRate>
+                <decimals>2</decimals>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>1248</x>
+                    <y>200</y>
+                    <width>248</width>
+                    <height>144</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>True</color_range>
+                    <min>0.0</min>
+                    <max>5.0</max>
+                    <warning_range>(4.0, 4.5, 0.0, 0.0)</warning_range>
+                    <critical_range>(4.5, 10.0, 0.0, 0.0)</critical_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>47fbd880f1da11e5b77c448a5b20426f</id>
+                <name><![CDATA[ 1]]></name>
+                <type>LedDisplay</type>
+                <description><![CDATA[None]]></description>
+                <data_type>Digital signal</data_type>
+                <signal_name><![CDATA[Load_fb]]></signal_name>
+                <hil_device>0</hil_device>
+                <led_color>Green</led_color>
+                <code><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+# NOTE: Only read functions are available from HIL Control Panel API
+#------------------------------------------------
+
+# mandatory variable used for storing LED indicator state
+# True -> On, False -> Off
+displayValue = False
+]]></code>
+                <updateRate>500</updateRate>
+                <widget_settings>
+                    <x>1104</x>
+                    <y>88</y>
+                    <width>48</width>
+                    <height>32</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[ ]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>6fe632f0f1da11e59360448a5b20426f</id>
+                <name><![CDATA[ ]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[None]]></description>
+                <data_type>Analog signal</data_type>
+                <code><![CDATA[#----------------------- MANDATORY IMPORT --------------------------
+# HIL Control Panel API
+
+# NOTE: Only read functions are available from HIL Control Panel API
+#-------------------------------------------------------------------
+
+# mandatory variable used for storing value
+# that will be displayed
+displayValue = 0.0
+
+]]></code>
+                <signal_name><![CDATA[Vin]]></signal_name>
+                <unit><![CDATA[V]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>250</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>152</x>
+                    <y>200</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>2fec5380063111e6911a8ca982b03a50</id>
+                <name><![CDATA[Contactor State]]></name>
+                <type>ComboBoxMacro</type>
+                <description><![CDATA[None]]></description>
+                <on_use_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+if inputValue == 'Open':
+    hil.set_contactor('Load',swControl= True,swState= False)
+elif inputValue == 'Close':
+    hil.set_contactor('Load',swControl= True,swState= True)
+]]></on_use_code>
+                <on_start_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+
+# Function for printing text to console (e.g printf("Hello world"))
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+if inputValue == 'Open':
+    # do something when 'Case 1' is selected
+    hil.set_contactor('Load',swControl= True,swState= False)
+#    pass
+elif inputValue == 'Close':
+    # do something when 'Case 2' is selected
+    hil.set_contactor('Load',swControl= True,swState= True)
+#    pass
+]]></on_start_code>
+                <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
+# HIL API is imported as 'hil'
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_stop_code>
+                <on_timer_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed periodically each 1000ms.
+# NOTE: Only read functions are available from the HIL API
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_timer_code>
+                <on_start_code_source><![CDATA[Macro code]]></on_start_code_source>
+                <inputValue><![CDATA[Open]]></inputValue>
+                <availableValues><![CDATA[['Open', 'Close']]]></availableValues>
+                <unit><![CDATA[]]></unit>
+                <widget_settings>
+                    <x>1056</x>
+                    <y>56</y>
+                    <width>152</width>
+                    <height>32</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>533a908f063111e6ab238ca982b03a50</id>
+                <name><![CDATA[ 1]]></name>
+                <type>ComboBoxMacro</type>
+                <description><![CDATA[None]]></description>
+                <on_use_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+if inputValue == 'enable':
+    hil.set_scada_input_value('PWM Enable', 1.0)
+elif inputValue == 'disable':
+    hil.set_scada_input_value('PWM Enable', 0.0)
+    
+
+]]></on_use_code>
+                <on_start_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+
+# Function for printing text to console (e.g printf("Hello world"))
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+if inputValue == 'enable':
+    hil.set_cp_input_value('User defined', 'Boost Control', 'PWM Enable', 1.0)
+elif inputValue == 'disable':
+    hil.set_cp_input_value('User defined', 'Boost Control', 'PWM Enable', 0.0)
+]]></on_start_code>
+                <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
+# HIL API is imported as 'hil'
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_stop_code>
+                <on_timer_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed periodically each 1000ms.
+# NOTE: Only read functions are available from the HIL API
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_timer_code>
+                <on_start_code_source><![CDATA[Macro code]]></on_start_code_source>
+                <inputValue><![CDATA[enable]]></inputValue>
+                <availableValues><![CDATA[['disable', 'enable']]]></availableValues>
+                <unit><![CDATA[]]></unit>
+                <widget_settings>
+                    <x>8</x>
+                    <y>64</y>
+                    <width>136</width>
+                    <height>32</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[ ]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>cd44c861063111e6ac6d8ca982b03a50</id>
+                <name><![CDATA[ ]]></name>
+                <type>LedDisplay</type>
+                <description><![CDATA[None]]></description>
+                <data_type>Digital signal</data_type>
+                <signal_name><![CDATA[enable]]></signal_name>
+                <hil_device>0</hil_device>
+                <led_color>Green</led_color>
+                <code><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+# NOTE: Only read functions are available from HIL Control Panel API
+#------------------------------------------------
+
+# mandatory variable used for storing LED indicator state
+# True -> On, False -> Off
+displayValue = False
+]]></code>
+                <updateRate>500</updateRate>
+                <widget_settings>
+                    <x>16</x>
+                    <y>24</y>
+                    <width>96</width>
+                    <height>32</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>f8a63640063311e699f68ca982b03a50</id>
+                <name><![CDATA[Input Voltage p_u_]]></name>
+                <type>SliderMacro</type>
+                <description><![CDATA[None]]></description>
+                <on_use_code active="True"><![CDATA[#------------- MANDATORY IMPORTS ---------------
+# HIL Control Panel API
+
+
+#------------------------------------------------
+
+# NOTE: entered value is available through variable 'inputValue'
+
+voltage = 35.0*inputValue
+hil.set_source_constant_value('Vin', value = voltage)]]></on_use_code>
+                <on_start_code active="True"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = 1.0
+]]></on_start_code>
+                <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
+# HIL API is imported as 'hil'
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_stop_code>
+                <on_timer_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed periodically each 1000ms.
+# NOTE: Only read functions are available from the HIL API
+# HIL API
+
+
+
+# Change widget value by setting this variable.
+# NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
+widgetValue = None
+]]></on_timer_code>
+                <on_start_code_source><![CDATA[Macro code]]></on_start_code_source>
+                <inputValue><![CDATA[1.0]]></inputValue>
+                <min>0.8</min>
+                <max>1.2</max>
+                <step>0.02</step>
+                <widget_settings>
+                    <x>128</x>
+                    <y>256</y>
+                    <width>192</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Input voltage [p.u.]]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>ddecc30884a211eea2d31c1bb5b9283b</id>
+                <name><![CDATA[Capture_Scope]]></name>
+                <type>Capture/Scope</type>
+                <description><![CDATA[Capture/Scope]]></description>
+                <working_mode>windowed</working_mode>
+                <widget_settings>
+                    <x>304</x>
+                    <y>448</y>
+                    <width>120</width>
+                    <height>120</height>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <state>Scope</state>
+                    <layout>None</layout>
+                    <virtual_signals_definitions>
+                    </virtual_signals_definitions>
+                    <presets>
+                        <active_capture_preset><![CDATA[Default]]></active_capture_preset>
+                        <active_scope_preset><![CDATA[Default]]></active_scope_preset>
+                        <capture name="Default">
+                            <time_interval>2.5</time_interval>
+                            <sample_rate>2000000.0</sample_rate>
+                            <background_color>white</background_color>
+                            <layout>Grid</layout>
+                            <legend>True</legend>
+                            <analog_signals>
+                                <analog>
+                                    <channel>0</channel>
+                                    <name><![CDATA[C]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>0</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>1</channel>
+                                    <name><![CDATA[L]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>1</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>2</channel>
+                                    <name><![CDATA[VL]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>2</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>3</channel>
+                                    <name><![CDATA[Vout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>3</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[Iin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[Iout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Iout_boost]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Vin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Modulation Signal]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>200m</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
+                                    <viewports>
+                                        <num_viewport>2</num_viewport>
+                                   </viewports>
+                               </analog>
+                            </analog_signals>
+                            <digital_signals>
+                                <digital>
+                                    <channel>0</channel>
+                                    <name><![CDATA[Load_fb]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <row>9</row>
+                                    <viewports>
+                                        
+                                   </viewports>
+                                </digital>
+                            </digital_signals>
+                            <virtual_signals>
+                            </virtual_signals>
+                            <trigger>
+                                <device>0</device>
+                                <is_force>False</is_force>
+                                <type>Analog</type>
+                                <source><![CDATA[VL]]></source>
+                                <edge>Rising edge</edge>
+                                <treshold>0.0</treshold>
+                                <offset>50.0</offset>
+                                <useFirstTrigger>False</useFirstTrigger>
+                            </trigger>
+                            <plotting_options in_use="False">
+                                <subplots>
+                                    </subplots>
+                            </plotting_options>
+                        </capture>
+                        <scope name="Default">
+                            <background_color>white</background_color>
+                            <layout>Grid</layout>
+                            <legend>True</legend>
+                            <show_viewports>4</show_viewports>
+                            <decimation>1.0</decimation>
+                            <time_base>0.0001</time_base>
+                            <analog_signals>
+                                <analog>
+                                    <channel>0</channel>
+                                    <name><![CDATA[C]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>0</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>1</channel>
+                                    <name><![CDATA[L]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>1</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>2</channel>
+                                    <name><![CDATA[VL]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>2</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>3</channel>
+                                    <name><![CDATA[Vout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>3</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[Iin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[Iout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Iout_boost]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Vin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Modulation Signal]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>200m</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
+                                    <viewports>
+                                        <num_viewport>2</num_viewport>
+                                   </viewports>
+                               </analog>
+                            </analog_signals>
+                            <digital_signals>
+                                <digital>
+                                    <channel>0</channel>
+                                    <name><![CDATA[Load_fb]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <row>9</row>
+                                    <viewports>
+                                        
+                                   </viewports>
+                                </digital>
+                            </digital_signals>
+                            <trigger>
+                                <device>0</device>
+                                <is_force>False</is_force>
+                                <type>Analog</type>
+                                <source>VL</source>
+                                <edge>Rising edge</edge>
+                                <treshold>0.0</treshold>
+                                <offset>50.0</offset>
+                                <useFirstTrigger>False</useFirstTrigger>
+                            </trigger>
+                        </scope>
+                        </presets>
+                    <capture>
+                        <time_interval>2.5</time_interval>
+                        <sample_rate>2000000.0</sample_rate>
+                        <background_color>white</background_color>
+                        <layout>Grid</layout>
+                        <legend>True</legend>
+                        <trigger>
+                            <type>Analog</type>
+                            <source>VL</source>
+                            <edge>Rising edge</edge>
+                            <treshold>0.0</treshold>
+                            <offset>50.0</offset>
+                            <useFirstTrigger>False</useFirstTrigger>
+                        </trigger>
+                        <analog_signals>
+                            <analog>
+                                    <channel>0</channel>
+                                    <name><![CDATA[C]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>0</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>1</channel>
+                                    <name><![CDATA[L]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>1</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>2</channel>
+                                    <name><![CDATA[VL]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>2</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>3</channel>
+                                    <name><![CDATA[Vout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>3</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[Iin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[Iout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Iout_boost]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Vin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Modulation Signal]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>200m</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
+                                    <viewports>
+                                        <num_viewport>2</num_viewport>
+                                   </viewports>
+                               </analog>
+                        </analog_signals>
+                         <digital_signals>
+                            <digital>
+                                    <channel>0</channel>
+                                    <name><![CDATA[Load_fb]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <row>9</row>
+                                    <viewports>
+                                        
+                                   </viewports>
+                                </digital>
+                         </digital_signals>
+                    </capture>
+                    <scope>
+                        <time_base>0.0001 </time_base>
+                        <background_color>white</background_color>
+                        <layout>Grid</layout>
+                        <legend>True</legend>
+                        <trigger>
+                            <mode>Auto</mode>
+                            <type>Analog</type>
+                            <source>VL</source>
+                            <edge>Rising edge</edge>
+                            <treshold>0.0</treshold>
+                            <offset>50.0</offset>
+                        </trigger>
+                         <analog_signals>
+                            <analog>
+                                    <channel>0</channel>
+                                    <name><![CDATA[C]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>0</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>1</channel>
+                                    <name><![CDATA[L]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>1</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>2</channel>
+                                    <name><![CDATA[VL]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>2</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>3</channel>
+                                    <name><![CDATA[Vout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>3</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[Iin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[Iout]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Iout_boost]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Vin]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Modulation Signal]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>200m</vertical_scale>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
+                                    <viewports>
+                                        <num_viewport>2</num_viewport>
+                                   </viewports>
+                               </analog>
+                        </analog_signals>
+                        <digital_signals>
+                            <digital>
+                                    <channel>0</channel>
+                                    <name><![CDATA[Load_fb]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_offset>0.0</vertical_offset>
+                                    <row>9</row>
+                                    <viewports>
+                                        
+                                   </viewports>
+                                </digital>
+                        </digital_signals>
+                    </scope>
+                    <plotting_options in_use="False">
+                    
+                        <subplots>
+                            </subplots>
+                    </plotting_options>
+                </widget_settings>
+
+            </component_data>
+        </components>
+</ui_settings>
