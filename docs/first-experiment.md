@@ -16,20 +16,24 @@
 
 ![RLC 教学电路](assets/rlc_filter.svg)
 
-## 在图形界面认识模型（可选）
+## 在图形界面完成一次实验
 
-下面流程依据官方 [Quick Start](<../../Typhoon HIL Control Center 2026.3/typhoon/help/t-ug002/concepts/realtime_quick_start_guide.html>) 和所复制的 SCADA 面板编写。操作核对按 [交接流程](handoff.md) 记录。
+先完成一次 GUI 操作，认识模型、面板和信号，再使用脚本复现。界面位置随窗口大小变化，以按钮名称和悬停提示定位。本项目的操作使用 Virtual HIL。
 
-1. 在 Schematic Editor 中打开 `models/rlc_filter.tse`，双击 `Rin`、`R`、`L`、`C` 查看参数与单位。
-2. 点击 **Compile and load model in HIL SCADA**，将模型编译并加载到 HIL SCADA。出现运行目标选择时，选择 **Virtual HIL**。
-3. 进入 HIL SCADA 后，确认窗口右下角显示 **VIRTUAL HIL MODE**。如果中央仍显示 **Create new Panel**、**Open Panel** 和 **Panels files found in Model directory**，说明当前处于面板选择页，接下来需要打开操作面板。
-4. 点击界面中上方的 **Open Panel**，图标是**带绿色向上箭头的文件夹**，打开已有的 `.cus` 操作面板。在弹出的文件选择窗口中，选择 `rlc_filter.cus`。项目移到其他位置后，按新项目目录查找同名文件。
-5. 面板打开后，应能看到 **Input voltage RMS value**、**Input voltage frequency [Hz]** 两个控件，以及 **Capture/Scope** 波形区。看到这些控件，表示操作面板已打开。
-6. 将 **Input voltage RMS value** 设为 `10`，将 **Input voltage frequency [Hz]** 设为 `1000`，分别确认输入，并核对控件显示值。对应输入源为 10 V RMS、1000 Hz 正弦电压。
-7. 点击**顶部主工具栏中绿色、向右的三角形按钮**，启动仿真。该按钮的悬停提示为 **Start the simulation**。在 **Capture/Scope** 中观察 `I`（源电流）与 `Va1`（节点电压）的周期波形；1000 Hz 对应每周期 **1 ms**。记录实际看到的信号与时间尺度。
-8. 观察完成后，点击**启动按钮旁边的方形停止按钮**，停止仿真。该按钮的悬停提示为 **Stop the simulation**。关闭HIL SCADA 窗口，再使用下面的脚本入口。
+1. 在 Schematic Editor 中打开教学模型 `rlc_filter.tse`。练习结构修改前先复制模型与同名 `.cus` 面板到自己的实验目录。沿连线识别 Vs1、Rin、L、R、C、I 和 Va1；双击元件查看参数与单位，Rin 基准值为 5 Ω。
+2. 点击 **Compile and (re)load model in HIL SCADA**。未连接硬件时会出现 **Unable to connect to the hardware device**，在该选择框点击 **Load Model to Virtual HIL (VHIL)**。等待加载完成，确认窗口右下角为 **VIRTUAL HIL MODE**。
+3. 如果中央显示 **Create new Panel**、**Open Panel** 和 **Panels files found in Model directory**，点击 **Open Panel**，选择本次模型同目录的 `rlc_filter.cus`。工具栏的 Open Panel 是带绿色向上箭头的文件夹。
+4. 面板打开后应有 **Input voltage RMS value**、**Input voltage frequency [Hz]** 和 **Capture/Scope**。面板保存的初值可能与教学工况不同，逐项输入电压 `10`、频率 `1000`，每项按 Enter 确认，并核对显示与 Message log 中宏执行完成信息。
+5. 点击 Capture/Scope 左上角 **Signals** 核对映射：第一视口 Va1、第二视口 I；原面板还配置了 L、C 两个通道。关闭属性框。仿真启动前图中可能显示 **No signals on viewport**；此时先核对信号配置与运行状态。
+6. 点击顶部主工具栏绿色、向右三角形 **Start simulation**，悬停提示为 **Start the simulation**。确认日志出现 **Simulation successfully started** 与 Scope 启动信息，并观察 Va1、I 的周期波形。1000 Hz 对应每周期 1 ms；若 Scope 为 200 µs/div、十格横轴，应显示约两个周期。按实际刻度核对，勿把整屏宽度当一周期。
+7. 观察后点击相邻方形 **Stop simulation**，确认日志 **Simulation successfully stopped**。波形保留在屏幕上不表示仿真仍在运行，需同时查看日志、计时和按钮状态。
+8. 关闭本次 HIL SCADA 窗口，释放会话后再使用脚本入口。保留自己的模型、截图和观察记录；源模型参数与运行时输入分别核对。
 
-界面中模型标题与 API 组件路径属于不同信息；本项目 API 顶层组件名为 `Rin`、`R`、`L`、`C`，通过 `inspect` 核对。
+![Rin 参数对话框](assets/gui/01-rin-properties.jpg)
+
+![10 V RMS、1000 Hz 的 Virtual HIL 实际运行界面](assets/gui/02-vhil-running.jpg)
+
+界面中的模型标题与 API 路径各有用途。本项目 API 顶层组件名为 `Rin`、`R`、`L`、`C`，通过 `inspect` 核对。以上截图用于识别操作与波形；定量 RMS、误差和判据按下面的脚本采集与原始 CSV 核对。操作验证的当前结论与实际证据见 [验证状态](validation.md)。
 
 ## 运行基准实验
 

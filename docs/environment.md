@@ -40,6 +40,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\lab.ps1 doctor
 
 这不会修改系统执行策略。
 
+## 从其他工作目录调用
+
+`lab.ps1` 通过自身位置定位项目和脚本，`--config` 与 `--run-dir` 的相对路径也相对于该项目解析。从其他 cwd 执行时，可使用调用运算符和带引号的完整路径：
+
+```powershell
+Set-Location 'D:\Typhoon'
+& 'D:\Typhoon\lab-workflow\lab.ps1' --help
+& 'D:\Typhoon\lab-workflow\lab.ps1' run --config configs/rlc_baseline.json
+```
+
+目录带中文或空格时采用相同写法。搬迁后在副本根目录填写 `environment.local.json`，确认 `TYPHOON_HOME` 没有覆盖该设置；结果应写入副本自己的 `results/`。教学副本的文件范围和验收记录见 [交接流程](handoff.md)。
+
 ## 理解运行模式
 
 Virtual HIL 在电脑上模拟 HIL 设备，以非实时方式推进仿真时间，没有外部 I/O。电脑执行一秒与模型推进一秒可能不同；实验事件和采集窗口按仿真时间定义，墙钟时间用于等待超时。
@@ -52,11 +64,18 @@ Virtual HIL 在电脑上模拟 HIL 设备，以非实时方式推进仿真时间
 
 环境检查后，按 [首次实验](first-experiment.md) 运行 RLC，或按 [Boost 教程](boost-experiments.md) 运行闭环动态实验。已完成的软件验证和待验事项见 [验证状态](validation.md)。
 
-API 名称和行为以所用安装的本地资料为准：
+在线官方入口：
 
-- [Control Center 入门与 Virtual HIL](<../../Typhoon HIL Control Center 2026.3/typhoon/help/t-ug002/concepts/realtime_quick_start_guide.html>)
-- [Schematic API](<../../Typhoon HIL Control Center 2026.3/Documentation/html/schematic_api.html>)
-- [HIL API](<../../Typhoon HIL Control Center 2026.3/Documentation/html/hil_api.html>)
-- [TyphoonTest Library](<../../Typhoon HIL Control Center 2026.3/Documentation/typhoontest_html/index.html>)
+- [Control Center 入门与 Virtual HIL](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/realtime_quick_start_guide.html)
+- [Schematic API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/schematic_api.html)
+- [HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)
+- [TyphoonTest Library](https://www.typhoon-hil.com/documentation/typhoon-hil-typhoontest-library/)
 
-本地链接按工作区安装路径编写；换电脑后也可从 Control Center 帮助入口找到同版本资料。
+API 名称和行为以所用安装的同版本本地资料为准。用 `doctor` 输出的 `typhoon_home` 定位安装根目录；其来源按本页的 `TYPHOON_HOME`、`environment.local.json` 与自动发现顺序确定。下列路径均相对于这个安装根目录，与教学项目放在哪里无关，也可从 Control Center 帮助入口打开。
+
+| 本地资料 | 安装根目录下的路径 |
+|---|---|
+| 入门与 Virtual HIL | `typhoon/help/t-ug002/concepts/realtime_quick_start_guide.html` |
+| Schematic API | `Documentation/html/schematic_api.html` |
+| HIL API | `Documentation/html/hil_api.html` |
+| TyphoonTest Library | `Documentation/typhoontest_html/index.html` |

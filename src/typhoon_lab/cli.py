@@ -35,25 +35,34 @@ def verify_run(run_dir,write=True):
             config=load_config(run_dir/"config.json")
             actual=analyze(run_dir/"waveforms.csv",config)
             stored=json.loads((run_dir/"metrics.json").read_text(encoding="utf-8"))
-            for key in (list(actual) if config["schema_version"]==2 else ["status","signals","capture","checks"]):
+            for key in (["status","signals","capture","checks"] if config["model"]=="rlc_filter" else list(actual)):
                 if actual.get(key)!=stored.get(key): problems.append(f"recomputed metrics differ: {key}")
             if manifest["status"]!=stored["status"]: problems.append("manifest status differs from metrics")
             if manifest.get("model", "rlc_filter")!=config["model"] or manifest.get("backend")!=config["backend"]:
                 problems.append("manifest identity differs from config")
-            if config["schema_version"]==2:
+            from .adapters import get_adapter
+            adapter=get_adapter(config["model"])
+            if getattr(adapter,"has_events",False):
                 events=json.loads((run_dir/"events.json").read_text(encoding="utf-8"))
                 if events!={"schema_version":2,"planned":config["events"],"events":actual["events"]}:
                     problems.append("event record differs from waveform recomputation")
                 if manifest.get("events")!=actual["events"]:
                     problems.append("manifest events differ from waveform recomputation")
-                from .adapters.boost import BoostAdapter
-                schedule=BoostAdapter().describe_schedule(config)
+                schedule=adapter.describe_schedule(config)
                 if manifest.get("event_schedule")!=schedule: problems.append("event schedule differs from config")
                 for rel in ("waveforms.csv","metrics.json","config.json","capture.json","events.json"):
                     if rel not in manifest.get("artifacts",{}): problems.append(f"required artifact is not hashed: {rel}")
         except Exception as exc: problems.append(f"metric recomputation error: {exc}")
     elif manifest.get("kind")=="run":
         problems.append("run has no metrics.json for recomputation")
+    elif manifest.get("kind")=="comparison" and manifest.get("model")=="single_phase_rectifier":
+        try:
+            from .rectifier_comparison import recompute_comparison
+            actual=recompute_comparison(run_dir)
+            stored=json.loads((run_dir/"metrics.json").read_text(encoding="utf-8"))
+            if actual!=stored: problems.append("recomputed comparison differs from metrics")
+            if manifest["status"]!=stored["status"]: problems.append("comparison manifest status differs from metrics")
+        except Exception as exc: problems.append(f"comparison recomputation error: {exc}")
     elif manifest.get("kind")=="smoke" and (run_dir/"readings.json").exists():
         readings=json.loads((run_dir/"readings.json").read_text(encoding="utf-8"))
         passed=all(math.isclose(x["input"],x["measured"],rel_tol=0,abs_tol=1e-6) for x in readings)
@@ -86,14 +95,22 @@ def main(argv=None):
     parser=argparse.ArgumentParser(description="Typhoon Virtual HIL teaching workflow")
     sub=parser.add_subparsers(dest="command",required=True)
     for name in ["doctor","smoke"]: sub.add_parser(name)
-    p=sub.add_parser("inspect");p.add_argument("--model",choices=["rlc_filter","boost_closed_loop"],default="rlc_filter")
+    p=sub.add_parser("inspect");p.add_argument("--model",choices=["rlc_filter","boost_closed_loop","single_phase_rectifier"],default="rlc_filter")
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
         p=sub.add_parser(name);p.add_argument("--run-dir",required=True)
+    p=sub.add_parser("compare-rectifier")
+    for condition in ("baseline","low-input","heavy-load"):
+        p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=="compare-rectifier":
+            from .rectifier_comparison import compare_rectifier
+            path,result=compare_rectifier(resolve_project_file(args.baseline),resolve_project_file(args.low_input),resolve_project_file(args.heavy_load))
+            print(json.dumps({"status":result["status"],"run_dir":str(path)},ensure_ascii=False))
+            return 0 if result["status"]=="passed" else 1
         if args.command=="doctor":
             from .runtime import environment,api_modules
             from .analysis import analyze
@@ -123,6 +140,9 @@ def main(argv=None):
                     raise ValueError(f"report input changed or missing: {rel}")
             if manifest["kind"]=="sweep": outputs=write_sweep_report(path,manifest)
             elif manifest["kind"]=="run": outputs=write_report(path,manifest)
+            elif manifest["kind"]=="comparison" and manifest.get("model")=="single_phase_rectifier":
+                from .rectifier_comparison import write_comparison_report
+                outputs=write_comparison_report(path,manifest)
             else: raise ValueError("report applies to run or sweep results")
             for output in outputs:
                 output=Path(output).resolve()

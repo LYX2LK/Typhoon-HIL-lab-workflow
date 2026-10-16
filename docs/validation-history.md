@@ -2,6 +2,19 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-15：教学补全、新案例与复现
+
+包含资源导航、RLC GUI、新 Agent 上下文、本机中文空格目录、单相桥整流三工况及比较、Boost 延后对照。68 项脚本测试通过，整流、RLC 回归与复现通过；Boost 延后两项峰偏差仍越限，保持 failed，记录复算一致。真人组员本轮暂不安排。
+
+- [本轮完成记录](../results/20261015-workflow-completion/summary.md)
+- [GUI 证据](../results/20261015-gui-validation/gui-validation.json)
+- [Agent 与本机搬迁](../results/20261015-160620-agent-onboarding-ea232d/summary.md)
+- [整流、比较、RLC 回归与复核](../results/20261015-rectifier-acceptance/actual_runs.json)
+- [脚本测试](../results/20261015-rectifier-acceptance/unit_test_summary.json)
+- [图表 QA](../results/20261015-rectifier-acceptance/visual_qa.json)
+- [Boost 对照实际命令](../results/20261015-workflow-completion/late-controls.json)
+- [Boost 同窗口独立分析](../results/20261015-boost-disturbance-analysis/analysis.json)
+
 ## 2026-10-15：统一执行与闭环动态实验
 
 范围包括最小回环、RLC 基准与三工况扫描、Boost 基准、参考阶跃及两项输入电压扰动。脚本测试 54 项通过，全部最终记录复算一致；Boost 两项扰动的最大输出偏差超过 10%，保留 failed。

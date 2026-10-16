@@ -11,9 +11,11 @@
 | 学会模型操作、采集和报告核对 | RLC | [首次实验](docs/first-experiment.md) |
 | 改变 Rin，比较稳态 RMS 与解析值 | RLC | [参数与指标](docs/experiments.md) |
 | 观察闭环参考阶跃和输入电压扰动 | Boost | [动态实验](docs/boost-experiments.md) |
-| 通过自然语言执行或分析实验 | RLC / Boost | [Agent 工作流](docs/agent-workflow.md) |
+| 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
+| 学习如何接收并接入新测试案例 | 单相整流 | [整流实验](docs/rectifier-experiments.md) / [接入方法](docs/model-integration.md) |
+| 查找官方教程、示例和公开测试 | 资源导航 | [学习与案例资源](docs/resources.md) |
 
-首次使用建议先做 RLC，再做 Boost。已熟悉统一入口时，可直接选择相应模型的实验配置。
+首次使用建议先做 RLC，再做 Boost；随后用单相整流学习新案例接入。已熟悉统一入口时，可直接选择相应模型的实验配置。
 
 ## 准备环境并运行
 
@@ -37,6 +39,9 @@ Set-Location 'D:\Typhoon\lab-workflow'
 | 运行参考阶跃 | `.\lab.ps1 run --config configs/boost_reference_step.json` |
 | 运行输入跌落 | `.\lab.ps1 run --config configs/boost_vin_drop.json` |
 | 运行输入升高 | `.\lab.ps1 run --config configs/boost_vin_rise.json` |
+| 检查单相整流模型 | `.\lab.ps1 inspect --model single_phase_rectifier` |
+| 运行单相整流基准 | `.\lab.ps1 run --config configs/rectifier_baseline.json` |
+| 低输入、重载与趋势比较 | 按 [整流教程](docs/rectifier-experiments.md) 执行另两份配置与比较命令 |
 
 实验配置的相对路径由入口相对于项目根目录解析。更改工况时另存配置，运行前确定参数、单位、采集窗口和判据。
 
@@ -69,6 +74,7 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态
 
 - 执行异常：按 [故障排查](docs/troubleshooting.md) 根据阶段定位。
 - 另一位组员接手：按 [交接验收](docs/handoff.md) 独立复现。
+- 查看输入扰动的现象与候选机制：阅读 [Boost 扰动分析](docs/boost-disturbance-analysis.md)。
 - 接入其他模型：按 [模型接入方法](docs/model-integration.md) 建立参数、信号、判据和实际证据。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
 

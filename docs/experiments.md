@@ -4,7 +4,7 @@
 
 ## 模型与信号
 
-模型来自安装包的 [RLC circuit 示例](<../../Typhoon HIL Control Center 2026.3/examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse>)。项目使用 [模型](../models/rlc_filter.tse) 与 [SCADA 面板](../models/rlc_filter.cus) 的副本，来源和 SHA-256 见 [origin.json](../models/origin.json)。
+模型来自安装根目录下的 RLC circuit 示例：`examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse`。安装根目录以 `doctor` 输出的 `typhoon_home` 为准，定位方法见 [环境配置](environment.md#选择实验与资料)。项目使用 [模型](../models/rlc_filter.tse) 与 [SCADA 面板](../models/rlc_filter.cus) 的副本，来源和 SHA-256 见 [origin.json](../models/origin.json)。
 
 ```text
 Vs1 ── Rin ── I ──●── L ───── 地
@@ -95,4 +95,4 @@ sweep 支持 rin_ohm，取值须互不相同，最多 12 个工况。每个工�
 
 单次运行保存原始 CSV、采集元数据、指标、清单、代码快照、图与报告；扫描保存各子工况及 comparison.csv、comparison.png。用 verify 复算，实际验证状态与示例结果见 [验证页面](validation.md)。
 
-接口依据：[Schematic API](<../../Typhoon HIL Control Center 2026.3/Documentation/html/schematic_api.html>)、[HIL API](<../../Typhoon HIL Control Center 2026.3/Documentation/html/hil_api.html>)。其他实验可从 [README](../README.md#选择实验) 选择。
+接口依据：[Schematic API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/schematic_api.html)、[HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)。其他实验可从 [README](../README.md#选择实验) 选择。

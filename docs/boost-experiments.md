@@ -90,6 +90,8 @@ CSV 列为 t_relative_s、t_simulation_s、Vout_V、Iin_A、ReferenceApplied_V�
 
 ## 接口依据
 
-- [安装包 Boost 测试](<../../Typhoon HIL Control Center 2026.3/examples/tests/118_boost_closed_loop/test_boost_closed_loop.py>)：参考变化与输入扰动工况。
-- [Step 说明](<../../Typhoon HIL Control Center 2026.3/typhoon/help/t-ug002/References/step.html>)：按仿真时间切换电平。
-- [HIL API](<../../Typhoon HIL Control Center 2026.3/Documentation/html/hil_api.html>)：源排程、初始化、采集与回读。
+- 安装包 Boost 测试：`examples/tests/118_boost_closed_loop/test_boost_closed_loop.py`，说明参考变化与输入扰动工况。
+- 同版本 Step 说明：`typhoon/help/t-ug002/References/step.html`，说明按仿真时间切换电平。
+- [官方 HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)：源排程、初始化、采集与回读；本地同版本入口为 `Documentation/html/hil_api.html`。
+
+上述本地文件路径均相对于 `doctor` 实际输出的 `typhoon_home` 安装根目录，定位方法见 [环境配置](environment.md#选择实验与资料)。

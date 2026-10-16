@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "model": "single_phase_rectifier",
+  "backend": "virtual_hil",
+  "source": {
+    "rms_v": 184,
+    "frequency_hz": 50,
+    "phase_deg": 0
+  },
+  "circuit": {
+    "load_ohm": 100,
+    "l_h": 0.001,
+    "c_f": 0.001
+  },
+  "capture": {
+    "settle_s": 1.5,
+    "duration_s": 0.2,
+    "sample_rate_hz": 20000,
+    "wall_timeout_s": 120
+  },
+  "acceptance": {
+    "relative_mean_error": 0.02,
+    "relative_rms_error": 0.02,
+    "relative_ripple_error": 0.05,
+    "relative_ohm_error": 0.005,
+    "relative_capacitor_balance": 0.01,
+    "relative_cycle_change": 0.005,
+    "min_samples": 2000
+  }
+}

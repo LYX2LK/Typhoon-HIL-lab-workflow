@@ -2,25 +2,30 @@
 
 本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-15**，模式为 THCC 2026.3 Virtual HIL。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
 
-脚本与记录检查通过。RLC 基准、扫描及 Boost 基准、参考阶跃满足预设判据；两项 Boost 输入扰动的最大输出偏差超出 10%，实验为 failed。组员独立复现仍待执行。
+脚本与记录检查通过。RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录；Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人组员复现按用户要求本轮暂不安排。
 
 ## 已验证能力
 
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | [完整测试](../results/20261015-112422-v2-validation-dd212b/unit-tests.json) 54 项通过，失败、错误、跳过均为 0；[日志](../results/20261015-112422-v2-validation-dd212b/unit-tests.log) |
-| 运行与记录 | 最小回环、两个模型的全部指定工况均实际执行；七项最终记录复算一致，配置、模型、CSV 与指标保持不变，见 [核验记录](../results/20261015-112422-v2-validation-dd212b/final-checks.json) |
+| 脚本逻辑 | [完整测试](../results/20261015-rectifier-acceptance/unit_test_summary.json) 68 项通过，失败、错误、跳过均为 0；[日志](../results/20261015-rectifier-acceptance/unit_tests.log) |
+| 运行与记录 | 最小回环、RLC、Boost 与单相桥整流均有实际运行；新案例、RLC 回归、Agent 与搬迁及延后扰动的记录一致，见 [本轮完成记录](../results/20261015-workflow-completion/summary.md) |
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
 | 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
 | 既有记录兼容 | 在已保存 RLC 记录副本上完成 verify→report→verify，原目录哈希未变，见 [兼容检查](../results/20261015-112422-v2-validation-dd212b/historical-compatibility.json) |
+| 新模型和趋势 | 单相桥整流基准、低输入、重载与离线比较均通过；[实际目录与复核](../results/20261015-rectifier-acceptance/actual_runs.json)，[图表 QA](../results/20261015-rectifier-acceptance/visual_qa.json) |
+| GUI 操作 | RLC 教学副本编译加载、Virtual HIL、面板参数、信号、周期波形与启停已实测；[证据](../results/20261015-gui-validation/gui-validation.json) |
+| Agent 与本机搬迁 | 未继承父对话的新子代理按明确任务和材料完成 RLC 扫描、Boost 阶跃与 CSV 独立复算；中文空格目录、其他 cwd 的环境与实验检查通过；[记录](../results/20261015-160620-agent-onboarding-ea232d/summary.md) |
+| 当前代码兼容 | 四条旧记录只读复核一致，性能状态保持原值；[兼容记录](../results/20261015-rectifier-acceptance/historical_compatibility.json) |
+| Boost 扰动分析 | 原始数据复算与两项延后对照已完成；[分析说明](boost-disturbance-analysis.md)、[实际命令](../results/20261015-workflow-completion/late-controls.json) |
 
-脚本测试、实际 Virtual HIL 运行和人员独立复现是不同的验证项目。HIL101、Pro 1 表示编译目标与配置；本页的运行证据对应 Virtual HIL。
+脚本测试、实际 Virtual HIL、GUI 观察、新 Agent、本机搬迁和真人/跨机复现分别验收。HIL101、Pro 1 表示编译目标与配置；本页的运行证据对应 Virtual HIL。
 
 ## 实际运行与记录复核
 
 | 实验 | 实验状态 | 记录一致性 | 实际产物 |
-|---|---|---|
+|---|---|---|---|
 | 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
 | RLC 基准 | passed | passed | [记录](../results/20261015-113040-rlc-ea344a/report.html) |
 | RLC 三工况扫描 | passed | passed | [记录](../results/20261015-113104-sweep-1a2086/report.html) |
@@ -28,6 +33,12 @@
 | Boost 参考阶跃 | passed | passed | [记录](../results/20261015-113237-boost_closed_loop-9e116c/report.html) |
 | Boost 输入跌落 | failed | passed | [记录](../results/20261015-113307-boost_closed_loop-caf1cc/report.html) |
 | Boost 输入升高 | failed | passed | [记录](../results/20261015-113336-boost_closed_loop-ec9253/report.html) |
+| 单相整流基准 | passed | passed | [报告](../results/20261015-161835-single_phase_rectifier-61b0e9/report.html) |
+| 单相整流低输入 | passed | passed | [报告](../results/20261015-161912-single_phase_rectifier-59739a/report.html) |
+| 单相整流重载 | passed | passed | [报告](../results/20261015-161939-single_phase_rectifier-2b7f4a/report.html) |
+| 单相整流三工况趋势 | passed | passed | [报告](../results/20261015-162101-rectifier-comparison-6297c5/report.html) |
+| Boost 延后输入跌落 | failed | passed | [报告](../results/20261015-162319-boost_closed_loop-99a226/report.html) |
+| Boost 延后输入升高 | failed | passed | [报告](../results/20261015-162354-boost_closed_loop-d2a404/report.html) |
 
 record_status 表示文件与指标复算是否一致，experiment_status 表示实验执行和性能判据的结果。记录一致而性能未达标时，总 status 为 failed，verify 退出码为 1。
 
@@ -63,12 +74,37 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 
 三次动态事件的首变采样时刻均为 0.5000005 s，相邻样本检测区间约为 (0.4999005,0.5000005] s，默认分辨率为 100 µs。完整图保留启动瞬态，动态细节图标出局部时间范围。
 
-## 待验事项
+## 延后扰动对照
+
+按运行前固定方案，将输入事件从 0.5 s 延后到 1.0 s，总采集由 1.5 s 改为 2.0 s，其余模型、PI、事件幅度和判据保持不变。比较统一采用事件后 [0,0.9) s、9000 点，完整报告另保留各自全采集窗口。
+
+| 工况 | 原峰偏差 | 延后峰偏差 | 原恢复 / s | 延后恢复 / s | 正式状态 |
+|---|---:|---:|---:|---:|---|
+| 输入 35→28 V | 18.200928% | 17.823334% | 0.3307 | 0.3274 | failed |
+| 输入 35→38.5 V | 16.669052% | 17.251053% | 0.2119 | 0.2205 | failed |
+
+施扰前残余趋势减小，两项仍超过 10% 峰偏差上限。增加等待不足以使所测两工况通过；当前记录不能确定 PI、饱和或带宽根因。完整数值、来源与候选机制见 [扰动分析](boost-disturbance-analysis.md)。
+
+## 单相桥整流实测
+
+三次独立稳态实验均等待 1.5 s，以 20 kHz 采集 0.2 s，覆盖十个输入周期。独立理想桥 LC-R 数值参考与步长收敛、采样窗口、原模型和副本修改范围见 [整流教程](rectifier-experiments.md)。
+
+| 工况 | 输出均值 / V | 纹波峰峰 / V | 负载均值 / A | 状态 |
+|---|---:|---:|---:|---|
+| baseline | 316.447953 | 24.066986 | 3.164480 | passed |
+| low_input | 253.158352 | 19.262268 | 2.531584 | passed |
+| heavy_load | 314.864541 | 45.744904 | 6.297291 | passed |
+
+低输入电压、电流和纹波同比缩放，重载输出均值降低、纹波和电流增加，九项固定趋势检查通过。原官方面板留存来源，脚本采集已验；该面板的启动宏存在不匹配源名的静态发现，GUI 路径单独核对。
+
+## 验证范围与后续事项
 
 | 项目 | 状态与完成方式 |
 |---|---|
-| 组员独立复现 | 待执行；按 [交接流程](handoff.md) 记录实际执行者、机器、任务与结果 |
-| GUI 手动操作路径 | 待组员实际点选核对；步骤见 [首次实验](first-experiment.md) |
+| 真人组员独立复现 | 用户要求本轮先不安排；后续按 [交接流程](handoff.md) 由本人记录操作与解释 |
+| GUI 手动操作路径 | RLC 软件界面已实测；[首次实验](first-experiment.md) 已同步实际步骤和截图。人员操作能力另验 |
+| 跨电脑 | 本轮完成同机中文空格路径搬迁；另一台机器的软件、许可和设备条件另行实测 |
+| 单相整流原面板 | API 教学路径通过；原面板启动宏需在独立教学副本核对后再验 GUI |
 | 电机模型、实体 HIL 与外部控制器 | 尚未接入；按具体模型、设备和任务建立验证记录 |
 
-完整命令、数据核对与审查材料见 [当日验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。
+本轮任务、实际命令与证据见 [完成记录](../results/20261015-workflow-completion/summary.md)；此前的详细数值核对见 [上午验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。

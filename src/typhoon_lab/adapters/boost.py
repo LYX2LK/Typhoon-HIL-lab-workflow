@@ -7,6 +7,7 @@ from pathlib import Path
 CONTROL_PERIOD_S = 100e-6
 
 class BoostAdapter:
+    has_events = True
     model_id = "boost_closed_loop"
     schema_version = 2
     signals = ("Vout", "Iin", "ReferenceApplied", "VinMeasured")

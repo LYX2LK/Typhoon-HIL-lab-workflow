@@ -20,5 +20,20 @@
       "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\boost closed loop\\boost closed loop.cus",
       "sha256": "2855cfa9b9c88ce0f9a6ca75f6625fb020143ff589fa07dda3830302ba345197"
     }
+  },
+  "single_phase_rectifier": {
+    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.tse",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example",
+    "sha256": "e71dafc6f2ee6aaa918702b3ba29233af52aa742e4b67cdeb532b01ecfd8141f",
+    "panel": {
+      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.cus",
+      "sha256": "d7e2301425aa582ef8bdb987313bd187781c5f476c201470f721bf73d335329f"
+    },
+    "schematic_diagram": {
+      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.svg",
+      "sha256": "37a2b2aa57073c61f18af5d6acf4da0ee0b833fc9ee81e7a1ba962dd9a0f5422",
+      "project_path": "docs/assets/single_phase_rectifier.svg"
+    }
   }
 }

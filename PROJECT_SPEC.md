@@ -8,24 +8,27 @@
 |---|---|---|
 | rlc_filter | 正弦稳态基准、Rin 参数扫描 | schema_version=1 |
 | boost_closed_loop | 闭环基准、参考阶跃、输入电压跌落与升高 | schema_version=2 |
+| single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
 
-schema_version 标识配置结构。运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify。
+schema_version 标识配置结构。运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify、compare-rectifier。model 决定案例，schema_version 标识该案例配置的结构；事件记录由适配器 has_events 能力决定。
 
-配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md) 与 [Boost 说明](docs/boost-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
+配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md)、[Boost 说明](docs/boost-experiments.md) 与 [单相桥整流说明](docs/rectifier-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
 
 ## 执行器与适配器
 
 共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告。
 
-结构参数在模型副本中修改并回读，保存后编译。加载成功后发现源和信号，设置并回读运行参数。采集时机由实验决定：RLC 在等待稳态后采集，Boost 在启动前准备采集以覆盖启动和事件。
+结构参数在模型副本中修改并回读，保存后编译。加载成功后发现源和信号，设置并回读运行参数。采集时机由实验决定：RLC 与单相桥整流在等待稳态后采集，Boost 在启动前准备采集以覆盖启动和事件。
 
 Boost 的运行副本包含 LabReferenceStep、LabReferenceSum、ReferenceApplied 和 VinMeasured。Step 的内部触发提前一个 100 µs 控制周期，以补偿求和环节传播。输入电压用 executeAt 排程。实际事件由参考或输入电压波形确认。
+
+单相桥整流副本设置 La1/Cdc1/Rload1，并关闭 Va2 的原始 2 Hz 测量低通。采集 Va2/Iload1/Icdc1；独立理想桥 LC-R 方程提供数值参考，逐周期变化确认采集稳定。compare-rectifier 为纯离线命令，先复核三条源运行，再检查条件匹配、线性缩放和重载趋势；inputs.json 保存相对源目录与输入哈希。比较目录支持 report/verify，源报告重建后需重建比较记录以更新源清单哈希。
 
 运行开始前检查 API 会话状态；已有运行时保留现场。执行器只清理自身启动的仿真和采集。
 
 ## 记录与状态
 
-每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 保存事件记录，扫描保存子工况与比较汇总。许可不进入产物。
+每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 保存事件记录，扫描保存子工况与比较汇总；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
 
 原始 CSV 保持不变，分析拒绝缺失或无效数据。图表、指标及报告指向同一次运行，记录时间包含时区偏移；缺失 UTC 触发时戳保留 null。
 
@@ -56,12 +59,14 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | README | 项目用途、任务选择和统一入口 |
 | environment | 安装路径、运行模式和环境检查 |
 | first-experiment | 以 RLC 学会完整操作流程 |
-| experiments / boost-experiments | 各模型的参数、信号、实验和指标 |
+| experiments / boost-experiments / rectifier-experiments | 各模型的参数、信号、实验和指标 |
 | agent-workflow | 自然语言任务、交付证据与结果核对 |
 | troubleshooting | 按失败阶段定位与处理 |
 | handoff | 独立复现步骤和交接记录模板 |
 | validation | 当前能力、实测结论与待验事项 |
 | validation-history | 按日期检索验证证据 |
+| resources | 官方学习入口、案例选择、版本/模式和实测状态 |
+| boost-disturbance-analysis | 原始数据复算、受控对照、现象与候选机制边界 |
 | model-integration | 模型接入接口、步骤与维护验证 |
 
 日期、测试次数和实测数值集中到验证页面。新增能力应融入其所属章节，并同步受影响的导航与示例。
