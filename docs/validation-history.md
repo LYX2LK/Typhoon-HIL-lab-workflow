@@ -2,6 +2,22 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-17：文档职责与重复内容整理
+
+精简技能入口，删除重复的模型接入参考；接入接口由模型接入文档维护，任务记录与历史处理集中到实现约定。Agent 教程保留组员提问与结果核对，交接文档保留复制清单及独立复现步骤。原始内容快照和静态检查见 [整理记录](../results/documentation-review/20261017-document-boundaries/summary.md)。本次完成文档检查；实际软件运行证据仍对应各日期保存的模型、代码与技能快照。
+
+- [四项技能约束调整与离线验收](../results/skill-validation/20261017-task-flexibility-f5764d/summary.md)：扩展能力、数据核对顺序、模型推导及任务深度五项场景通过；本次为只读离线检查。
+
+## 2026-10-16：项目共享 skill 专项验收
+
+创建 typhoon-lab-workflow，衔接 Agent 入口及教学搬迁清单。结构、链接和中文空格路径静态检查通过；新 Agent 实际完成 smoke、RLC 基准及最终复核。Boost 历史副本仍为记录一致、性能 failed；已有模型映射与两项任务准备通过检查。另用未读取记忆/历史提示的上下文复算原始数据并复核方案，修订和复查事件检测区间表述。未新增模型或重新开展 GUI、跨电脑、真人/实体 HIL 验证。
+
+- [专项摘要与全部证据](../results/skill-validation/20261016-typhoon-skill-0c9982/summary.md)
+- [最终静态与链接检查](../results/skill-validation/20261016-typhoon-skill-0c9982/static-validation.json)
+- [新 Agent RLC 实跑](../results/skill-validation/20261016-typhoon-skill-0c9982/rlc-live/outcome.md)
+- [严格材料隔离复核](../results/skill-validation/20261016-typhoon-skill-0c9982/isolated-review/outcome.md)
+- [源文件与历史记录保护](../results/skill-validation/20261016-typhoon-skill-0c9982/preservation.json)
+
 ## 2026-10-15：教学补全、新案例与复现
 
 包含资源导航、RLC GUI、新 Agent 上下文、本机中文空格目录、单相桥整流三工况及比较、Boost 延后对照。68 项脚本测试通过，整流、RLC 回归与复现通过；Boost 延后两项峰偏差仍越限，保持 failed，记录复算一致。真人组员本轮暂不安排。

@@ -85,8 +85,4 @@ verify 核对文件哈希、代码快照和指标复算，结果写入 verificat
 
 ## 用 Agent 复现
 
-在项目聊天中发送：
-
-> 读取项目 README、AGENTS.md 和 RLC 实验说明。按 rlc_sweep.json 扫描 Rin，保持其余条件一致，比较 I 与 Va1 的稳态 RMS。给出实际目录、每项判据与 verify 结果；异常时保留日志和失败状态。
-
-对照自己的操作，核对 Agent 使用的配置、工况与证据。更多任务写法见 [Agent 工作流](agent-workflow.md)，独立操作的验收按 [交接流程](handoff.md) 记录。
+参照 [Agent 工作流](agent-workflow.md) 提出相同条件的任务，对照自己的操作核对配置、工况与结果。独立复现的验收按 [交接流程](handoff.md) 记录。

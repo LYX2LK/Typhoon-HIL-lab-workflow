@@ -4,27 +4,25 @@
 
 ## 执行能力
 
-| 模型 | 实验 | 配置标识 |
+| 模型 | 实验 | 配置结构 |
 |---|---|---|
 | rlc_filter | 正弦稳态基准、Rin 参数扫描 | schema_version=1 |
 | boost_closed_loop | 闭环基准、参考阶跃、输入电压跌落与升高 | schema_version=2 |
 | single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
 
-schema_version 标识配置结构。运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify、compare-rectifier。model 决定案例，schema_version 标识该案例配置的结构；事件记录由适配器 has_events 能力决定。
+运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify、compare-rectifier。`model` 决定案例，`schema_version` 标识配置结构；事件记录由适配器 `has_events` 能力决定。
 
 配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md)、[Boost 说明](docs/boost-experiments.md) 与 [单相桥整流说明](docs/rectifier-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
 
 ## 执行器与适配器
 
-共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告。
+共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告；接口与模型时序见 [接入方法](docs/model-integration.md#实现适配器)。
 
 结构参数在模型副本中修改并回读，保存后编译。加载成功后发现源和信号，设置并回读运行参数。采集时机由实验决定：RLC 与单相桥整流在等待稳态后采集，Boost 在启动前准备采集以覆盖启动和事件。
 
-Boost 的运行副本包含 LabReferenceStep、LabReferenceSum、ReferenceApplied 和 VinMeasured。Step 的内部触发提前一个 100 µs 控制周期，以补偿求和环节传播。输入电压用 executeAt 排程。实际事件由参考或输入电压波形确认。
+等待仿真时间使用 `get_sim_time()`，墙钟等待仅用于轮询降频与独立超时。运行开始前检查 API 会话状态；已有运行时保留现场，执行器只清理自身启动的仿真和采集。
 
-单相桥整流副本设置 La1/Cdc1/Rload1，并关闭 Va2 的原始 2 Hz 测量低通。采集 Va2/Iload1/Icdc1；独立理想桥 LC-R 方程提供数值参考，逐周期变化确认采集稳定。compare-rectifier 为纯离线命令，先复核三条源运行，再检查条件匹配、线性缩放和重载趋势；inputs.json 保存相对源目录与输入哈希。比较目录支持 report/verify，源报告重建后需重建比较记录以更新源清单哈希。
-
-运行开始前检查 API 会话状态；已有运行时保留现场。执行器只清理自身启动的仿真和采集。
+单相整流三工况比较的来源依赖、哈希及重建顺序见 [比较记录](docs/rectifier-experiments.md#复核单次与三工况比较)。
 
 ## 记录与状态
 
@@ -38,7 +36,29 @@ Boost 的运行副本包含 LabReferenceStep、LabReferenceSum、ReferenceApplie
 | record_status | 文件、代码快照及指标复算的一致性 |
 | verify 总 status | 记录一致且实验通过时为 passed |
 
-实验可取 passed、failed、error、skipped。性能 failed 的记录可以复算一致；总状态和退出码仍反映未通过。报告重建记录实际生成代码和产物哈希。已有记录的兼容检查在副本中完成。
+实验可取 passed、failed、error、skipped。性能 failed 的记录可以复算一致；总状态和退出码仍反映未通过。报告重建记录实际生成代码和产物哈希。
+
+### Agent 任务记录
+
+执行新实验、修改实验实现或交付需复现的分析结果时，在 `results/agent-tasks/<唯一任务标识>/task.md` 留存记录。标识使用本地日期时间、任务短名及防重后缀；记录中的时间注明 +08:00，文本使用 UTF-8。
+
+简单释疑、只读检查及探索性分析可在答复中注明所用资料、关键依据和实际操作；产生需留存或复核的结果时再建立任务记录。按本次任务填写下表中的适用内容。
+
+| 内容 | 要求 |
+|---|---|
+| 请求 | 用户原始请求、澄清及任务目的 |
+| 条件 | 实际模型、配置、参数与单位、固定条件、事件、采集窗口和预设判据 |
+| 命令 | 实际命令及 cwd、带时区的起止时间、返回码和关键输出 |
+| 运行关联 | 逐条对应命令返回的实际 run_dir、报告、CSV、配置、指标、事件及最终复核文件 |
+| 结论 | record_status、experiment_status、未通过项、关键缺口和待验范围 |
+
+任务记录位于实验运行目录之外。已计划但未执行的步骤如实注明。内部证据路径相对于项目根目录保存，交付时给出可打开的实际路径。新实验结果交付时完成报告与最终复核。
+
+### 历史记录处理
+
+分析历史记录先读取已有文件。`verify` 会写入 `verification.json`，`report` 会更新报告、清单与代码快照；需要执行这些操作时，默认将完整记录及相对依赖复制到任务目录，在副本上处理并记录源目录与副本的关系。用户明确要求原地重建时按其指示。
+
+重建报告采用 `verify → report → verify`，最后一次复核对应交付产物；性能未达标时保留原判据和失败状态。
 
 ## 验证要求
 
@@ -56,11 +76,12 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 
 | 页面 | 维护内容 |
 |---|---|
+| AGENTS | 项目长期约束与维护要求 |
 | README | 项目用途、任务选择和统一入口 |
 | environment | 安装路径、运行模式和环境检查 |
 | first-experiment | 以 RLC 学会完整操作流程 |
 | experiments / boost-experiments / rectifier-experiments | 各模型的参数、信号、实验和指标 |
-| agent-workflow | 自然语言任务、交付证据与结果核对 |
+| agent-workflow | 组员的任务提问示例与结果核对 |
 | troubleshooting | 按失败阶段定位与处理 |
 | handoff | 独立复现步骤和交接记录模板 |
 | validation | 当前能力、实测结论与待验事项 |

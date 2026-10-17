@@ -1,6 +1,6 @@
 # 验证状态与实测结论
 
-本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-15**，模式为 THCC 2026.3 Virtual HIL。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-15**，模式为 THCC 2026.3 Virtual HIL。按日期查找其他记录，见 [验证记录索引](validation-history.md)。项目共享 skill 的实跑验收对应 **2026-10-16 的技能快照**，范围及证据见下表；后续文档修订的检查见验证索引。
 
 脚本与记录检查通过。RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录；Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人组员复现按用户要求本轮暂不安排。
 
@@ -17,6 +17,7 @@
 | 新模型和趋势 | 单相桥整流基准、低输入、重载与离线比较均通过；[实际目录与复核](../results/20261015-rectifier-acceptance/actual_runs.json)，[图表 QA](../results/20261015-rectifier-acceptance/visual_qa.json) |
 | GUI 操作 | RLC 教学副本编译加载、Virtual HIL、面板参数、信号、周期波形与启停已实测；[证据](../results/20261015-gui-validation/gui-validation.json) |
 | Agent 与本机搬迁 | 未继承父对话的新子代理按明确任务和材料完成 RLC 扫描、Boost 阶跃与 CSV 独立复算；中文空格目录、其他 cwd 的环境与实验检查通过；[记录](../results/20261015-160620-agent-onboarding-ea232d/summary.md) |
+| 项目共享 skill | 2026-10-16 技能快照的结构、RLC 实跑、历史失败解释、已有模型映射与任务准备通过验收；材料隔离复核通过。新模型场景仅检查与方案，见 [专项记录](../results/skill-validation/20261016-typhoon-skill-0c9982/summary.md) |
 | 当前代码兼容 | 四条旧记录只读复核一致，性能状态保持原值；[兼容记录](../results/20261015-rectifier-acceptance/historical_compatibility.json) |
 | Boost 扰动分析 | 原始数据复算与两项延后对照已完成；[分析说明](boost-disturbance-analysis.md)、[实际命令](../results/20261015-workflow-completion/late-controls.json) |
 
@@ -107,4 +108,4 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 | 单相整流原面板 | API 教学路径通过；原面板启动宏需在独立教学副本核对后再验 GUI |
 | 电机模型、实体 HIL 与外部控制器 | 尚未接入；按具体模型、设备和任务建立验证记录 |
 
-本轮任务、实际命令与证据见 [完成记录](../results/20261015-workflow-completion/summary.md)；此前的详细数值核对见 [上午验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。
+2026-10-15 教学补全任务、实际命令与证据见 [完成记录](../results/20261015-workflow-completion/summary.md)；此前的详细数值核对见 [上午验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。

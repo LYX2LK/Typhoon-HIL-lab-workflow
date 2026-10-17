@@ -1,0 +1,3 @@
+interface:
+  display_name: "Typhoon 实验与模型接入"
+  short_description: "执行并复核 Virtual HIL 实验，接入已有模型并交付可追溯证据"
