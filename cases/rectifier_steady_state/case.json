@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"rectifier_steady_state","model_id":"single_phase_rectifier","title":"单相桥整流基准、低输入与重载","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/rectifier_baseline.json","configs/rectifier_low_input.json","configs/rectifier_heavy_load.json"],"acceptance_ref":"acceptance.md"}

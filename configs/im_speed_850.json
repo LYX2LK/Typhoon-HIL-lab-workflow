@@ -1,0 +1,9 @@
+{
+  "schema_version": 2,
+  "model": "induction_motor_closed_loop",
+  "backend": "virtual_hil",
+  "parameters": {"grid_phase_rms_v": 230, "grid_frequency_hz": 50, "grid_phase_deg": 0, "reference_speed_rpm": 850, "load_pu": 0.5},
+  "events": [],
+  "capture": {"start_s": 0, "duration_s": 4, "sample_rate_hz": 20000, "wall_timeout_s": 300},
+  "acceptance": {"window_start_s": 2, "window_end_s": 4, "max_relative_speed_error": 0.01, "min_sample_rate_hz": 10000, "min_samples": 40000}
+}

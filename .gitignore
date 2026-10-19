@@ -2,3 +2,6 @@ environment.local.json
 results/
 __pycache__/
 *.pyc
+# New official motor assets are local dependencies; redistribution is unconfirmed.
+/models/induction_motor_closed_loop.tse
+/models/induction_motor_closed_loop.cus

@@ -1,13 +1,20 @@
-"""Explicit, versioned model adapters; no automatic arbitrary-model execution."""
+"""Explicit code-owned adapters. Case metadata never imports Python code."""
+from importlib import import_module
+
+ADAPTERS = {
+    "rlc_filter": (".rlc", "RLCAdapter"),
+    "boost_closed_loop": (".boost", "BoostAdapter"),
+    "single_phase_rectifier": (".rectifier", "RectifierAdapter"),
+    "induction_motor_closed_loop": (".induction", "InductionMotorAdapter"),
+}
+
+
+def supported_models():
+    return tuple(ADAPTERS)
+
 
 def get_adapter(model_id):
-    if model_id == "rlc_filter":
-        from .rlc import RLCAdapter
-        return RLCAdapter()
-    if model_id == "boost_closed_loop":
-        from .boost import BoostAdapter
-        return BoostAdapter()
-    if model_id == "single_phase_rectifier":
-        from .rectifier import RectifierAdapter
-        return RectifierAdapter()
-    raise ValueError(f"unsupported model: {model_id!r}")
+    if model_id not in ADAPTERS:
+        raise ValueError(f"unsupported model: {model_id!r}")
+    module, name = ADAPTERS[model_id]
+    return getattr(import_module(module, __name__), name)()

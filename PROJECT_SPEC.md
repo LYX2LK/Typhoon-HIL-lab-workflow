@@ -9,6 +9,7 @@
 | rlc_filter | 正弦稳态基准、Rin 参数扫描 | schema_version=1 |
 | boost_closed_loop | 闭环基准、参考阶跃、输入电压跌落与升高 | schema_version=2 |
 | single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
+| induction_motor_closed_loop | 独立启动的转速跟踪、实际参考与负载指令观测 | schema_version=2，空 events |
 
 运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify、compare-rectifier。`model` 决定案例，`schema_version` 标识配置结构；事件记录由适配器 `has_events` 能力决定。
 
@@ -16,9 +17,11 @@
 
 ## 执行器与适配器
 
+案例目录、字段与路径边界、显式注册及 JSON 协议见 [案例与 CLI 接口](docs/case-interface.md)。案例标识与模型标识分离；案例文件不选择 Python 类。`list-cases`、`validate-case` 不调用 API 或写结果。`--json` 仅改变输出通道与响应信封，保持相同实验逻辑和退出码；`record_status` 只在实际复核后填写。
+
 共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告；接口与模型时序见 [接入方法](docs/model-integration.md#实现适配器)。
 
-结构参数在模型副本中修改并回读，保存后编译。加载成功后发现源和信号，设置并回读运行参数。采集时机由实验决定：RLC 与单相桥整流在等待稳态后采集，Boost 在启动前准备采集以覆盖启动和事件。
+结构参数在模型副本中修改并回读，保存后编译。加载成功后发现源和信号，设置并回读运行参数。采集时机由实验决定：RLC 与单相桥整流在等待稳态后采集，Boost 与感应电机在启动前准备采集，保留完整启动波形。
 
 等待仿真时间使用 `get_sim_time()`，墙钟等待仅用于轮询降频与独立超时。运行开始前检查 API 会话状态；已有运行时保留现场，执行器只清理自身启动的仿真和采集。
 
@@ -89,5 +92,6 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | resources | 官方学习入口、案例选择、版本/模式和实测状态 |
 | boost-disturbance-analysis | 原始数据复算、受控对照、现象与候选机制边界 |
 | model-integration | 模型接入接口、步骤与维护验证 |
+| case-interface / cases | 案例字段、路径边界与 CLI 协议；各案例的接口、配置引用与判据 |
 
 日期、测试次数和实测数值集中到验证页面。新增能力应融入其所属章节，并同步受影响的导航与示例。

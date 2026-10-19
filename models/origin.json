@@ -35,5 +35,18 @@
       "sha256": "37a2b2aa57073c61f18af5d6acf4da0ee0b833fc9ee81e7a1ba962dd9a0f5422",
       "project_path": "docs/assets/single_phase_rectifier.svg"
     }
+  },
+  "induction_motor_closed_loop": {
+    "installation_relative_path": "examples/models/electrical drives/indm closed loop control/indm closed loop control.tse",
+    "sha256": "0b9e394c85db4b70af7427f9dd3a7845865bbdec66b6da1f4c56e7c87c969af0",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example_local_dependency",
+    "redistribution": "not confirmed; new model and panel are excluded from Git",
+    "official_test_relative_path": "examples/tests/101_indm_closed_loop_control/test_indm_closed_loop_control.py",
+    "official_test_sha256": "fe276f5db9681ee07208d12158c7b895fe410eaf11b5ecb9de345b9c4d1e796a",
+    "panel": {
+      "installation_relative_path": "examples/models/electrical drives/indm closed loop control/indm closed loop control.cus",
+      "sha256": "b1d0e4613bb6c60ebd9ca5a9282c655de63dbbba108a20368d1d19c76e383ca3"
+    }
   }
 }

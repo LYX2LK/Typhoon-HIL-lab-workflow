@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"boost_input_disturbance","model_id":"boost_closed_loop","title":"Boost 输入扰动与延后施扰对照","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/boost_vin_drop.json","configs/boost_vin_rise.json","configs/boost_vin_drop_late.json","configs/boost_vin_rise_late.json"],"acceptance_ref":"acceptance.md"}

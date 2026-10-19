@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"rlc_steady_state","model_id":"rlc_filter","title":"RLC 稳态基准与输入电阻扫描","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/rlc_baseline.json","configs/rlc_sweep.json"],"acceptance_ref":"acceptance.md"}

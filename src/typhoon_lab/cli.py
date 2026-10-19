@@ -1,5 +1,6 @@
 """Bounded command interface for people and coding agents."""
 from copy import deepcopy
+from contextvars import ContextVar
 from pathlib import Path
 import argparse
 import json
@@ -10,6 +11,17 @@ import shutil
 import uuid
 from .config import load_config
 from .utils import PROJECT,RESULTS,new_run,runtime_lock,write_json,sha256,now,note,finalize
+
+_RESULT = ContextVar('command_result', default=None)
+_ERROR = ContextVar('command_error', default=None)
+
+
+def _publish(value, indent=None):
+    sink = _RESULT.get()
+    if sink is None:
+        print(json.dumps(value, ensure_ascii=False, indent=indent))
+    else:
+        sink.append(value)
 
 def resolve_project_file(value):
     p=Path(value)
@@ -91,11 +103,14 @@ def verify_run(run_dir,write=True):
     if write: write_json(run_dir/"verification.json",result)
     return result
 
-def main(argv=None):
+def _run(argv=None):
     parser=argparse.ArgumentParser(description="Typhoon Virtual HIL teaching workflow")
     sub=parser.add_subparsers(dest="command",required=True)
     for name in ["doctor","smoke"]: sub.add_parser(name)
-    p=sub.add_parser("inspect");p.add_argument("--model",choices=["rlc_filter","boost_closed_loop","single_phase_rectifier"],default="rlc_filter")
+    from .adapters import supported_models
+    p=sub.add_parser("inspect");p.add_argument("--model",choices=supported_models(),default="rlc_filter")
+    sub.add_parser("list-cases")
+    p=sub.add_parser("validate-case");p.add_argument("--case",required=True)
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
@@ -106,10 +121,15 @@ def main(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command in {"list-cases", "validate-case"}:
+            from .cases import list_cases, validate_case
+            result = list_cases() if args.command == "list-cases" else validate_case(args.case)
+            _publish(result, indent=2)
+            return 0 if result["status"] == "passed" else 1
         if args.command=="compare-rectifier":
             from .rectifier_comparison import compare_rectifier
             path,result=compare_rectifier(resolve_project_file(args.baseline),resolve_project_file(args.low_input),resolve_project_file(args.heavy_load))
-            print(json.dumps({"status":result["status"],"run_dir":str(path)},ensure_ascii=False))
+            _publish({"status":result["status"],"run_dir":str(path)})
             return 0 if result["status"]=="passed" else 1
         if args.command=="doctor":
             from .runtime import environment,api_modules
@@ -119,14 +139,14 @@ def main(argv=None):
             info.update({"status":"passed","scope":"Python/API imports and installed versions",
                          "workflow_modules_imported":True,"simulation_verified":False,"next_command":".\\lab.ps1 smoke"})
             write_json(RESULTS/"environment.json",info)
-            print(json.dumps(info,ensure_ascii=False,indent=2));return 0
+            _publish(info,indent=2);return 0
         if args.command=="inspect":
             from .runtime import inspect_model
             with runtime_lock(): info=inspect_model(args.model)
-            print(json.dumps(info,ensure_ascii=False,indent=2));return 0
+            _publish(info,indent=2);return 0
         if args.command=="verify":
             result=verify_run(resolve_project_file(args.run_dir))
-            print(json.dumps(result,ensure_ascii=False,indent=2))
+            _publish(result,indent=2)
             return 0 if result["status"]=="passed" else 1
         if args.command=="report":
             from .reporting import write_report,write_sweep_report
@@ -159,7 +179,7 @@ def main(argv=None):
             manifest["report_generator_sha256"]=report_hashes
             manifest["report_regenerated_at"]=now()
             write_json(path/"manifest.json",manifest)
-            print(json.dumps({"status":"generated","files":[str(p) for p in outputs]},ensure_ascii=False,indent=2))
+            _publish({"status":"generated","files":[str(p) for p in outputs]},indent=2)
             return 0
         if args.command=="smoke":
             from .runtime import execute_smoke
@@ -196,15 +216,61 @@ def main(argv=None):
                 manifest["report_error"]=str(exc);manifest["status"]="error";note(path,traceback.format_exc())
             note(path,f"Sweep completed: {manifest['status']}")
             finalize(path,manifest)
-        print(json.dumps({"status":manifest["status"],"run_dir":str(path)},ensure_ascii=False))
+        _publish({"status":manifest["status"],"run_dir":str(path)})
         return 0 if manifest["status"]=="passed" else 1
     except Exception as exc:
+        _ERROR.set({"code":type(exc).__name__,"stage":"execution","message":str(exc)})
         if path is not None and Path(path).is_dir() and args.command in {"smoke","run","sweep"}:
             try:
                 manifest=manifest or {"schema_version":1,"kind":args.command,"backend":"virtual_hil","started_at":now()}
                 manifest["status"]="error";manifest["error"]=f"{type(exc).__name__}: {exc}"
                 note(path,traceback.format_exc());finalize(path,manifest)
-                print(json.dumps({"status":"error","run_dir":str(path)},ensure_ascii=False))
+                _publish({"status":"error","run_dir":str(path)})
             except Exception as record_error:
                 print(f"Error record unavailable: {record_error}",file=sys.stderr)
         print(f"ERROR: {type(exc).__name__}: {exc}",file=sys.stderr);return 2
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if '--json' not in argv:
+        return _run(argv)
+    from .protocol import command_name, decorate, emit, progress_to_stderr, response
+    argv = [a for a in argv if a != '--json']
+    command = command_name(argv)
+    results = []
+    result_token = _RESULT.set(results)
+    error_token = _ERROR.set(None)
+    failure = None
+    try:
+        with progress_to_stderr() as output:
+            try:
+                code = _run(argv)
+            except SystemExit as exc:
+                code = int(exc.code or 0)
+                if code:
+                    failure = {'code':'invalid_arguments','stage':'arguments','message':'Invalid command arguments; details on stderr.'}
+                else:
+                    results.append({'status':'passed','help_on_stderr':True})
+            except Exception as exc:
+                code = 2
+                traceback.print_exc(file=sys.stderr)
+                failure = {'code':type(exc).__name__,'stage':'execution','message':str(exc)}
+            failure = failure or _ERROR.get()
+            data = results[-1] if results else {'status':'error' if code else 'passed'}
+            try:
+                value = decorate(command, data, argv, PROJECT, failure)
+            except Exception as exc:
+                traceback.print_exc(file=sys.stderr)
+                code = 2
+                value = response(command, status='error', error={
+                    'code':type(exc).__name__,'stage':'response','message':str(exc)})
+        try:
+            emit(value, output)
+        except (TypeError, ValueError) as exc:
+            emit(response(command, status='error', error={'code':'serialization_error','stage':'response','message':str(exc)}), output)
+            return 2
+        return code
+    finally:
+        _RESULT.reset(result_token)
+        _ERROR.reset(error_token)

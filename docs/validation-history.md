@@ -2,6 +2,22 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-19：案例接收、CLI JSON 与感应电机接入
+
+完成模型技术预验、五个案例描述、显式适配器注册、只读发现/校验、版本化 JSON 与共享 skill 路线选择。感应电机实际核实相电压定义、速度参考和负载选择；1430/850 rpm 两工况通过全窗口 1% 项目教学判据。93 项单元测试通过，RLC 基准/扫描、Boost 阶跃、整流基准回归及历史记录副本兼容检查完成。原始记录与已有暂存修改保留，新增官方模型和面板作为本机依赖排除 Git。
+
+- [完整验收与交付范围](../results/agent-tasks/20261019-case-onboarding/summary.md)
+- [模型接口与实际短采集](../cases/im_speed_tracking/README.md)
+- [最终命令、返回码和运行目录](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)
+- [CSV 独立复算](../results/agent-tasks/20261019-case-onboarding/release-validation/independent-csv.json)
+- [脚本测试](../results/agent-tasks/20261019-case-onboarding/unit-tests.log)
+- [材料与原记录保护](../results/agent-tasks/20261019-case-onboarding/preservation.json)
+- [文档与技能静态检查](../results/agent-tasks/20261019-case-onboarding/static-validation.json)
+- [独立 Agent 实跑与复算](../results/agent-tasks/20261019-case-onboarding/independent/phase2-final-report.md)
+- [默认与 JSON 入口一致性](../results/agent-tasks/20261019-case-onboarding/entry-parity.json)
+
+独立 Agent 的当前任务与实际执行证据在完整验收中单列。真人、跨电脑、实体 HIL 与证据发布继续按后续工作组推进。
+
 ## 2026-10-17：文档职责与重复内容整理
 
 精简技能入口，删除重复的模型接入参考；接入接口由模型接入文档维护，任务记录与历史处理集中到实现约定。Agent 教程保留组员提问与结果核对，交接文档保留复制清单及独立复现步骤。原始内容快照和静态检查见 [整理记录](../results/documentation-review/20261017-document-boundaries/summary.md)。本次完成文档检查；实际软件运行证据仍对应各日期保存的模型、代码与技能快照。

@@ -1,24 +1,26 @@
 # 验证状态与实测结论
 
-本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-15**，模式为 THCC 2026.3 Virtual HIL。按日期查找其他记录，见 [验证记录索引](validation-history.md)。项目共享 skill 的实跑验收对应 **2026-10-16 的技能快照**，范围及证据见下表；后续文档修订的检查见验证索引。
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-19**，模式为 THCC 2026.3 Virtual HIL。案例工具、CLI JSON 与感应电机接入的证据见 [工作组①验收记录](../results/agent-tasks/20261019-case-onboarding/summary.md)。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
 
-脚本与记录检查通过。RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录；Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。人员独立复现按用户要求本轮暂不安排。
+脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况通过预先固定的全窗口 1% 判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
 
 ## 已验证能力
 
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | [完整测试](../results/20261015-rectifier-acceptance/unit_test_summary.json) 68 项通过，失败、错误、跳过均为 0；[日志](../results/20261015-rectifier-acceptance/unit_tests.log) |
-| 运行与记录 | 最小回环、RLC、Boost 与单相桥整流均有实际运行；新案例、RLC 回归、Agent 与搬迁及延后扰动的记录一致，见 [本轮完成记录](../results/20261015-workflow-completion/summary.md) |
+| 脚本逻辑 | [完整测试](../results/agent-tasks/20261019-case-onboarding/unit-tests.log) 93 项通过，包含案例路径边界、JSON 异常、1% 边界与窗口端点 |
+| 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
+| 案例与 CLI | 五个案例、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[验收](../results/agent-tasks/20261019-case-onboarding/summary.md) |
+| 感应电机接口 | 相电压、参考/反馈、恒值负载模式与缩放、控制周期、Virtual HIL 短采集均有实际证据；[接口映射](../cases/im_speed_tracking/README.md) |
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
 | 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
-| 既有记录兼容 | 在已保存 RLC 记录副本上完成 verify→report→verify，原目录哈希未变，见 [兼容检查](../results/20261015-112422-v2-validation-dd212b/historical-compatibility.json) |
+| 既有记录兼容 | RLC 通过与 Boost 性能失败记录的完整副本均完成 verify→report→verify，原状态保留；[实际命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)、[原记录保护](../results/agent-tasks/20261019-case-onboarding/preservation.json) |
 | 新模型和趋势 | 单相桥整流基准、低输入、重载与离线比较均通过；[实际目录与复核](../results/20261015-rectifier-acceptance/actual_runs.json)，[图表 QA](../results/20261015-rectifier-acceptance/visual_qa.json) |
 | GUI 操作 | RLC 教学副本编译加载、Virtual HIL、面板参数、信号、周期波形与启停已实测；[证据](../results/20261015-gui-validation/gui-validation.json) |
 | Agent 与本机搬迁 | 未继承父对话的新子代理按明确任务和材料完成 RLC 扫描、Boost 阶跃与 CSV 独立复算；中文空格目录、其他 cwd 的环境与实验检查通过；[记录](../results/20261015-160620-agent-onboarding-ea232d/summary.md) |
-| 项目共享 skill | 2026-10-16 技能快照的结构、RLC 实跑、历史失败解释、已有模型映射与任务准备通过验收；材料隔离复核通过。新模型场景仅检查与方案，见 [专项记录](../results/skill-validation/20261016-typhoon-skill-0c9982/summary.md) |
-| 当前代码兼容 | 四条旧记录只读复核一致，性能状态保持原值；[兼容记录](../results/20261015-rectifier-acceptance/historical_compatibility.json) |
+| 项目共享 skill | 案例发现、材料核对、配置复用与适配器扩展路线已接通；结构检查、[独立 Agent 电机任务](../results/agent-tasks/20261019-case-onboarding/independent/phase2-final-report.md) 与 [入口一致性](../results/agent-tasks/20261019-case-onboarding/entry-parity.json) 通过。先前 RLC 与失败解释行为见 [专项记录](../results/skill-validation/20261016-typhoon-skill-0c9982/summary.md) |
+| 原记录与已有修改 | 3601 个既有结果文件哈希未变，14 个原暂存文件内容保留，既有模型与来源条目保持一致；[保护审计](../results/agent-tasks/20261019-case-onboarding/preservation.json) |
 | Boost 扰动分析 | 原始数据复算与两项延后对照已完成；[分析说明](boost-disturbance-analysis.md)、[实际命令](../results/20261015-workflow-completion/late-controls.json) |
 
 脚本测试、实际 Virtual HIL、GUI 观察、新 Agent、本机搬迁和真人/跨机复现分别验收。HIL101、Pro 1 表示编译目标与配置；本页的运行证据对应 Virtual HIL。
@@ -28,6 +30,8 @@
 | 实验 | 实验状态 | 记录一致性 | 实际产物 |
 |---|---|---|---|
 | 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
+| 感应电机 1430 rpm | passed | passed | [报告](../results/20261019-122808-induction_motor_closed_loop-664f11/report.html) |
+| 感应电机 850 rpm | passed | passed | [报告](../results/20261019-122914-induction_motor_closed_loop-dc2ad0/report.html) |
 | RLC 基准 | passed | passed | [记录](../results/20261015-113040-rlc-ea344a/report.html) |
 | RLC 三工况扫描 | passed | passed | [记录](../results/20261015-113104-sweep-1a2086/report.html) |
 | Boost 基准 | passed | passed | [记录](../results/20261015-113207-boost_closed_loop-e9ac14/report.html) |
@@ -42,6 +46,19 @@
 | Boost 延后输入升高 | failed | passed | [报告](../results/20261015-162354-boost_closed_loop-d2a404/report.html) |
 
 record_status 表示文件与指标复算是否一致，experiment_status 表示实验执行和性能判据的结果。记录一致而性能未达标时，总 status 为 failed，verify 退出码为 1。
+
+## 感应电机独立启动
+
+两工况分别显式设置 Speed RPM，Vgrid 为 230 V 相电压 RMS、50 Hz，Load_sel=1、IM_Load=0.5，对应 2 N·m 恒值负载指令。实际步长 0.5 µs、抽取 100，每次采集 4 s、20 kHz、80,000 点；[2,4) s 评价窗口含 40,000 点。
+
+| 参考 / rpm | 平均转速 / rpm | 最大绝对误差 / rpm | 最大相对误差 | 超限点数 | 状态 |
+|---:|---:|---:|---:|---:|---|
+| 1430 | 1429.635450 | 2.052490 | 0.143531% | 0 | passed |
+| 850 | 849.758187 | 1.383179 | 0.162727% | 0 | passed |
+
+这些是参考官方断言建立的项目教学判据：采用独立启动、显式常值负载和 20 kHz，与官方共享仿真连续改速、50 kHz 的条件不同。来源与调整见 [判据说明](../cases/im_speed_tracking/acceptance.md)。速度参考 API 回读及参考/负载全程波形均留存；[CSV 独立复算](../results/agent-tasks/20261019-case-onboarding/release-validation/independent-csv.json) 与指标一致。短采集得到有效的性能 failed，错误输入与不完整数据按 error 处理。
+
+下列 RLC、Boost 与整流详细数值保留其原验证记录；本轮回归路径从工作组①记录查阅。
 
 ## RLC 数值核对
 
@@ -106,6 +123,7 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 | GUI 手动操作路径 | RLC 软件界面已实测；[首次实验](first-experiment.md) 已同步实际步骤和截图。人员操作能力另验 |
 | 跨电脑 | 本轮完成同机中文空格路径搬迁；另一台机器的软件、许可和设备条件另行实测 |
 | 单相整流原面板 | API 教学路径通过；原面板启动宏需在独立教学副本核对后再验 GUI |
-| 电机模型、实体 HIL 与外部控制器 | 尚未接入；按具体模型、设备和任务建立验证记录 |
+| 感应电机 GUI 面板 | 自动脚本链路已实测；SCADA 面板的 GUI 操作另行验收 |
+| 实体 HIL 与外部控制器 | 按具体设备、控制器和实验负责人建立实测记录 |
 
 2026-10-15 教学补全任务、实际命令与证据见 [完成记录](../results/20261015-workflow-completion/summary.md)；此前的详细数值核对见 [上午验证记录](../results/20261015-112422-v2-validation-dd212b/summary.md)。

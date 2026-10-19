@@ -11,11 +11,15 @@
 | 学会模型操作、采集和报告核对 | RLC | [首次实验](docs/first-experiment.md) |
 | 改变 Rin，比较稳态 RMS 与解析值 | RLC | [参数与指标](docs/experiments.md) |
 | 观察闭环参考阶跃和输入电压扰动 | Boost | [动态实验](docs/boost-experiments.md) |
+| 比较电机独立启动后的转速跟踪 | 感应电机闭环 | [电机案例](cases/im_speed_tracking/README.md) |
+| 查找案例并检查材料与代码支持 | 案例目录 | [案例与 CLI 接口](docs/case-interface.md) |
 | 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
 | 学习如何接收并接入新测试案例 | 单相整流 | [整流实验](docs/rectifier-experiments.md) / [接入方法](docs/model-integration.md) |
 | 查找官方教程、示例和公开测试 | 资源导航 | [学习与案例资源](docs/resources.md) |
 
 首次使用建议先做 RLC，再做 Boost；随后用单相整流学习新案例接入。已熟悉统一入口时，可直接选择相应模型的实验配置。
+
+案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。静态通过后仍需实际编译和采集验证。电机模型与面板为需从匹配安装复制的本机依赖。
 
 ## 准备环境并运行
 
@@ -78,4 +82,4 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态
 - 接入其他模型：按 [模型接入方法](docs/model-integration.md) 建立参数、信号、判据和实际证据。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
 
-搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。实体 HIL、外部控制器和电机模型的接入，需结合具体设备与任务另行验证。
+搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。感应电机模型与面板按案例说明从目标机器的匹配安装补齐；实体 HIL 与外部控制器按具体设备和任务另行验证。

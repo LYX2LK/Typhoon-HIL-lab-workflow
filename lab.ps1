@@ -1,6 +1,10 @@
 [CmdletBinding()]
 param([Parameter(ValueFromRemainingArguments=$true)][string[]]$LabArguments)
 $ErrorActionPreference = "Stop"
+$jsonMode = $LabArguments -contains '--json'
+# Nonzero experiment exit codes are results, not PowerShell launch exceptions.
+$PSNativeCommandUseErrorActionPreference = $false
+try {
 $projectRoot = $PSScriptRoot
 $typhoonInstall = $env:TYPHOON_HOME
 $configFile = Join-Path $projectRoot "environment.local.json"
@@ -19,3 +23,15 @@ if (-not (Test-Path -LiteralPath $pythonExecutable)) { throw "Bundled Python not
 $env:TYPHOON_LAB_INSTALL = $typhoonInstall
 & $pythonExecutable -B -X utf8 (Join-Path $projectRoot "scripts\lab_cli.py") @LabArguments
 exit $LASTEXITCODE
+} catch {
+    if (-not $jsonMode) { throw }
+    $knownCommands = @('doctor','smoke','inspect','run','sweep','report','verify','compare-rectifier','list-cases','validate-case')
+    $selectedCommand = @($LabArguments | Where-Object { $_ -in $knownCommands }) | Select-Object -First 1
+    $response = [ordered]@{
+        schema_version = 1; command = $selectedCommand; status = 'error'; run_dir = $null
+        record_status = $null; experiment_status = $null; artifacts = @{}; result = @{}
+        error = @{ code = 'launcher_error'; stage = 'launcher'; message = $_.Exception.Message }
+    }
+    $response | ConvertTo-Json -Depth 20 -Compress
+    exit 2
+}

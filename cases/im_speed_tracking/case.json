@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"im_speed_tracking","model_id":"induction_motor_closed_loop","title":"感应电机闭环转速跟踪","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/im_speed_1430.json","configs/im_speed_850.json"],"acceptance_ref":"acceptance.md"}

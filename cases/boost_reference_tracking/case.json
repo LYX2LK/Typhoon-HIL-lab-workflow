@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"boost_reference_tracking","model_id":"boost_closed_loop","title":"Boost 基准与参考阶跃跟踪","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/boost_baseline.json","configs/boost_reference_step.json"],"acceptance_ref":"acceptance.md"}
