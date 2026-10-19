@@ -4,7 +4,7 @@
 
 ## 模型、来源与教学工况
 
-官方来源为安装目录 `examples/models/general power electronics/1ph rectifier/1ph rectifier.tse`。`models/single_phase_rectifier.tse` 与同名 `.cus` 是原始字节副本，版本与 SHA-256 见 `models/origin.json`。每次只修改结果目录中的 `model.tse`。
+官方来源为安装目录 `examples/models/general power electronics/1ph rectifier/1ph rectifier.tse`。通过 `prepare-models` 准备的本机 `models/single_phase_rectifier.tse` 与同名 `.cus` 是原始字节副本，版本与 SHA-256 见 `models/origin.json`。每次只修改结果目录中的 `model.tse`。
 
 电路为正弦电压源 Va1 → 串联电感 La1 → 单相二极管桥 → 并联电容 Cdc1 和负载 Rload1。测量 Va2 为负载两端电压，Iload1 为负载电流，Icdc1 正方向为充入电容。
 

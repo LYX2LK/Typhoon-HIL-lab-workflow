@@ -9,10 +9,11 @@
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | [完整测试](../results/agent-tasks/20261019-case-onboarding/unit-tests.log) 93 项通过，包含案例路径边界、JSON 异常、1% 边界与窗口端点 |
+| 脚本逻辑 | [完整测试](../results/agent-tasks/20261019-model-assets-prepare-732cd1/unit-tests.stderr.log) 119 项通过，包含模型准备、文件保护、案例路径边界、JSON 异常、1% 边界与窗口端点 |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
 | 案例与 CLI | 五个案例、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[验收](../results/agent-tasks/20261019-case-onboarding/summary.md) |
 | 感应电机接口 | 相电压、参考/反馈、恒值负载模式与缩放、控制周期、Virtual HIL 短采集均有实际证据；[接口映射](../cases/im_speed_tracking/README.md) |
+| 模型本机准备 | 来源清单统一安装相对路径及模型/面板哈希；不含模型的源码副本一键补齐 9 个文件、重复执行跳过，五案例静态通过；该副本的最小回环、RLC 基准与扫描实跑及复核通过。[证据](../results/agent-tasks/20261019-model-assets-prepare-732cd1/summary.md) |
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
 | 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
 | 既有记录兼容 | RLC 通过与 Boost 性能失败记录的完整副本均完成 verify→report→verify，原状态保留；[实际命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)、[原记录保护](../results/agent-tasks/20261019-case-onboarding/preservation.json) |

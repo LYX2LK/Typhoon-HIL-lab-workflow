@@ -4,7 +4,7 @@
 
 ## 模型与信号
 
-模型来自安装根目录下的 RLC circuit 示例：`examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse`。安装根目录以 `doctor` 输出的 `typhoon_home` 为准，定位方法见 [环境配置](environment.md#选择实验与资料)。项目使用 [模型](../models/rlc_filter.tse) 与 [SCADA 面板](../models/rlc_filter.cus) 的副本，来源和 SHA-256 见 [origin.json](../models/origin.json)。
+模型来自安装根目录下的 RLC circuit 示例：`examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse`。安装根目录以 `doctor` 输出的 `typhoon_home` 为准，定位方法见 [环境配置](environment.md#选择实验与资料)。通过 `prepare-models` 准备本机 `models/rlc_filter.tse` 与 `models/rlc_filter.cus` 副本，来源和 SHA-256 见 [origin.json](../models/origin.json)。
 
 ```text
 Vs1 ── Rin ── I ──●── L ───── 地

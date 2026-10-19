@@ -2,6 +2,16 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-19：官方模型统一为本机依赖
+
+完成安装相对路径、模型及面板哈希统一，新增 prepare-models，根目录官方模型/面板取消 Git 跟踪并保留本机副本；vendor/ 与 custom/ 预留为空。119 项测试通过；不含模型的源码导出在中文空格路径和其他 cwd 下补齐 9 个文件，重复执行全部跳过，五案例静态检查通过。该副本的 Virtual HIL 最小回环、RLC 基准和扫描均通过，记录复核通过。属于同机准备与软件运行验证。
+
+- [完整验收](../results/agent-tasks/20261019-model-assets-prepare-732cd1/summary.md)
+- [实际命令](../results/agent-tasks/20261019-model-assets-prepare-732cd1/commands.json)
+- [干净源码准备](../results/agent-tasks/20261019-model-assets-prepare-732cd1/clean-checkout.json)
+- [实际运行与复核](../results/agent-tasks/20261019-model-assets-prepare-732cd1/live-results.json)
+- [模型与历史结果保护](../results/agent-tasks/20261019-model-assets-prepare-732cd1/preservation.json)
+
 ## 2026-10-19：新 Clone 发现与案例串行编排
 
 发现与单案例校验分开返回，缺失本机依赖提供结构化标记。新增 run-case 统一预检、串行执行、复核与自动索引。107 项单元测试通过；新 Clone 无电机模型时仍可发现 RLC，预检受阻不写结果。电机两工况、RLC 基准与扫描通过；Boost 四项扰动保留性能 failed，全部记录复核通过。批次报告重建及再次复核通过，既有结果哈希不变。

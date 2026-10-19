@@ -4,13 +4,13 @@
 
 ## 准备并检查模型
 
-先按 [环境配置](environment.md) 完成 doctor 与 smoke，再执行：
+先按 [环境配置](environment.md) 完成 doctor、prepare-models 与 smoke，再执行：
 
 ```powershell
 .\lab.ps1 inspect --model rlc_filter
 ```
 
-在 Schematic Editor 中打开 [rlc_filter.tse](../models/rlc_filter.tse)。模型由电压源 Vs1、输入电阻 Rin 以及两条对地并联支路组成：一条为 L，另一条为 R 串 C。I 测量源电流，Va1 测量并联节点电压。
+在 Schematic Editor 中打开准备好的本机 `models/rlc_filter.tse`。模型由电压源 Vs1、输入电阻 Rin 以及两条对地并联支路组成：一条为 L，另一条为 R 串 C。I 测量源电流，Va1 测量并联节点电压。
 
 沿连线找到这些元件与测量点，查看属性名称和单位。参数、拓扑与计算公式见 [RLC 实验说明](experiments.md)。
 

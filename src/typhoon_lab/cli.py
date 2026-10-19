@@ -110,7 +110,7 @@ def verify_run(run_dir,write=True):
 def _run(argv=None):
     parser=argparse.ArgumentParser(description="Typhoon Virtual HIL teaching workflow")
     sub=parser.add_subparsers(dest="command",required=True)
-    for name in ["doctor","smoke"]: sub.add_parser(name)
+    for name in ["doctor","smoke","prepare-models"]: sub.add_parser(name)
     from .adapters import supported_models
     p=sub.add_parser("inspect");p.add_argument("--model",choices=supported_models(),default="rlc_filter")
     sub.add_parser("list-cases")
@@ -126,6 +126,11 @@ def _run(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command == "prepare-models":
+            from .model_assets import prepare_models
+            result = prepare_models()
+            _publish(result, indent=2)
+            return 0 if result["status"] == "passed" else 1
         if args.command in {"list-cases", "validate-case"}:
             from .cases import list_cases, validate_case
             result = list_cases() if args.command == "list-cases" else validate_case(args.case)

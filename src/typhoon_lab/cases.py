@@ -149,7 +149,7 @@ def validate_case(selector, root=None, *, check_evidence=True):
             if not isinstance(digest, str) or not re.fullmatch('[0-9a-f]{64}', digest):
                 integrity['problems'].append(f'invalid {label} source hash')
             elif not source.is_file():
-                integrity['problems'].append(f'missing {label}: {source.name}; copy from the documented local installation')
+                integrity['problems'].append(f'missing {label}: {source.name}; run prepare-models with the documented local installation')
                 source_origin = origin if label == 'model' else origin['panel']
                 missing.append({'kind': label, 'path': source.relative_to(root).as_posix(),
                                 'sha256': digest,

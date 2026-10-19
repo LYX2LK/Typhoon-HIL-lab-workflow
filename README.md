@@ -19,7 +19,7 @@
 
 首次使用建议先做 RLC，再做 Boost；随后用单相整流学习新案例接入。已熟悉统一入口时，可直接选择相应模型的实验配置。
 
-案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。列表发现成功与单案例校验分开返回；缺失本机模型的案例标为 `missing_local_dependency`。静态通过后仍需实际编译和采集验证。电机模型与面板为需从匹配安装复制的本机依赖。
+案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。列表发现成功与单案例校验分开返回；缺失本机模型的案例标为 `missing_local_dependency`。静态通过后仍需实际编译和采集验证。所有官方示例模型与面板统一为本机依赖，使用准备命令从匹配安装补齐；来源规则见 [模型说明](models/README.md)。
 
 ## 准备环境并运行
 
@@ -28,12 +28,13 @@
 ```powershell
 Set-Location 'D:\Typhoon\lab-workflow'
 .\lab.ps1 doctor
+.\lab.ps1 prepare-models
 .\lab.ps1 smoke
 .\lab.ps1 inspect --model rlc_filter
 .\lab.ps1 run --config configs/rlc_baseline.json
 ```
 
-`doctor` 检查解释器、版本和模块；`smoke` 实际完成最小编译、加载、运行、读取和停止。`run` 输出本次 `run_dir`，后续核对均使用这个目录。
+`doctor` 检查解释器、版本和模块；`prepare-models` 补齐并核对官方模型与面板；`smoke` 实际完成最小编译、加载、运行、读取和停止。`run` 输出本次 `run_dir`，后续核对均使用这个目录。
 
 | 操作 | 命令 |
 |---|---|
@@ -85,4 +86,4 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态
 - 接入其他模型：按 [模型接入方法](docs/model-integration.md) 建立参数、信号、判据和实际证据。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
 
-搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。感应电机模型与面板按案例说明从目标机器的匹配安装补齐；实体 HIL 与外部控制器按具体设备和任务另行验证。
+搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。官方模型与面板通过 `prepare-models` 从目标机器的匹配安装补齐；实体 HIL 与外部控制器按具体设备和任务另行验证。

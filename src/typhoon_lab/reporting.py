@@ -82,7 +82,7 @@ def _metadata(manifest):
         if environment.get(name) is not None:
             rows.append((label, environment[name]))
     origin = manifest.get('model_origin', {})
-    for name, label in (('original_path', '官方模型来源'), ('sha256', '来源模型 SHA256')):
+    for name, label in (('original_path', '官方模型来源'), ('installation_relative_path', '安装内模型来源'), ('sha256', '来源模型 SHA256')):
         if origin.get(name) is not None:
             rows.append((label, origin[name]))
     model_hash = manifest.get('artifacts', {}).get('model.tse')

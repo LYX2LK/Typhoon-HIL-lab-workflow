@@ -5,7 +5,7 @@ import json
 import os
 import sys
 
-COMMANDS = ('doctor', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
+COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
             'compare-rectifier', 'list-cases', 'validate-case', 'run-case')
 
 

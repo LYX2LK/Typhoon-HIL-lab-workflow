@@ -21,9 +21,9 @@
 
 ## 本机模型依赖
 
-新增官方模型和面板的公开再分发许可尚未确认，故仅作为本机依赖并排除 Git。安装根目录从 TYPHOON_HOME 或 environment.local.json 定位；来源、安装相对路径及 SHA-256 见 [来源索引](../../models/origin.json) 的 induction_motor_closed_loop 条目。
+官方模型和面板统一作为本机依赖并排除 Git，公开再分发权限尚未确认。安装根目录从 TYPHOON_HOME 或 environment.local.json 定位；来源、安装相对路径及 SHA-256 见 [来源索引](../../models/origin.json) 的 induction_motor_closed_loop 条目。
 
-使用者从匹配版本的安装中，将该条目的模型与面板分别按字节复制为 models/induction_motor_closed_loop.tse 和 models/induction_motor_closed_loop.cus，再执行 validate-case 核对哈希。缺少本机依赖时，静态工具会明确报告，不以已登记或代码支持代替运行验证。
+使用者先执行 `prepare-models`，从匹配安装准备 models/induction_motor_closed_loop.tse 和 models/induction_motor_closed_loop.cus，再执行 validate-case 核对哈希。缺少本机依赖时，静态工具会明确报告，不以已登记或代码支持代替运行验证。
 
 ## 执行与解释
 

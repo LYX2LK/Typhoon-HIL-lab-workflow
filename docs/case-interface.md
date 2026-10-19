@@ -18,7 +18,7 @@ list-cases 与 validate-case 只读取文件，不调用 Typhoon API、不启动
 | software_support | Adapter 是否注册、对应配置与执行能力是否支持 |
 | runtime_validation | 实际记录能否证明链路完成；缺失或模型、配置、代码摘要变化时为 not_verified |
 
-`list-cases.status=passed` 表示目录发现成功，退出码为 0；个别案例失败不会隐藏其他案例或使发现失败。每个案例的 `status` 及 `summary.static_failed` 保留实际校验结论。模型或面板缺失时，`availability=missing_local_dependency`，`missing_local_dependencies` 给出路径、类型、期望哈希及可用的安装相对路径；哈希不符仍是校验失败。目录本身无法读取时按命令错误处理。
+`list-cases.status=passed` 表示目录发现成功，退出码为 0；个别案例失败不会隐藏其他案例或使发现失败。每个案例的 `status` 及 `summary.static_failed` 保留实际校验结论。模型或面板缺失时，`availability=missing_local_dependency`，`missing_local_dependencies` 给出路径、类型、期望哈希及可用的安装相对路径；哈希不符仍是校验失败。目录本身无法读取时按命令错误处理。可先执行 `prepare-models` 从配置的匹配安装补齐所有官方模型与面板，再重试静态校验。
 
 `validate-case` 及列表内单个案例的静态 status=passed 表示前两类检查通过。runtime_validation.completed 可包含性能 failed 的有效记录；每个工况的 experiment_status 单列。不能从静态结果推断本机可编译或可加载。
 
@@ -68,5 +68,7 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 命令生成报告成功而原实验 failed 时，status=passed、experiment_status=failed、record_status=null。verify 可返回 record_status=passed、experiment_status=failed，总 status=failed。
 
 保留默认模式的结果与退出码：0 为成功；1 为已形成但未通过的命令结果（包含执行器留存的 error）；2 为参数、启动、入口导入或外层执行异常。JSON 不重新解释为另一套退出码。PowerShell 启动错误采用同一信封；Python 返回非零实验结果时不再追加第二个响应。
+
+`prepare-models` 会补建模型预留目录并复制缺失的官方模型/面板，已有匹配文件跳过；依赖预检失败时不复制，返回 1，详情见 `result.assets`。该命令不启动仿真，`record_status` 与 `experiment_status` 均为 null。
 
 原有 inspect/doctor 会写本机检查记录，verify 会写 verification.json，report 会更新报告与清单；它们的副作用与这两个只读案例命令不同。历史记录需复核或重建时按 [记录约定](../PROJECT_SPEC.md#历史记录处理) 在副本操作。

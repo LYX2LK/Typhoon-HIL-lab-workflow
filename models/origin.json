@@ -1,47 +1,55 @@
 {
   "rlc_filter": {
-    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\basic electrical circuits\\rlc circuit\\rlc circuit.tse",
     "sha256": "adc82b101b540b48e7f4db60d6dd891230a4afe3b02d96fa933456fab0b150e5",
     "thcc_version": "2026.3",
-    "kind": "official_teaching_example"
+    "kind": "official_teaching_example_local_dependency",
+    "installation_relative_path": "examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse",
+    "redistribution": "unconfirmed",
+    "panel": {
+      "installation_relative_path": "examples/models/basic electrical circuits/rlc circuit/rlc circuit.cus",
+      "sha256": "d5a1dd45368d3704b3507bbfed136cd6d4031a63f7b28c347e610e96f22711ce"
+    }
   },
   "loopback": {
-    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\tests\\10_basic_model\\model.tse",
     "sha256": "0e2d8bddcebb83b280a2ebc2e4a1cfeddb142a64f361431d4992879fe09f4f93",
     "thcc_version": "2026.3",
-    "kind": "official_teaching_example"
+    "kind": "official_teaching_example_local_dependency",
+    "installation_relative_path": "examples/tests/10_basic_model/model.tse",
+    "redistribution": "unconfirmed"
   },
   "boost_closed_loop": {
-    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\boost closed loop\\boost closed loop.tse",
     "thcc_version": "2026.3",
-    "kind": "official_teaching_example",
+    "kind": "official_teaching_example_local_dependency",
     "sha256": "924107471b1b13d7ad0bf94e043078ac3c93ceff0fbdc8a5aa310e9e92b7e5e3",
     "panel": {
-      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\boost closed loop\\boost closed loop.cus",
-      "sha256": "2855cfa9b9c88ce0f9a6ca75f6625fb020143ff589fa07dda3830302ba345197"
-    }
+      "sha256": "2855cfa9b9c88ce0f9a6ca75f6625fb020143ff589fa07dda3830302ba345197",
+      "installation_relative_path": "examples/models/general power electronics/boost closed loop/boost closed loop.cus"
+    },
+    "installation_relative_path": "examples/models/general power electronics/boost closed loop/boost closed loop.tse",
+    "redistribution": "unconfirmed"
   },
   "single_phase_rectifier": {
-    "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.tse",
     "thcc_version": "2026.3",
-    "kind": "official_teaching_example",
+    "kind": "official_teaching_example_local_dependency",
     "sha256": "e71dafc6f2ee6aaa918702b3ba29233af52aa742e4b67cdeb532b01ecfd8141f",
     "panel": {
-      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.cus",
-      "sha256": "d7e2301425aa582ef8bdb987313bd187781c5f476c201470f721bf73d335329f"
+      "sha256": "d7e2301425aa582ef8bdb987313bd187781c5f476c201470f721bf73d335329f",
+      "installation_relative_path": "examples/models/general power electronics/1ph rectifier/1ph rectifier.cus"
     },
     "schematic_diagram": {
-      "original_path": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\examples\\models\\general power electronics\\1ph rectifier\\1ph rectifier.svg",
       "sha256": "37a2b2aa57073c61f18af5d6acf4da0ee0b833fc9ee81e7a1ba962dd9a0f5422",
-      "project_path": "docs/assets/single_phase_rectifier.svg"
-    }
+      "project_path": "docs/assets/single_phase_rectifier.svg",
+      "installation_relative_path": "examples/models/general power electronics/1ph rectifier/1ph rectifier.svg"
+    },
+    "installation_relative_path": "examples/models/general power electronics/1ph rectifier/1ph rectifier.tse",
+    "redistribution": "unconfirmed"
   },
   "induction_motor_closed_loop": {
     "installation_relative_path": "examples/models/electrical drives/indm closed loop control/indm closed loop control.tse",
     "sha256": "0b9e394c85db4b70af7427f9dd3a7845865bbdec66b6da1f4c56e7c87c969af0",
     "thcc_version": "2026.3",
     "kind": "official_teaching_example_local_dependency",
-    "redistribution": "not confirmed; new model and panel are excluded from Git",
+    "redistribution": "unconfirmed",
     "official_test_relative_path": "examples/tests/101_indm_closed_loop_control/test_indm_closed_loop_control.py",
     "official_test_sha256": "fe276f5db9681ee07208d12158c7b895fe410eaf11b5ecb9de345b9c4d1e796a",
     "panel": {

@@ -4,7 +4,7 @@
 
 ## 模型与测量点
 
-模型来自 THCC 2026.3 安装包的 `general power electronics/boost closed loop`。项目保存 [模型](../models/boost_closed_loop.tse)、[面板](../models/boost_closed_loop.cus) 的字节副本与 [来源哈希](../models/origin.json)，每次运行使用结果目录中的模型副本。
+模型来自 THCC 2026.3 安装包的 `general power electronics/boost closed loop`。通过 `prepare-models` 准备本机 `models/boost_closed_loop.tse`、`models/boost_closed_loop.cus` 字节副本，Git 保存 [来源哈希](../models/origin.json)，每次运行使用结果目录中的模型副本。
 
 PI 控制器根据输出电压与参考的差值调节 Boost 的内部 PWM。教学模型同时采集输出电压 Vout、输入电流 Iin、控制器实际参考 ReferenceApplied 和输入电压 VinMeasured，以便把激励与响应对应起来。
 

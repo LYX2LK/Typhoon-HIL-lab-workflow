@@ -16,19 +16,23 @@ lab.ps1 按顺序使用 TYPHOON_HOME 环境变量、本机 JSON 中的 typhoon_h
 
 项目使用软件配套 Python。搬到其他电脑后修改本机路径，并重新检查环境及实际运行能力。软件与许可由设备管理者配置。
 
-## 检查解释器与最小仿真
+## 准备模型与检查最小仿真
 
 在包含 lab.ps1 的项目目录执行：
 
 ```powershell
 .\lab.ps1 doctor
+.\lab.ps1 prepare-models
 .\lab.ps1 smoke
 ```
 
 | 命令 | 查看什么 | 通过依据 |
 |---|---|---|
 | doctor | 解释器路径、软件与依赖版本、模块导入 | 输出使用预期安装且检查通过 |
+| prepare-models | 从来源索引定位官方模型与面板；包含 Loopback | 安装版本和全部文件哈希匹配 |
 | smoke | 编译、加载、运行、实际读数与停止 | 最小回环读到输入对应值，并完整停止 |
+
+`prepare-models` 为所有当前官方示例准备本机副本，重复执行会跳过已匹配文件。安装版本不符、缺少源文件或哈希不符时先解决输出中的具体问题；已有不同内容会保留。它也补建空的 `models/vendor/`、`models/custom/` 预留目录，详细规则见 [模型说明](../models/README.md)。
 
 doctor 的模块导入结果与 smoke 的仿真结果分别记录。记下 smoke 输出的实际 run_dir，遇到问题按 [故障排查](troubleshooting.md) 查看首次错误。
 
