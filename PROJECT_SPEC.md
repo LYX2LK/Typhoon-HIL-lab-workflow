@@ -81,7 +81,7 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | environment | 安装路径、运行模式和环境检查 |
 | first-experiment | 以 RLC 学会完整操作流程 |
 | experiments / boost-experiments / rectifier-experiments | 各模型的参数、信号、实验和指标 |
-| agent-workflow | 组员的任务提问示例与结果核对 |
+| agent-workflow | 任务提问示例与结果核对 |
 | troubleshooting | 按失败阶段定位与处理 |
 | handoff | 独立复现步骤和交接记录模板 |
 | validation | 当前能力、实测结论与待验事项 |

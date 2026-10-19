@@ -1,6 +1,6 @@
 # 环境配置与检查
 
-本页帮助首次接手的组员确认：项目能调用预期的 Typhoon Python API，并完成最小 Virtual HIL 仿真。准备好已安装、可正常启动且具备许可的 Typhoon HIL Control Center；参考安装为 2026.3。
+首次接手项目时，按本页确认：项目能调用预期的 Typhoon Python API，并完成最小 Virtual HIL 仿真。准备好已安装、可正常启动且具备许可的 Typhoon HIL Control Center；参考安装为 2026.3。
 
 ## 指定本机安装目录
 

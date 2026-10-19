@@ -1,6 +1,6 @@
 # 官方学习资源与案例导航
 
-本页供有电机或电力电子基础、尚不熟悉 Typhoon/Python 的组员选学习材料和测试案例。目标是先完成一个可解释、可复核的实验，再选择与手头任务相近的案例。核对日期：**2026-10-15（北京时间）**；本机参考安装：**Typhoon HIL Control Center 2026.3**。
+本页提供学习材料和测试案例的选择建议，适合有电机或电力电子基础、尚不熟悉 Typhoon/Python 时查阅。目标是先完成一个可解释、可复核的实验，再选择与手头任务相近的案例。核对日期：**2026-10-15（北京时间）**；本机参考安装：**Typhoon HIL Control Center 2026.3**。
 
 ## 先按任务选择
 
@@ -24,15 +24,15 @@ Virtual HIL 在 PC 上以非实时方式模拟 HIL 设备，没有外部 I/O；T
 
 | 资源与入口 | 用途、适合读者 | 版本与模式／条件 | 本项目核对或实测状态 | 核对日期 |
 |---|---|---|---|---|
-| [官方文档总入口](https://www.typhoon-hil.com/resources/documentation/) | 找软件手册、硬件手册、Application Notes 与 API；所有组员 | 在线资料会更新；操作细节优先对照安装内同版本资料 | 网页已核；不是实验结果 | 2026-10-15 |
+| [官方文档总入口](https://www.typhoon-hil.com/resources/documentation/) | 找软件手册、硬件手册、Application Notes 与 API；各学习阶段均可查阅 | 在线资料会更新；操作细节优先对照安装内同版本资料 | 网页已核；不是实验结果 | 2026-10-15 |
 | [Quick Start: THCC](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/realtime_quick_start_guide.html) | 安装、工具入口、示例首次运行和 Virtual HIL 概念；新手 | 同页含实体 HIL、Virtual HIL 和 TyphoonSim 路径；按自己的模式阅读 | 网页已核；项目自己的最小运行证据见 validation | 2026-10-15 |
-| [Example Explorer](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/example_explorer.html) | 从标题搜索模型，打开模型及配套应用说明；选案例的组员 | THCC 内置入口；每个模型的设备、组件及许可条件分别核对 | 网页已核，安装目录含示例；未逐个运行全库 | 2026-10-15 |
+| [Example Explorer](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/example_explorer.html) | 从标题搜索模型，打开模型及配套应用说明；选择案例时查阅 | THCC 内置入口；每个模型的设备、组件及许可条件分别核对 | 网页已核，安装目录含示例；未逐个运行全库 | 2026-10-15 |
 | [Application Notes](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/concepts/application_notes_introduction.html) | 看模型原理、工况、测试方法及最低实时硬件；已有领域基础者 | 按应用分类；说明中的实时硬件要求不能直接替代 VHIL 兼容性检查 | 网页已核；下方案例另列本地文件与运行状态 | 2026-10-15 |
 | [Schematic Editor API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/schematic_api.html)；`Documentation/html/schematic_api.html`（安装根目录下） | 创建、读取、改参、保存和编译 tse；运行器维护者 | 在线标题为 Typhoon API 2026.3；使用安装配套 Python | 网页及本地入口已核；项目已使用对应模型操作，未执行页面所有示例 | 2026-10-15 |
 | [HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)；`Documentation/html/hil_api.html`（安装根目录下） | 加载、初始化、启停、运行改参、信号读取与采集；运行器维护者 | 在线标题为 Typhoon API 2026.3；load_model 的 vhil_device 参数选择 Virtual HIL；各函数有可用场景 | 网页及本地入口已核；项目 RLC/Boost 的实际使用见 validation | 2026-10-15 |
 | [TyphoonTest Library](https://www.typhoon-hil.com/documentation/typhoon-hil-typhoontest-library/)；`Documentation/typhoontest_html/index.html`（安装根目录下） | 数据采集、信号判定、RMS、谐波和报告接口；自动测试开发者 | 在线标题为 1.35.6；先确认本机版本，逐函数核对输入、单位与分析窗口 | 网页及本地入口已核；库存在不等于每个分析函数均实测 | 2026-10-15 |
 | [TyphoonTest IDE](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/typhoontest_ide.html) | 用 GUI 写、运行 pytest 测试并看日志和报告；希望学习官方测试工具者 | 文档标明 real-time/VHIL；HIL SCADA 与 TyphoonTest IDE 不能同时工作 | 网页已核；本项目统一入口与官方 IDE 的验收分别进行 | 2026-10-15 |
-| [HIL Academy 官方介绍](https://www.typhoon-hil.com/solutions/academic-research/hil-academy/)、[课程目录](https://hil.academy/courses/)、[HIL Specialist 2.0](https://hil.academy/hil-specialist-certification-2-0/) | 系统学习工具链、HIL 概念和案例；新手至进阶组员 | 官网介绍含五门 HIL Specialist 2.0 课程；课程所用版本、账号与设备要求到具体课程核对 | 介绍与课程入口已核；未代替组员登录上课，也未宣称完成认证 | 2026-10-15 |
+| [HIL Academy 官方介绍](https://www.typhoon-hil.com/solutions/academic-research/hil-academy/)、[课程目录](https://hil.academy/courses/)、[HIL Specialist 2.0](https://hil.academy/hil-specialist-certification-2-0/) | 系统学习工具链、HIL 概念和案例；从入门到进阶 | 官网介绍含五门 HIL Specialist 2.0 课程；课程所用版本、账号与设备要求到具体课程核对 | 介绍与课程入口已核；课程学习与认证完成情况需另行记录 | 2026-10-15 |
 | [Knowledge Center](https://www.typhoon-hil.com/resources/knowledge-center/) | 按应用补充视频、网络研讨会及论文线索；任务明确后拓展 | 内容覆盖多个年代、产品与设备；演示视频需对照当前安装 | 网页入口已核；视频与论文中的结果不计为本项目实测 | 2026-10-15 |
 
 Schematic API 负责模型结构与编译，HIL API 负责运行控制与采集；TyphoonTest 提供可进一步采用的官方分析与断言库。**当前 lab.ps1 封装的是 Schematic/HIL API、本项目自己的 Python 分析器和记录复核**，指标由项目代码计算，脚本逻辑测试使用 unittest。TyphoonTest 当前作为已安装库和官方学习资料列出，不表示现有指标调用了它的信号断言。直接复用官方测试前仍需阅读其初始化、运行模式、等待和清理逻辑。
@@ -75,5 +75,5 @@ Schematic API 负责模型结构与编译，HIL API 负责运行控制与采集�
 5. 将手动可解释的最小工况接入统一入口，再扩展参数和工况。原始 CSV、配置、模型副本、事件、日志、指标和代码快照一并留存。
 6. 用 verify 复算记录，再请另一位组员按教程复现。更新本页的“项目实测”时，链接实际证据和 validation。
 
-组员完成课程、跨机器使用或实体设备测试后，只更新对应的真实状态，不以网页介绍或别人演示代替自己的验收记录。
+完成课程、跨机器使用或实体设备测试后，只更新对应的真实状态，不以网页介绍或别人演示代替自己的验收记录。
 

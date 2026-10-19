@@ -1,6 +1,6 @@
 # Typhoon HIL 与 AI Agent 教学工作流
 
-本项目帮助有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的组员，完成改参数、采波形、比较结果和报告。实验采用官方示例模型和软件自带 Python，通过统一入口执行。
+本项目提供修改参数、采集波形、比较结果和编写报告的实验流程，面向有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的读者。实验采用官方示例模型和软件自带 Python，通过统一入口执行。
 
 运行模式为 **Virtual HIL**：模型在电脑上按仿真时间推进，以非实时方式运行，没有外部 I/O。每次实验保存配置、模型副本、代码快照、实际数据和判定依据。
 
@@ -73,7 +73,7 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态
 ## 继续使用和维护
 
 - 执行异常：按 [故障排查](docs/troubleshooting.md) 根据阶段定位。
-- 另一位组员接手：按 [交接验收](docs/handoff.md) 独立复现。
+- 其他人接手：按 [交接验收](docs/handoff.md) 独立复现。
 - 查看输入扰动的现象与候选机制：阅读 [Boost 扰动分析](docs/boost-disturbance-analysis.md)。
 - 接入其他模型：按 [模型接入方法](docs/model-integration.md) 建立参数、信号、判据和实际证据。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
