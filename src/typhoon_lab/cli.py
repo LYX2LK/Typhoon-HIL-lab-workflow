@@ -1,5 +1,4 @@
 """Bounded command interface for people and coding agents."""
-from copy import deepcopy
 from contextvars import ContextVar
 from pathlib import Path
 import argparse
@@ -92,12 +91,17 @@ def verify_run(run_dir,write=True):
         if not states: problems.append("sweep has no cases")
         expected="passed" if states and all(x=="passed" for x in states) else ("error" if "error" in states else "failed")
         if states and manifest.get("status")!=expected: problems.append("sweep status differs from case results")
+    elif manifest.get("kind")=="case":
+        from .case_runner import verify_case_run
+        case_problems,case_experiments=verify_case_run(run_dir,manifest)
+        problems.extend(case_problems);child_experiment_problems.extend(case_experiments)
     record_problems=list(problems)
     problems.extend(child_experiment_problems)
-    if manifest.get("status")!="passed": problems.append(f"experiment status is {manifest.get('status')}")
+    experiment_status=manifest.get("experiment_status") if manifest.get("kind")=="case" else manifest.get("status")
+    if experiment_status!="passed": problems.append(f"experiment status is {experiment_status}")
     result={"checked_at":now(),"status":"passed" if not problems else "failed","problems":problems,
             "record_status":"passed" if not record_problems else "failed", "record_problems":record_problems,
-            "experiment_status":manifest.get("status"),
+            "experiment_status":experiment_status,
             "artifact_count":len(manifest.get("artifacts",{})),
             "scope":"artifact hashes and metric recomputation; not an independent hardware validation"}
     if write: write_json(run_dir/"verification.json",result)
@@ -111,6 +115,7 @@ def _run(argv=None):
     p=sub.add_parser("inspect");p.add_argument("--model",choices=supported_models(),default="rlc_filter")
     sub.add_parser("list-cases")
     p=sub.add_parser("validate-case");p.add_argument("--case",required=True)
+    p=sub.add_parser("run-case");p.add_argument("--case",required=True)
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
@@ -126,6 +131,12 @@ def _run(argv=None):
             result = list_cases() if args.command == "list-cases" else validate_case(args.case)
             _publish(result, indent=2)
             return 0 if result["status"] == "passed" else 1
+        if args.command=="run-case":
+            from .case_runner import run_case
+            result=run_case(args.case)
+            if result.get("error"): _ERROR.set(result["error"])
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
         if args.command=="compare-rectifier":
             from .rectifier_comparison import compare_rectifier
             path,result=compare_rectifier(resolve_project_file(args.baseline),resolve_project_file(args.low_input),resolve_project_file(args.heavy_load))
@@ -163,7 +174,10 @@ def _run(argv=None):
             elif manifest["kind"]=="comparison" and manifest.get("model")=="single_phase_rectifier":
                 from .rectifier_comparison import write_comparison_report
                 outputs=write_comparison_report(path,manifest)
-            else: raise ValueError("report applies to run or sweep results")
+            elif manifest["kind"]=="case":
+                from .case_runner import write_case_report
+                outputs=write_case_report(path,manifest)
+            else: raise ValueError("report applies to run, sweep or case results")
             for output in outputs:
                 output=Path(output).resolve()
                 if not output.is_relative_to(path): raise ValueError("report output leaves run directory")
@@ -192,30 +206,9 @@ def _run(argv=None):
             with runtime_lock(): manifest=execute_case(path,config)
         elif args.command=="sweep":
             config=load_config(resolve_project_file(args.config),sweep=True)
-            from .runtime import execute_case,environment,snapshot_code
-            from .reporting import write_sweep_report
+            from .runtime import execute_sweep
             path=new_run("sweep")
-            manifest={"schema_version":1,"kind":"sweep","model":"rlc_filter","backend":"virtual_hil",
-                      "started_at":now(),"environment":environment(),"code_sha256":snapshot_code(path),
-                      "cases":[],"status":"error"}
-            write_json(path/"config.json",config)
-            with runtime_lock():
-                for index,value in enumerate(config["sweep"]["values"]):
-                    case_id=f"case_{index+1:02d}_rin_{value:g}"
-                    case_path=path/"cases"/case_id;case_path.mkdir(parents=True)
-                    case_config=deepcopy(config);del case_config["sweep"]
-                    case_config["circuit"]["rin_ohm"]=value
-                    note(path,f"Running {case_id}")
-                    case=execute_case(case_path,case_config)
-                    manifest["cases"].append({"case_id":case_id,"relative_dir":case_path.relative_to(path).as_posix(),
-                                              "status":case["status"],"rin_ohm":value})
-            states=[x["status"] for x in manifest["cases"]]
-            manifest["status"]="passed" if states and all(x=="passed" for x in states) else ("error" if "error" in states else "failed")
-            try: write_sweep_report(path,manifest)
-            except Exception as exc:
-                manifest["report_error"]=str(exc);manifest["status"]="error";note(path,traceback.format_exc())
-            note(path,f"Sweep completed: {manifest['status']}")
-            finalize(path,manifest)
+            with runtime_lock(): manifest=execute_sweep(path,config)
         _publish({"status":manifest["status"],"run_dir":str(path)})
         return 0 if manifest["status"]=="passed" else 1
     except Exception as exc:

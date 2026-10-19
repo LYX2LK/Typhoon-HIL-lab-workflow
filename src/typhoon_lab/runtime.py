@@ -1,4 +1,5 @@
 """Execute supported models on Virtual HIL and preserve real data."""
+from copy import deepcopy
 from importlib.metadata import version
 from pathlib import Path
 import json
@@ -253,4 +254,31 @@ def execute_case(run_dir,config):
         manifest["status"]="error";note(run_dir,traceback.format_exc())
     note(run_dir,f"Case completed: {manifest['status']}")
     finalize(run_dir,manifest)
+    return manifest
+
+
+def execute_sweep(path,config):
+    """Execute one validated RLC sweep; the caller owns the runtime lock."""
+    from .runtime import execute_case,environment,snapshot_code
+    from .reporting import write_sweep_report
+    manifest={"schema_version":1,"kind":"sweep","model":"rlc_filter","backend":"virtual_hil",
+              "started_at":now(),"environment":environment(),"code_sha256":snapshot_code(path),
+              "cases":[],"status":"error"}
+    write_json(path/"config.json",config)
+    for index,value in enumerate(config["sweep"]["values"]):
+        case_id=f"case_{index+1:02d}_rin_{value:g}"
+        case_path=path/"cases"/case_id;case_path.mkdir(parents=True)
+        case_config=deepcopy(config);del case_config["sweep"]
+        case_config["circuit"]["rin_ohm"]=value
+        note(path,f"Running {case_id}")
+        case=execute_case(case_path,case_config)
+        manifest["cases"].append({"case_id":case_id,"relative_dir":case_path.relative_to(path).as_posix(),
+                                  "status":case["status"],"rin_ohm":value})
+    states=[x["status"] for x in manifest["cases"]]
+    manifest["status"]="passed" if states and all(x=="passed" for x in states) else ("error" if "error" in states else "failed")
+    try: write_sweep_report(path,manifest)
+    except Exception as exc:
+        manifest["report_error"]=str(exc);manifest["status"]="error";note(path,traceback.format_exc())
+    note(path,f"Sweep completed: {manifest['status']}")
+    finalize(path,manifest)
     return manifest

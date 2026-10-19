@@ -2,6 +2,14 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-19：新 Clone 发现与案例串行编排
+
+发现与单案例校验分开返回，缺失本机依赖提供结构化标记。新增 run-case 统一预检、串行执行、复核与自动索引。107 项单元测试通过；新 Clone 无电机模型时仍可发现 RLC，预检受阻不写结果。电机两工况、RLC 基准与扫描通过；Boost 四项扰动保留性能 failed，全部记录复核通过。批次报告重建及再次复核通过，既有结果哈希不变。
+
+- [完整验收与命令](../results/agent-tasks/20261019-case-discovery-run-case/summary.md)
+- [新 Clone 检查](../results/agent-tasks/20261019-case-discovery-run-case/clone-check.json)
+- [实际批次与关联](../results/agent-tasks/20261019-case-discovery-run-case/live-results.json)
+
 ## 2026-10-19：案例接收、CLI JSON 与感应电机接入
 
 完成模型技术预验、五个案例描述、显式适配器注册、只读发现/校验、版本化 JSON 与共享 skill 路线选择。感应电机实际核实相电压定义、速度参考和负载选择；1430/850 rpm 两工况通过全窗口 1% 项目教学判据。93 项单元测试通过，RLC 基准/扫描、Boost 阶跃、整流基准回归及历史记录副本兼容检查完成。原始记录与已有暂存修改保留，新增官方模型和面板作为本机依赖排除 Git。

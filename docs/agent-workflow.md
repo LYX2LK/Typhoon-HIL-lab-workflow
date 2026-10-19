@@ -25,7 +25,7 @@
 
 > 按感应电机案例运行 1430 rpm 和 850 rpm 两个独立启动工况。核对实际速度参考、负载指令和采样窗口，比较全窗口最大误差、超限点数及判据结论，返回真实目录并完成复核。
 
-需要结构化工具返回时使用 [JSON 协议](case-interface.md)，支持子命令前后位置。`run` 返回的 record_status 为 null，须以实际 verify 结果交付记录一致性。
+需要结构化工具返回时使用 [JSON 协议](case-interface.md)，支持子命令前后位置。`run-case --case im_speed_tracking --json` 会顺序执行已登记配置、实际复核并自动关联结果；其 record_status 来自复核。单份配置的 `run` 返回 record_status=null，须以实际 verify 结果交付记录一致性。
 
 ### 运行 RLC 基准
 

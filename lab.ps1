@@ -25,7 +25,7 @@ $env:TYPHOON_LAB_INSTALL = $typhoonInstall
 exit $LASTEXITCODE
 } catch {
     if (-not $jsonMode) { throw }
-    $knownCommands = @('doctor','smoke','inspect','run','sweep','report','verify','compare-rectifier','list-cases','validate-case')
+    $knownCommands = @('doctor','smoke','inspect','run','sweep','report','verify','compare-rectifier','list-cases','validate-case','run-case')
     $selectedCommand = @($LabArguments | Where-Object { $_ -in $knownCommands }) | Select-Object -First 1
     $response = [ordered]@{
         schema_version = 1; command = $selectedCommand; status = 'error'; run_dir = $null

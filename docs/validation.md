@@ -16,6 +16,7 @@
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
 | 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
 | 既有记录兼容 | RLC 通过与 Boost 性能失败记录的完整副本均完成 verify→report→verify，原状态保留；[实际命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)、[原记录保护](../results/agent-tasks/20261019-case-onboarding/preservation.json) |
+| 案例发现与编排 | 新 Clone 缺失电机依赖仍可发现 RLC；run-case 串行执行并自动复核、登记索引。107 项测试及电机/RLC/Boost 批次验收通过；Boost 性能失败保持原判据。[证据](../results/agent-tasks/20261019-case-discovery-run-case/summary.md) |
 | 新模型和趋势 | 单相桥整流基准、低输入、重载与离线比较均通过；[实际目录与复核](../results/20261015-rectifier-acceptance/actual_runs.json)，[图表 QA](../results/20261015-rectifier-acceptance/visual_qa.json) |
 | GUI 操作 | RLC 教学副本编译加载、Virtual HIL、面板参数、信号、周期波形与启停已实测；[证据](../results/20261015-gui-validation/gui-validation.json) |
 | Agent 与本机搬迁 | 未继承父对话的新子代理按明确任务和材料完成 RLC 扫描、Boost 阶跃与 CSV 独立复算；中文空格目录、其他 cwd 的环境与实验检查通过；[记录](../results/20261015-160620-agent-onboarding-ea232d/summary.md) |

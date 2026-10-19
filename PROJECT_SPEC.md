@@ -11,13 +11,13 @@
 | single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
 | induction_motor_closed_loop | 独立启动的转速跟踪、实际参考与负载指令观测 | schema_version=2，空 events |
 
-运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、report、verify、compare-rectifier。`model` 决定案例，`schema_version` 标识配置结构；事件记录由适配器 `has_events` 能力决定。
+运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、inspect、smoke、run、sweep、run-case、report、verify、compare-rectifier。配置中的 `model` 选择适配器，`case_id` 组织测试问题与配置引用，`schema_version` 标识配置结构；事件记录由适配器 `has_events` 能力决定。
 
 配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md)、[Boost 说明](docs/boost-experiments.md) 与 [单相桥整流说明](docs/rectifier-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
 
 ## 执行器与适配器
 
-案例目录、字段与路径边界、显式注册及 JSON 协议见 [案例与 CLI 接口](docs/case-interface.md)。案例标识与模型标识分离；案例文件不选择 Python 类。`list-cases`、`validate-case` 不调用 API 或写结果。`--json` 仅改变输出通道与响应信封，保持相同实验逻辑和退出码；`record_status` 只在实际复核后填写。
+案例目录、字段与路径边界、显式注册及 JSON 协议见 [案例与 CLI 接口](docs/case-interface.md)。案例标识与模型标识分离；案例文件不选择 Python 类。`list-cases`、`validate-case` 不调用 API 或写结果。`--json` 仅改变输出通道与响应信封，保持相同实验逻辑和退出码；`record_status` 只在实际复核后填写。发现命令的成功不依赖所有案例校验通过，各案例保留其可用性和缺口。`run-case` 先校验全部输入，再复用执行器串行运行并逐项复核，自动保存批次及本机证据索引；性能失败继续，执行或记录异常停止。
 
 共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告；接口与模型时序见 [接入方法](docs/model-integration.md#实现适配器)。
 
@@ -29,7 +29,7 @@
 
 ## 记录与状态
 
-每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 保存事件记录，扫描保存子工况与比较汇总；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
+每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 保存事件记录，扫描保存子工况与比较汇总；案例批次保存输入快照、子工况关联、汇总报告和最终复核；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
 
 原始 CSV 保持不变，分析拒绝缺失或无效数据。图表、指标及报告指向同一次运行，记录时间包含时区偏移；缺失 UTC 触发时戳保留 null。
 

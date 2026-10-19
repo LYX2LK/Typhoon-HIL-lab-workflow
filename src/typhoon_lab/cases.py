@@ -108,7 +108,7 @@ def runtime_evidence(case, configs, origin, root):
     return out
 
 
-def validate_case(selector, root=None):
+def validate_case(selector, root=None, *, check_evidence=True):
     root = Path(root or PROJECT).resolve()
     integrity = {'status': 'failed', 'problems': []}
     support = {'status': 'not_checked', 'registered': False, 'capabilities': None,
@@ -116,6 +116,7 @@ def validate_case(selector, root=None):
     runtime = {'status': 'not_verified', 'simulation_verified': False, 'runs': []}
     case = {}
     configs = {}
+    missing = []
     origin = None
     try:
         path = case_path(selector, root)
@@ -149,6 +150,10 @@ def validate_case(selector, root=None):
                 integrity['problems'].append(f'invalid {label} source hash')
             elif not source.is_file():
                 integrity['problems'].append(f'missing {label}: {source.name}; copy from the documented local installation')
+                source_origin = origin if label == 'model' else origin['panel']
+                missing.append({'kind': label, 'path': source.relative_to(root).as_posix(),
+                                'sha256': digest,
+                                'installation_relative_path': source_origin.get('installation_relative_path')})
             elif sha256(source) != digest:
                 integrity['problems'].append(f'{label} differs from recorded source hash')
         support['registered'] = case['model_id'] in supported_models()
@@ -196,12 +201,14 @@ def validate_case(selector, root=None):
                 support['status'] = 'failed'
                 support['problems'].append(f'{rel}: configuration validator is unavailable')
         integrity['status'] = 'passed' if not integrity['problems'] else 'failed'
-        if integrity['status'] == support['status'] == 'passed':
+        if check_evidence and integrity['status'] == support['status'] == 'passed':
             runtime = runtime_evidence(case, configs, origin, root)
     except (OSError, ValueError, KeyError, TypeError) as exc:
         integrity['problems'].append(str(exc))
     passed = integrity['status'] == support['status'] == 'passed'
     return {'status': 'passed' if passed else 'failed', 'case_id': case.get('case_id') if isinstance(case, dict) else None,
+            'availability': 'missing_local_dependency' if missing else ('available' if passed else 'unavailable'),
+            'missing_local_dependencies': missing,
             'case': case, 'integrity': integrity, 'software_support': support,
             'runtime_validation': runtime, 'scope': 'read-only static checks; optional evidence recomputation; no API calls or simulation',
             'next_steps': [] if passed else ['Resolve reported material/configuration gaps or implement the missing Adapter before execution.']}
@@ -210,6 +217,12 @@ def validate_case(selector, root=None):
 def list_cases(root=None):
     root = Path(root or PROJECT).resolve()
     boundary = reference(root, 'cases')
+    if not boundary.is_dir():
+        raise FileNotFoundError('project cases/ directory is missing')
     items = [validate_case(p.relative_to(root).as_posix(), root) for p in sorted(boundary.glob('*/case.json'))]
-    return {'status': 'passed' if all(i['status'] == 'passed' for i in items) else 'failed',
+    return {'status': 'passed', 'discovery_status': 'passed',
+            'summary': {'total': len(items),
+                        'static_passed': sum(i['status'] == 'passed' for i in items),
+                        'static_failed': sum(i['status'] != 'passed' for i in items),
+                        'missing_local_dependency': sum(i['availability'] == 'missing_local_dependency' for i in items)},
             'cases': items, 'registered_models': list(supported_models()), 'simulation_started': False}

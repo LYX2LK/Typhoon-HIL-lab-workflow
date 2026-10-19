@@ -63,7 +63,10 @@ class CaseTests(unittest.TestCase):
     def test_missing_and_modified_model(self):
         p=self.root/'models/rlc_filter.tse';p.write_bytes(b'changed')
         self.assertEqual(self.check()['integrity']['status'],'failed')
-        p.unlink();self.assertEqual(self.check()['status'],'failed')
+        p.unlink();r=self.check();self.assertEqual(r['status'],'failed')
+        self.assertEqual(r['availability'],'missing_local_dependency')
+        self.assertEqual(r['missing_local_dependencies'][0]['path'],'models/rlc_filter.tse')
+        self.assertEqual(list_cases(self.root)['status'],'passed')
 
     def test_unknown_adapter_is_distinct_from_material_integrity(self):
         self.case['model_id']='unknown';self.save()
@@ -115,3 +118,27 @@ class CaseTests(unittest.TestCase):
             self.assertFalse(self.check()['runtime_validation']['simulation_verified'])
         self.save();self.config['model']='boost_closed_loop';self.write('configs/run.json',self.config)
         self.assertEqual(self.check()['status'],'failed')
+
+    def test_bad_case_does_not_fail_discovery_or_hide_good_case(self):
+        folder=self.root/'cases/broken';folder.mkdir()
+        (folder/'case.json').write_text('{bad JSON',encoding='utf-8')
+        result=list_cases(self.root)
+        self.assertEqual(result['status'],'passed')
+        self.assertEqual(result['summary'],{'total':2,'static_passed':1,'static_failed':1,'missing_local_dependency':0})
+        self.assertEqual(len(result['cases']),2)
+        self.assertEqual(next(c for c in result['cases'] if c['case_id']=='demo')['status'],'passed')
+
+    def test_missing_panel_is_structured_and_hash_mismatch_is_not_missing(self):
+        self.write('models/origin.json',{'rlc_filter':{'sha256':sha256(self.root/'models/rlc_filter.tse'),
+             'panel':{'sha256':'a'*64,'installation_relative_path':'examples/panel.cus'}}})
+        r=self.check();self.assertEqual(r['availability'],'missing_local_dependency')
+        self.assertEqual(r['missing_local_dependencies'][0]['kind'],'panel')
+        self.assertEqual(r['missing_local_dependencies'][0]['installation_relative_path'],'examples/panel.cus')
+        (self.root/'models/rlc_filter.cus').write_bytes(b'wrong hash')
+        r=self.check();self.assertEqual(r['availability'],'unavailable')
+        self.assertEqual(r['missing_local_dependencies'],[])
+
+    def test_missing_catalog_is_a_discovery_error(self):
+        import shutil
+        shutil.rmtree(self.root/'cases')
+        with self.assertRaises(FileNotFoundError):list_cases(self.root)

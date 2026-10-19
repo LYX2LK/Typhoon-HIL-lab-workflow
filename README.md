@@ -19,7 +19,7 @@
 
 首次使用建议先做 RLC，再做 Boost；随后用单相整流学习新案例接入。已熟悉统一入口时，可直接选择相应模型的实验配置。
 
-案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。静态通过后仍需实际编译和采集验证。电机模型与面板为需从匹配安装复制的本机依赖。
+案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。列表发现成功与单案例校验分开返回；缺失本机模型的案例标为 `missing_local_dependency`。静态通过后仍需实际编译和采集验证。电机模型与面板为需从匹配安装复制的本机依赖。
 
 ## 准备环境并运行
 
@@ -37,6 +37,7 @@ Set-Location 'D:\Typhoon\lab-workflow'
 
 | 操作 | 命令 |
 |---|---|
+| 按案例串行运行全部工况并复核 | `.\lab.ps1 run-case --case im_speed_tracking --json` |
 | 检查 Boost 模型 | `.\lab.ps1 inspect --model boost_closed_loop` |
 | 扫描 RLC 输入电阻 | `.\lab.ps1 sweep --config configs/rlc_sweep.json` |
 | 运行 Boost 基准 | `.\lab.ps1 run --config configs/boost_baseline.json` |
@@ -46,6 +47,8 @@ Set-Location 'D:\Typhoon\lab-workflow'
 | 检查单相整流模型 | `.\lab.ps1 inspect --model single_phase_rectifier` |
 | 运行单相整流基准 | `.\lab.ps1 run --config configs/rectifier_baseline.json` |
 | 低输入、重载与趋势比较 | 按 [整流教程](docs/rectifier-experiments.md) 执行另两份配置与比较命令 |
+
+`run-case` 按案例配置顺序执行，自动复核各结果并更新本机证据索引；返回的 `run_dir` 为包含各工况的批次目录。性能失败保留原结论并继续，执行或记录异常时停止并登记未运行项。
 
 实验配置的相对路径由入口相对于项目根目录解析。更改工况时另存配置，运行前确定参数、单位、采集窗口和判据。
 
