@@ -51,6 +51,7 @@
 | signals、columns、units、sources | 实际 API 名称、CSV 列序、单位及必需源 |
 | capture_before_start、changes | 采集时机与运行副本的结构改动说明 |
 | has_events | 是否产生事件记录；显式能力标识，不从配置版本推断 |
+| record_events(config) | 同一适配器部分配置有事件时，决定该次运行是否生成、复核 events.json；不提供时沿用 has_events |
 | validate(raw, sweep=False) | 返回规范化配置，拒绝未知字段及无效参数、窗口和采样条件 |
 | inspect_parameters(api) | 静态参数与表达式的来源 |
 | prepare(api, config) | 修改运行副本并回读，返回实际参数 |
@@ -61,6 +62,8 @@
 | report(run_dir, manifest) | 从已有记录生成图和报告，返回输出路径 |
 
 Boost 的 describe_schedule(config) 提供离线排程描述，供 schedule 与 verify 核对使用。接入新的配置结构或事件记录时，需同步分析分派、报告、快照和 verify。
+
+感应电机转速阶跃在每次运行副本中将 Step 与 Sum 接入速度参考通路，保持官方源模型不变。事件发生后由 `LabSpeedReference` 原始波形判定实际生效时刻；[阶跃案例](../cases/im_speed_step/README.md)保存请求、模型触发和首次变化样本。独立启动配置仍不产生事件文件，历史记录由按配置判断的事件能力保持兼容。
 
 配置结构按模型解析：RLC 与单相桥整流均使用 schema_version=1 的稳态布局，Boost 使用 schema_version=2 的动态布局。schema_version 表示结构版本，model 表示案例，事件记录由适配器 has_events 能力决定。接入新模型时逐项核对 CLI 选项、配置、采集、分析、报告、verify 和历史记录兼容性，避免把版本编号当作模型数量。
 

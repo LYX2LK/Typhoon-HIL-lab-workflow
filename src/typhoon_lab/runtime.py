@@ -158,14 +158,14 @@ def execute_smoke(run_dir):
     return manifest
 
 def execute_case(run_dir,config):
-    from .adapters import get_adapter
+    from .adapters import get_adapter, records_events
     adapter=get_adapter(config["model"])
     manifest={"schema_version":adapter.schema_version,"kind":"run","model":adapter.model_id,"backend":"virtual_hil",
               "started_at":now(),"status":"error"}
     api=hil=None;write_report=None;started=capturing=False
     try:
         write_json(Path(run_dir)/"config.json",config)
-        if getattr(adapter,"has_events",False):
+        if records_events(adapter,config):
             write_json(Path(run_dir)/"events.json",{"schema_version":2,"planned":config["events"],"events":[]})
         from .analysis import analyze
         from .reporting import write_report
@@ -235,7 +235,7 @@ def execute_case(run_dir,config):
         require(hil.stop_simulation(),"stop captured simulation");started=False
         note(run_dir,f"Captured {n} samples at {rate:g} samples/s")
         metrics=analyze(Path(run_dir)/"waveforms.csv",config)
-        if getattr(adapter,"has_events",False):
+        if records_events(adapter,config):
             manifest["events"]=metrics["events"]
             write_json(Path(run_dir)/"events.json",{"schema_version":2,"planned":config["events"],"events":metrics["events"]})
         write_json(Path(run_dir)/"metrics.json",metrics);manifest["status"]=metrics["status"]

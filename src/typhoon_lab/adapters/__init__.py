@@ -13,6 +13,11 @@ def supported_models():
     return tuple(ADAPTERS)
 
 
+def records_events(adapter, config):
+    predicate = getattr(adapter, 'record_events', None)
+    return bool(predicate(config) if predicate else getattr(adapter, 'has_events', False))
+
+
 def get_adapter(model_id):
     if model_id not in ADAPTERS:
         raise ValueError(f"unsupported model: {model_id!r}")

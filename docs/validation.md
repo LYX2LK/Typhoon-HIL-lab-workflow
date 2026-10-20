@@ -1,8 +1,8 @@
 # 验证状态与实测结论
 
-本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-19**，模式为 THCC 2026.3 Virtual HIL。案例工具、CLI JSON 与感应电机接入的证据见 [工作组①验收记录](../results/agent-tasks/20261019-case-onboarding/summary.md)。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-19**，模式为 THCC 2026.3 Virtual HIL。2026-10-20 又完成电机运行中转速阶跃专项实测与相关回归，见[动态实验任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)。案例工具、CLI JSON 与感应电机接入的早期证据见 [工作组①验收记录](../results/agent-tasks/20261019-case-onboarding/summary.md)。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
 
-脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况通过预先固定的全窗口 1% 判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
+脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况及 1430→850 rpm 运行中阶跃通过预先固定的项目教学判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
 
 2026-10-20 的专项推进增加了[从空白图自建 RLC 模型的程序练习](modeling-practice.md)和[1000 rpm 陌生实例受控演练](../cases/im_mid_speed_intake/README.md)，均在 Virtual HIL 运行并完成最终复核。自建模型的真人 GUI 重做、真实外来测试实例与其他组员独立交接继续按各自条件验收。
 
@@ -11,12 +11,13 @@
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | [完整测试](../results/agent-tasks/20261019-model-assets-prepare-732cd1/unit-tests.stderr.log) 119 项通过，包含模型准备、文件保护、案例路径边界、JSON 异常、1% 边界与窗口端点 |
+| 脚本逻辑 | 2026-10-20 随动态阶跃完成 126 项 unittest，覆盖事件缺失、错时、电平错误、采样不足、1% 边界、超限和未调定；[任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)。先前[完整测试](../results/agent-tasks/20261019-model-assets-prepare-732cd1/unit-tests.stderr.log)为 119 项 |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
-| 案例与 CLI | 六个案例（含 1000 rpm 受控演练）、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[专项记录](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md) |
+| 案例与 CLI | 七个案例（含 1000 rpm 受控演练及运行中阶跃）、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[动态案例](../cases/im_speed_step/README.md) |
 | 自建模型与接入演练 | 空白图 9 元件、15 连线，新增 V_Rin 实测 400 点，最大 RMS 相对差 0.20207%；1000 rpm 案例评价窗口 40,000 点，最大相对转速误差 0.1671875%；[建模报告](../results/20261020-152740-modeling-practice-c24cdc/report.md)、[案例批次](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md)均通过最终复核 |
 | 公共复核接口 | `records.verify_run` 供 CLI、案例和离线比较调用；旧 RLC passed 与旧 Boost failed 记录只读复算仍保持 record_status=passed；本次 RLC 基准和扫描回归通过。见[任务记录](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md) |
 | 感应电机接口 | 相电压、参考/反馈、恒值负载模式与缩放、控制周期、Virtual HIL 短采集均有实际证据；[接口映射](../cases/im_speed_tracking/README.md) |
+| 感应电机动态阶跃 | 每次运行在模型副本接入 Step 与求和节点，参考探针测量控制器实际输入；事件文件参与复算。5 s/20 kHz 实测、事件前后 ±1% 项目判据均通过；[案例](../cases/im_speed_step/README.md)、[任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md) |
 | 模型本机准备 | 来源清单统一安装相对路径及模型/面板哈希；不含模型的源码副本一键补齐 9 个文件、重复执行跳过，五案例静态通过；该副本的最小回环、RLC 基准与扫描实跑及复核通过。[证据](../results/agent-tasks/20261019-model-assets-prepare-732cd1/summary.md) |
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
 | 数值与图表 | [独立数值复核](../results/20261015-112422-v2-validation-dd212b/independent-numeric-audit.json) 与分析指标一致；[图表核对](../results/20261015-112422-v2-validation-dd212b/plot-qa.json) 包含原始全程和动态细节 |
@@ -38,6 +39,7 @@
 | 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
 | 感应电机 1430 rpm | passed | passed | [报告](../results/20261019-122808-induction_motor_closed_loop-664f11/report.html) |
 | 感应电机 850 rpm | passed | passed | [报告](../results/20261019-122914-induction_motor_closed_loop-dc2ad0/report.html) |
+| 感应电机 1430→850 rpm 运行中阶跃 | passed | passed | [案例批次](../results/20261020-162211-case-im_speed_step-dc3442/report.md)、[子运行报告](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/report.html) |
 | 自建 RLC 测量点练习 | passed | passed | [报告](../results/20261020-152740-modeling-practice-c24cdc/report.md) |
 | 陌生实例演练：1000 rpm | passed | passed | [批次报告](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md) |
 | RLC 基准 | passed | passed | [记录](../results/20261015-113040-rlc-ea344a/report.html) |
@@ -66,7 +68,13 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 
 这些是参考官方断言建立的项目教学判据：采用独立启动、显式常值负载和 20 kHz，与官方共享仿真连续改速、50 kHz 的条件不同。来源与调整见 [判据说明](../cases/im_speed_tracking/acceptance.md)。速度参考 API 回读及参考/负载全程波形均留存；[CSV 独立复算](../results/agent-tasks/20261019-case-onboarding/release-validation/independent-csv.json) 与指标一致。短采集得到有效的性能 failed，错误输入与不完整数据按 error 处理。
 
-下列 RLC、Boost 与整流详细数值保留其原验证记录；本轮回归路径从工作组①记录查阅。
+## 感应电机运行中转速阶跃
+
+在同一次 Virtual HIL 中固定 230 V 相电压 RMS、50 Hz、2 N·m 负载，5 s/20 kHz 共采集 100,000 点；模型于仿真时刻 2 s 将实际送入控制器的参考由 1430 rpm 降至 850 rpm。[事件文件](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/events.json)记录模型触发时刻 2 s、首个变化采样 2.0001005 s，前后样本检测区间为 `(2.0000505, 2.0001005]` s。事件时序、电平均通过；事件缺失、错时或电平错误归为 `error`。
+
+事件前 `[1.5,2)` s 最大相对误差为 **0.576249%**；实际生效后 2 s 起，即 `[4.0001005,5)` s 的 19,998 个评价点，最大相对误差为 **0.133947%**，越限点 0，固定 ±1% 项目教学判据通过。调节时间 **1.2761 s**；沿降速方向的超出量为阶跃幅值的 **0.006009%**，仅作解释指标。完整[波形](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/waveforms.png)、[事件局部图](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/response_detail.png)及[原始 CSV](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/waveforms.csv)均保存；最终 `record_status=passed`、`experiment_status=passed`。来源与适用范围见[阶跃判据](../cases/im_speed_step/acceptance.md)，完整命令、回归和历史记录副本复核见[任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)。
+
+下列 RLC、Boost 与整流详细数值保留其原验证记录；2026-10-20 的 RLC 基准/扫描与 Boost 阶跃回归路径见[动态实验任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)。
 
 ## RLC 数值核对
 

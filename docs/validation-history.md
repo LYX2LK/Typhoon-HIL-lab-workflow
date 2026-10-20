@@ -2,6 +2,14 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-20：感应电机运行中转速阶跃
+
+在本机 THCC 2026.3 Virtual HIL 上完成同一次仿真中的 1430→850 rpm 参考阶跃，5 s/20 kHz 共 100,000 点。事件首变采样为 2.0001005 s，模型触发时刻为 2 s；事件前最大相对误差 0.576249%，实际生效后 2 s 起的最大相对误差 0.133947%，均满足预设 ±1% 项目教学判据。调节时间 1.2761 s，沿降速方向的超出量为阶跃幅值的 0.006009%，后者只作解释。案例批次与直接运行均为 `record_status=passed`、`experiment_status=passed`。126 项 unittest 通过；原有电机两种启动、Boost 阶跃、RLC 基准与扫描回归通过，历史电机记录在副本上完成 `verify → report → verify`。
+
+- [任务记录与命令](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)、[案例教程](../cases/im_speed_step/README.md)、[固定判据](../cases/im_speed_step/acceptance.md)
+- [案例批次报告](../results/20261020-162211-case-im_speed_step-dc3442/report.md)、[子运行最终复核](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/verification.json)、[事件证据](../results/20261020-162211-case-im_speed_step-dc3442/runs/01-im_speed_step_1430_to_850/events.json)
+- [直接运行最终复核](../results/20261020-161748-induction_motor_closed_loop-a89a34/verification.json)、[历史启动记录副本](../results/agent-tasks/20261020-im-speed-step-b47e/historic-startup-copy/verification.json)
+
 ## 2026-10-20：自建模型、陌生实例与复核接口
 
 从空白图建立 RLC 模型，新增输入电阻压降测量点并以 Virtual HIL 采集 400 点；三项 RMS 相对差最大为 0.20207%，3% 教学判据通过。用已有感应电机适配器接入新的 1000 rpm 独立启动案例，批次及记录复核通过；`[2,4)` s 的 40,000 点中最大相对转速误差为 0.1671875%，低于固定 1% 判据。复核函数从 CLI 分离后，RLC 基准与三工况扫描回归通过，旧 RLC passed 与旧 Boost failed 记录只读复算保持原状态。真人 GUI 自建、真实外来实例与跨电脑复现另行验收。

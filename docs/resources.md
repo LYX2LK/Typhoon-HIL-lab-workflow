@@ -2,7 +2,7 @@
 
 本页提供学习材料和测试案例的选择建议，适合有电机或电力电子基础、尚不熟悉 Typhoon/Python 时查阅。目标是先完成一个可解释、可复核的实验，再选择与手头任务相近的案例。核对日期：**2026-10-15（北京时间）**；本机参考安装：**Typhoon HIL Control Center 2026.3**。
 
-感应电机闭环案例的本地模型、官方测试及接口已于 **2026-10-19** 核对，操作入口见 [转速跟踪案例](../cases/im_speed_tracking/README.md)。其他资源沿用各行所列核对日期。
+感应电机闭环案例的本地模型、官方测试及接口已于 **2026-10-19** 核对；2026-10-20 又完成运行中转速阶跃的 Virtual HIL 实测。操作入口见[独立启动案例](../cases/im_speed_tracking/README.md)与[运行中阶跃案例](../cases/im_speed_step/README.md)。其他资源沿用各行所列核对日期。
 
 ## 先按任务选择
 
@@ -16,6 +16,7 @@
 | 让 Agent 执行实验 | 本项目[Agent 工作流](agent-workflow.md) | 能从任务描述追到配置、原始数据、报告及复核结果 |
 | 学自动化接口或修改运行器 | Schematic API → HIL API → TyphoonTest | 先区分模型结构操作、运行操作、数据分析和测试断言 |
 | 接收一个新测试实例 | 本项目[模型接入方法](model-integration.md) → 下方案例表 | 先核对版本、运行模式、输入、信号、判据和设备条件，再建副本运行 |
+| 观察电机运行中改速 | [感应电机运行中阶跃](../cases/im_speed_step/README.md) | 在同一次 5 s Virtual HIL 中观察 1430→850 rpm 参考、转速与电磁转矩，核对事件和跟踪判据 |
 | 用不完整要求练习案例接收 | [1000 rpm 接入演练](../cases/im_mid_speed_intake/README.md) | 列出缺口、判断配置复用、固定教学判据并交付实测记录 |
 
 ## 如何理解核对状态
@@ -52,7 +53,7 @@ Schematic API 负责模型结构与编译，HIL API 负责运行控制与采集�
 | RLC circuit | 从改参、采集到解析值比较；首次实验 | `examples/models/basic electrical circuits/rlc circuit/rlc circuit.tse`；项目入口见[首次实验](first-experiment.md) | 安装 2026.3；本项目使用 Virtual HIL | 安装含例；项目基准与 Rin 扫描已有实际数据及复核记录 | 2026-10-15 |
 | Boost closed loop | 闭环稳态、参考阶跃和输入扰动；完成 RLC 后学习 | `examples/models/general power electronics/boost closed loop/boost closed loop.tse`；[项目教程](boost-experiments.md) | 安装 2026.3；本项目使用 Virtual HIL | 安装含例；四工况均有实测，具体性能状态见 validation | 2026-10-15 |
 | 1ph rectifier | 单相二极管整流桥；学习新模型的信号和判据接入 | `examples/models/general power electronics/1ph rectifier/1ph rectifier.tse`，同目录有 cus | 安装 2026.3；项目实测 Virtual HIL；见[项目教程](rectifier-experiments.md) | 基准、低输入、重载三工况及跨工况比较通过；[验收记录](../results/20261015-rectifier-acceptance/actual_runs.json) | 2026-10-15 |
-| Induction machine closed loop control | 独立启动、速度给定与全窗口误差；有电机基础者 | `examples/models/electrical drives/indm closed loop control/indm closed loop control.tse`；`examples/tests/101_indm_closed_loop_control/test_indm_closed_loop_control.py` | 安装 2026.3；HIL101 Pro 1 编译目标，Virtual HIL 实测；模型/面板为本机依赖 | 接口、负载模式与短采集已核；1430/850 rpm 的工况和判据见 [案例](../cases/im_speed_tracking/README.md)，实测结论见 [验证状态](validation.md) | 2026-10-19 |
+| Induction machine closed loop control | 独立启动，以及运行中 1430→850 rpm 改速；有电机基础者 | `examples/models/electrical drives/indm closed loop control/indm closed loop control.tse`；`examples/tests/101_indm_closed_loop_control/test_indm_closed_loop_control.py` | 安装 2026.3；HIL101 Pro 1 编译目标，Virtual HIL 实测；模型/面板为本机依赖 | 接口与负载模式已核；[独立启动](../cases/im_speed_tracking/README.md)及[动态阶跃](../cases/im_speed_step/README.md)均已实测，结论见[验证状态](validation.md) | 2026-10-20 |
 | Basic loopback tests | pytest 测试函数与参数化；有少量 Python 基础者 | `examples/tests/10_basic_model/test_model_basic.py`、`test_model_parametrized.py`、`model.tse` | 安装 2026.3；所核对的参数化脚本明确设置 `vhil_device=True` | 安装含例且已读脚本；项目 smoke 使用同源模型，原官方 pytest 套件未在本轮执行 | 2026-10-15 |
 | Induction machine with open loop control；[Quick Start](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/realtime_quick_start_guide.html) | 电机开环控制和 SCADA；有电机基础者 | `examples/models/electrical drives/indm open loop control/indm open loop control.tse`，同目录有 cus | 安装 2026.3；官方 Quick Start 提供 HIL 与可用时 Virtual HIL 加载路径，仍需核对模型编译目标 | 网页已核、安装含例；未纳入本项目自动实验或实测 | 2026-10-15 |
 | [Generic PV plant](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/generic_pv_plant.html) | HzWatt 曲线、设定值与测量值断言；微电网／并网方向 | `examples/models/microgrid/pv plant/pv plant (generic)/pv plant gen.tse`；`examples/tests/109_pv_plant_generic/test_pv_plant_generic.py` | 安装 2026.3；官方列实时 HIL101、Base 1；本地测试有 VHIL 分支，但本机可用性需实际编译加载确认 | 网页已核、安装含例并已读加载分支；未实测 | 2026-10-15 |

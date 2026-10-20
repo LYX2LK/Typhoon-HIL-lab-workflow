@@ -30,9 +30,9 @@ def verify_run(run_dir,write=True):
             if manifest["status"]!=stored["status"]: problems.append("manifest status differs from metrics")
             if manifest.get("model", "rlc_filter")!=config["model"] or manifest.get("backend")!=config["backend"]:
                 problems.append("manifest identity differs from config")
-            from .adapters import get_adapter
+            from .adapters import get_adapter, records_events
             adapter=get_adapter(config["model"])
-            if getattr(adapter,"has_events",False):
+            if records_events(adapter,config):
                 events=json.loads((run_dir/"events.json").read_text(encoding="utf-8"))
                 if events!={"schema_version":2,"planned":config["events"],"events":actual["events"]}:
                     problems.append("event record differs from waveform recomputation")

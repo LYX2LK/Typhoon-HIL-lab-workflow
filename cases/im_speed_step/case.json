@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"im_speed_step","model_id":"induction_motor_closed_loop","title":"感应电机运行中转速参考阶跃","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/im_speed_step_1430_to_850.json"],"acceptance_ref":"acceptance.md"}

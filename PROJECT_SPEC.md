@@ -9,9 +9,9 @@
 | rlc_filter | 正弦稳态基准、Rin 参数扫描 | schema_version=1 |
 | boost_closed_loop | 闭环基准、参考阶跃、输入电压跌落与升高 | schema_version=2 |
 | single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
-| induction_motor_closed_loop | 独立启动的转速跟踪、实际参考与负载指令观测 | schema_version=2，空 events |
+| induction_motor_closed_loop | 独立启动的转速跟踪、运行中参考阶跃及实际参考与负载指令观测 | schema_version=2；阶跃配置有一项 events |
 
-运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、prepare-models、inspect、smoke、run、sweep、run-case、report、verify、compare-rectifier。配置中的 `model` 选择适配器，`case_id` 组织测试问题与配置引用，`schema_version` 标识配置结构；事件记录由适配器 `has_events` 能力决定。
+运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、prepare-models、inspect、smoke、run、sweep、run-case、report、verify、compare-rectifier。配置中的 `model` 选择适配器，`case_id` 组织测试问题与配置引用，`schema_version` 标识配置结构；事件能力由适配器声明，具体运行是否保存事件记录由适配器按配置判断。
 
 配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md)、[Boost 说明](docs/boost-experiments.md) 与 [单相桥整流说明](docs/rectifier-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
 
@@ -21,7 +21,7 @@
 
 `prepare-models` 按 `models/origin.json` 的官方条目定位安装源，预检版本、来源及已有本机文件后补齐缺失资产；源模型路径约定保持不变。来源与预留目录见 [模型说明](models/README.md)。
 
-共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告；接口与模型时序见 [接入方法](docs/model-integration.md#实现适配器)。
+共同执行器负责来源核验、模型复制、编译、加载、互斥、采集、墙钟超时、清理、快照和最终清单。模型适配器负责配置校验、参数映射、信号单位、初始化、事件排程、分析与报告；接口与模型时序见 [接入方法](docs/model-integration.md#实现适配器)。Boost 保持原有事件记录，感应电机仅在阶跃配置中生成事件记录，旧启动记录继续按无事件格式复核。
 
 记录复核函数位于 `src/typhoon_lab/records.py`，供 CLI、案例编排、案例证据检查与离线比较直接调用。`verify_run(run_dir, write=False)` 只读复核，默认 `write=True` 保存 verification.json；复核保持 `record_status` 与 `experiment_status` 分离。自建模型教学练习使用独立 `practice-model` 命令及专属记录类型，方法和证据见[建模练习](docs/modeling-practice.md)，不改变官方模型适配器及案例加载约定。
 
@@ -33,7 +33,7 @@
 
 ## 记录与状态
 
-每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 保存事件记录，扫描保存子工况与比较汇总；案例批次保存输入快照、子工况关联、汇总报告和最终复核；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
+每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 与感应电机阶跃保存事件记录，扫描保存子工况与比较汇总；案例批次保存输入快照、子工况关联、汇总报告和最终复核；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
 
 原始 CSV 保持不变，分析拒绝缺失或无效数据。图表、指标及报告指向同一次运行，记录时间包含时区偏移；缺失 UTC 触发时戳保留 null。
 

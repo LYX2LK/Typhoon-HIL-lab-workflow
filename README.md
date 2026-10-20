@@ -13,6 +13,7 @@
 | 改变 Rin，比较稳态 RMS 与解析值 | RLC | [参数与指标](docs/experiments.md) |
 | 观察闭环参考阶跃和输入电压扰动 | Boost | [动态实验](docs/boost-experiments.md) |
 | 比较电机独立启动后的转速跟踪 | 感应电机闭环 | [电机案例](cases/im_speed_tracking/README.md) |
+| 观察运行中转速参考阶跃与闭环响应 | 感应电机闭环 | [转速阶跃动态实验](cases/im_speed_step/README.md) |
 | 练习接收简短的新电机测试要求 | 感应电机闭环 | [1000 rpm 接入演练](cases/im_mid_speed_intake/README.md) |
 | 查找案例并检查材料与代码支持 | 案例目录 | [案例与 CLI 接口](docs/case-interface.md) |
 | 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
@@ -41,6 +42,7 @@ Set-Location 'D:\Typhoon\lab-workflow'
 | 操作 | 命令 |
 |---|---|
 | 按案例串行运行全部工况并复核 | `.\lab.ps1 run-case --case im_speed_tracking --json` |
+| 运行电机转速阶跃并复核 | `.\lab.ps1 run-case --case im_speed_step --json` |
 | 运行自建 RLC 模型练习 | 按[建模练习](docs/modeling-practice.md)创建模型，再执行 `practice-model` |
 | 检查 Boost 模型 | `.\lab.ps1 inspect --model boost_closed_loop` |
 | 扫描 RLC 输入电阻 | `.\lab.ps1 sweep --config configs/rlc_sweep.json` |
@@ -73,11 +75,11 @@ Set-Location 'D:\Typhoon\lab-workflow'
 | 实际参数、模型与执行环境 | `config.json`、`model.tse`、`manifest.json` |
 | 原始数据、信号单位和采集时间 | `waveforms.csv`、`capture.json` |
 | 指标、分析窗口与判据 | `metrics.json` |
-| 动态事件的实际生效证据 | Boost 运行目录的 `events.json` |
+| 动态事件的实际生效证据 | Boost 或电机阶跃运行目录的 `events.json` |
 | 图表、解释与执行问题 | `report.html` / `report.md`、`run.log` |
 | 源码与结果复核 | `code_snapshot/`、`verification.json` |
 
-RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态工况同时提供完整启动波形和事件区间细节图。结果始终写入新目录。
+RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 与电机阶跃动态工况同时提供完整启动波形和事件区间细节图。结果始终写入新目录。
 
 实验状态分为 `passed`、`failed`、`error`、`skipped`。复核输出中的 `record_status` 表示记录与复算是否一致，`experiment_status` 表示实验是否满足判据；总状态要求两者均通过。具体已验证能力、未达标项目和证据集中在 [验证状态](docs/validation.md)。
 
