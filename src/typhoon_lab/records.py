@@ -4,12 +4,14 @@ import json
 import math
 from .config import load_config
 from .utils import now, sha256, write_json
+from .versions import record_version_problems
 
 def verify_run(run_dir,write=True):
     from .analysis import analyze
     run_dir=Path(run_dir).resolve()
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
-    problems=[]
+    version_problems=record_version_problems(manifest)
+    problems=list(version_problems)
     child_experiment_problems=[]
     for rel,expected in manifest.get("artifacts",{}).items():
         p=(run_dir/rel).resolve()
@@ -20,9 +22,13 @@ def verify_run(run_dir,write=True):
         snapshot=(run_dir/"code_snapshot"/rel).resolve()
         if not snapshot.is_relative_to(run_dir) or not snapshot.is_file() or sha256(snapshot)!=expected:
             problems.append(f"code snapshot differs from recorded version: {rel}")
-    if manifest.get("kind")=="run" and (run_dir/"metrics.json").exists():
+    if version_problems:
+        problems.append("metric recomputation skipped for unsupported record or analysis version")
+    elif manifest.get("kind")=="run" and (run_dir/"metrics.json").exists():
         try:
             config=load_config(run_dir/"config.json")
+            if manifest.get("configuration_schema_version",config["schema_version"])!=config["schema_version"]:
+                problems.append("configuration_schema_version differs from saved config")
             actual=analyze(run_dir/"waveforms.csv",config)
             stored=json.loads((run_dir/"metrics.json").read_text(encoding="utf-8"))
             for key in (["status","signals","capture","checks"] if config["model"]=="rlc_filter" else list(actual)):
@@ -74,6 +80,13 @@ def verify_run(run_dir,write=True):
                 if rel not in manifest.get("artifacts",{}): problems.append(f"required practice artifact is not hashed: {rel}")
         except Exception as exc: problems.append(f"practice recomputation error: {exc}")
     elif manifest.get("kind")=="sweep":
+        if "configuration_schema_version" in manifest:
+            try:
+                config=load_config(run_dir/"config.json",sweep=True)
+                if manifest["configuration_schema_version"]!=config["schema_version"]:
+                    problems.append("configuration_schema_version differs from saved config")
+            except Exception as exc:
+                problems.append(f"sweep configuration validation error: {exc}")
         states=[]
         for case in manifest.get("cases",[]):
             path=(run_dir/case["relative_dir"]).resolve()

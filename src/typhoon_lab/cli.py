@@ -94,8 +94,12 @@ def _run(argv=None):
             return 0 if result["status"]=="passed" else 1
         if args.command=="report":
             from .reporting import write_report,write_sweep_report
+            from .versions import record_version_problems
             path=resolve_project_file(args.run_dir)
             manifest=json.loads((path/"manifest.json").read_text(encoding="utf-8"))
+            version_problems=record_version_problems(manifest)
+            if version_problems:
+                raise ValueError("; ".join(version_problems))
             report_names={"report.html","report.md","waveforms.png","response_detail.png","comparison.csv","comparison.png"}
             for rel,expected in manifest.get("artifacts",{}).items():
                 if rel in report_names: continue

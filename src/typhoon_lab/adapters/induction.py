@@ -19,6 +19,30 @@ class InductionMotorAdapter:
     units = dict(zip(columns, ('rpm', 'N m', 'rpm', 'N m')))
     changes = ['Add LabSpeedReference and LabLoadCommand in the run copy; for a speed event, insert LabSpeedStep and LabSpeedSum before rpm_to_w_elec. Preserve the official plant and controller.']
 
+    numeric_rules = {
+        'parameters': {'grid_phase_rms_v': (1, 1000), 'grid_frequency_hz': (1, 100),
+                       'grid_phase_deg': (-360, 360), 'reference_speed_rpm': (200, 1700), 'load_pu': (0, 1)},
+        'capture': {'start_s': (0, 0), 'duration_s': (.02, 5),
+                    'sample_rate_hz': (10000, 200000), 'wall_timeout_s': (10, 300)},
+        'acceptance': {'window_start_s': (0, 5), 'window_end_s': (.001, 5),
+                       'max_relative_speed_error': (.0001, .2), 'min_sample_rate_hz': (10000, 200000),
+                       'min_samples': (256, 100000)},
+    }
+    event_acceptance_rules = {'pre_event_window_s': (.01, 2), 'post_event_delay_s': (.1, 4)}
+    field_dependencies = {'parameters.reference_speed_rpm': {
+        'also_used_during': 'model_copy_before_compile', 'when': 'events_nonempty'}}
+    setting_stages = {'parameters': 'after_load_before_start', 'capture': 'capture_setup',
+                      'acceptance': 'analysis_only'}
+    event_capabilities = {'max_per_run': 1, 'targets': {
+        'reference_speed_rpm': {'value_minimum': 200, 'value_maximum': 1700,
+                                'setting_stage': 'model_copy_before_compile'}},
+        'time_unit': 's', 'time_quantum_s': CONTROL_PERIOD_S,
+        'time_minimum_s': .02, 'time_minimum_ref': 'acceptance.pre_event_window_s',
+        'time_maximum_ref': 'capture.duration_s'}
+    conditional_constraints = ['event_changes_value', 'event_time_within_capture',
+                               'capture_contains_pre_and_post_event_windows',
+                               'capture_samples_within_minimum_and_100000']
+
     def validate(self, raw, sweep=False):
         if sweep:
             raise ValueError('motor cases use independent run configurations; sweep remains RLC-only')
@@ -31,15 +55,9 @@ class InductionMotorAdapter:
         if not isinstance(c['events'], list) or len(c['events']) > 1:
             raise ValueError('motor events must contain zero or one speed-reference step')
         dynamic = bool(c['events'])
-        rules = {
-            'parameters': {'grid_phase_rms_v': (1, 1000), 'grid_frequency_hz': (1, 100),
-                           'grid_phase_deg': (-360, 360), 'reference_speed_rpm': (200, 1700), 'load_pu': (0, 1)},
-            'capture': {'start_s': (0, 0), 'duration_s': (.02, 5), 'sample_rate_hz': (10000, 200000), 'wall_timeout_s': (10, 300)},
-            'acceptance': {'window_start_s': (0, 5), 'window_end_s': (.001, 5),
-                           'max_relative_speed_error': (.0001, .2), 'min_sample_rate_hz': (10000, 200000), 'min_samples': (256, 100000)},
-        }
+        rules = {group: dict(fields) for group, fields in self.numeric_rules.items()}
         if dynamic:
-            rules['acceptance'].update(pre_event_window_s=(.01, 2), post_event_delay_s=(.1, 4))
+            rules['acceptance'].update(self.event_acceptance_rules)
         for group, fields in rules.items():
             if not isinstance(c[group], dict) or set(c[group]) != set(fields):
                 raise ValueError(f'{group} keys must be exactly {sorted(fields)}')
@@ -60,10 +78,11 @@ class InductionMotorAdapter:
             event = c['events'][0]
             if not isinstance(event, dict) or set(event) != {'at_s', 'target', 'value'}:
                 raise ValueError('motor event requires at_s, target and value')
-            if event['target'] != 'reference_speed_rpm':
+            if event['target'] not in self.event_capabilities['targets']:
                 raise ValueError('motor event target must be reference_speed_rpm')
-            event['at_s'] = number(event['at_s'], 'events.at_s', .02, cap['duration_s'])
-            event['value'] = number(event['value'], 'events.value', 200, 1700)
+            event['at_s'] = number(event['at_s'], 'events.at_s', self.event_capabilities['time_minimum_s'], cap['duration_s'])
+            bounds = self.event_capabilities['targets'][event['target']]
+            event['value'] = number(event['value'], 'events.value', bounds['value_minimum'], bounds['value_maximum'])
             if event['value'] == c['parameters']['reference_speed_rpm']:
                 raise ValueError('motor event must change the speed reference')
             ticks = event['at_s'] / CONTROL_PERIOD_S

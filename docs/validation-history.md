@@ -2,6 +2,14 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-20：能力查询与记录版本回归
+
+适配器能力查询已覆盖四个模型的字段范围、单位、设置阶段、信号和事件；新运行清单区分配置、记录格式与分析方法版本。133 项单元测试通过，7 个案例静态检查通过。RLC 基准与三工况扫描、单相整流、Boost、感应电机各一份 Virtual HIL 基准运行及最终复核均为 `record_status=passed`、`experiment_status=passed`。旧 RLC 与旧 Boost 清单在不补写版本字段的情况下只读复核通过。
+
+- [任务、命令与范围](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md)
+- [RLC 基准](../results/20261020-200007-rlc-102374/verification.json)、[三工况扫描](../results/20261020-200038-sweep-074000/verification.json)
+- [单相整流](../results/20261020-200210-single_phase_rectifier-b837a8/verification.json)、[Boost](../results/20261020-200237-boost_closed_loop-30e289/verification.json)、[感应电机](../results/20261020-200312-induction_motor_closed_loop-82712b/verification.json)
+
 ## 2026-10-20：感应电机运行中转速阶跃
 
 在本机 THCC 2026.3 Virtual HIL 上完成同一次仿真中的 1430→850 rpm 参考阶跃，5 s/20 kHz 共 100,000 点。事件首变采样为 2.0001005 s，模型触发时刻为 2 s；事件前最大相对误差 0.576249%，实际生效后 2 s 起的最大相对误差 0.133947%，均满足预设 ±1% 项目教学判据。调节时间 1.2761 s，沿降速方向的超出量为阶跃幅值的 0.006009%，后者只作解释。案例批次与直接运行均为 `record_status=passed`、`experiment_status=passed`。126 项 unittest 通过；原有电机两种启动、Boost 阶跃、RLC 基准与扫描回归通过，历史电机记录在副本上完成 `verify → report → verify`。

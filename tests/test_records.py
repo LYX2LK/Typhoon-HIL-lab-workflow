@@ -10,6 +10,7 @@ from typhoon_lab.analysis import expected_rlc_rms
 from typhoon_lab.runtime import execute_smoke,cleanup
 from typhoon_lab.cli import verify_run
 from typhoon_lab.utils import write_json,sha256
+from typhoon_lab.versions import ANALYSIS_METHOD_VERSIONS, record_version_problems
 
 class RecordTests(unittest.TestCase):
     def test_practice_recomputes_extra_measurement_after_hash_refresh(self):
@@ -82,5 +83,28 @@ class RecordTests(unittest.TestCase):
             result=verify_run(path,write=False)
             self.assertEqual(result["status"],"failed")
             self.assertTrue(any("snapshot" in p for p in result["problems"]))
+
+    def test_legacy_record_and_unsupported_format_are_distinguished(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)
+            readings=path/"readings.json"
+            write_json(readings,[{"input":10,"measured":10,"passed":True}])
+            manifest={"kind":"smoke","schema_version":1,"status":"passed",
+                      "artifacts":{"readings.json":sha256(readings)}}
+            write_json(path/"manifest.json",manifest)
+            self.assertEqual(verify_run(path,write=False)["record_status"],"passed")
+            manifest["record_format_version"]=999
+            write_json(path/"manifest.json",manifest)
+            result=verify_run(path,write=False)
+            self.assertEqual(result["record_status"],"failed")
+            self.assertTrue(any("unsupported record_format_version" in p for p in result["record_problems"]))
+
+    def test_analysis_method_revision_is_scoped_to_model(self):
+        with patch.dict(ANALYSIS_METHOD_VERSIONS,{("run","boost_closed_loop"):2}):
+            self.assertEqual(record_version_problems({"kind":"run","model":"rlc_filter",
+                                                      "analysis_method_version":1}),[])
+            problems=record_version_problems({"kind":"run","model":"boost_closed_loop",
+                                              "analysis_method_version":1})
+            self.assertTrue(any("unsupported analysis_method_version" in p for p in problems))
 
 if __name__=="__main__":unittest.main()

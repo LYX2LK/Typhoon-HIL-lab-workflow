@@ -3,7 +3,7 @@ from pathlib import Path, PureWindowsPath
 import json
 import re
 from .utils import PROJECT, sha256
-from .adapters import get_adapter, supported_models
+from .adapters import describe_capabilities, get_adapter, supported_models
 
 FIELDS = {'schema_version', 'case_id', 'model_id', 'title', 'backend',
           'model_origin_ref', 'configs', 'acceptance_ref'}
@@ -168,16 +168,14 @@ def validate_case(selector, root=None, *, check_evidence=True):
                 support['status'] = 'failed'
                 support['problems'].append(f'Adapter dependency or implementation is unavailable: {exc}')
         if adapter is not None:
-            operations = ('prepare', 'initialize', 'schedule', 'check_sampling', 'analyze', 'report')
-            support['capabilities'] = {
-                'configuration_schema_version': getattr(adapter, 'schema_version', None),
-                'run': all(callable(getattr(adapter, method, None)) for method in operations),
-                'runtime_events': bool(getattr(adapter, 'has_events', False)),
-                'capture_signals': list(getattr(adapter, 'signals', ())),
-            }
-            if not support['capabilities']['run']:
+            try:
+                support['capabilities'] = describe_capabilities(adapter)
+            except (AttributeError, KeyError, TypeError, ValueError) as exc:
                 support['status'] = 'failed'
-                support['problems'].append('Adapter does not declare all required run operations')
+                support['problems'].append(f'Adapter capability description is unavailable: {exc}')
+            if support['capabilities'] is not None and not support['capabilities']['run']:
+                support['status'] = 'failed'
+                support['problems'].append('Adapter lacks a required run operation or registered analysis method version')
         for rel in configs_raw:
             config_path = reference(root, rel, allowed=root/'configs')
             raw = read_json(config_path)

@@ -15,6 +15,23 @@ class RectifierAdapter:
     changes = ["Set L, C and load R in the per-run copy; disable Va2's original 2 Hz measurement low-pass so captured voltage preserves physical ripple."]
     mapping = (("load_ohm", "Rload1", "resistance"), ("l_h", "La1", "inductance"), ("c_f", "Cdc1", "capacitance"))
 
+    numeric_rules = {
+        "source": {"rms_v": (10, 400), "frequency_hz": (40, 60), "phase_deg": (-360, 360)},
+        "circuit": {"load_ohm": (25, 200), "l_h": (.0005, .002), "c_f": (.0005, .002)},
+        "capture": {"settle_s": (.5, 10), "duration_s": (.1, 2),
+                    "sample_rate_hz": (10000, 100000), "wall_timeout_s": (30, 300)},
+        "acceptance": {"relative_mean_error": (.0001, .02), "relative_rms_error": (.0001, .02),
+                       "relative_ripple_error": (.0001, .05), "relative_ohm_error": (.0001, .005),
+                       "relative_capacitor_balance": (.0001, .01), "relative_cycle_change": (.0001, .005),
+                       "min_samples": (256, 100000)},
+    }
+    setting_stages = {"source": "after_load_before_start", "circuit": "model_copy_before_compile",
+                      "capture": "capture_setup", "acceptance": "analysis_only"}
+    event_capabilities = {"max_per_run": 0, "targets": {}}
+    conditional_constraints = ["capture_complete_cycles", "min_200_samples_per_cycle",
+                               "integer_samples_per_cycle", "settle_at_least_12_rc_or_0_5_s",
+                               "capture_samples_within_minimum_and_100000"]
+
     def validate(self, raw, sweep=False):
         if sweep:
             raise ValueError("rectifier uses separate fixed configurations; sweep is RLC-only")
@@ -26,11 +43,7 @@ class RectifierAdapter:
             raise ValueError("rectifier steady-state configuration schema_version must be 1")
         if c["model"]!=self.model_id or c["backend"]!="virtual_hil":
             raise ValueError("rectifier requires single_phase_rectifier on virtual_hil")
-        rules={"source":{"rms_v":(10,400),"frequency_hz":(40,60),"phase_deg":(-360,360)},
-               "circuit":{"load_ohm":(25,200),"l_h":(.0005,.002),"c_f":(.0005,.002)},
-               "capture":{"settle_s":(.5,10),"duration_s":(.1,2),"sample_rate_hz":(10000,100000),"wall_timeout_s":(30,300)},
-               "acceptance":{"relative_mean_error":(.0001,.02),"relative_rms_error":(.0001,.02),"relative_ripple_error":(.0001,.05),"relative_ohm_error":(.0001,.005),"relative_capacitor_balance":(.0001,.01),"relative_cycle_change":(.0001,.005),"min_samples":(256,100000)}}
-        for group,limits in rules.items():
+        for group,limits in self.numeric_rules.items():
             if not isinstance(c[group],dict) or set(c[group])!=set(limits):
                 raise ValueError(f"{group} keys must be exactly {sorted(limits)}")
             for key,(low,high) in limits.items():

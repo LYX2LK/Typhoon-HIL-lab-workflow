@@ -73,6 +73,11 @@ def runtime_lock():
         f.close()
 
 def finalize(run_dir,manifest):
+    from .versions import RECORD_FORMAT_VERSION, analysis_method_version
+    manifest.setdefault("record_format_version", RECORD_FORMAT_VERSION)
+    method_version = analysis_method_version(manifest.get("kind"), manifest.get("model"))
+    if method_version is not None:
+        manifest.setdefault("analysis_method_version", method_version)
     manifest["completed_at"]=now()
     manifest["artifacts"]={
         p.relative_to(run_dir).as_posix():sha256(p)

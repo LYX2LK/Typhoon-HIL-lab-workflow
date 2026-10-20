@@ -159,8 +159,11 @@ def execute_smoke(run_dir):
 
 def execute_case(run_dir,config):
     from .adapters import get_adapter, records_events
+    from .versions import require_analysis_method_version
     adapter=get_adapter(config["model"])
     manifest={"schema_version":adapter.schema_version,"kind":"run","model":adapter.model_id,"backend":"virtual_hil",
+              "configuration_schema_version":config["schema_version"],
+              "analysis_method_version":require_analysis_method_version("run",adapter.model_id),
               "started_at":now(),"status":"error"}
     api=hil=None;write_report=None;started=capturing=False
     try:
@@ -261,7 +264,10 @@ def execute_sweep(path,config):
     """Execute one validated RLC sweep; the caller owns the runtime lock."""
     from .runtime import execute_case,environment,snapshot_code
     from .reporting import write_sweep_report
+    from .versions import require_analysis_method_version
     manifest={"schema_version":1,"kind":"sweep","model":"rlc_filter","backend":"virtual_hil",
+              "configuration_schema_version":config["schema_version"],
+               "analysis_method_version":require_analysis_method_version("sweep","rlc_filter"),
               "started_at":now(),"environment":environment(),"code_sha256":snapshot_code(path),
               "cases":[],"status":"error"}
     write_json(path/"config.json",config)

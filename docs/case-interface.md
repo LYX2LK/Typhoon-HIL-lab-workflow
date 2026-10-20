@@ -22,7 +22,7 @@ list-cases 与 validate-case 只读取文件，不调用 Typhoon API、不启动
 
 `validate-case` 及列表内单个案例的静态 status=passed 表示前两类检查通过。runtime_validation.completed 可包含性能 failed 的有效记录；每个工况的 experiment_status 单列。不能从静态结果推断本机可编译或可加载。
 
-software_support.capabilities 列出适配器声明的配置版本、运行接口、事件能力和采集信号；configuration_checks 逐项呈现 passed、failed 或 not_checked。未注册、依赖不可用和校验器尚未实现分别保留缺口信息，未检查的配置不会算作通过。
+`software_support.capabilities` 列出配置版本、运行接口、采集信号、参数字段、事件和扫描能力。`configuration_fields` 按配置组列出字段的类型、单位、闭区间上下限、设置阶段和限制来源；`dependency` 标明少数参数在事件配置下还用于编译前准备。`signal_details` 给出 API 信号名、CSV 列与单位；`events` 给出每次最多事件数、目标、事件值范围及设置时机。`sweep` 仅在支持扫描的适配器中有内容。`conditional_constraints` 标识跨字段约束，最终仍由适配器的 `validate` 判定。数值上下限的 `limit_source=current_validated_scope` 表示当前已实现并校验的范围，不代表设备或 Typhoon API 的永久上限。`configuration_checks` 逐项呈现 passed、failed 或 not_checked。未注册、依赖不可用和校验器尚未实现分别保留缺口信息，未检查的配置不会算作通过。
 
 ## 按案例运行
 

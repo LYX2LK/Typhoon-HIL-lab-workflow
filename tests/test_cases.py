@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 from typhoon_lab.cases import validate_case, list_cases, reference
@@ -59,6 +60,14 @@ class CaseTests(unittest.TestCase):
         self.assertEqual(r['integrity']['status'],'passed')
         self.assertEqual(r['software_support']['status'],'failed')
         self.assertEqual(r['software_support']['configuration_checks'][0]['status'],'not_checked')
+
+    def test_missing_capability_description_is_a_support_gap(self):
+        adapter=SimpleNamespace(validate=lambda raw, sweep=False: raw)
+        with patch('typhoon_lab.cases.get_adapter',return_value=adapter):
+            result=self.check()
+        self.assertEqual(result['integrity']['status'],'passed')
+        self.assertEqual(result['software_support']['status'],'failed')
+        self.assertIsNone(result['software_support']['capabilities'])
 
     def test_missing_and_modified_model(self):
         p=self.root/'models/rlc_filter.tse';p.write_bytes(b'changed')

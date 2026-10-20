@@ -24,6 +24,18 @@ class ProtocolTests(unittest.TestCase):
         value=json.loads(out.getvalue());self.assertEqual(set(value),KEYS)
         return code,value,err.getvalue()
 
+    def test_static_command_preserves_default_and_json_exit_semantics(self):
+        out=io.StringIO()
+        with redirect_stdout(out):
+            default_code=main(['validate-case','--case','rlc_steady_state'])
+        default=json.loads(out.getvalue())
+        json_code,envelope,_=self.invoke(['validate-case','--case','rlc_steady_state','--json'])
+        self.assertEqual(default_code,json_code)
+        self.assertEqual(default['status'],envelope['status'])
+        self.assertEqual(default['software_support']['status'],envelope['result']['software_support']['status'])
+        self.assertIsNone(envelope['record_status'])
+        self.assertIsNone(envelope['experiment_status'])
+
     def test_flag_positions_and_argument_errors(self):
         for args in (['--json','validate-case','--case','rlc_steady_state'],['validate-case','--json','--case','rlc_steady_state']):
             code,r,_=self.invoke(args);self.assertEqual(code,0);self.assertIsNone(r['experiment_status']);self.assertIsNone(r['record_status'])
@@ -58,6 +70,10 @@ class ProtocolTests(unittest.TestCase):
             self.assertEqual(code,1);self.assertEqual(r['status'],'error')
             self.assertIsNone(r['record_status']);self.assertEqual(r['error']['stage'],'execution')
             self.assertIn('injected API unavailable',json.loads((Path(tmp)/'manifest.json').read_text(encoding='utf-8'))['error'])
+            saved=json.loads((Path(tmp)/'manifest.json').read_text(encoding='utf-8'))
+            self.assertEqual(saved['record_format_version'],1)
+            self.assertEqual(saved['configuration_schema_version'],1)
+            self.assertEqual(saved['analysis_method_version'],1)
 
     def test_native_and_python_output_cannot_pollute_protocol(self):
         program="""import sys,os
@@ -84,6 +100,17 @@ with patch('typhoon_lab.cli._run',side_effect=run):
                 code,r,_=self.invoke(['--json','report','--run-dir',str(path)])
             self.assertEqual(code,2);self.assertEqual(r['status'],'error')
             self.assertEqual(r['error']['stage'],'response')
+
+    def test_report_refuses_unknown_record_version_without_changing_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)
+            manifest={'kind':'run','status':'passed','record_format_version':999,'artifacts':{}}
+            write_json(path/'manifest.json',manifest)
+            before=(path/'manifest.json').read_bytes()
+            code,result,_=self.invoke(['--json','report','--run-dir',str(path)])
+            self.assertEqual(code,2)
+            self.assertIn('unsupported record_format_version',result['error']['message'])
+            self.assertEqual((path/'manifest.json').read_bytes(),before)
 
     @unittest.skipUnless(os.name=='nt','PowerShell launcher is Windows-specific')
     def test_launcher_error_uses_same_envelope(self):

@@ -13,6 +13,22 @@ class RLCAdapter:
     mapping = (("rin_ohm", "Rin", "resistance"), ("branch_r_ohm", "R", "resistance"),
                ("l_h", "L", "inductance"), ("c_f", "C", "capacitance"))
 
+    @property
+    def numeric_rules(self):
+        from ..config import RLC_NUMERIC_RULES
+        return RLC_NUMERIC_RULES
+
+    setting_stages = {"source": "after_load_before_start", "circuit": "model_copy_before_compile",
+                      "capture": "capture_setup", "acceptance": "analysis_only"}
+    event_capabilities = {"max_per_run": 0, "targets": {}}
+    @property
+    def sweep_capabilities(self):
+        from ..config import RLC_SWEEP_MAX_VALUES
+        return {"parameter": "circuit.rin_ohm", "minimum_values": 1,
+                "maximum_values": RLC_SWEEP_MAX_VALUES, "values_must_be_distinct": True}
+    conditional_constraints = ["capture_complete_cycles", "min_20_samples_per_cycle",
+                               "capture_samples_within_minimum_and_100000"]
+
     def validate(self, raw, sweep=False):
         from ..config import _validate_rlc
         return _validate_rlc(raw, sweep)

@@ -4,6 +4,16 @@ import json
 import math
 from pathlib import Path
 
+RLC_NUMERIC_RULES = {
+    "source": {"rms_v": (.01, 1000), "frequency_hz": (1, 5000), "phase_deg": (-360, 360)},
+    "circuit": {"rin_ohm": (.01, 1000), "branch_r_ohm": (.001, 100),
+                "l_h": (1e-6, 1), "c_f": (1e-9, .1)},
+    "capture": {"settle_s": (.001, 10), "duration_s": (.001, 5),
+                "sample_rate_hz": (1000, 200000), "wall_timeout_s": (10, 300)},
+    "acceptance": {"relative_rms_error": (.0001, .2), "min_samples": (256, 100000)},
+}
+RLC_SWEEP_MAX_VALUES = 12
+
 def number(value, name, low, high):
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be a number")
@@ -22,15 +32,7 @@ def _validate_rlc(raw, sweep=False):
         raise ValueError("schema_version must be 1")
     if c["model"] != "rlc_filter" or c["backend"] != "virtual_hil":
         raise ValueError("this project supports rlc_filter on virtual_hil")
-    rules = {
-        "source": {"rms_v": (.01,1000), "frequency_hz": (1,5000), "phase_deg": (-360,360)},
-        "circuit": {"rin_ohm": (.01,1000), "branch_r_ohm": (.001,100),
-                    "l_h": (1e-6,1), "c_f": (1e-9,.1)},
-        "capture": {"settle_s": (.001,10), "duration_s": (.001,5),
-                    "sample_rate_hz": (1000,200000), "wall_timeout_s": (10,300)},
-        "acceptance": {"relative_rms_error": (.0001,.2), "min_samples": (256,100000)}
-    }
-    for group, limits in rules.items():
+    for group, limits in RLC_NUMERIC_RULES.items():
         if not isinstance(c[group], dict) or set(c[group]) != set(limits):
             raise ValueError(f"{group} keys must be exactly {sorted(limits)}")
         for key, (low,high) in limits.items():
@@ -56,7 +58,7 @@ def _validate_rlc(raw, sweep=False):
             raise ValueError("sweep requires parameter and values")
         if s["parameter"] != "rin_ohm":
             raise ValueError("the first teaching sweep supports rin_ohm")
-        if not isinstance(s["values"],list) or not 1 <= len(s["values"]) <= 12:
+        if not isinstance(s["values"],list) or not 1 <= len(s["values"]) <= RLC_SWEEP_MAX_VALUES:
             raise ValueError("sweep requires 1 to 12 values")
         s["values"] = [number(v,"sweep.values",.01,1000) for v in s["values"]]
         if len(set(s["values"])) != len(s["values"]):
