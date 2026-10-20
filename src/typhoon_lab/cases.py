@@ -95,7 +95,7 @@ def runtime_evidence(case, configs, origin, root):
                 if not current.is_file() or sha256(current) != digest:
                     raise ValueError('evidence code is stale')
             # Lazy offline recomputation; no Typhoon API import and no writes.
-            from .cli import verify_run
+            from .records import verify_run
             verification = verify_run(path, write=False)
             out['runs'].append({'config': config, 'run_dir': by_config[config],
                                 'record_status': verification['record_status'],

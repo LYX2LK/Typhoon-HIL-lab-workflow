@@ -1,6 +1,6 @@
 # Typhoon HIL 与 AI Agent 教学工作流
 
-本项目提供修改参数、采集波形、比较结果和编写报告的实验流程，面向有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的读者。实验采用官方示例模型和软件自带 Python，通过统一入口执行。
+本项目提供修改参数、采集波形、比较结果和编写报告的实验流程，面向有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的读者。常规案例采用官方示例模型；另有从空白原理图建立的 RLC 教学练习。运行使用软件自带 Python，通过统一入口执行。
 
 运行模式为 **Virtual HIL**：模型在电脑上按仿真时间推进，以非实时方式运行，没有外部 I/O。每次实验保存配置、模型副本、代码快照、实际数据和判定依据。
 
@@ -9,9 +9,11 @@
 | 想完成的任务 | 使用模型 | 阅读材料 |
 |---|---|---|
 | 学会模型操作、采集和报告核对 | RLC | [首次实验](docs/first-experiment.md) |
+| 从空白原理图建模、增加测量点并接入脚本 | 自建 RLC 练习 | [建模练习](docs/modeling-practice.md) |
 | 改变 Rin，比较稳态 RMS 与解析值 | RLC | [参数与指标](docs/experiments.md) |
 | 观察闭环参考阶跃和输入电压扰动 | Boost | [动态实验](docs/boost-experiments.md) |
 | 比较电机独立启动后的转速跟踪 | 感应电机闭环 | [电机案例](cases/im_speed_tracking/README.md) |
+| 练习接收简短的新电机测试要求 | 感应电机闭环 | [1000 rpm 接入演练](cases/im_mid_speed_intake/README.md) |
 | 查找案例并检查材料与代码支持 | 案例目录 | [案例与 CLI 接口](docs/case-interface.md) |
 | 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
 | 学习如何接收并接入新测试案例 | 单相整流 | [整流实验](docs/rectifier-experiments.md) / [接入方法](docs/model-integration.md) |
@@ -39,6 +41,7 @@ Set-Location 'D:\Typhoon\lab-workflow'
 | 操作 | 命令 |
 |---|---|
 | 按案例串行运行全部工况并复核 | `.\lab.ps1 run-case --case im_speed_tracking --json` |
+| 运行自建 RLC 模型练习 | 按[建模练习](docs/modeling-practice.md)创建模型，再执行 `practice-model` |
 | 检查 Boost 模型 | `.\lab.ps1 inspect --model boost_closed_loop` |
 | 扫描 RLC 输入电阻 | `.\lab.ps1 sweep --config configs/rlc_sweep.json` |
 | 运行 Boost 基准 | `.\lab.ps1 run --config configs/boost_baseline.json` |
@@ -84,6 +87,8 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 动态
 - 其他人接手：按 [交接验收](docs/handoff.md) 独立复现。
 - 查看输入扰动的现象与候选机制：阅读 [Boost 扰动分析](docs/boost-disturbance-analysis.md)。
 - 接入其他模型：按 [模型接入方法](docs/model-integration.md) 建立参数、信号、判据和实际证据。
+- 自行建模：按 [建模练习](docs/modeling-practice.md)复现电路、测量点、编译、采集与结果复核。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
+- 安排后续建设：参照 [能力准备与长期规划](docs/roadmap.md)，按近期优先级和长期扩展条件确定范围。
 
 搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。官方模型与面板通过 `prepare-models` 从目标机器的匹配安装补齐；实体 HIL 与外部控制器按具体设备和任务另行验证。

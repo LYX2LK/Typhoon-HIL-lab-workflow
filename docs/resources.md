@@ -11,10 +11,12 @@
 | 现在要做什么 | 优先入口 | 做到什么程度 |
 |---|---|---|
 | 第一次使用软件 | 本项目[环境配置](environment.md) → [首次实验](first-experiment.md) | 完成 doctor、smoke、RLC 实验和 verify |
+| 自行建模和增添测量点 | [自建 RLC 练习](modeling-practice.md) → 安装内 Schematic API | 从空白图完成连线、改参、编译、Virtual HIL 采集和复核；GUI 操作单独记录 |
 | 学模型、面板和采集的 GUI 操作 | 官方 Quick Start、Example Explorer、HIL Specialist 课程 | 能说明打开、编译、加载、启动、改参、采集和停止的对应操作 |
 | 让 Agent 执行实验 | 本项目[Agent 工作流](agent-workflow.md) | 能从任务描述追到配置、原始数据、报告及复核结果 |
 | 学自动化接口或修改运行器 | Schematic API → HIL API → TyphoonTest | 先区分模型结构操作、运行操作、数据分析和测试断言 |
 | 接收一个新测试实例 | 本项目[模型接入方法](model-integration.md) → 下方案例表 | 先核对版本、运行模式、输入、信号、判据和设备条件，再建副本运行 |
+| 用不完整要求练习案例接收 | [1000 rpm 接入演练](../cases/im_mid_speed_intake/README.md) | 列出缺口、判断配置复用、固定教学判据并交付实测记录 |
 
 ## 如何理解核对状态
 

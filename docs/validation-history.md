@@ -2,6 +2,15 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-20：自建模型、陌生实例与复核接口
+
+从空白图建立 RLC 模型，新增输入电阻压降测量点并以 Virtual HIL 采集 400 点；三项 RMS 相对差最大为 0.20207%，3% 教学判据通过。用已有感应电机适配器接入新的 1000 rpm 独立启动案例，批次及记录复核通过；`[2,4)` s 的 40,000 点中最大相对转速误差为 0.1671875%，低于固定 1% 判据。复核函数从 CLI 分离后，RLC 基准与三工况扫描回归通过，旧 RLC passed 与旧 Boost failed 记录只读复算保持原状态。真人 GUI 自建、真实外来实例与跨电脑复现另行验收。
+
+- [任务记录与范围](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md)
+- [自建模型教程](modeling-practice.md)、[运行报告](../results/20261020-152740-modeling-practice-c24cdc/report.md)、[最终复核](../results/20261020-152740-modeling-practice-c24cdc/verification.json)
+- [陌生实例演练](../cases/im_mid_speed_intake/README.md)、[批次报告](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md)、[最终复核](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/verification.json)
+- [RLC 基准复核](../results/20261020-152217-rlc-165441/verification.json)、[三工况扫描复核](../results/20261020-152240-sweep-fb7e46/verification.json)
+
 ## 2026-10-19：官方模型统一为本机依赖
 
 完成安装相对路径、模型及面板哈希统一，新增 prepare-models，根目录官方模型/面板取消 Git 跟踪并保留本机副本；vendor/ 与 custom/ 预留为空。119 项测试通过；不含模型的源码导出在中文空格路径和其他 cwd 下补齐 9 个文件，重复执行全部跳过，五案例静态检查通过。该副本的 Virtual HIL 最小回环、RLC 基准和扫描均通过，记录复核通过。属于同机准备与软件运行验证。

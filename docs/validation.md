@@ -4,6 +4,8 @@
 
 脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况通过预先固定的全窗口 1% 判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
 
+2026-10-20 的专项推进增加了[从空白图自建 RLC 模型的程序练习](modeling-practice.md)和[1000 rpm 陌生实例受控演练](../cases/im_mid_speed_intake/README.md)，均在 Virtual HIL 运行并完成最终复核。自建模型的真人 GUI 重做、真实外来测试实例与其他组员独立交接继续按各自条件验收。
+
 ## 已验证能力
 
 | 项目 | 结论与依据 |
@@ -11,7 +13,9 @@
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
 | 脚本逻辑 | [完整测试](../results/agent-tasks/20261019-model-assets-prepare-732cd1/unit-tests.stderr.log) 119 项通过，包含模型准备、文件保护、案例路径边界、JSON 异常、1% 边界与窗口端点 |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
-| 案例与 CLI | 五个案例、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[验收](../results/agent-tasks/20261019-case-onboarding/summary.md) |
+| 案例与 CLI | 六个案例（含 1000 rpm 受控演练）、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[专项记录](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md) |
+| 自建模型与接入演练 | 空白图 9 元件、15 连线，新增 V_Rin 实测 400 点，最大 RMS 相对差 0.20207%；1000 rpm 案例评价窗口 40,000 点，最大相对转速误差 0.1671875%；[建模报告](../results/20261020-152740-modeling-practice-c24cdc/report.md)、[案例批次](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md)均通过最终复核 |
+| 公共复核接口 | `records.verify_run` 供 CLI、案例和离线比较调用；旧 RLC passed 与旧 Boost failed 记录只读复算仍保持 record_status=passed；本次 RLC 基准和扫描回归通过。见[任务记录](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md) |
 | 感应电机接口 | 相电压、参考/反馈、恒值负载模式与缩放、控制周期、Virtual HIL 短采集均有实际证据；[接口映射](../cases/im_speed_tracking/README.md) |
 | 模型本机准备 | 来源清单统一安装相对路径及模型/面板哈希；不含模型的源码副本一键补齐 9 个文件、重复执行跳过，五案例静态通过；该副本的最小回环、RLC 基准与扫描实跑及复核通过。[证据](../results/agent-tasks/20261019-model-assets-prepare-732cd1/summary.md) |
 | 模型属性 | [核对记录](../results/20261015-112422-v2-validation-dd212b/model-preservation.json) 确认 Boost 官方元件属性及 PI 参数保留，教学参考与监测组件的改动范围可查 |
@@ -34,6 +38,8 @@
 | 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
 | 感应电机 1430 rpm | passed | passed | [报告](../results/20261019-122808-induction_motor_closed_loop-664f11/report.html) |
 | 感应电机 850 rpm | passed | passed | [报告](../results/20261019-122914-induction_motor_closed_loop-dc2ad0/report.html) |
+| 自建 RLC 测量点练习 | passed | passed | [报告](../results/20261020-152740-modeling-practice-c24cdc/report.md) |
+| 陌生实例演练：1000 rpm | passed | passed | [批次报告](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md) |
 | RLC 基准 | passed | passed | [记录](../results/20261015-113040-rlc-ea344a/report.html) |
 | RLC 三工况扫描 | passed | passed | [记录](../results/20261015-113104-sweep-1a2086/report.html) |
 | Boost 基准 | passed | passed | [记录](../results/20261015-113207-boost_closed_loop-e9ac14/report.html) |

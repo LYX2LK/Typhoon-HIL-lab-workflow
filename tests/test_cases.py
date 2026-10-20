@@ -110,7 +110,7 @@ class CaseTests(unittest.TestCase):
                     'model_origin':{'sha256':sha256(self.root/'models/rlc_filter.tse')},
                     'code_sha256':{'models/rlc_filter.tse':sha256(self.root/'models/rlc_filter.tse')}})
         self.write('results/case-validation/demo/latest.json',{'runs':[{'config':'configs/run.json','run_dir':'results/run'}]})
-        with patch('typhoon_lab.cli.verify_run',return_value={'record_status':'passed','experiment_status':'failed'}) as verify:
+        with patch('typhoon_lab.records.verify_run',return_value={'record_status':'passed','experiment_status':'failed'}) as verify:
             r=self.check();self.assertTrue(r['runtime_validation']['simulation_verified'])
             self.assertEqual(r['runtime_validation']['runs'][0]['experiment_status'],'failed')
             self.assertEqual(verify.call_args.kwargs,{'write':False})

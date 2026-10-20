@@ -10,6 +10,7 @@
 
 ## 实现与验证
 
+- 规划新功能或重构时先参照 [能力准备与长期规划](docs/roadmap.md)，明确本次任务对应的近期目标或扩展触发条件；具体范围以用户当前任务为准。
 - 执行器、任务记录、状态及验证要求遵循 [PROJECT_SPEC.md](PROJECT_SPEC.md)；已有模型扩展按 [模型接入方法](docs/model-integration.md)。
 - 配置参数、信号和指标以对应模型说明及当前实现为准，任务入口见 [README](README.md)。
 - 使用配套解释器和 `unittest discover` 运行测试，不联网安装测试依赖。

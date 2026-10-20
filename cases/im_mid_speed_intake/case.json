@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"im_mid_speed_intake","model_id":"induction_motor_closed_loop","title":"陌生实例演练：1000 rpm 独立启动跟踪","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/im_mid_speed_intake.json"],"acceptance_ref":"acceptance.md"}

@@ -6,7 +6,7 @@ import os
 import sys
 
 COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
-            'compare-rectifier', 'list-cases', 'validate-case', 'run-case')
+            'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model')
 
 
 def command_name(argv):
@@ -86,7 +86,7 @@ def decorate(command, result, argv, project, failure=None):
     for p in result.get('files', []):
         artifacts[Path(p).name] = str(p)
     error = failure
-    if error is None and command in ('run', 'smoke', 'sweep', 'run-case') and manifest.get('status') == 'error':
+    if error is None and command in ('run', 'smoke', 'sweep', 'run-case', 'practice-model') and manifest.get('status') == 'error':
         error = {'code': 'execution_error', 'stage': 'execution',
                  'message': manifest.get('error') or manifest.get('report_error') or str(manifest.get('cleanup_issues'))}
     return response(command, result, run_dir=run_dir,

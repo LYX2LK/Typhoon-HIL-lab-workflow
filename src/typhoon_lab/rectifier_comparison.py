@@ -41,7 +41,7 @@ def compare_metrics(records):
             "conditions":rows,"checks":checks,"method":"Identical normalized ideal bridge dynamics imply voltage/current/ripple scale with input amplitude. Heavy-load ratios use the independently integrated LC-R equations. Fixed limits: low-input ratios 2%, heavy-load ratios 3%; additionally require lower mean voltage, larger ripple and larger load current."}
 
 def _read_records(paths):
-    from .cli import verify_run
+    from .records import verify_run
     records={};sources={}
     for role,path in paths.items():
         path=Path(path).resolve()

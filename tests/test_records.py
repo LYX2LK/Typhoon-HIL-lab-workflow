@@ -1,14 +1,52 @@
 """Injected failures verify the record contract without calling Typhoon."""
 from pathlib import Path
 import json
+import math
 import tempfile
 import unittest
 from unittest.mock import patch
+import numpy as np
+from typhoon_lab.analysis import expected_rlc_rms
 from typhoon_lab.runtime import execute_smoke,cleanup
 from typhoon_lab.cli import verify_run
 from typhoon_lab.utils import write_json,sha256
 
 class RecordTests(unittest.TestCase):
+    def test_practice_recomputes_extra_measurement_after_hash_refresh(self):
+        from typhoon_lab.model_practice import recompute_practice
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)
+            config={"source":{"rms_v":10.,"frequency_hz":1000.,"phase_deg":0.},
+                    "circuit":{"rin_ohm":8.,"branch_r_ohm":.1,"l_h":1e-5,"c_f":5e-4},
+                    "acceptance":{"max_relative_rms_error":.03,"minimum_samples":256}}
+            write_json(path/"config.json",config)
+            expected=expected_rlc_rms(config)
+            t=np.arange(400)/20000
+            current=np.sqrt(2)*expected["I_A"]*np.sin(2*math.pi*1000*t)
+            voltage=np.sqrt(2)*expected["Va1_V"]*np.sin(2*math.pi*1000*t)
+            drop=8*current
+            np.savetxt(path/"waveforms.csv",np.column_stack([t,t+.05,current,voltage,drop]),
+                       delimiter=',',header='t_relative_s,t_simulation_s,I_A,Va1_V,V_Rin_V',comments='')
+            metrics=recompute_practice(path);write_json(path/"metrics.json",metrics)
+            (path/"source_model.tse").write_bytes(b"self-built source")
+            (path/"model.tse").write_bytes(b"changed model")
+            manifest={"kind":"modeling_practice","status":"passed",
+                      "source_sha256":sha256(path/"source_model.tse"),
+                      "parameter_change":{"Rin_ohm_before":5.,"Rin_ohm_after":8.},
+                      "discovered_signals":["I","Va1","V_Rin"]}
+            from typhoon_lab.utils import finalize
+            finalize(path,manifest)
+            self.assertEqual(verify_run(path,write=False)["record_status"],"passed")
+            changed=np.loadtxt(path/"waveforms.csv",delimiter=',',skiprows=1)
+            changed[:,4]*=.7
+            np.savetxt(path/"waveforms.csv",changed,delimiter=',',
+                       header='t_relative_s,t_simulation_s,I_A,Va1_V,V_Rin_V',comments='')
+            manifest["artifacts"]["waveforms.csv"]=sha256(path/"waveforms.csv")
+            write_json(path/"manifest.json",manifest)
+            result=verify_run(path,write=False)
+            self.assertEqual(result["record_status"],"failed")
+            self.assertTrue(any("practice metrics" in problem for problem in result["record_problems"]))
+
     def test_api_import_failure_preserves_error_manifest(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)

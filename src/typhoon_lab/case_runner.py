@@ -32,7 +32,7 @@ def write_case_report(path, manifest):
 
 def verify_case_run(path, manifest):
     """Return record and experiment problems without writing child records."""
-    from .cli import verify_run
+    from .records import verify_run
     problems, experiments = [], []
     try:
         definition = reference(path, manifest['case_snapshot'])
@@ -82,7 +82,7 @@ def verify_case_run(path, manifest):
 
 
 def run_case(selector, root=None):
-    from .cli import verify_run
+    from .records import verify_run
     root = Path(root or PROJECT).resolve()
     preflight = validate_case(selector, root, check_evidence=False)
     if preflight['status'] != 'passed':
