@@ -92,6 +92,5 @@ RLC 扫描另有 `cases/`、`comparison.csv` 和 `comparison.png`。Boost 与电
 - 自行建模：按 [建模练习](docs/modeling-practice.md)复现电路、测量点、编译、采集与结果复核。
 - 维护入口、记录或文档：阅读 [实现约定](PROJECT_SPEC.md) 与 [Agent 项目指令](AGENTS.md)。
 - 安排后续建设：参照 [能力准备与长期规划](docs/roadmap.md)，按近期优先级和长期扩展条件确定范围。
-- 准备水泵控制器测试：阅读 [HIL 需求与接入准备](docs/pump-hil-intake.md)，核对需求、已有基础、缺失材料和下一步完成依据。
 
 搬到另一台电脑时保留目录结构，更新本机安装路径，再执行环境检查、最小仿真及所选实验。软件和许可由设备管理者配置。官方模型与面板通过 `prepare-models` 从目标机器的匹配安装补齐；实体 HIL 与外部控制器按具体设备和任务另行验证。

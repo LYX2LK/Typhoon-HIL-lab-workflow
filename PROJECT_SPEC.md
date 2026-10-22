@@ -90,7 +90,6 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | AGENTS | 项目长期约束与维护要求 |
 | README | 项目用途、任务选择和统一入口 |
 | [roadmap](docs/roadmap.md) | 前期能力准备、工程优化、长期扩展方向及启动条件 |
-| [pump-hil-intake](docs/pump-hil-intake.md) | 水泵控制器需求、能力对应、待确认材料和接入推进安排 |
 | environment | 安装路径、运行模式和环境检查 |
 | first-experiment | 以 RLC 学会完整操作流程 |
 | modeling-practice | 从空白模型到脚本采集的练习与 GUI 重做步骤 |
