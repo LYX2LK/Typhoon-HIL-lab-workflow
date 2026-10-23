@@ -91,6 +91,7 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | README | 项目用途、任务选择和统一入口 |
 | [roadmap](docs/roadmap.md) | 前期能力准备、工程优化、长期扩展方向及启动条件 |
 | [pump-hil-intake](docs/pump-hil-intake.md) | 水泵控制器需求、能力对应、待确认材料和接入推进安排 |
+| [external-waveforms](docs/external-waveforms.md) | 当前外部 CSV/PNG 的离线检查、计算定义、输出及元信息要求 |
 | environment | 安装路径、运行模式和环境检查 |
 | first-experiment | 以 RLC 学会完整操作流程 |
 | modeling-practice | 从空白模型到脚本采集的练习与 GUI 重做步骤 |

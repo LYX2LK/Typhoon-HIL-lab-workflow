@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "model": "generic_pv_plant",
+  "backend": "virtual_hil",
+  "parameters": {
+    "frequency_pu": 1
+  },
+  "capture": {
+    "settle_s": 12,
+    "duration_s": 2,
+    "sample_rate_hz": 10000,
+    "wall_timeout_s": 300
+  },
+  "acceptance": {
+    "max_relative_power_error": 0.01,
+    "max_frequency_error_hz": 0.01,
+    "min_samples": 20000
+  }
+}

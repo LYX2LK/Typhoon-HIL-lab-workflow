@@ -15,6 +15,8 @@
 | 比较电机独立启动后的转速跟踪 | 感应电机闭环 | [电机案例](cases/im_speed_tracking/README.md) |
 | 观察运行中转速参考阶跃与闭环响应 | 感应电机闭环 | [转速阶跃动态实验](cases/im_speed_step/README.md) |
 | 练习接收简短的新电机测试要求 | 感应电机闭环 | [1000 rpm 接入演练](cases/im_mid_speed_intake/README.md) |
+| 比较并网频率与光伏稳态有功 | Generic PV plant | [光伏案例](cases/pv_hzwatt/README.md) |
+| 检查收到的四组示波器波形 | 外部 CSV/PNG | [波形离线检查](docs/external-waveforms.md) |
 | 查找案例并检查材料与代码支持 | 案例目录 | [案例与 CLI 接口](docs/case-interface.md) |
 | 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
 | 学习如何接收并接入新测试案例 | 单相整流 | [整流实验](docs/rectifier-experiments.md) / [接入方法](docs/model-integration.md) |
@@ -43,6 +45,7 @@ Set-Location 'D:\Typhoon\lab-workflow'
 |---|---|
 | 按案例串行运行全部工况并复核 | `.\lab.ps1 run-case --case im_speed_tracking --json` |
 | 运行电机转速阶跃并复核 | `.\lab.ps1 run-case --case im_speed_step --json` |
+| 运行光伏 50/51 Hz 两工况并复核 | `.\lab.ps1 run-case --case pv_hzwatt --json` |
 | 运行自建 RLC 模型练习 | 按[建模练习](docs/modeling-practice.md)创建模型，再执行 `practice-model` |
 | 检查 Boost 模型 | `.\lab.ps1 inspect --model boost_closed_loop` |
 | 扫描 RLC 输入电阻 | `.\lab.ps1 sweep --config configs/rlc_sweep.json` |

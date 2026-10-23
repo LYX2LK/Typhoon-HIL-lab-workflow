@@ -1,6 +1,6 @@
 # 验证状态与实测结论
 
-本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近一次完整验证日期为 **2026-10-19**，模式为 THCC 2026.3 Virtual HIL。2026-10-20 又完成电机运行中转速阶跃专项实测与相关回归，见[动态实验任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md)；同日完成能力查询与版本约定的[工程回归](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md)。案例工具、CLI JSON 与感应电机接入的早期证据见 [工作组①验收记录](../results/agent-tasks/20261019-case-onboarding/summary.md)。按日期查找其他记录，见 [验证记录索引](validation-history.md)。
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近专项验证为 **2026-10-23**：完成简短不完整任务的 Agent 分阶段观察与复核，首次澄清失败、文档修订和新上下文重测均有记录；50 Hz 通过，49.25 Hz 超时及重试保护拦截，低频比较未评价。见[评审报告](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md)。2026-10-22 的专项验证包括 THCC 2026.3 Virtual HIL 光伏 50/51 Hz 工况、RLC 基准/扫描回归，以及四组外部波形离线检查；见[任务记录](../results/agent-tasks/20261022-waveforms-pv-a1/task.md)。此前完整验证及电机动态、建模、工程回归的证据按日期保存于[验证记录索引](validation-history.md)。
 
 脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况及 1430→850 rpm 运行中阶跃通过预先固定的项目教学判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
 
@@ -11,12 +11,14 @@
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | 2026-10-20 工程回归 133 项 unittest 通过，涵盖能力描述、旧记录版本兼容及 CLI 返回；[任务记录](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md)。动态阶跃的事件与判据专项测试见[对应记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md) |
+| 脚本逻辑 | 150 项 unittest 通过，新增光伏参考表、信号有效性、错误采集、判据失败、报告与方法版本检查；[日志](../results/agent-tasks/20261022-waveforms-pv-a1/unit-tests.stderr.txt) |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
-| 案例与 CLI | 七个案例（含 1000 rpm 受控演练及运行中阶跃）、四个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[动态案例](../cases/im_speed_step/README.md) |
-| 能力查询与记录版本 | 四个适配器通过案例静态查询提供字段范围、单位、设置阶段、信号及事件能力；7 个案例静态校验通过。新清单区分配置、记录格式和分析方法版本；旧 RLC、Boost 记录只读复核通过。四模型基准及 RLC 扫描在 Virtual HIL 复核通过；[工程回归](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md) |
+| 案例与 CLI | 八个案例（新增光伏 HzWatt）、五个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[动态案例](../cases/im_speed_step/README.md) |
+| 能力查询与记录版本 | 五个适配器通过案例静态查询提供字段范围、单位、设置阶段、信号及事件能力；八个案例静态检查可用。新清单区分配置、记录格式和分析方法版本；旧 RLC、Boost 记录只读复核通过。2026-10-20 的四模型基准及 RLC 扫描在 Virtual HIL 复核通过；[工程回归](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md) |
 | 自建模型与接入演练 | 空白图 9 元件、15 连线，新增 V_Rin 实测 400 点，最大 RMS 相对差 0.20207%；1000 rpm 案例评价窗口 40,000 点，最大相对转速误差 0.1671875%；[建模报告](../results/20261020-152740-modeling-practice-c24cdc/report.md)、[案例批次](../results/20261020-152120-case-im_mid_speed_intake-84c0a8/report.md)均通过最终复核 |
 | 公共复核接口 | `records.verify_run` 供 CLI、案例和离线比较调用；旧 RLC passed 与旧 Boost failed 记录只读复算仍保持 record_status=passed；本次 RLC 基准和扫描回归通过。见[任务记录](../results/agent-tasks/20261020-modeling-intake-a1c9/task.md) |
+| 短任务 Agent 验收 | 两个未继承父对话的上下文完成首次观察与修订后重测；新上下文先确认条件再配置复用。基准通过，低频执行error被如实保留，不能认定全部实验通过。[分阶段评审](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md) |
+| 光伏与外部波形 | 光伏 50/51 Hz 独立稳态及 RLC 回归通过；外部四组 CSV 完成离线检查，标签和导出元信息待补。[任务证据](../results/agent-tasks/20261022-waveforms-pv-a1/task.md) |
 | 感应电机接口 | 相电压、参考/反馈、恒值负载模式与缩放、控制周期、Virtual HIL 短采集均有实际证据；[接口映射](../cases/im_speed_tracking/README.md) |
 | 感应电机动态阶跃 | 每次运行在模型副本接入 Step 与求和节点，参考探针测量控制器实际输入；事件文件参与复算。5 s/20 kHz 实测、事件前后 ±1% 项目判据均通过；[案例](../cases/im_speed_step/README.md)、[任务记录](../results/agent-tasks/20261020-im-speed-step-b47e/task.md) |
 | 模型本机准备 | 来源清单统一安装相对路径及模型/面板哈希；不含模型的源码副本一键补齐 9 个文件、重复执行跳过，五案例静态通过；该副本的最小回环、RLC 基准与扫描实跑及复核通过。[证据](../results/agent-tasks/20261019-model-assets-prepare-732cd1/summary.md) |
@@ -37,6 +39,9 @@
 
 | 实验 | 实验状态 | 记录一致性 | 实际产物 |
 |---|---|---|---|
+| Agent 演练：光伏50 Hz | passed | passed | [报告](../results/20261023-010941-generic_pv_plant-0940d4/report.md) |
+| Agent 演练：49.25 Hz 首次/重试 | error / error | failed / failed（缺少复算指标） | [超时](../results/20261023-011057-generic_pv_plant-0a32a9/report.md)、[保护拦截](../results/20261023-011720-generic_pv_plant-33bbeb/report.md) |
+| 光伏 50/51 Hz 独立稳态 | passed | passed | [批次报告](../results/20261022-200543-case-pv_hzwatt-f08eab/report.md) |
 | 最小回环 | passed | passed | [记录](../results/20261015-113018-smoke-903d97/manifest.json) |
 | 感应电机 1430 rpm | passed | passed | [报告](../results/20261019-122808-induction_motor_closed_loop-664f11/report.html) |
 | 感应电机 850 rpm | passed | passed | [报告](../results/20261019-122914-induction_motor_closed_loop-dc2ad0/report.html) |
@@ -57,6 +62,19 @@
 | Boost 延后输入升高 | failed | passed | [报告](../results/20261015-162354-boost_closed_loop-d2a404/report.html) |
 
 record_status 表示文件与指标复算是否一致，experiment_status 表示实验执行和性能判据的结果。记录一致而性能未达标时，总 status 为 failed，verify 退出码为 1。
+
+## 光伏 HzWatt 与外部波形
+
+两工况分别等待至少 12 s 仿真时间，以 10 kHz 采集 2 s，各 20,000 点参与判定。实测有功与官方参考表比较，误差上限 1%。
+
+| 频率 / Hz | 参考有功 / kW | 实测均值 / kW | 最大相对误差 | 实验 / 记录 |
+|---:|---:|---:|---:|---|
+| 50 | 250 | 250.000000 | 0.00001831% | passed / passed |
+| 51 | 170 | 170.000000 | 0.00002693% | passed / passed |
+
+限额反馈 Pref_fb_kW 在两工况均为 250 kW，来自 HzWatt 前的 Pcurtailment 与额定功率，独立于调频后的输出参考。初次误映射导致的失败及方法版本修正保留在[验证索引](validation-history.md)；当前方法 2 的原始 CSV 独立复算与保存指标一致。操作见[光伏案例](../cases/pv_hzwatt/README.md)。
+
+外部 tu1–tu4 CSV 的只读质量检查通过，导出间隔均约 5 ns；tu2/tu3 的截图采集速率不同，需确认采集/导出关系。幅值和边沿特征见[波形报告](../results/agent-tasks/20261022-waveforms-pv-a1/waveform-audit-final/report.md)，其性能状态为 not_evaluated。这些数据尚无确认的物理标签、控制器验收结论或回放精度证据。
 
 ## 感应电机独立启动
 
@@ -136,6 +154,7 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 
 | 项目 | 状态与完成方式 |
 |---|---|
+| 光伏低频执行恢复 | 本轮49.25 Hz无采样；先确认会话归属和时钟读取/清理异常，恢复后使用冻结配置重新运行并独立复算。参见[后续事项](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md#接下来可做的工作) |
 | 人员独立复现 | 用户要求本轮先不安排；后续按 [交接流程](handoff.md) 由本人记录操作与解释 |
 | GUI 手动操作路径 | RLC 软件界面已实测；[首次实验](first-experiment.md) 已同步实际步骤和截图。人员操作能力另验 |
 | 跨电脑 | 本轮完成同机中文空格路径搬迁；另一台机器的软件、许可和设备条件另行实测 |

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "case_id": "pv_hzwatt",
+  "model_id": "generic_pv_plant",
+  "title": "光伏电站 HzWatt 稳态特性",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pv_hzwatt_50hz.json",
+    "configs/pv_hzwatt_51hz.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

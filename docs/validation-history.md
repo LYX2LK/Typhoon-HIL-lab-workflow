@@ -2,6 +2,34 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-23：不完整任务的 Agent 分阶段验收
+
+给予两个未继承父对话的子代理同一短任务，未透露预期答案和检查清单。首次直接选择三点稳态实验，澄清判断未通过；父代理在启动仿真前中断并保留观察。修订任务条件分类与暂停边界后，新上下文主动询问关键条件；补充两点稳态条件后选择配置复用，经统一入口执行。
+
+50 Hz捕获20,000点，父代理全CSV复算均值250.0000000038 kW，最大相对误差0.0000183105%；实验及记录均passed。49.25 Hz首次在wait_sim超过300 s且stop_simulation清理失败，一次同配置重试被已有运行保护拦截；两次experiment_status=error、record_status=failed（缺少metrics）。三份记录均完成verify→report→verify；没有低频CSV，实际功率增量未评价。
+
+- [四方面评审及后续事项](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md)、[任务入口](../results/agent-tasks/20261022-agent-intake-lowfreq-a1/task.md)
+- [首次观察](../results/skill-validation/20261022-agent-intake-lowfreq-a1/first-observation.json)、[新上下文澄清](../results/skill-validation/20261022-agent-intake-lowfreq-a1/retest-observation.json)、[第二阶段条件](../results/skill-validation/20261022-agent-intake-lowfreq-a1/phase2-task.txt)
+- [命令及原始返回](../results/agent-tasks/20261022-agent-intake-lowfreq-a1/executor02/commands.jsonl)、[父代理独立数值/状态/保护审计](../results/skill-validation/20261022-agent-intake-lowfreq-a1/independent-review.json)
+
+本轮行为观察与文档修订完成，低频实验运行恢复另列后续；不将单场景重测推广为Agent通用可靠性或实体设备验收。
+
+## 2026-10-22：外部波形检查与光伏跨领域接入
+
+四组原始 CSV/PNG 完成只读检查：未发现空行、非有限值、重复/倒序时间或超出舍入容差的不均匀间隔。CSV 均约 5 ns 间隔；tu2/tu3 截图采集速率与导出网格不同，待确认导出关系。tu2 相对起始平台最大下降 0.634120 V；tu4 首次 10%–90% 区间内最大回落 1.411352 V。物理标签与回放保真度未验证。
+
+Generic PV plant 已通过模型接口预验并新增适配器。方法 2 的 50/51 Hz 两工况各采集 20,000 点，平均有功约 250/170 kW，全窗口最大相对误差分别为 0.00001831% 和 0.00002693%，小于固定 1%。频率、使能、限额参考及报警检查通过。光伏批次、RLC 基准与三工况扫描均完成 verify→report→verify，最终 record_status 和 experiment_status 均为 passed。150 项 unittest 通过，八个案例静态检查可用。
+
+接入时发现 Pref_fb_kW 实际来自 HzWatt 前的限额参考。方法 1 误将其与调频后的功率目标比较，51 Hz 产生 failed；该批次及当时 record_status=passed 的复核已保留。依据生成 C 代码的信号路径修正为固定 250 kW 参考检查，提升分析方法版本为 2 后重新运行；功率误差限未放宽。当前复核器拒绝方法 1 的复算，查看初次记录时使用已保存报告与复核，不覆盖历史。
+
+- [完整任务记录](../results/agent-tasks/20261022-waveforms-pv-a1/task.md)、[候选筛选](../results/agent-tasks/20261022-waveforms-pv-a1/candidate-selection.md)
+- [波形检查报告](../results/agent-tasks/20261022-waveforms-pv-a1/waveform-audit-final/report.md)、[来源保护](../results/agent-tasks/20261022-waveforms-pv-a1/source-preservation.json)
+- [光伏批次](../results/20261022-200543-case-pv_hzwatt-f08eab/report.md)、[最终复核](../results/20261022-200543-case-pv_hzwatt-f08eab/verification.json)、[CSV 独立复算](../results/agent-tasks/20261022-waveforms-pv-a1/independent-csv.json)
+- [信号映射证据](../results/agent-tasks/20261022-waveforms-pv-a1/pv-reference-semantics.json)、[初次失败批次](../results/20261022-195853-case-pv_hzwatt-7bb355/report.md)
+- [RLC 基准](../results/20261022-200749-rlc-4bda03/verification.json)、[RLC 扫描](../results/20261022-200820-sweep-269e72/verification.json)、[全部命令与返回码](../results/agent-tasks/20261022-waveforms-pv-a1/validation-commands.json)
+
+本轮 Agent 证据覆盖当前任务的发现、校验、CLI 编排、故障定位、版本处理和结果复核；未另行开展独立新上下文、真人或跨电脑复现。
+
 ## 2026-10-20：能力查询与记录版本回归
 
 适配器能力查询已覆盖四个模型的字段范围、单位、设置阶段、信号和事件；新运行清单区分配置、记录格式与分析方法版本。133 项单元测试通过，7 个案例静态检查通过。RLC 基准与三工况扫描、单相整流、Boost、感应电机各一份 Virtual HIL 基准运行及最终复核均为 `record_status=passed`、`experiment_status=passed`。旧 RLC 与旧 Boost 清单在不补写版本字段的情况下只读复核通过。

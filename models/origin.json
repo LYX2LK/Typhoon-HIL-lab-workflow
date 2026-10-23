@@ -56,5 +56,14 @@
       "installation_relative_path": "examples/models/electrical drives/indm closed loop control/indm closed loop control.cus",
       "sha256": "b1d0e4613bb6c60ebd9ca5a9282c655de63dbbba108a20368d1d19c76e383ca3"
     }
+  },
+  "generic_pv_plant": {
+    "installation_relative_path": "examples/models/microgrid/pv plant/pv plant (generic)/pv plant gen.tse",
+    "sha256": "24e6ffe7273757b5dccf1116174d099a85449709f687f6d48e76a363097fb8b5",
+    "thcc_version": "2026.3",
+    "kind": "official_teaching_example_local_dependency",
+    "redistribution": "unconfirmed",
+    "official_test_relative_path": "examples/tests/109_pv_plant_generic/test_pv_plant_generic.py",
+    "official_test_sha256": "d244badc927216dbef7fbd74fb5042560c5e4b83be788bf4ed507d920f06b284"
   }
 }

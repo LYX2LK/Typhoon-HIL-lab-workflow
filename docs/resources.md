@@ -2,13 +2,13 @@
 
 本页提供学习材料和测试案例的选择建议，适合有电机或电力电子基础、尚不熟悉 Typhoon/Python 时查阅。目标是先完成一个可解释、可复核的实验，再选择与手头任务相近的案例。核对日期：**2026-10-15（北京时间）**；本机参考安装：**Typhoon HIL Control Center 2026.3**。
 
-感应电机闭环案例的本地模型、官方测试及接口已于 **2026-10-19** 核对；2026-10-20 又完成运行中转速阶跃的 Virtual HIL 实测。操作入口见[独立启动案例](../cases/im_speed_tracking/README.md)与[运行中阶跃案例](../cases/im_speed_step/README.md)。其他资源沿用各行所列核对日期。
+感应电机闭环案例的本地模型、官方测试及接口已于 **2026-10-19** 核对；2026-10-20 又完成运行中转速阶跃的 Virtual HIL 实测。操作入口见[独立启动案例](../cases/im_speed_tracking/README.md)与[运行中阶跃案例](../cases/im_speed_step/README.md)。Generic PV plant 的 50/51 Hz 稳态案例已接入，操作与实测范围见[光伏案例](../cases/pv_hzwatt/README.md)。其他资源沿用各行所列核对日期。
 
 ## 案例层次与选择依据
 
 | 层次 | 当前材料 | 项目中的用途与维护位置 |
 |---|---|---|
-| 已有教学与验证案例 | RLC、Boost、单相整流、感应电机等已有配置与记录 | 学习软件与验证公共流程；运行入口在 cases，实际结论在[验证状态](validation.md) |
+| 已有教学与验证案例 | RLC、Boost、单相整流、感应电机、光伏等已有配置与记录 | 学习软件与验证公共流程；运行入口在 cases，实际结论在[验证状态](validation.md) |
 | 具体需求接入对象 | 已收到测试要求但模型、接口或判据仍待补齐的任务，例如[水泵控制器](pump-hil-intake.md) | 在专题文档记录测试目的、材料、缺口和完成依据；条件具备后登记可执行案例 |
 | 应用案例资源 | 官方公开说明、安装示例及供应商介绍的四个用户案例 | 用于理解不同应用和选择接入候选；本页分别注明材料来源、可获得资源及验证状态 |
 
@@ -30,6 +30,8 @@
 | 接收一个新测试实例 | 本项目[模型接入方法](model-integration.md) → 下方案例表 | 先核对版本、运行模式、输入、信号、判据和设备条件，再建副本运行 |
 | 比较不同应用的案例线索 | [供应商应用案例](#供应商介绍的应用案例)及官方模型表 | 比较研究问题、可借鉴方法和材料缺口，按条件选定下一实例 |
 | 观察电机运行中改速 | [感应电机运行中阶跃](../cases/im_speed_step/README.md) | 在同一次 5 s Virtual HIL 中观察 1430→850 rpm 参考、转速与电磁转矩，核对事件和跟踪判据 |
+| 比较并网频率对光伏稳态有功的影响 | [光伏 HzWatt 案例](../cases/pv_hzwatt/README.md) | 独立启动 50/51 Hz 工况，核对 250/170 kW 参考及状态 |
+| 检查外部示波器数据 | [外部波形检查](external-waveforms.md) | 核对格式、时间轴、数值特征及来源缺口，保存原始数据与方法 |
 | 用不完整要求练习案例接收 | [1000 rpm 接入演练](../cases/im_mid_speed_intake/README.md) | 列出缺口、判断配置复用、固定教学判据并交付实测记录 |
 
 ## 把测试要求映射到案例
@@ -45,8 +47,9 @@
 | 单相整流在输入减小或负载加重时，直流均值、纹波和电流如何变化 | 输入与负载条件、测量信号、等待与采样窗口、理论或趋势判据 | [整流基准、低输入与重载](rectifier-experiments.md)的适配器、三工况配置和比较方法 | 新拓扑、信号或判据须重新核对模型接口与参考依据 |
 | 感应电机在给定负载下能否达到并保持目标转速 | 模型与电源条件、负载模式和数值、目标转速、反馈信号、稳态窗口及允许误差 | [独立启动](../cases/im_speed_tracking/README.md)的接口映射与稳态判定；[1000 rpm 演练](../cases/im_mid_speed_intake/README.md)示范配置复用 | 其他负载模式或参考范围先核对适配器能力和实际生效信号 |
 | 感应电机运行中改速后，事件是否生效、多久恢复到允许区间 | 阶跃前后转速、事件时刻、负载、参考与反馈信号、采样窗口和动态判据 | [转速阶跃](../cases/im_speed_step/README.md)的同次运行事件留证、动态分析和报告 | 现有事件是转速参考变化；负载扰动等新事件需另行检查接口并验证 |
+| 光伏电站在不同电网频率下的稳态有功是否符合 HzWatt 参考 | 额定频率和功率、频率点、限额参考、使能、等待与采集窗口、参考曲线及误差限 | [光伏案例](../cases/pv_hzwatt/README.md)的官方表参照、接口读回与全窗口判定 | 当前为单个光伏子系统的独立稳态工况；动态调频、多控制器和 EMS 需专项接入 |
 
-表中案例的实测范围以[验证状态](validation.md)为准。对于下方仅有官方资料或本地示例、尚未接入项目的 PV、EV、实体控制器 PMSM 和 TyphoonSim 模型，先核对设备、许可、仿真模式、模型接口及测试依据；资料可用于选题和接口预验，不能直接当作可运行案例。
+表中案例的实测范围以[验证状态](validation.md)为准。对于下方仅有官方资料或本地示例、尚未接入项目的 EV、实体控制器 PMSM 和 TyphoonSim 模型，先核对设备、许可、仿真模式、模型接口及测试依据；资料可用于选题和接口预验，不能直接当作可运行案例。
 
 确定候选案例后按下表选择实施路径；每条路径都要在本次任务中固定判据，并按[选中案例后的操作顺序](#选中案例后的操作顺序)留存实际证据。
 
@@ -95,7 +98,7 @@ Schematic API 负责模型结构与编译，HIL API 负责运行控制与采集�
 | Induction machine closed loop control | 独立启动，以及运行中 1430→850 rpm 改速；有电机基础者 | `examples/models/electrical drives/indm closed loop control/indm closed loop control.tse`；`examples/tests/101_indm_closed_loop_control/test_indm_closed_loop_control.py` | 安装 2026.3；HIL101 Pro 1 编译目标，Virtual HIL 实测；模型/面板为本机依赖 | 接口与负载模式已核；[独立启动](../cases/im_speed_tracking/README.md)及[动态阶跃](../cases/im_speed_step/README.md)均已实测，结论见[验证状态](validation.md) | 2026-10-20 |
 | Basic loopback tests | pytest 测试函数与参数化；有少量 Python 基础者 | `examples/tests/10_basic_model/test_model_basic.py`、`test_model_parametrized.py`、`model.tse` | 安装 2026.3；所核对的参数化脚本明确设置 `vhil_device=True` | 安装含例且已读脚本；项目 smoke 使用同源模型，原官方 pytest 套件未在本轮执行 | 2026-10-15 |
 | Induction machine with open loop control；[Quick Start](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/realtime_quick_start_guide.html) | 电机开环控制和 SCADA；有电机基础者 | `examples/models/electrical drives/indm open loop control/indm open loop control.tse`，同目录有 cus | 安装 2026.3；官方 Quick Start 提供 HIL 与可用时 Virtual HIL 加载路径，仍需核对模型编译目标 | 网页已核、安装含例；未纳入本项目自动实验或实测 | 2026-10-15 |
-| [Generic PV plant](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/generic_pv_plant.html) | HzWatt 曲线、设定值与测量值断言；微电网／并网方向 | `examples/models/microgrid/pv plant/pv plant (generic)/pv plant gen.tse`；`examples/tests/109_pv_plant_generic/test_pv_plant_generic.py` | 安装 2026.3；官方列实时 HIL101、Base 1；本地测试有 VHIL 分支，但本机可用性需实际编译加载确认 | 网页已核、安装含例并已读加载分支；未实测 | 2026-10-15 |
+| [Generic PV plant](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/generic_pv_plant.html) | HzWatt 曲线、设定值与测量值断言；微电网／并网方向 | `examples/models/microgrid/pv plant/pv plant (generic)/pv plant gen.tse`；`examples/tests/109_pv_plant_generic/test_pv_plant_generic.py` | 安装 2026.3；本机模型编译目标 HIL101 Pro 1，使用 Virtual HIL | [光伏案例](../cases/pv_hzwatt/README.md)已接入 50/51 Hz 独立稳态工况；状态及判据映射修正见[验证页](validation.md) | 2026-10-22 |
 | [Electric vehicle](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/electric_vehicle.html) | 加速性能、转矩／功率曲线、充放电场景；汽车／电驱方向 | `examples/models/automotive/electric vehicle/electric vehicle.tse`；`examples/tests/110_electric_vehicle/test_electric_vehicle.py` | 安装 2026.3；官方列实时 HIL404、Pro 1，并说明实时运行需 Grid Resources；本地测试有 VHIL 分支 | 网页已核、安装含例并已读加载分支；未实测，官方案例本身也含预期不通过的工况 | 2026-10-15 |
 | [PMSM torque control using TI F28379D](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html) | 实体控制器的转矩、电流调节和损耗测试；明确开展 C-HIL 的人员 | `examples/models/hardware in the loop/ti pmsm torque control/ti pmsm torque control.tse`；`examples/tests/119_ti_pmsm_torque_control/test_ti_pmsm_torque_control.py` | 安装 2026.3；官方要求 HIL101 Pro 1、TI F28379D LaunchPad、HIL TI 接口及 UniFlash；包含控制器烧写 | 网页已核、安装含例；尚未做设备接入或烧写；不作为本项目现有 VHIL 任务 | 2026-10-15 |
 | RLC circuit TyphoonSim | 认识两种仿真上下文的差别；进阶比较 | `examples/models/typhoonsim/rlc circuit typhoonsim/rlc circuit typhoonsim.tse` | 安装 2026.3；TyphoonSim 示例；不沿用当前 Virtual HIL 执行器 | 安装含例；尚未建立 TyphoonSim 运行与指标验证 | 2026-10-15 |
@@ -115,7 +118,7 @@ Schematic API 负责模型结构与编译，HIL API 负责运行控制与采集�
 
 四项目前均为“方案介绍已核”：本项目已核对 PDF 概述及图示说明，尚未取得对应的完整模型、脚本与判据，也未开展对应实例的运行验证。文中描述的设备与运行结果属于来源材料中的陈述。向汉象或案例提供方索取可共享材料后，再登记依赖、使用范围和实施路径。
 
-相关学习资源可先从上表官方应用说明与安装示例中筛选：感应电机案例用于熟悉电机测试流程，Boost 用于学习变换器动态分析，Generic PV plant 用于查看并网测试结构。这些资源只提供学习与方法参考，与四个用户案例的具体模型、算法和结论分别核对。
+相关学习资源可先从上表官方应用说明与安装示例中筛选：感应电机案例用于熟悉电机测试流程，Boost 用于学习变换器动态分析，Generic PV plant 用于学习并网频率—有功测试与接口接入。这些资源只提供学习与方法参考，与四个用户案例的具体模型、算法和结论分别核对。
 
 水泵控制器在方案前半部分作为具体需求对象描述，单独维护于[水泵控制器 HIL 需求与接入准备](pump-hil-intake.md)。四个用户案例用于拓展应用视野和接入候选；具体实施顺序按[案例层次与选择依据](#案例层次与选择依据)确定。
 
