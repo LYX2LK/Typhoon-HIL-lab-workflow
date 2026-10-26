@@ -2,6 +2,7 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ("external_waveforms", None): 1,
     ("run", "generic_pv_plant"): 2,
     ("run", "rlc_filter"): 1,
     ("run", "single_phase_rectifier"): 1,

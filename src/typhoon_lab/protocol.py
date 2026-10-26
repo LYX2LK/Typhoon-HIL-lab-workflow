@@ -6,7 +6,8 @@ import os
 import sys
 
 COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
-            'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model')
+            'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model',
+            'analyze-waveforms', 'verify-waveforms')
 
 
 def command_name(argv):
@@ -89,6 +90,10 @@ def decorate(command, result, argv, project, failure=None):
     if error is None and command in ('run', 'smoke', 'sweep', 'run-case', 'practice-model') and manifest.get('status') == 'error':
         error = {'code': 'execution_error', 'stage': 'execution',
                  'message': manifest.get('error') or manifest.get('report_error') or str(manifest.get('cleanup_issues'))}
+    if command in ('analyze-waveforms', 'verify-waveforms') or manifest.get('kind') == 'external_waveforms':
+        return response(command, result, run_dir=run_dir,
+                        record_status=result.get('record_status') if command in ('verify-waveforms', 'verify') else None,
+                        experiment_status=None, artifacts=artifacts, error=error)
     return response(command, result, run_dir=run_dir,
                     record_status=result.get('record_status') if command in ('verify', 'run-case') else None,
                     experiment_status=result.get('experiment_status') if command in ('verify', 'run-case') else manifest.get('experiment_status', manifest.get('status')),

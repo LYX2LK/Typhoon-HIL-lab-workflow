@@ -2,29 +2,23 @@
 
 本项目提供修改参数、采集波形、比较结果和编写报告的实验流程，面向有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的读者。常规案例采用官方示例模型；另有从空白原理图建立的 RLC 教学练习。运行使用软件自带 Python，通过统一入口执行。
 
-运行模式为 **Virtual HIL**：模型在电脑上按仿真时间推进，以非实时方式运行，没有外部 I/O。每次实验保存配置、模型副本、代码快照、实际数据和判定依据。
+仿真实验采用 **Virtual HIL**：模型在电脑上按仿真时间推进，以非实时方式运行，没有外部 I/O。每次实验保存配置、模型副本、代码快照、实际数据和判定依据。
 
-## 选择实验
+## 按任务开始
 
-| 想完成的任务 | 使用模型 | 阅读材料 |
-|---|---|---|
-| 学会模型操作、采集和报告核对 | RLC | [首次实验](docs/first-experiment.md) |
-| 从空白原理图建模、增加测量点并接入脚本 | 自建 RLC 练习 | [建模练习](docs/modeling-practice.md) |
-| 改变 Rin，比较稳态 RMS 与解析值 | RLC | [参数与指标](docs/experiments.md) |
-| 观察闭环参考阶跃和输入电压扰动 | Boost | [动态实验](docs/boost-experiments.md) |
-| 比较电机独立启动后的转速跟踪 | 感应电机闭环 | [电机案例](cases/im_speed_tracking/README.md) |
-| 观察运行中转速参考阶跃与闭环响应 | 感应电机闭环 | [转速阶跃动态实验](cases/im_speed_step/README.md) |
-| 练习接收简短的新电机测试要求 | 感应电机闭环 | [1000 rpm 接入演练](cases/im_mid_speed_intake/README.md) |
-| 比较并网频率与光伏稳态有功 | Generic PV plant | [光伏案例](cases/pv_hzwatt/README.md) |
-| 检查收到的四组示波器波形 | 外部 CSV/PNG | [波形离线检查](docs/external-waveforms.md) |
-| 查找案例并检查材料与代码支持 | 案例目录 | [案例与 CLI 接口](docs/case-interface.md) |
-| 通过自然语言执行或分析实验 | 已支持模型 | [Agent 工作流](docs/agent-workflow.md) |
-| 学习如何接收并接入新测试案例 | 单相整流 | [整流实验](docs/rectifier-experiments.md) / [接入方法](docs/model-integration.md) |
-| 查找官方教程、示例和公开测试 | 资源导航 | [学习与案例资源](docs/resources.md) |
+| 想完成的任务 | 入口 |
+|---|---|
+| 入门学习与复现实验 | [首次实验](docs/first-experiment.md)、[建模练习](docs/modeling-practice.md) |
+| 执行和复核已有案例 | [案例发现与 CLI](docs/case-interface.md)、[Agent 工作流](docs/agent-workflow.md) |
+| 接收外部测试数据 | [波形接收与复核](docs/external-waveforms.md)、[数据接收 Skill](.agents/skills/external-test-data-intake/SKILL.md) |
+| 接入新模型或测试要求 | [模型接入方法](docs/model-integration.md)、[资源与案例选择](docs/resources.md) |
+| 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |
 
-首次使用建议先做 RLC，再做 Boost；随后用单相整流学习新案例接入。已熟悉统一入口时，可直接选择相应模型的实验配置。
+需要按页面查找教程、接口和专题说明时，见[文档导航](docs/document-index.md)。
 
-案例标识描述测试问题，模型标识选择适配器；一个模型可对应多个案例。`list-cases --json` 与 `validate-case --case <标识> --json` 为只读检查，分别显示材料完整性、代码支持及实际证据。列表发现成功与单案例校验分开返回；缺失本机模型的案例标为 `missing_local_dependency`。静态通过后仍需实际编译和采集验证。所有官方示例模型与面板统一为本机依赖，使用准备命令从匹配安装补齐；来源规则见 [模型说明](models/README.md)。
+首次使用建议先做 RLC，再通过资源导航选择后续案例。已有案例用 `list-cases --json` 发现，用 `validate-case --case <标识> --json` 查询材料、配置、代码支持与实际证据。案例标识表示测试问题，模型标识选择适配器；一个模型可以对应多个案例。
+
+发现成功与单案例可运行性分别判断；缺少本机模型标为 missing_local_dependency，静态检查不替代实际编译和采集。官方模型与面板通过 prepare-models 从匹配安装补齐，来源规则见 [模型说明](models/README.md)。外部数据检查独立于仿真准备流程。
 
 ## 准备环境并运行
 
@@ -43,19 +37,13 @@ Set-Location 'D:\Typhoon\lab-workflow'
 
 | 操作 | 命令 |
 |---|---|
-| 按案例串行运行全部工况并复核 | `.\lab.ps1 run-case --case im_speed_tracking --json` |
-| 运行电机转速阶跃并复核 | `.\lab.ps1 run-case --case im_speed_step --json` |
-| 运行光伏 50/51 Hz 两工况并复核 | `.\lab.ps1 run-case --case pv_hzwatt --json` |
-| 运行自建 RLC 模型练习 | 按[建模练习](docs/modeling-practice.md)创建模型，再执行 `practice-model` |
-| 检查 Boost 模型 | `.\lab.ps1 inspect --model boost_closed_loop` |
-| 扫描 RLC 输入电阻 | `.\lab.ps1 sweep --config configs/rlc_sweep.json` |
-| 运行 Boost 基准 | `.\lab.ps1 run --config configs/boost_baseline.json` |
-| 运行参考阶跃 | `.\lab.ps1 run --config configs/boost_reference_step.json` |
-| 运行输入跌落 | `.\lab.ps1 run --config configs/boost_vin_drop.json` |
-| 运行输入升高 | `.\lab.ps1 run --config configs/boost_vin_rise.json` |
-| 检查单相整流模型 | `.\lab.ps1 inspect --model single_phase_rectifier` |
-| 运行单相整流基准 | `.\lab.ps1 run --config configs/rectifier_baseline.json` |
-| 低输入、重载与趋势比较 | 按 [整流教程](docs/rectifier-experiments.md) 执行另两份配置与比较命令 |
+| 发现案例 | `.\lab.ps1 list-cases --json` |
+| 查询所选案例的配置与能力 | `.\lab.ps1 validate-case --case <标识> --json` |
+| 串行执行案例并复核 | `.\lab.ps1 run-case --case <标识> --json` |
+| 运行指定配置 | `.\lab.ps1 run --config <配置路径> --json` |
+| 接收与复核外部 CSV | 按 [外部波形流程](docs/external-waveforms.md) 使用 analyze-waveforms / verify-waveforms |
+
+RLC 参数扫描、各模型的动态工况和比较方法按案例材料与对应教程执行；自建模型练习见 [建模练习](docs/modeling-practice.md)。
 
 `run-case` 按案例配置顺序执行，自动复核各结果并更新本机证据索引；返回的 `run_dir` 为包含各工况的批次目录。性能失败保留原结论并继续，执行或记录异常时停止并登记未运行项。
 
@@ -63,7 +51,7 @@ Set-Location 'D:\Typhoon\lab-workflow'
 
 ## 核对结果
 
-将占位路径换成本次实际目录：
+以下步骤用于仿真实验；外部数据按[离线复核](docs/external-waveforms.md)使用 verify-waveforms。将占位路径换成本次实际目录：
 
 ```powershell
 .\lab.ps1 verify --run-dir 'results/本次实际目录'

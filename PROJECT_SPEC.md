@@ -4,16 +4,11 @@
 
 ## 执行能力
 
-| 模型 | 实验 | 配置结构 |
-|---|---|---|
-| rlc_filter | 正弦稳态基准、Rin 参数扫描 | schema_version=1 |
-| boost_closed_loop | 闭环基准、参考阶跃、输入电压跌落与升高 | schema_version=2 |
-| single_phase_rectifier | 稳态基准、低输入、重载及三工况离线比较 | schema_version=1 |
-| induction_motor_closed_loop | 独立启动的转速跟踪、运行中参考阶跃及实际参考与负载指令观测 | schema_version=2；阶跃配置有一项 events |
+当前案例、模型注册、配置字段、信号与事件支持通过 `lab.ps1 list-cases --json` 和 `validate-case --case <标识> --json` 查询，协议见 [案例与 CLI 接口](docs/case-interface.md)。能力声明、环境可运行性和实际实验结论分别核对。
 
-运行模式为 Virtual HIL。入口由 lab.ps1 定位配套 Python，提供 doctor、prepare-models、inspect、smoke、run、sweep、run-case、report、verify、compare-rectifier。配置中的 `model` 选择适配器，`case_id` 组织测试问题与配置引用，`schema_version` 标识配置结构；事件能力由适配器声明，具体运行是否保存事件记录由适配器按配置判断。
+实验运行模式为 Virtual HIL，入口由 lab.ps1 定位配套 Python。配置中的 model 选择适配器，case_id 组织测试问题与配置引用，schema_version 标识配置结构。参数、单位和判据以对应案例引用的配置、模型说明与当前校验实现为准。
 
-配置参数、单位和判据分别由 [RLC 说明](docs/experiments.md)、[Boost 说明](docs/boost-experiments.md) 与 [单相桥整流说明](docs/rectifier-experiments.md) 定义。命令默认值和现行 JSON 配置是执行输入，文档示例需与其保持一致。
+外部数据使用 analyze-waveforms / verify-waveforms，输入范围、清单字段、计算方法和退出码由 [外部数据接口](docs/external-waveforms.md) 定义；其记录独立于仿真模型和编译产物。
 
 ## 执行器与适配器
 
@@ -46,6 +41,12 @@
 实验可取 passed、failed、error、skipped。性能 failed 的记录可以复算一致；总状态和退出码仍反映未通过。报告重建记录实际生成代码和产物哈希。
 
 新运行清单用 `configuration_schema_version` 表示所用配置结构版本（适用于单次运行与扫描），用 `record_format_version` 表示清单和结果目录格式，用 `analysis_method_version` 表示当前记录类型及模型所用确定性分析方法版本。三个版本彼此独立；原有 `schema_version` 字段保留历史含义，CLI JSON 信封、案例文件和 `events.json` 各有自己的 `schema_version`。代码快照与 SHA-256 记录精确实现，方法版本只表示兼容的计算约定。
+
+### 外部数据记录
+
+external_waveforms 类型复用文件哈希、记录版本与方法版本机制，保存输入字节副本、清单与来源映射、分析结果、报告和代码快照。独立复核核对必需产物及来源，再从包内 CSV 重算；旧批次专用报告不会自动迁移，采用新方法时新建结果。
+
+外部数据的 data_quality_status、analysis_status、record_status 与 performance_status 分别表示结构质量、分析完成度、记录一致性及性能评价。当前性能保持 not_evaluated，CLI 信封的 experiment_status 为 null；复核通过不改变数据质量或性能结论。verify-waveforms 默认只读，显式 --write 才保存复核；通用 verify 保持默认写入行为。
 
 ### Agent 任务记录
 
@@ -85,25 +86,16 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 
 文档随功能直接更新，按职责组织：
 
-| 页面 | 维护内容 |
+各教程、接口和专题页的用途见[文档导航](docs/document-index.md)。
+
+| 文档类别 | 维护职责 |
 |---|---|
-| AGENTS | 项目长期约束与维护要求 |
-| README | 项目用途、任务选择和统一入口 |
-| [roadmap](docs/roadmap.md) | 前期能力准备、工程优化、长期扩展方向及启动条件 |
-| [pump-hil-intake](docs/pump-hil-intake.md) | 水泵控制器需求、能力对应、待确认材料和接入推进安排 |
-| [external-waveforms](docs/external-waveforms.md) | 当前外部 CSV/PNG 的离线检查、计算定义、输出及元信息要求 |
-| environment | 安装路径、运行模式和环境检查 |
-| first-experiment | 以 RLC 学会完整操作流程 |
-| modeling-practice | 从空白模型到脚本采集的练习与 GUI 重做步骤 |
-| experiments / boost-experiments / rectifier-experiments | 各模型的参数、信号、实验和指标 |
-| agent-workflow | 任务提问示例与结果核对 |
-| troubleshooting | 按失败阶段定位与处理 |
-| handoff | 独立复现步骤和交接记录模板 |
-| validation | 当前能力、实测结论与待验事项 |
-| validation-history | 按日期检索验证证据 |
-| resources | 官方学习入口、案例选择、版本/模式和实测状态 |
-| boost-disturbance-analysis | 原始数据复算、受控对照、现象与候选机制边界 |
-| model-integration | 模型接入接口、步骤与维护验证 |
-| case-interface / cases | 案例字段、路径边界与 CLI 协议；各案例的接口、配置引用与判据 |
+| AGENTS / README | 长期工作原则 / 稳定任务入口 |
+| roadmap | 建设方向、优先级与扩展触发条件 |
+| PROJECT_SPEC 与接口文档 | 架构不变量、接口、记录和验证约定；每项规则保持一个权威定义 |
+| Skill | 任务判断、工具选择、核查与交付；细节按需引用 |
+| 方法与教学材料 | 原理、适用条件、操作与独立学习 |
+| 配置、案例与需求材料 | 对象及批次事实、工况、判据和待补条件 |
+| validation / validation-history / results | 当前验证范围 / 历史证据索引 / 实际结果与任务记录 |
 
 日期、测试次数和实测数值集中到验证页面。新增能力应融入其所属章节，并同步受影响的导航与示例。

@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "dataset_id": "oscilloscope-tu-20261022",
+  "purpose": "保留原批次定义，描述导出波形及采集元信息缺口；不评价控制器性能",
+  "records": [
+    {
+      "id": "tu1",
+      "csv": "tu1.csv",
+      "image": "tu1.png",
+      "format": {
+        "encoding": "utf-8-sig",
+        "header": false,
+        "time_column": 0,
+        "value_column": 1
+      },
+      "metadata": {
+        "measurement_point": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "channel": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "probe_ratio": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "trigger": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "label": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "export": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "time_unit": {
+          "value": "s",
+          "status": "inferred",
+          "source": "tu1.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "value_unit": {
+          "value": "V",
+          "status": "inferred",
+          "source": "tu1.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "image_pairing": {
+          "value": "tu1.csv 与 tu1.png",
+          "status": "inferred",
+          "source": "同名配对，待提供方确认采集记录"
+        },
+        "acquisition": {
+          "value": {
+            "sample_rate_hz": 200000000.0,
+            "record_points": 100000,
+            "visible_window_us": [
+              -250,
+              250
+            ]
+          },
+          "status": "inferred",
+          "source": "tu1.png；沿用原批次人工读取记录，非本轮图像自动识别"
+        }
+      },
+      "analysis": {
+        "method": "dip",
+        "window": null,
+        "baseline_fraction": 0.1,
+        "drop_fraction": 0.05
+      },
+      "detail_window": [
+        -2.5e-05,
+        1e-05
+      ]
+    },
+    {
+      "id": "tu2",
+      "csv": "tu2.csv",
+      "image": "tu2.png",
+      "format": {
+        "encoding": "utf-8-sig",
+        "header": false,
+        "time_column": 0,
+        "value_column": 1
+      },
+      "metadata": {
+        "measurement_point": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "channel": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "probe_ratio": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "trigger": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "label": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "export": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "time_unit": {
+          "value": "s",
+          "status": "inferred",
+          "source": "tu2.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "value_unit": {
+          "value": "V",
+          "status": "inferred",
+          "source": "tu2.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "image_pairing": {
+          "value": "tu2.csv 与 tu2.png",
+          "status": "inferred",
+          "source": "同名配对，待提供方确认采集记录"
+        },
+        "acquisition": {
+          "value": {
+            "sample_rate_hz": 16000000000.0,
+            "record_points": 8000000,
+            "visible_window_us": [
+              -250,
+              250
+            ]
+          },
+          "status": "inferred",
+          "source": "tu2.png；沿用原批次人工读取记录，非本轮图像自动识别"
+        }
+      },
+      "analysis": {
+        "method": "dip",
+        "window": null,
+        "baseline_fraction": 0.1,
+        "drop_fraction": 0.05
+      },
+      "detail_window": [
+        -2.5e-05,
+        1e-05
+      ]
+    },
+    {
+      "id": "tu3",
+      "csv": "tu3.csv",
+      "image": "tu3.png",
+      "format": {
+        "encoding": "utf-8-sig",
+        "header": false,
+        "time_column": 0,
+        "value_column": 1
+      },
+      "metadata": {
+        "measurement_point": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "channel": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "probe_ratio": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "trigger": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "label": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "export": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "time_unit": {
+          "value": "s",
+          "status": "inferred",
+          "source": "tu3.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "value_unit": {
+          "value": "V",
+          "status": "inferred",
+          "source": "tu3.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "image_pairing": {
+          "value": "tu3.csv 与 tu3.png",
+          "status": "inferred",
+          "source": "同名配对，待提供方确认采集记录"
+        },
+        "acquisition": {
+          "value": {
+            "sample_rate_hz": 16000000000.0,
+            "record_points": 1600000,
+            "visible_window_us": [
+              -49.9,
+              50.1
+            ]
+          },
+          "status": "inferred",
+          "source": "tu3.png；沿用原批次人工读取记录，非本轮图像自动识别"
+        }
+      },
+      "analysis": {
+        "method": "rise",
+        "window": null,
+        "baseline_fraction": 0.1,
+        "low_fraction": 0.1,
+        "high_fraction": 0.9
+      },
+      "detail_window": [
+        -1.2e-05,
+        5e-06
+      ]
+    },
+    {
+      "id": "tu4",
+      "csv": "tu4.csv",
+      "image": "tu4.png",
+      "format": {
+        "encoding": "utf-8-sig",
+        "header": false,
+        "time_column": 0,
+        "value_column": 1
+      },
+      "metadata": {
+        "measurement_point": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "channel": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "probe_ratio": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "trigger": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "label": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "export": {
+          "value": null,
+          "status": "unconfirmed",
+          "source": "待提供方确认"
+        },
+        "time_unit": {
+          "value": "s",
+          "status": "inferred",
+          "source": "tu4.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "value_unit": {
+          "value": "V",
+          "status": "inferred",
+          "source": "tu4.png 坐标；沿用原批次人工读取记录，待提供方确认"
+        },
+        "image_pairing": {
+          "value": "tu4.csv 与 tu4.png",
+          "status": "inferred",
+          "source": "同名配对，待提供方确认采集记录"
+        },
+        "acquisition": {
+          "value": {
+            "sample_rate_hz": 200000000.0,
+            "record_points": 131000,
+            "visible_window_us": [
+              -24.9,
+              25.1
+            ]
+          },
+          "status": "inferred",
+          "source": "tu4.png；沿用原批次人工读取记录，非本轮图像自动识别"
+        }
+      },
+      "analysis": {
+        "method": "rise",
+        "window": null,
+        "baseline_fraction": 0.1,
+        "low_fraction": 0.1,
+        "high_fraction": 0.9
+      },
+      "detail_window": [
+        -1.2e-05,
+        5e-06
+      ]
+    }
+  ]
+}

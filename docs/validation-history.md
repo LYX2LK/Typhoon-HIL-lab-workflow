@@ -2,6 +2,16 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-23：外部数据接收能力与独立行为验收
+
+外部两列 CSV 接收、显式数据清单与独立复核接入统一入口。166 项 unittest 通过；原 tu 批次与旧结果及标准库独立复算共 84 项数值检查通过，八份原始文件哈希不变。三个新上下文的七项预设判断通过，父流程复核五个实际数据包；格式不兼容、重复时间及单位缺失均保留其质量/分析状态，性能未评价。
+
+- [实施结果与范围](../results/agent-tasks/20261023-capability-intake/summary.md)、[验证命令](../results/agent-tasks/20261023-capability-intake/commands.jsonl)。
+- [原批次新报告](../results/agent-tasks/20261023-capability-intake/tu-evidence/report.md)、[独立数值检查](../results/agent-tasks/20261023-capability-intake/independent-audit.json)。
+- [行为验收总评](../results/skill-validation/20261023-external-intake/assessment.md)、[父流程复核](../results/skill-validation/20261023-external-intake/parent-review.json)。
+
+本轮没有新运行 Virtual HIL 或回放；光伏任务限定为准备方案。工具搬迁检查不代表真人、跨电脑或实体设备验收。
+
 ## 2026-10-23：不完整任务的 Agent 分阶段验收
 
 给予两个未继承父对话的子代理同一短任务，未透露预期答案和检查清单。首次直接选择三点稳态实验，澄清判断未通过；父代理在启动仿真前中断并保留观察。修订任务条件分类与暂停边界后，新上下文主动询问关键条件；补充两点稳态条件后选择配置复用，经统一入口执行。

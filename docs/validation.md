@@ -74,7 +74,9 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 
 限额反馈 Pref_fb_kW 在两工况均为 250 kW，来自 HzWatt 前的 Pcurtailment 与额定功率，独立于调频后的输出参考。初次误映射导致的失败及方法版本修正保留在[验证索引](validation-history.md)；当前方法 2 的原始 CSV 独立复算与保存指标一致。操作见[光伏案例](../cases/pv_hzwatt/README.md)。
 
-外部 tu1–tu4 CSV 的只读质量检查通过，导出间隔均约 5 ns；tu2/tu3 的截图采集速率不同，需确认采集/导出关系。幅值和边沿特征见[波形报告](../results/agent-tasks/20261022-waveforms-pv-a1/waveform-audit-final/report.md)，其性能状态为 not_evaluated。这些数据尚无确认的物理标签、控制器验收结论或回放精度证据。
+外部数据已具备基于显式清单的两列 CSV 分析与独立复核入口，范围与操作见[数据接口](external-waveforms.md)。原 tu 批次在新记录格式下保持原数值定义，八份原件哈希不变；未知单位、结构失败及方法不适用保留原因。工具回归、原批次等价性、三个新上下文行为及实际证据见[实施结果](../results/agent-tasks/20261023-capability-intake/summary.md)。
+
+原 tu1–tu4 导出间隔均约 5 ns，tu2/tu3 的截图采集速率不同，采集/导出关系仍待确认。幅值和边沿特征见[新报告](../results/agent-tasks/20261023-capability-intake/tu-evidence/report.md)；性能保持 not_evaluated，物理标签、控制器验收和回放精度尚未建立。
 
 ## 感应电机独立启动
 

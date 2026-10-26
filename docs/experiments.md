@@ -95,4 +95,4 @@ sweep 支持 rin_ohm，取值须互不相同，最多 12 个工况。每个工�
 
 单次运行保存原始 CSV、采集元数据、指标、清单、代码快照、图与报告；扫描保存各子工况及 comparison.csv、comparison.png。用 verify 复算，实际验证状态与示例结果见 [验证页面](validation.md)。
 
-接口依据：[Schematic API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/schematic_api.html)、[HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)。其他实验可从 [README](../README.md#选择实验) 选择。
+接口依据：[Schematic API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/schematic_api.html)、[HIL API](https://www.typhoon-hil.com/documentation/typhoon-hil-api-documentation/hil_api.html)。其他实验可从 [README](../README.md#按任务开始) 选择。

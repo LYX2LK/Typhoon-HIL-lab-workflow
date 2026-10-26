@@ -43,7 +43,7 @@ Agent 负责理解需求、组织测试用例、选择参数、调用工具和�
 
 > 按 pv_hzwatt 案例运行 50 Hz、51 Hz 两个独立启动工况，比较实测有功与官方 250 kW、170 kW 参考。先核对频率、使能和采集窗口，再解释功率误差、限额参考与报警状态，分别返回实验状态和最终记录状态。
 
-接口与判据见[光伏案例](../cases/pv_hzwatt/README.md)。Pref_fb_kW 是 HzWatt 前的限额参考，不能直接当作调频后的目标有功。任务发现、参数选择、运行、报告与复核仍通过已有 CLI；分析外部波形时按[离线检查](external-waveforms.md)记录来源和待确认标签。
+接口与判据见[光伏案例](../cases/pv_hzwatt/README.md)。Pref_fb_kW 是 HzWatt 前的限额参考，不能直接当作调频后的目标有功。任务发现、参数选择、运行、报告与复核仍通过已有 CLI；接收外部文件时使用[数据接收 Skill](../.agents/skills/external-test-data-intake/SKILL.md)，按[数据清单与离线复核](external-waveforms.md)生成证据；转入实验时移交用途、已确认条件和待补事项。
 
 ### 运行 RLC 基准
 

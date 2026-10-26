@@ -60,7 +60,7 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 | schema_version / command | 协议整数 1；可识别命令名，未知命令为 null |
 | status | 当前命令结果 passed/failed/error/skipped；报告生成成功对应 passed |
 | run_dir / artifacts | 实际目录；产物名称到实际路径的映射；无产物时为空 |
-| record_status | verify 或 run-case 实际复核后填写；run/report 不自动声明记录通过 |
+| record_status | verify、verify-waveforms 或 run-case 实际复核后填写；运行和报告命令不自动声明记录通过 |
 | experiment_status | 已有实验执行/性能状态；静态任务为 null |
 | result | 原命令返回内容及检查详情 |
 | error | 执行错误对象 code/stage/message；正常性能未达标可为 null |
@@ -72,5 +72,7 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 `prepare-models` 会补建模型预留目录并复制缺失的官方模型/面板，已有匹配文件跳过；依赖预检失败时不复制，返回 1，详情见 `result.assets`。该命令不启动仿真，`record_status` 与 `experiment_status` 均为 null。
 
 自建模型教学练习使用 `practice-model --model-file results/agent-tasks/<任务标识>/modeling/rlc_handbuilt.tse --json`；建模步骤见[练习说明](modeling-practice.md)。它产生独立的 `modeling_practice` 记录，复核与报告仍使用 `verify`、`report`；此命令不注册新适配器，也不接受案例 JSON 指定任意模型路径。
+
+外部数据 analyze-waveforms / verify-waveforms 的清单、状态和副作用见 [外部数据接口](external-waveforms.md)。它们复用此 JSON 信封，experiment_status 为 null，数据质量、分析完成度与性能状态在 result 中分别返回。
 
 原有 inspect/doctor 会写本机检查记录，verify 会写 verification.json，report 会更新报告与清单；它们的副作用与这两个只读案例命令不同。历史记录需复核或重建时按 [记录约定](../PROJECT_SPEC.md#历史记录处理) 在副本操作。

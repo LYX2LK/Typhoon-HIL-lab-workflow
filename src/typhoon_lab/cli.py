@@ -40,12 +40,28 @@ def _run(argv=None):
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
         p=sub.add_parser(name);p.add_argument("--run-dir",required=True)
+    p=sub.add_parser("analyze-waveforms")
+    p.add_argument("--intake",required=True);p.add_argument("--input-dir",required=True)
+    p.add_argument("--output-dir",required=True)
+    p=sub.add_parser("verify-waveforms");p.add_argument("--run-dir",required=True)
+    p.add_argument("--write",action="store_true",help="save verification.json; default read-only")
     p=sub.add_parser("compare-rectifier")
     for condition in ("baseline","low-input","heavy-load"):
         p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command == "analyze-waveforms":
+            from .external_records import analyze_external
+            result=analyze_external(resolve_project_file(args.intake), resolve_project_file(args.input_dir),
+                                    resolve_project_file(args.output_dir))
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
+        if args.command == "verify-waveforms":
+            from .external_records import verify_external
+            result=verify_external(resolve_project_file(args.run_dir),write=args.write)
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
         if args.command == "prepare-models":
             from .model_assets import prepare_models
             result = prepare_models()
