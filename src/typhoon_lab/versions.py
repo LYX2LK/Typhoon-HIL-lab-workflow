@@ -2,6 +2,7 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ("boost_ai", "boost_closed_loop"): 1,
     ("waveform_diagnosis", None): 1,
     ("external_waveforms", None): 1,
     ("run", "generic_pv_plant"): 2,

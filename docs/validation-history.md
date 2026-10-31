@@ -2,6 +2,17 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-31：Boost + AI 会议演示与确认复验
+
+真实Virtual HIL复跑与完整界面彩排均完成。初次跌落和延后施扰采集15000/20000点；统一实际事件后[0,0.9) s，各9000点比较。事件前趋势2.64976→0.08429 V/s，峰偏差18.2009%→17.8233%，恢复0.3307→0.3274 s，最终误差0.00938%→0.00947%。两次记录均passed，性能均failed；不修改PI及原判据。对照支持减弱“启动残余足以解释峰值越限”的解释，未确认主导机理。
+
+DeepSeek官方deepseek-flash真实API调用保存请求、响应、模型、usage、耗时和证据关联；彩排两次耗时4.344/4.860 s。建议仅允许重复、无扰动基准、延后施扰；界面显示差异并记录确认再执行。开发联调中引用错误和状态措辞错误被拒绝或复阅纠正，原回答保留。184项unittest通过，RLC基准/扫描实际回归passed。PowerPoint本机渲染五页并验证测试副本图表编辑、保存和重开；连续彩排录屏约83秒。
+
+- [交付入口](../results/agent-tasks/20261031-meeting-demo-6f24/delivery/index.html)、[任务总结](../results/agent-tasks/20261031-meeting-demo-6f24/summary.md)、[原始任务记录](../results/agent-tasks/20261031-meeting-demo-6f24/task.md)。
+- [完整比较证据与最终复核](../results/agent-tasks/20261031-meeting-demo-6f24/delivery/evidence/verification.json)、[界面彩排记录](../results/agent-tasks/20261031-meeting-demo-6f24/rehearsal.json)、[实验最终复核](../results/agent-tasks/20261031-meeting-demo-6f24/final-experiment-verification.json)、[软件测试](../results/agent-tasks/20261031-meeting-demo-6f24/final-tests.log)。
+
+本轮使用已有软件案例，不评价独立故障识别准确率；本地推理及实体HIL留待后续。
+
 ## 2026-10-31：四组波形规则识别与大模型解释
 
 新增独立 waveform_diagnosis 记录和统一CLI：固定规则从CSV识别电平跌落与上升过程回落，输出分类、事件时间和数值依据；模型解释与计算分类分开记录。tu1/tu3按演示规则未检出异常，tu2跌落0.634120 V、主要越限段8.935 μs；tu4回落1.411352 V、主要越限段1.855 μs。逐文件参考标签为形态推断，四组样本已参与方法制定，不作独立准确率评价。

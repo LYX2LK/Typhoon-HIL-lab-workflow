@@ -10,6 +10,9 @@ def verify_run(run_dir,write=True):
     from .analysis import analyze
     run_dir=Path(run_dir).resolve()
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("kind")=="boost_ai":
+        from .boost_ai import verify_ai
+        return verify_ai(run_dir,write=write)
     if manifest.get("kind")=="waveform_diagnosis":
         from .waveform_diagnosis import verify_diagnosis
         return verify_diagnosis(run_dir,write=write)

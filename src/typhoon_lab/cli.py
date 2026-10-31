@@ -53,12 +53,48 @@ def _run(argv=None):
     p.add_argument("--output-dir",required=True)
     p=sub.add_parser("verify-diagnosis");p.add_argument("--run-dir",required=True)
     p.add_argument("--write",action="store_true")
+    p=sub.add_parser("analyze-boost")
+    p.add_argument("--source-run",required=True,action="append")
+    p.add_argument("--output-dir",required=True);p.add_argument("--service")
+    p.add_argument("--previous")
+    p.add_argument("--plan-dir",help="include and verify a completed human-confirmed control plan")
+    p=sub.add_parser("plan-boost")
+    p.add_argument("--analysis-run",required=True);p.add_argument("--action",choices=["repeat","baseline","late"],required=True)
+    p.add_argument("--output-dir",required=True)
+    p=sub.add_parser("execute-boost-plan")
+    p.add_argument("--plan-dir",required=True);p.add_argument("--confirm",required=True)
+    p.add_argument("--confirmed-by",required=True)
+    p=sub.add_parser("verify-boost-ai");p.add_argument("--run-dir",required=True)
+    p.add_argument("--write",action="store_true")
+    p=sub.add_parser("demo-boost");p.add_argument("--port",type=int,default=8765)
     p=sub.add_parser("compare-rectifier")
     for condition in ("baseline","low-input","heavy-load"):
         p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=="demo-boost":
+            from .boost_demo import serve
+            serve(args.port);return 0
+        if args.command=="analyze-boost":
+            from .boost_ai import analyze_boost, confirmation_from_plan
+            result=analyze_boost([resolve_project_file(x) for x in args.source_run],resolve_project_file(args.output_dir),
+                resolve_project_file(args.service) if args.service else None,
+                resolve_project_file(args.previous) if args.previous else None,
+                confirmation_from_plan(resolve_project_file(args.plan_dir)) if args.plan_dir else None)
+            _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
+        if args.command=="plan-boost":
+            from .boost_ai import create_plan
+            result=create_plan(resolve_project_file(args.analysis_run),args.action,resolve_project_file(args.output_dir))
+            _publish(result,indent=2);return 0
+        if args.command=="execute-boost-plan":
+            from .boost_ai import execute_plan
+            result=execute_plan(resolve_project_file(args.plan_dir),args.confirm,args.confirmed_by)
+            _publish(result,indent=2);return 0 if result["record_status"]=="passed" and result["experiment_status"]!="error" else 1
+        if args.command=="verify-boost-ai":
+            from .boost_ai import verify_ai
+            result=verify_ai(resolve_project_file(args.run_dir),write=args.write)
+            _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
         if args.command == "diagnose-waveforms":
             from .waveform_diagnosis import run_diagnosis
             result=run_diagnosis(resolve_project_file(args.source_run),resolve_project_file(args.rules),resolve_project_file(args.output_dir))
@@ -156,6 +192,10 @@ def _run(argv=None):
             elif manifest["kind"]=="modeling_practice":
                 from .model_practice import write_practice_report
                 outputs=write_practice_report(path,manifest)
+            elif manifest["kind"]=="boost_ai":
+                from .boost_ai import write_report as write_boost_ai_report
+                write_boost_ai_report(path)
+                outputs=[path/"report.html",path/"report.md"]
             else: raise ValueError("report applies to run, sweep or case results")
             for output in outputs:
                 output=Path(output).resolve()

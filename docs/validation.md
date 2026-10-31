@@ -1,6 +1,8 @@
 # 验证状态与实测结论
 
-本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。最近专项验证为 **2026-10-23**：完成简短不完整任务的 Agent 分阶段观察与复核，首次澄清失败、文档修订和新上下文重测均有记录；50 Hz 通过，49.25 Hz 超时及重试保护拦截，低频比较未评价。见[评审报告](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md)。2026-10-22 的专项验证包括 THCC 2026.3 Virtual HIL 光伏 50/51 Hz 工况、RLC 基准/扫描回归，以及四组外部波形离线检查；见[任务记录](../results/agent-tasks/20261022-waveforms-pv-a1/task.md)。此前完整验证及电机动态、建模、工程回归的证据按日期保存于[验证记录索引](validation-history.md)。
+**2026-10-31 会议演示专项：** 已实际跑通 [Boost + AI 在线分析与确认复验](boost-ai-demo.md)：Virtual HIL 输入跌落、真实 DeepSeek 官方API、配置差异展示、用户确认、延后对照及模型更新解释。完整界面彩排通过，184项unittest通过；RLC基准与三工况扫描回归通过。两次Boost记录一致，峰偏差18.2009%/17.8233%仍超过固定10%，性能均failed。交付包括[五页汇报、操作单、离线报告、证据和录屏](../results/agent-tasks/20261031-meeting-demo-6f24/delivery/index.html)，过程与范围见[任务总结](../results/agent-tasks/20261031-meeting-demo-6f24/summary.md)。本地推理、真实故障标签及实体HIL/控制器集成仍待后续验收。
+
+本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。此前专项验证记录：**2026-10-23**：完成简短不完整任务的 Agent 分阶段观察与复核，首次澄清失败、文档修订和新上下文重测均有记录；50 Hz 通过，49.25 Hz 超时及重试保护拦截，低频比较未评价。见[评审报告](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md)。2026-10-22 的专项验证包括 THCC 2026.3 Virtual HIL 光伏 50/51 Hz 工况、RLC 基准/扫描回归，以及四组外部波形离线检查；见[任务记录](../results/agent-tasks/20261022-waveforms-pv-a1/task.md)。此前完整验证及电机动态、建模、工程回归的证据按日期保存于[验证记录索引](validation-history.md)。
 
 脚本与记录检查通过。感应电机 1430/850 rpm 独立启动工况及 1430→850 rpm 运行中阶跃通过预先固定的项目教学判据；RLC、Boost 参考阶跃、单相桥整流三工况与趋势比较均有通过记录。Boost 两项输入扰动及延后对照的峰偏差仍超过固定 10%，保留 failed。RLC GUI、新 Agent 上下文和本机中文空格路径搬迁已完成。真人与跨电脑验收仍属后续任务。
 
@@ -11,7 +13,7 @@
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | 150 项 unittest 通过，新增光伏参考表、信号有效性、错误采集、判据失败、报告与方法版本检查；[日志](../results/agent-tasks/20261022-waveforms-pv-a1/unit-tests.stderr.txt) |
+| 脚本逻辑 | 184项unittest通过，覆盖原模型/外部数据及新增Boost模型请求、证据引用、失败调用、确认边界与哈希关联；[当前日志](../results/agent-tasks/20261031-meeting-demo-6f24/final-tests.log) |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
 | 案例与 CLI | 八个案例（新增光伏 HzWatt）、五个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[动态案例](../cases/im_speed_step/README.md) |
 | 能力查询与记录版本 | 五个适配器通过案例静态查询提供字段范围、单位、设置阶段、信号及事件能力；八个案例静态检查可用。新清单区分配置、记录格式和分析方法版本；旧 RLC、Boost 记录只读复核通过。2026-10-20 的四模型基准及 RLC 扫描在 Virtual HIL 复核通过；[工程回归](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md) |

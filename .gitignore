@@ -5,3 +5,7 @@ __pycache__/
 # Official installation models are local dependencies; see models/README.md.
 /models/*.tse
 /models/*.cus
+
+# Local model service credentials
+demo.env.local
+*.env.local

@@ -7,7 +7,8 @@ import sys
 
 COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
             'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model',
-            'analyze-waveforms', 'verify-waveforms', 'diagnose-waveforms', 'explain-waveforms', 'verify-diagnosis')
+            'analyze-waveforms', 'verify-waveforms', 'diagnose-waveforms', 'explain-waveforms', 'verify-diagnosis',
+            'analyze-boost', 'plan-boost', 'execute-boost-plan', 'verify-boost-ai', 'demo-boost')
 
 
 def command_name(argv):
@@ -87,6 +88,12 @@ def decorate(command, result, argv, project, failure=None):
     for p in result.get('files', []):
         artifacts[Path(p).name] = str(p)
     error = failure
+    if command in ('analyze-boost','plan-boost','verify-boost-ai') or manifest.get('kind')=='boost_ai':
+        return response(command,result,run_dir=run_dir,record_status=result.get('record_status'),
+                        experiment_status=None,artifacts=artifacts,error=error)
+    if command=='execute-boost-plan':
+        return response(command,result,run_dir=run_dir,record_status=result.get('record_status'),
+                        experiment_status=result.get('experiment_status'),artifacts=artifacts,error=error)
     if error is None and command in ('run', 'smoke', 'sweep', 'run-case', 'practice-model') and manifest.get('status') == 'error':
         error = {'code': 'execution_error', 'stage': 'execution',
                  'message': manifest.get('error') or manifest.get('report_error') or str(manifest.get('cleanup_issues'))}
