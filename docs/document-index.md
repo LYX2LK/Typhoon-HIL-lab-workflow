@@ -11,6 +11,7 @@
 | 实验 | [单相整流](rectifier-experiments.md) | 学习新案例的工况、判据和比较 |
 | 方法 | [Boost 扰动分析](boost-disturbance-analysis.md) | 查原始数据复算、对照结果与解释边界 |
 | 接收 | [外部波形](external-waveforms.md) | 按 CSV/PNG 清单做离线分析与复核 |
+| 分析 | [波形异常识别](waveform-diagnosis.md) | 从数据包识别形态异常、定位事件并导入大模型解释 |
 | 接入 | [模型接入](model-integration.md) | 登记新模型来源，建立适配器、判据和验证 |
 | 接入 | [案例与 CLI 接口](case-interface.md) | 查询案例发现、字段和 JSON 协议 |
 | 任务 | [Agent 工作流](agent-workflow.md) | 用自然语言提出实验任务并核对结果 |

@@ -75,4 +75,6 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 
 外部数据 analyze-waveforms / verify-waveforms 的清单、状态和副作用见 [外部数据接口](external-waveforms.md)。它们复用此 JSON 信封，experiment_status 为 null，数据质量、分析完成度与性能状态在 result 中分别返回。
 
+派生波形识别 diagnose-waveforms / explain-waveforms / verify-diagnosis 的参数、状态和副作用见[识别接口](waveform-diagnosis.md)。其 experiment_status 同样为 null，分类分析与解释生成分别表达；只有实际复核填写 record_status。
+
 原有 inspect/doctor 会写本机检查记录，verify 会写 verification.json，report 会更新报告与清单；它们的副作用与这两个只读案例命令不同。历史记录需复核或重建时按 [记录约定](../PROJECT_SPEC.md#历史记录处理) 在副本操作。

@@ -48,6 +48,8 @@ external_waveforms 类型复用文件哈希、记录版本与方法版本机制�
 
 外部数据的 data_quality_status、analysis_status、record_status 与 performance_status 分别表示结构质量、分析完成度、记录一致性及性能评价。当前性能保持 not_evaluated，CLI 信封的 experiment_status 为 null；复核通过不改变数据质量或性能结论。verify-waveforms 默认只读，显式 --write 才保存复核；通用 verify 保持默认写入行为。
 
+waveform_diagnosis 是外部数据包派生的独立分析记录，保存源包副本、固定规则、分类与事件、模型请求及可选解释回答。计算分类与模型解释分别表达；分类不读取参考标签。接入、状态、版本、独立复算及解释来源约定见[波形识别接口](docs/waveform-diagnosis.md)。
+
 ### Agent 任务记录
 
 执行新实验、修改实验实现或交付需复现的分析结果时，在 `results/agent-tasks/<唯一任务标识>/task.md` 留存记录。标识使用本地日期时间、任务短名及防重后缀；记录中的时间注明 +08:00，文本使用 UTF-8。

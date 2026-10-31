@@ -45,12 +45,35 @@ def _run(argv=None):
     p.add_argument("--output-dir",required=True)
     p=sub.add_parser("verify-waveforms");p.add_argument("--run-dir",required=True)
     p.add_argument("--write",action="store_true",help="save verification.json; default read-only")
+    p=sub.add_parser("diagnose-waveforms")
+    p.add_argument("--source-run",required=True);p.add_argument("--rules",required=True)
+    p.add_argument("--output-dir",required=True)
+    p=sub.add_parser("explain-waveforms")
+    p.add_argument("--run-dir",required=True);p.add_argument("--response",required=True)
+    p.add_argument("--output-dir",required=True)
+    p=sub.add_parser("verify-diagnosis");p.add_argument("--run-dir",required=True)
+    p.add_argument("--write",action="store_true")
     p=sub.add_parser("compare-rectifier")
     for condition in ("baseline","low-input","heavy-load"):
         p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command == "diagnose-waveforms":
+            from .waveform_diagnosis import run_diagnosis
+            result=run_diagnosis(resolve_project_file(args.source_run),resolve_project_file(args.rules),resolve_project_file(args.output_dir))
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
+        if args.command == "explain-waveforms":
+            from .waveform_diagnosis import attach_explanation
+            result=attach_explanation(resolve_project_file(args.run_dir),resolve_project_file(args.response),resolve_project_file(args.output_dir))
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
+        if args.command == "verify-diagnosis":
+            from .waveform_diagnosis import verify_diagnosis
+            result=verify_diagnosis(resolve_project_file(args.run_dir),write=args.write)
+            _publish(result,indent=2)
+            return 0 if result["status"]=="passed" else 1
         if args.command == "analyze-waveforms":
             from .external_records import analyze_external
             result=analyze_external(resolve_project_file(args.intake), resolve_project_file(args.input_dir),

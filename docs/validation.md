@@ -76,7 +76,9 @@ record_status 表示文件与指标复算是否一致，experiment_status 表示
 
 外部数据已具备基于显式清单的两列 CSV 分析与独立复核入口，范围与操作见[数据接口](external-waveforms.md)。原 tu 批次在新记录格式下保持原数值定义，八份原件哈希不变；未知单位、结构失败及方法不适用保留原因。工具回归、原批次等价性、三个新上下文行为及实际证据见[实施结果](../results/agent-tasks/20261023-capability-intake/summary.md)。
 
-原 tu1–tu4 导出间隔均约 5 ns，tu2/tu3 的截图采集速率不同，采集/导出关系仍待确认。幅值和边沿特征见[新报告](../results/agent-tasks/20261023-capability-intake/tu-evidence/report.md)；性能保持 not_evaluated，物理标签、控制器验收和回放精度尚未建立。
+原 tu1–tu4 导出间隔均约 5 ns，tu2/tu3 的截图采集速率不同，采集/导出关系仍待确认。幅值和边沿特征见[接收报告](../results/agent-tasks/20261023-capability-intake/tu-evidence/report.md)。群聊确认批次含两种正常与对应两种异常，逐文件配对仍为形态推断；测点、物理故障原因、控制器验收和回放精度待后续确认。
+
+2026-10-31 已完成[四组波形识别演示](../results/agent-tasks/20261031-tu-diagnosis-a1/explained/report.html)：预设规则判 tu1/tu3 正常，tu2 为电平跌落异常、tu4 为上升过程回落异常，并给出事件位置和数值依据。当前 Codex 会话生成解释后以 JSON 导入，尚未接通自动API或本地推理服务。174项 unittest 通过，原始CSV的标准库独立复算与八份原件哈希检查通过；记录复核passed，性能仍为not_evaluated。这是四条已查看样本的规则演示，尚无独立识别准确率。方法见[识别接口](waveform-diagnosis.md)，完整范围见[实施记录](../results/agent-tasks/20261031-tu-diagnosis-a1/summary.md)。
 
 ## 感应电机独立启动
 

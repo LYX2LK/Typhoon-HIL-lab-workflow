@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "purpose": "计划第15条的四组波形识别演示：判断形态异常并提供位置和数值依据",
+  "threshold_source": "本次演示预设规则。5% 跌落沿用既有描述阈值；10% 回落和 0.2 us 最短持续时间为演示选择，尚无设备验收或训练集依据。已查看样本后制定，不作为独立测试集性能。",
+  "dip_fraction": 0.05,
+  "rise_drawdown_fraction": 0.1,
+  "minimum_duration_s": 0.0000002,
+  "label_context": {
+    "batch_statement": "群聊说明两种正常波形和对应两种异常波形；计划第15条用于模型识别。",
+    "acquisition_statement": "群聊称精度是 us、200 MSa/s、131 kpts；这是来源原话，不能据此将全部截图参数或回放精度确认为一致。",
+    "expected_labels_status": "inferred",
+    "expected_labels_source": "根据四张截图形态推断逐文件对应关系，用户同意据此推进演示，尚无提供方逐文件确认。",
+    "expected_labels": {"tu1": "normal", "tu2": "abnormal", "tu3": "normal", "tu4": "abnormal"}
+  }
+}

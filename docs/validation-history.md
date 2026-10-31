@@ -2,6 +2,15 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-10-31：四组波形规则识别与大模型解释
+
+新增独立 waveform_diagnosis 记录和统一CLI：固定规则从CSV识别电平跌落与上升过程回落，输出分类、事件时间和数值依据；模型解释与计算分类分开记录。tu1/tu3按演示规则未检出异常，tu2跌落0.634120 V、主要越限段8.935 μs；tu4回落1.411352 V、主要越限段1.855 μs。逐文件参考标签为形态推断，四组样本已参与方法制定，不作独立准确率评价。
+
+当前Codex会话读取结构化请求生成解释并通过JSON导入，保存请求哈希、回答和来源；尚未接通自动API或本地推理服务。174项unittest通过，标准库从CSV独立复算四组分类和事件，八份原件哈希未变；27组同样本阈值敏感性检查留证。最终记录复核passed，performance_status=not_evaluated，未运行仿真、回放或实体设备。
+
+- [演示页](../results/agent-tasks/20261031-tu-diagnosis-a1/explained/report.html)、[文字报告](../results/agent-tasks/20261031-tu-diagnosis-a1/explained/report.md)、[最终复核](../results/agent-tasks/20261031-tu-diagnosis-a1/explained/verification.json)。
+- [任务与结论](../results/agent-tasks/20261031-tu-diagnosis-a1/summary.md)、[命令](../results/agent-tasks/20261031-tu-diagnosis-a1/commands.jsonl)、[独立检查](../results/agent-tasks/20261031-tu-diagnosis-a1/independent-audit.json)。
+
 ## 2026-10-23：外部数据接收能力与独立行为验收
 
 外部两列 CSV 接收、显式数据清单与独立复核接入统一入口。166 项 unittest 通过；原 tu 批次与旧结果及标准库独立复算共 84 项数值检查通过，八份原始文件哈希不变。三个新上下文的七项预设判断通过，父流程复核五个实际数据包；格式不兼容、重复时间及单位缺失均保留其质量/分析状态，性能未评价。
