@@ -89,6 +89,54 @@ class BoostAITests(unittest.TestCase):
         p=self.completed();plan=ai.create_plan(p,"baseline",self.root/"plan")
         self.assertEqual(plan["selection_origin"],"experimenter_selection")
 
+    def test_suggestions_follow_answer_subset_and_purpose_instead_of_static_menu(self):
+        p=self.completed();guidance=ai.action_guidance(p)
+        self.assertEqual([a["action_id"] for a in guidance["suggested_actions"]],["late"])
+        self.assertEqual(guidance["suggested_actions"][0]["purpose"],"减弱启动混杂")
+        self.assertEqual({a["action_id"] for a in guidance["other_actions"]},{"repeat","baseline"})
+        plan=ai.create_plan(p,"late",self.root/"plan")
+        self.assertEqual(plan["purpose"],"减弱启动混杂")
+        self.assertEqual(plan["selection_origin"],"model_suggestion")
+
+    def test_initial_report_does_not_claim_a_completed_comparison(self):
+        p=self.completed();report=(p/"report.html").read_text(encoding="utf-8")
+        self.assertIn("当前尚无对照结果",report)
+        self.assertIn("首轮提供现象与候选解释",report)
+        self.assertNotIn("本对照支持减弱",report)
+
+    def test_model_advice_order_is_retained(self):
+        p=self.completed()
+        answer=ai.read(p/"answer.json")
+        answer["suggested_actions"]=[{"action_id":"baseline","purpose":"先建立背景"},{"action_id":"late","purpose":"再延后比较"}]
+        write_json(p/"answer.json",answer)
+        write_json(p/"http_response.json",{"choices":[{"message":{"content":json.dumps(answer)}}]})
+        finalize(p,ai.read(p/"manifest.json"))
+        self.assertEqual([a["action_id"] for a in ai.action_guidance(p)["suggested_actions"]],["baseline","late"])
+
+    def test_demo_requires_explicit_manual_choice_and_rejects_changed_confirmation(self):
+        import shutil
+        from typhoon_lab import boost_demo
+        p=self.root/"results"/"analysis";p.parent.mkdir();shutil.copytree(self.completed(),p)
+        session=self.root/"results"/"session";session.mkdir()
+        write_json(session/"demo_state.json",{"busy":False,"session_dir":str(session),"message":"首次分析完成","first_ai":str(p)})
+        with patch.object(boost_demo,"PROJECT",self.root): demo=boost_demo.Demo(session)
+        self.assertEqual(demo.public_state()["action_guidance"]["suggested_actions"][0]["action_id"],"late")
+        with self.assertRaises(ValueError):demo.launch("plan",{"action":"repeat"})
+        demo.launch("plan",{"action":"repeat","manual_choice":True})
+        self.assertEqual(demo.state["plan"]["selection_origin"],"experimenter_selection")
+        with patch.object(boost_demo.threading,"Thread") as thread:
+            with self.assertRaises(ValueError):demo.launch("confirm",{"approved":True,"operator":"human","action":"late"})
+            thread.assert_not_called()
+        demo.state["first_ai"]=str(self.root/"another-analysis")
+        self.assertIsNone(demo.public_state()["action_guidance"])
+
+    def test_demo_does_not_resume_busy_session(self):
+        from typhoon_lab import boost_demo
+        session=self.root/"results"/"session";session.mkdir(parents=True)
+        write_json(session/"demo_state.json",{"busy":True,"session_dir":str(session)})
+        with patch.object(boost_demo,"PROJECT",self.root),self.assertRaisesRegex(ValueError,"marked busy"):
+            boost_demo.Demo(session)
+
     def test_api_http_error_is_recorded_without_key_or_fabricated_answer(self):
         p=self.root/"api";p.mkdir();write_json(p/"llm_request.json",self.request)
         s={"base_url":"https://example.invalid","model":"model","provider":"mock","timeout_s":1,"max_tokens":1000}

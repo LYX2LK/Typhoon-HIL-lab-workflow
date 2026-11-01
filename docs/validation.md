@@ -1,5 +1,19 @@
 # 验证状态与实测结论
 
+选项契约已修正：收尾/深入作为程序声明的目标操作，讨论必须引用非空追问，生成Schema按工具种类限定参数；选项改为独立短标题。以T002实际保存数据复现旧Schema接受、旧校验拒绝的不一致，使用新版测试控制对象通过Schema和业务校验。234项离线测试通过，未调用真实模型或运行实验。[故障与验证记录](../results/agent-tasks/20261031-agent-option-contract-4c92/summary.md)。
+
+报告正文与结构化参数已分离：新协议使用普通Markdown及段落引用，JSON语法、业务校验、正文生成与工具协议错误分别记录。230项离线测试通过，涵盖英文引号/反斜杠、失败后的只读正文、参数/引用篡改和旧协议复核；当前失败会话及原四轮会话只读复核通过。未调用真实模型或运行新实验。[实现与离线验证](../results/agent-tasks/20261031-agent-split-report-8d41/summary.md)。
+
+演示目的与案例衔接已调整：首页先说明控制器测试目标，再展示分析验证流程与Boost先行案例，首轮任务和后续收尾提示同步更新。仅完成Python/JavaScript语法检查及隔离页面预览；未调用大模型，未开展Agent或Virtual HIL实验验证。[修改与静态检查记录](../results/agent-tasks/20261031-agent-purpose-731c/summary.md)。
+
+Agent结论与收尾分支已更新：当前四轮数据重分析为T007，模型推荐形成阶段结论，并提供继续定位机理的选择；已确认观察与假说状态分开，取消新报告的全局固定undetermined。两分支在会话副本中完成真实API与复核，收尾不再提问，深入切换为机理目标并明确新增能力需求。224项测试通过；原四轮与T001–T006/计划共526文件哈希保持，本轮未新增Virtual HIL。[设计与验收](../results/agent-tasks/20261031-agent-conclusions-5a92/summary.md)。
+
+Agent独立使用反馈的输出格式问题已修复：提示框tone缺省采用安全默认样式；新报告改用DeepSeek官方strict函数Schema、temperature=0，不采用自动格式重发。首次、无扰动对照、延后对照3组真实上下文均一次通过解析与本地校验；当前会话已按新协议恢复T004，原2次实验及失败轮次251个文件哈希保持。214项测试通过。[原因与验证](../results/agent-tasks/20261031-agent-json-recovery-a67c/summary.md)。
+
+对话式Agent已完成真实闭环：2次Virtual HIL（0.5/1.2 s施扰）、5轮模型分析、11次DeepSeek官方API调用，实际调用read_evidence与compare_runs；自然语言追问改变区块次序及选项参数，确认后执行所选配置并更新解释。两次记录passed，峰偏差18.2009%/17.8111%，性能仍failed。205项测试、RLC基准与三点扫描回归通过。机理表述经两轮复阅修正，数值与记录校验不代替自然语言因果判断。[使用说明](boost-agent.md)、[本轮交付](../results/agent-tasks/20261031-agent-demo-9b17/delivery/index.html)、[验收总结](../results/agent-tasks/20261031-agent-demo-9b17/summary.md)。
+
+同日界面联动修正：第2步按首次模型回答动态展示建议、顺序及验证目的，人工选择与模型建议分开；改选后旧确认失效。189项unittest与复用既有真实分析的浏览器交互检查通过，本次未新跑仿真或调用API。当前服务生效范围与最后文字修订的加载限制见[修正记录](../results/agent-tasks/20261031-demo-suggestion-link-c82f/summary.md)。
+
 **2026-10-31 会议演示专项：** 已实际跑通 [Boost + AI 在线分析与确认复验](boost-ai-demo.md)：Virtual HIL 输入跌落、真实 DeepSeek 官方API、配置差异展示、用户确认、延后对照及模型更新解释。完整界面彩排通过，184项unittest通过；RLC基准与三工况扫描回归通过。两次Boost记录一致，峰偏差18.2009%/17.8233%仍超过固定10%，性能均failed。交付包括[五页汇报、操作单、离线报告、证据和录屏](../results/agent-tasks/20261031-meeting-demo-6f24/delivery/index.html)，过程与范围见[任务总结](../results/agent-tasks/20261031-meeting-demo-6f24/summary.md)。本地推理、真实故障标签及实体HIL/控制器集成仍待后续验收。
 
 本页维护工作流已验证的能力、实验判据结果和待验事项，供使用者判断实验输出的适用范围。此前专项验证记录：**2026-10-23**：完成简短不完整任务的 Agent 分阶段观察与复核，首次澄清失败、文档修订和新上下文重测均有记录；50 Hz 通过，49.25 Hz 超时及重试保护拦截，低频比较未评价。见[评审报告](../results/skill-validation/20261022-agent-intake-lowfreq-a1/assessment.md)。2026-10-22 的专项验证包括 THCC 2026.3 Virtual HIL 光伏 50/51 Hz 工况、RLC 基准/扫描回归，以及四组外部波形离线检查；见[任务记录](../results/agent-tasks/20261022-waveforms-pv-a1/task.md)。此前完整验证及电机动态、建模、工程回归的证据按日期保存于[验证记录索引](validation-history.md)。

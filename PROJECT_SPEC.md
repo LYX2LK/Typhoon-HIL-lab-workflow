@@ -52,6 +52,14 @@ waveform_diagnosis 是外部数据包派生的独立分析记录，保存源包�
 
 boost_ai 是Boost仿真记录派生的模型解释记录，复用原数值分析并补充趋势及同窗口比较。真实API请求/响应、白名单建议、人员确认、对照执行和前次解释分别绑定。原仿真性能不由模型改写；派生记录的完成状态与原实验状态独立。接口及复核范围见[Boost + AI](docs/boost-ai-demo.md)。
 
+boost_agent_session 使用session.json标识有状态对话，events.jsonl记录带哈希关联的事件；不可变的boost_agent_turn保存模型工具调用、证据、响应与声明式页面编排。实验仍使用run记录。参数化建议经人员确认、来源与配置哈希校验后执行；模型读取工具与实验执行的权限分开。复核和会话恢复见[对话式Agent接口](docs/boost-agent.md)。
+
+Agent旧版strict_tool_v1报告绑定真实present_report调用ID及生成时的动态Schema。复核同时核对原始函数参数、回答和strict请求Schema；旧content-JSON报告仍按原协议读取。生成约束与本地证据/执行校验分别保留，不自动改写或重发失败报告。
+
+新报告使用strict_tool_v6及markdown_refs_v3：先保留独立普通Markdown正文narrative.md，再以narrative_index段落编号及独立短标题传递控制参数；复核原始正文响应、可复算目录、参数请求绑定、wire_answer和answer投影。正文作为唯一主文，结构化依据折叠且相同段落去重，图表编排仍由模型决定。问题与选项说明独立生成短句；首轮与同事件时刻重复记录不开放默认总结/深入分支，实际时刻对照后再判断是否足以收尾。JSON语法错误与业务校验分别记录；参数失败时正文可只读展示，实验选项不可执行。无自动JSON修补或格式重发。conclude/deepen是程序定义的目标操作，无需模型提供追问；discuss需要非空正文引用。新Schema按操作种类限定message_ref及参数。旧strict_tool_v4/markdown_refs_v1和strict_tool_v5/markdown_refs_v2保持原字段与校验复核。
+
+strict_tool_v3/flat_report_v1按旧协议保留复核：wire_answer按复算事实和受控动作目录投影到answer。investigation_context保存可复算辅助观察、历史覆盖与能力范围，assessment按命题评估进展；收尾/深入由用户选择。旧v1兼容分支保留。研发中的v2草案未用于用户会话，不作为受支持的交付格式。
+
 ### Agent 任务记录
 
 执行新实验、修改实验实现或交付需复现的分析结果时，在 `results/agent-tasks/<唯一任务标识>/task.md` 留存记录。标识使用本地日期时间、任务短名及防重后缀；记录中的时间注明 +08:00，文本使用 UTF-8。

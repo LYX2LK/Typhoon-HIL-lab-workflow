@@ -8,7 +8,7 @@ import sys
 COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
             'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model',
             'analyze-waveforms', 'verify-waveforms', 'diagnose-waveforms', 'explain-waveforms', 'verify-diagnosis',
-            'analyze-boost', 'plan-boost', 'execute-boost-plan', 'verify-boost-ai', 'demo-boost')
+            'analyze-boost', 'plan-boost', 'execute-boost-plan', 'verify-boost-ai', 'demo-boost','agent-boost','verify-boost-agent')
 
 
 def command_name(argv):
@@ -88,7 +88,7 @@ def decorate(command, result, argv, project, failure=None):
     for p in result.get('files', []):
         artifacts[Path(p).name] = str(p)
     error = failure
-    if command in ('analyze-boost','plan-boost','verify-boost-ai') or manifest.get('kind')=='boost_ai':
+    if command in ('analyze-boost','plan-boost','verify-boost-ai','verify-boost-agent') or manifest.get('kind') in ('boost_ai','boost_agent_session'):
         return response(command,result,run_dir=run_dir,record_status=result.get('record_status'),
                         experiment_status=None,artifacts=artifacts,error=error)
     if command=='execute-boost-plan':

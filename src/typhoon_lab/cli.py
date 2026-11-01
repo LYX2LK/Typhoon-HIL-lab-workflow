@@ -67,15 +67,27 @@ def _run(argv=None):
     p=sub.add_parser("verify-boost-ai");p.add_argument("--run-dir",required=True)
     p.add_argument("--write",action="store_true")
     p=sub.add_parser("demo-boost");p.add_argument("--port",type=int,default=8765)
+    p.add_argument("--session-dir",help="resume a saved, idle demo session without running simulations")
+    p=sub.add_parser("agent-boost");p.add_argument("--port",type=int,default=8767)
+    p.add_argument("--session-dir",help="resume an idle conversational Agent session")
+    p=sub.add_parser("verify-boost-agent");p.add_argument("--run-dir",required=True)
+    p.add_argument("--write",action="store_true")
     p=sub.add_parser("compare-rectifier")
     for condition in ("baseline","low-input","heavy-load"):
         p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=="agent-boost":
+            from .boost_agent_server import serve
+            serve(args.port,resolve_project_file(args.session_dir) if args.session_dir else None);return 0
+        if args.command=="verify-boost-agent":
+            from .boost_agent import verify_session
+            result=verify_session(resolve_project_file(args.run_dir),write=args.write)
+            _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
         if args.command=="demo-boost":
             from .boost_demo import serve
-            serve(args.port);return 0
+            serve(args.port,resolve_project_file(args.session_dir) if args.session_dir else None);return 0
         if args.command=="analyze-boost":
             from .boost_ai import analyze_boost, confirmation_from_plan
             result=analyze_boost([resolve_project_file(x) for x in args.source_run],resolve_project_file(args.output_dir),

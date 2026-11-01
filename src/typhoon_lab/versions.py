@@ -2,6 +2,8 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ("boost_agent_session", None): 1,
+    ("boost_agent_turn", None): 1,
     ("boost_ai", "boost_closed_loop"): 1,
     ("waveform_diagnosis", None): 1,
     ("external_waveforms", None): 1,

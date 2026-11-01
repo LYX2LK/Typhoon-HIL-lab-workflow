@@ -7,7 +7,7 @@ import secrets
 import threading
 import urllib.parse
 
-from .boost_ai import (ACTIONS, read, analyze_boost, create_plan, execute_plan, verify_ai, confirmation_from_plan)
+from .boost_ai import (ACTIONS, read, analyze_boost, create_plan, execute_plan, verify_ai, confirmation_from_plan, action_guidance)
 from .config import load_config
 from .records import verify_run
 from .utils import PROJECT, new_run, runtime_lock, write_json, now
@@ -18,22 +18,52 @@ PAGE = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Typhoon
 <p>35→28 V，输出参考50 V，10 kHz；峰偏差≤10%，恢复≤0.5 s，最终误差≤2%</p>
 <div class="phase"><h2>1　执行 Typhoon 实验并调用模型</h2><button id="start" onclick="act('start')">开始新实验与在线分析</button><span id="status" class="status">准备就绪</span>
 <p><small>程序编译、运行并采集波形，复算指标后调用 DeepSeek 官方 API。结果写入新目录。</small></p></div>
-<div class="phase"><h2>2　查看建议与配置差异</h2><select id="action"><option value="late">延后至1.0 s施扰</option><option value="repeat">重复原工况</option><option value="baseline">无扰动基准</option></select><button id="propose" onclick="act('plan',{action:document.querySelector('#action').value})">展示验证方案</button><pre id="plan">完成首次分析后显示建议及差异</pre>
-<label>操作者：<input id="operator" value="现场操作人员"></label><label><input type="checkbox" id="approve">我已查看模型建议与配置差异，确认执行此方案</label><button id="confirm" onclick="act('confirm',{approved:document.querySelector('#approve').checked,operator:document.querySelector('#operator').value})">确认并运行对照实验</button></div>
+<div class="phase"><h2>2　根据本次分析选择验证建议</h2>
+<p id="advice-summary">等待第1步完成，随后显示本次模型分析与验证建议。</p>
+<p><a id="advice-source" hidden target="_blank">查看本次首次分析与证据</a></p><ol id="suggestions"></ol>
+<label id="manual-label" hidden><input type="checkbox" id="manual" onchange="renderChoices()">由实验人员另选模型未建议的可执行动作</label>
+<label>验证动作：<select id="action" disabled onchange="selectionChanged()"><option value="">等待本次模型建议</option></select></label>
+<p id="action-purpose"></p><button id="propose" disabled onclick="act('plan',{action:document.querySelector('#action').value,manual_choice:document.querySelector('#manual').checked})">展示验证方案</button><pre id="plan">完成首次分析后显示建议及差异</pre>
+<label>操作者：<input id="operator" value="现场操作人员"></label><label><input type="checkbox" id="approve" onchange="updateButtons()">我已查看验证目的与配置差异，确认执行此方案</label><button id="confirm" disabled onclick="act('confirm',{approved:document.querySelector('#approve').checked,operator:document.querySelector('#operator').value,action:document.querySelector('#action').value})">确认并运行对照实验</button></div>
 <div class="phase"><h2>3　比较证据与更新解释</h2><div id="links"></div><iframe id="report" title="分析报告"></iframe></div>
 <p><small>候选原因需要进一步证据；此演示为已有软件案例复现。网络异常时打开离线报告，不宣称本次API成功。</small></p>
-<script>const csrf='__TOKEN__';let last='';async function act(name,data={}){if(name==='plan')document.querySelector('#approve').checked=false;let r=await fetch('/api/'+name,{method:'POST',headers:{'Content-Type':'application/json','X-Demo-Token':csrf},body:JSON.stringify(data)});let v=await r.json();if(!r.ok)alert(v.error);refresh()}
-async function refresh(){let s=await (await fetch('/api/state')).json();document.querySelector('#status').textContent=s.message;document.querySelector('#start').disabled=s.busy;document.querySelector('#propose').disabled=s.busy||!s.first_ai;document.querySelector('#confirm').disabled=s.busy||!s.plan||!!s.control;document.querySelector('#plan').textContent=s.plan?JSON.stringify(s.plan,null,2):'完成首次分析后显示建议及差异';if(s.report&&s.report!==last){document.querySelector('#report').src=s.report;last=s.report}document.querySelector('#links').innerHTML=(s.report?'<p><a target="_blank" href="'+s.report+'">打开完整离线报告</a></p>':'')+(s.first_run?'<p>首次实验：'+s.first_run+'</p>':'')+(s.control?'<p>对照实验：'+s.control+'</p>':'')}setInterval(refresh,1500);refresh();</script></html>'''
+<script>const csrf='__TOKEN__';let last='',guidanceKey='',state={busy:false};const el=id=>document.getElementById(id);
+async function act(name,data={}){if(name==='plan')el('approve').checked=false;let r=await fetch('/api/'+name,{method:'POST',headers:{'Content-Type':'application/json','X-Demo-Token':csrf},body:JSON.stringify(data)});let v=await r.json();if(!r.ok)alert(v.error);await refresh()}
+function available(){const g=state.action_guidance;return g?[...g.suggested_actions,...(el('manual').checked?g.other_actions:[])]:[]}
+function renderChoices(preferred){let old=preferred||el('action').value;el('action').replaceChildren();const choices=available();for(const a of choices){let o=document.createElement('option');o.value=a.action_id;o.textContent=(a.selection_origin==='model_suggestion'?'模型建议：':'实验人员选择：')+a.title;el('action').append(o)}if(choices.some(a=>a.action_id===old))el('action').value=old;selectionChanged()}
+function renderPlan(){el('plan').textContent=!state.plan?'选择本次建议后，点击“展示验证方案”查看具体配置差异。':state.plan.action_id!==el('action').value?'当前选择已变更，请重新点击“展示验证方案”，查看该动作的目的与配置差异。':JSON.stringify(state.plan,null,2)}
+function selectionChanged(){el('approve').checked=false;const a=available().find(a=>a.action_id===el('action').value);el('action-purpose').textContent=a?(a.selection_origin==='model_suggestion'?'模型给出的验证目的：':'实验人员选择（本次模型未建议）：')+a.purpose:'';renderPlan();updateButtons()}
+function updateButtons(){const hasAdvice=!!state.action_guidance&&!!el('action').value;el('start').disabled=state.busy;el('action').disabled=state.busy||!hasAdvice;el('manual').disabled=state.busy;el('propose').disabled=state.busy||!hasAdvice||!!state.control;el('confirm').disabled=state.busy||!state.plan||!!state.control||state.plan.action_id!==el('action').value||!el('approve').checked}
+async function refresh(){let s=await (await fetch('/api/state')).json();state=s;el('status').textContent=s.message;let key=s.action_guidance?s.action_guidance.analysis_manifest_sha256:'';if(key!==guidanceKey){guidanceKey=key;let g=s.action_guidance;el('advice-summary').textContent=g?'本次首次分析：'+g.summary:'等待第1步完成，随后显示本次模型分析与验证建议。';el('advice-source').hidden=!g;if(g)el('advice-source').href=g.report_url;el('suggestions').replaceChildren();for(const a of g?g.suggested_actions:[]){let li=document.createElement('li');li.textContent=a.title+'：'+a.purpose;el('suggestions').append(li)}el('manual-label').hidden=!g||g.other_actions.length===0;el('manual').checked=!!g&&!!s.plan&&s.plan.selection_origin==='experimenter_selection';renderChoices(s.plan?s.plan.action_id:null)}renderPlan();if(s.report&&s.report!==last){el('report').src=s.report;last=s.report}el('links').innerHTML=(s.report?'<p><a target="_blank" href="'+s.report+'">打开完整离线报告</a></p>':'')+(s.first_run?'<p>首次实验：'+s.first_run+'</p>':'')+(s.control?'<p>对照实验：'+s.control+'</p>':'');updateButtons()}setInterval(refresh,1500);refresh();</script></html>'''
 
 
 class Demo:
-    def __init__(self):
-        self.root=new_run("meeting-demo")
-        (self.root/"task.md").write_text(f"# 会议演示\n\n开始 {now()}；Boost Virtual HIL + DeepSeek；固定原判据，用户确认后对照。\n",encoding="utf-8")
-        self.state={"busy":False,"message":"准备就绪","session_dir":str(self.root)}
+    def __init__(self,session_dir=None):
+        if session_dir is None:
+            self.root=new_run("meeting-demo")
+            (self.root/"task.md").write_text(f"# 会议演示\n\n开始 {now()}；Boost Virtual HIL + DeepSeek；固定原判据，用户确认后对照。\n",encoding="utf-8")
+            self.state={"busy":False,"message":"准备就绪","session_dir":str(self.root)}
+        else:
+            self.root=Path(session_dir).resolve()
+            if not self.root.is_relative_to(PROJECT/"results"): raise ValueError("session must be inside project results")
+            self.state=read(self.root/"demo_state.json")
+            if self.state.get("busy"): raise ValueError("cannot resume a session marked busy; preserve its runtime")
+            if Path(self.state["session_dir"]).resolve()!=self.root: raise ValueError("session path mismatch")
+        self.guidance=self.load_guidance()
         self.guard=threading.Lock()
         self.token=secrets.token_hex(24)
         self.service=PROJECT/"configs/ai_service_deepseek.json"
+
+    def load_guidance(self):
+        if not self.state.get("first_ai"): return None
+        guidance=action_guidance(self.state["first_ai"])
+        guidance["report_url"]=(self.state.get("report") if not self.state.get("control") else None) or self.url(Path(self.state["first_ai"])/"report.html")
+        return guidance
+
+    def public_state(self):
+        current=self.state.get("first_ai")
+        guidance=self.guidance if current and self.guidance and self.guidance["analysis_run"]==str(Path(current).resolve()) else None
+        return {**self.state,"action_guidance":guidance}
 
     def save(self):
         write_json(self.root/"demo_state.json",self.state)
@@ -47,12 +77,15 @@ class Demo:
             if action=="plan":
                 if not self.state.get("first_ai"): raise ValueError("先完成首次在线分析")
                 if self.state.get("control"): raise ValueError("本次对照已完成，请开始新实验")
+                if data.get("action") not in {a["action_id"] for a in self.guidance["suggested_actions"]} and data.get("manual_choice") is not True:
+                    raise ValueError("本次模型未建议该动作；请显式选择由实验人员另选")
                 plan_path=self.root/("plan-"+secrets.token_hex(3))
                 plan=create_plan(self.state["first_ai"],data.get("action"),plan_path)
                 self.state.update({"plan_dir":str(plan_path),"plan":plan,"message":"请查看差异并确认"});self.save();return
             if action=="confirm":
                 if data.get("approved") is not True or not self.state.get("plan"): raise ValueError("请先查看方案并勾选确认")
                 if self.state.get("control"): raise ValueError("此方案已执行")
+                if data.get("action")!=self.state["plan"]["action_id"]: raise ValueError("当前选择与展示的方案不同，请重新展示并确认")
                 if not str(data.get("operator","")).strip(): raise ValueError("请填写操作者")
                 self.state["operator"]=str(data["operator"])[:120]
             elif action!="start": raise ValueError("unknown operation")
@@ -76,6 +109,7 @@ class Demo:
                 if r["explanation_status"]!="completed": raise ValueError("模型调用失败；查看 model_call.json 或使用离线备用")
                 verify_ai(out,write=True)
                 self.state.update({"first_ai":str(out),"message":"首次在线分析完成；请选择并展示验证方案"})
+                self.guidance=self.load_guidance()
             else:
                 plan=self.state["plan"]
                 r=execute_plan(self.state["plan_dir"],plan["confirmation_token"],self.state["operator"])
@@ -95,15 +129,15 @@ class Demo:
             self.state["busy"]=False;self.save()
 
 
-def serve(port=8765):
-    demo=Demo()
+def serve(port=8765,session_dir=None):
+    demo=Demo(session_dir)
     class Handler(BaseHTTPRequestHandler):
         def reply(self,code,data,mime="application/json; charset=utf-8"):
             raw=data if isinstance(data,bytes) else json.dumps(data,ensure_ascii=False).encode("utf-8")
             self.send_response(code);self.send_header("Content-Type",mime);self.send_header("Content-Length",str(len(raw)));self.send_header("Cache-Control","no-store");self.end_headers();self.wfile.write(raw)
         def do_GET(self):
             if self.path=="/": return self.reply(200,PAGE.replace("__TOKEN__",demo.token).encode("utf-8"),"text/html; charset=utf-8")
-            if self.path=="/api/state": return self.reply(200,demo.state)
+            if self.path=="/api/state": return self.reply(200,demo.public_state())
             if self.path.startswith("/files/"):
                 target=(PROJECT/"results"/urllib.parse.unquote(self.path[7:])).resolve()
                 if target.is_relative_to(PROJECT/"results") and target.is_file() and target.suffix in {".html",".png",".json",".md",".csv"}:

@@ -309,6 +309,26 @@ def differences(a,b,prefix=""):
     return [] if a==b else [{"field":prefix,"before":a,"after":b}]
 
 
+def action_guidance(analysis_dir):
+    """Keep model advice/order separate from other executable capabilities."""
+    root=Path(analysis_dir).resolve()
+    if verify_ai(root)["record_status"]!="passed" or read(root/"manifest.json")["explanation_status"]!="completed":
+        raise ValueError("suggestions require a verified, completed model analysis")
+    answer=read(root/"answer.json")
+    suggested=[];seen=set()
+    for item in answer["suggested_actions"]:
+        action=item["action_id"]
+        if action in seen: continue
+        seen.add(action)
+        suggested.append({"action_id":action,"title":ACTIONS[action].split("：",1)[0],
+                          "purpose":item["purpose"],"selection_origin":"model_suggestion"})
+    return {"analysis_run":str(root),"analysis_manifest_sha256":sha256(root/"manifest.json"),
+            "summary":answer["summary"],"suggested_actions":suggested,
+            "other_actions":[{"action_id":action,"title":description.split("：",1)[0],
+                              "purpose":description.split("：",1)[1],"selection_origin":"experimenter_selection"}
+                             for action,description in ACTIONS.items() if action not in seen]}
+
+
 def create_plan(analysis_dir, action, output):
     root=Path(analysis_dir).resolve(); p=Path(output).resolve()
     if verify_ai(root)["record_status"] != "passed" or read(root/"manifest.json")["explanation_status"]!="completed":
@@ -317,9 +337,10 @@ def create_plan(analysis_dir, action, output):
     if p.exists(): raise ValueError("plan output already exists")
     p.mkdir(parents=True)
     write_json(p/"candidate_config.json",candidate)
-    advised={a["action_id"] for a in read(root/"answer.json")["suggested_actions"]}
+    suggestion=next((a for a in read(root/"answer.json")["suggested_actions"] if a["action_id"]==action),None)
     plan={"schema_version":1,"created_at":now(),"analysis_run":str(root),"analysis_manifest_sha256":sha256(root/"manifest.json"),
-        "action_id":action,"purpose":ACTIONS[action],"selection_origin":"model_suggestion" if action in advised else "experimenter_selection",
+        "action_id":action,"purpose":suggestion["purpose"] if suggestion else ACTIONS[action],
+        "action_description":ACTIONS[action],"selection_origin":"model_suggestion" if suggestion else "experimenter_selection",
         "config_sha256":sha256(p/"candidate_config.json"),"differences":differences(c,candidate),
         "confirmation_token":secrets.token_hex(8),"status":"awaiting_human_confirmation"}
     write_json(p/"plan.json",plan)
@@ -401,7 +422,8 @@ def write_report(p):
     elif (p/"sources"/"R1"/"response_detail.png").exists():
         content+='<img alt="首次响应" src="data:image/png;base64,'+base64.b64encode((p/"sources"/"R1"/"response_detail.png").read_bytes()).decode()+ '">'
     content+="<p>固定判据：峰偏差≤10%，恢复≤0.5 s，最终误差≤2%。记录一致性与性能分别评价。</p>"
-    content+="<p>两次响应以实际事件对齐，统一比较[0,0.9) s，每条9,000点；施扰前0.1 s线性趋势仅作描述。无滤波、插值或跨工况拼接。</p>"
+    content+=("<p>两次响应以实际事件对齐，统一比较[0,0.9) s，每条9,000点；施扰前0.1 s线性趋势仅作描述。无滤波、插值或跨工况拼接。</p>" if len(summaries)>1 else
+              "<p>首轮响应以实际事件对齐，分析事件后[0,0.9) s的9,000点及施扰前0.1 s趋势。当前尚无对照结果；验证建议待选择、确认与执行。</p>")
     content+="<h2>模型调用</h2><p>"+html.escape(str(call.get("provider","待配置"))+" / "+str(call.get("returned_model",call.get("model","—")))+"；状态 "+call["status"]+"；耗时 "+str(round(call.get("elapsed_s",0),2))+" s")+"</p>"
     content+="<details><summary>请求与响应关联</summary><pre>"+html.escape(json.dumps(call,ensure_ascii=False,indent=2))+"</pre></details>"
     if answer:
@@ -411,7 +433,8 @@ def write_report(p):
         for key,title in (("observations","观察与证据"),("hypotheses","候选解释")):
             content+="<h3>"+title+"</h3><ul>"+"".join("<li>"+html.escape(x["text"])+" <small>["+html.escape(", ".join(x["evidence"]))+"]</small></li>" for x in answer[key])+"</ul>"
         content+="<h3>更新解释</h3><p>"+html.escape(answer["updated_interpretation"])+"</p>"
-        content+="<p>复阅范围：本对照支持减弱“启动残余足以解释峰值越限”的解释；尚不能确认主导机理，需要内部控制状态及其他工况证据。模型自然语言不替代因果验证。</p>"
+        content+=("<p>复阅范围：本对照支持减弱“启动残余足以解释峰值越限”的解释；尚不能确认主导机理，需要内部控制状态及其他工况证据。模型自然语言不替代因果验证。</p>" if len(summaries)>1 else
+                  "<p>复阅范围：首轮提供现象与候选解释，尚未完成对照，不能判断延后施扰如何改变响应。模型自然语言不替代因果验证。</p>")
         content+="<h3>证据缺口</h3><ul>"+"".join("<li>"+html.escape(x)+"</li>" for x in answer["gaps"])+"</ul>"
         content+="<h3>建议验证</h3><ul>"+"".join("<li>"+html.escape(ACTIONS[x["action_id"]]+"："+x["purpose"])+"</li>" for x in answer["suggested_actions"])+"</ul>"
     else: content+="<p>尚无通过结构与引用校验的回答。请使用已保存的完整报告，不宣称本次API成功。</p>"

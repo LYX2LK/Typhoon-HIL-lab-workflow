@@ -1,0 +1,11 @@
+{
+  "provider": "DeepSeek official API",
+  "base_url": "https://api.deepseek.com/beta",
+  "model": "deepseek-flash",
+  "api_key_env": "DEEPSEEK_API_KEY",
+  "env_file": "demo.env.local",
+  "timeout_s": 120,
+  "max_tokens": 6000,
+  "temperature": 0,
+  "thinking": {"type": "disabled"}
+}

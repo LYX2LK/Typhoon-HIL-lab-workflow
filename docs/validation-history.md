@@ -4,6 +4,18 @@
 
 ## 2026-10-31：Boost + AI 会议演示与确认复验
 
+修复T002的“追问选项无效”：旧v4允许空收尾message_ref却与业务要求冲突；新v5/markdown_refs_v2按工具种类生成约束，并将收尾/深入投影为已声明的目标请求。独立短label解决多建议同段导致的标题引用问题。实际T002离线契约复现及234项测试通过，无真实模型调用或新实验。[记录](../results/agent-tasks/20261031-agent-option-contract-4c92/summary.md)。
+
+针对T001工具参数中未转义英文引号导致的JSON解析失败，改用独立Markdown正文与段落编号控制参数（strict_tool_v4/markdown_refs_v1）；参数失败时正文可读、实验选项停用。230项离线测试及隔离展示检查通过，旧会话只读复核通过，无真实模型调用或新实验。[故障与实现记录](../results/agent-tasks/20261031-agent-split-report-8d41/summary.md)。
+
+展示定位更新：将控制器波形分析与验证目标、Boost先行案例和后续水泵控制器接入串联，修改首页、首轮任务及阶段收尾提示。仅语法和隔离展示检查，无真实模型调用及Agent/Virtual HIL实验。[静态检查记录](../results/agent-tasks/20261031-agent-purpose-731c/summary.md)。
+
+四轮独立使用后的进展管理更新：新增命题级assessment与用户选择的conclude/deepen。当前会话T007使用原四轮数据完成真实重分析，ready_to_conclude并推荐收尾；两个选择在副本中完成真实API验证，无新仿真。原四轮及历史轮次/计划526文件保持，224项测试通过。新报告使用浅层flat_report_v1及strict_tool_v3，辅助观察从CSV复算，原始传输与页面投影分别留存；旧strict_tool_v1仍可复核。[原因、设计与验证记录](../results/agent-tasks/20261031-agent-conclusions-5a92/summary.md)。
+
+独立使用后补充输出协议验证：tone缺失曾使首轮报告被拦截，随后JSON选项数组中出现位置错误的占位字段。已确认原请求启用json_object、输出1755 token且finish_reason=stop；不是长度截断。最终改为官方Beta strict函数、动态封闭Schema及temperature=0，不采用自动重发或拼补。3组真实上下文原始输出均一次通过，当前用户会话T004也由真实compare_runs→read_evidence→present_report完成；旧2次实验及T001–T003/计划251个文件保持。214项测试通过，未为格式修复新增Virtual HIL。[完整修复与证据](../results/agent-tasks/20261031-agent-json-recovery-a67c/summary.md)。
+
+同日升级为[对话式Agent](boost-agent.md)：2次实际Virtual HIL（0.5/1.2 s输入施扰）、5轮分析、11次DeepSeek官方API调用，模型实际调用read_evidence及compare_runs；追问改变区块顺序及参数化选项。人员确认后执行1.2 s对照，15000/22000点；事件后统一0.9 s各9000点比较，峰偏差18.2009%→17.8111%，恢复0.3307→0.3271 s，事件前趋势2.64976→0.09048 V/s，末段误差0.00938%→0.00948%。两次原记录passed、原性能failed，未确认主导机理。205项测试、RLC基准及三点扫描实际回归/复核通过，离线报告和录屏另存。模型措辞出现过度归因、采样时间尺度等问题，经两次后续复阅撤回，完整原回答保留；不把JSON/哈希通过作为机理正确证明。[Agent验收总结](../results/agent-tasks/20261031-agent-demo-9b17/summary.md)、[交付入口](../results/agent-tasks/20261031-agent-demo-9b17/delivery/index.html)。
+
 真实Virtual HIL复跑与完整界面彩排均完成。初次跌落和延后施扰采集15000/20000点；统一实际事件后[0,0.9) s，各9000点比较。事件前趋势2.64976→0.08429 V/s，峰偏差18.2009%→17.8233%，恢复0.3307→0.3274 s，最终误差0.00938%→0.00947%。两次记录均passed，性能均failed；不修改PI及原判据。对照支持减弱“启动残余足以解释峰值越限”的解释，未确认主导机理。
 
 DeepSeek官方deepseek-flash真实API调用保存请求、响应、模型、usage、耗时和证据关联；彩排两次耗时4.344/4.860 s。建议仅允许重复、无扰动基准、延后施扰；界面显示差异并记录确认再执行。开发联调中引用错误和状态措辞错误被拒绝或复阅纠正，原回答保留。184项unittest通过，RLC基准/扫描实际回归passed。PowerPoint本机渲染五页并验证测试副本图表编辑、保存和重开；连续彩排录屏约83秒。
@@ -174,3 +186,8 @@ Generic PV plant 已通过模型接口预验并新增适配器。方法 2 的 50
 ## 索引维护
 
 完成一次验证后保存独立结果目录，再按日期登记范围、结论与证据链接，同时更新验证状态中的能力和实测结论。历史结果及代码快照保留原貌；操作教程直接反映现行用法。
+
+
+### 2026-10-31 Agent 输出精简与阶段推进
+
+正文单次展示、依据折叠与段落去重，问题/选项采用短句；首轮和相同时刻重复记录不开放默认收尾/深入分支。238项离线回归通过，最终Schema调整后49项Agent复测通过；真实旧响应同段展示5次降至1次。未进行新模型调用或仿真，实际生成质量待验。旧服务保留，新版于8768加载已有R001的独立副本。详见[任务记录](../results/agent-tasks/20261031-agent-concise-review-a749/task.md)。
