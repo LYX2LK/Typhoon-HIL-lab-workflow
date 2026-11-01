@@ -65,5 +65,14 @@
     "redistribution": "unconfirmed",
     "official_test_relative_path": "examples/tests/109_pv_plant_generic/test_pv_plant_generic.py",
     "official_test_sha256": "d244badc927216dbef7fbd74fb5042560c5e4b83be788bf4ed507d920f06b284"
+  },
+  "three_phase_rectifier_fault": {
+    "kind": "self_built",
+    "thcc_version": "2026.3",
+    "sha256": "577a3cf96fc5b4a2afb8fc30d136641222e54e2d5964b4aeefdf7f34bf2dd3f6",
+    "generator": "src/typhoon_lab/rectifier_fault.py",
+    "reference_url": "https://unbscholar.lib.unb.ca/items/1481f82f-78d4-4fe2-a52d-489c0a3f4dd4",
+    "scope": "Simplified six-diode resistive bridge; not the thesis system or classifier.",
+    "diode_model": "LC R=1 ohm, solver step 0.25 us; HIL404 Pro 3; Virtual HIL"
   }
 }

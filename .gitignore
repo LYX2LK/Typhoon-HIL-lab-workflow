@@ -5,6 +5,7 @@ __pycache__/
 # Official installation models are local dependencies; see models/README.md.
 /models/*.tse
 /models/*.cus
+!/models/three_phase_rectifier_fault.tse
 
 # Local model service credentials
 demo.env.local

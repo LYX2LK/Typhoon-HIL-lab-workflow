@@ -1,5 +1,12 @@
 # 验证状态与实测结论
 
+**2026-11-01 示例波形配对比较：** 默认首轮概览；配对操作计算差值/倍率并分别绘制tu1/tu2、tu3/tu4局部图，展示差异表，完成后不重复推荐相同比较。267项最终回归通过；真实API新对话、配对、追问及旧会话副本升级、页面两图和离线报告复核通过。[实现与验收](../results/agent-tasks/20261101-100310-waveform-pair-comparison-a62f/summary.md)。
+
+**2026-11-01 示例波形追问修复：** 局部选项按所选记录分析，重试保留原问题与范围；261项完整测试及最终23项案例复测通过，真实API与页面连续选择通过，离线报告和最终复核passed。[修复记录](../results/agent-tasks/20261101-093332-waveform-followup-fix-a17b/summary.md)。
+
+**2026-11-01 三案例 Agent：** 首页可选 Boost 输入跌落、四组示例波形、三相整流桥二极管开路，支持直接发送首条问题、绑定案例、追问、图表编排及离线报告。三案例均完成真实API分析、追问和最终复核；两个仿真案例完成确认后的对照执行。256项unittest通过，RLC基准与三点扫描回归、旧Boost版本1会话复核通过。整流桥固定2%数值参考判据通过，Boost原10%峰偏差判据仍failed。使用见[Agent说明](agent.md)，完整证据见[本轮验收](../results/agent-tasks/20261101-three-cases/summary.md)。
+
+
 选项契约已修正：收尾/深入作为程序声明的目标操作，讨论必须引用非空追问，生成Schema按工具种类限定参数；选项改为独立短标题。以T002实际保存数据复现旧Schema接受、旧校验拒绝的不一致，使用新版测试控制对象通过Schema和业务校验。234项离线测试通过，未调用真实模型或运行实验。[故障与验证记录](../results/agent-tasks/20261031-agent-option-contract-4c92/summary.md)。
 
 报告正文与结构化参数已分离：新协议使用普通Markdown及段落引用，JSON语法、业务校验、正文生成与工具协议错误分别记录。230项离线测试通过，涵盖英文引号/反斜杠、失败后的只读正文、参数/引用篡改和旧协议复核；当前失败会话及原四轮会话只读复核通过。未调用真实模型或运行新实验。[实现与离线验证](../results/agent-tasks/20261031-agent-split-report-8d41/summary.md)。
@@ -27,7 +34,7 @@ Agent独立使用反馈的输出格式问题已修复：提示框tone缺省采�
 | 项目 | 结论与依据 |
 |---|---|
 | 环境 | Python 3.11.4、Typhoon-HIL-API 1.32.1、TyphoonTest 1.35.6；见 [环境快照](../results/20261015-112422-v2-validation-dd212b/environment.json) |
-| 脚本逻辑 | 184项unittest通过，覆盖原模型/外部数据及新增Boost模型请求、证据引用、失败调用、确认边界与哈希关联；[当前日志](../results/agent-tasks/20261031-meeting-demo-6f24/final-tests.log) |
+| 脚本逻辑 | 267项unittest通过，覆盖原有模型/数据流程、Agent案例选择、数值引用、API失败、局部追问重试、配对差异计算与重复建议限制、确认绑定及原始记录复核；[当前日志](../results/agent-tasks/20261101-100310-waveform-pair-comparison-a62f/full-tests-final.log) |
 | 运行与记录 | 感应电机完整接入及 RLC 基准/扫描、Boost 阶跃、整流基准回归，见 [最终命令](../results/agent-tasks/20261019-case-onboarding/release-validation/commands.json)；最小回环与先前能力的证据见验证索引 |
 | 案例与 CLI | 八个案例（新增光伏 HzWatt）、五个注册适配器；完整性、软件支持和实际证据分开，JSON 两种旗标位置及非零退出码通过；[接口](case-interface.md)、[动态案例](../cases/im_speed_step/README.md) |
 | 能力查询与记录版本 | 五个适配器通过案例静态查询提供字段范围、单位、设置阶段、信号及事件能力；八个案例静态检查可用。新清单区分配置、记录格式和分析方法版本；旧 RLC、Boost 记录只读复核通过。2026-10-20 的四模型基准及 RLC 扫描在 Virtual HIL 复核通过；[工程回归](../results/agent-tasks/20261020-2000-structure-qa-a1/task.md) |

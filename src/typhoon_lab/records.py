@@ -10,7 +10,7 @@ def verify_run(run_dir,write=True):
     from .analysis import analyze
     run_dir=Path(run_dir).resolve()
     if (run_dir/"session.json").is_file():
-        from .boost_agent import verify_session
+        from .agent import verify_session
         return verify_session(run_dir,write=write)
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
     if manifest.get("kind")=="boost_ai":

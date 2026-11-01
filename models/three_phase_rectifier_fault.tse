@@ -1,0 +1,380 @@
+version = 4.2
+
+//
+// Saved by sw version: 2026.3
+//
+
+model "Three phase diode bridge diagnostic example" {
+    configuration {
+        hil_device = "HIL404"
+        hil_configuration_id = 3
+        simulation_method = exact
+        simulation_time_step = 2.5e-07
+        fine_auto_sim_step = False
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        dma_enable = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_term_var_location = "local"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        excluded_component_from_locking_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        solver_type = "DAE"
+        integration_method = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.1
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "core/Ground" Ground {
+        }
+        [
+            position = 7200, 8500
+        ]
+
+        component "core/Voltage Source" Source_a {
+        }
+        [
+            position = 7600, 8900
+        ]
+
+        component "core/Current Measurement" Ia {
+        }
+        [
+            position = 7600, 8300
+        ]
+
+        component "core/Voltage Measurement" Va {
+        }
+        [
+            position = 7500, 8700
+        ]
+
+        component "core/Diode" D_ap {
+            model_load_legacy = "1"
+        }
+        [
+            position = 7600, 7900
+        ]
+
+        component "core/Diode" D_an {
+            model_load_legacy = "1"
+        }
+        [
+            position = 7600, 8100
+        ]
+
+        component "core/Voltage Source" Source_b {
+        }
+        [
+            position = 7900, 8900
+        ]
+
+        component "core/Current Measurement" Ib {
+        }
+        [
+            position = 7900, 8300
+        ]
+
+        component "core/Voltage Measurement" Vb {
+        }
+        [
+            position = 7800, 8700
+        ]
+
+        component "core/Diode" D_bp {
+            model_load_legacy = "1"
+        }
+        [
+            position = 7900, 7900
+        ]
+
+        component "core/Diode" D_bn {
+            model_load_legacy = "1"
+        }
+        [
+            position = 7900, 8100
+        ]
+
+        component "core/Voltage Source" Source_c {
+        }
+        [
+            position = 8200, 8900
+        ]
+
+        component "core/Current Measurement" Ic {
+        }
+        [
+            position = 8200, 8300
+        ]
+
+        component "core/Voltage Measurement" Vc {
+        }
+        [
+            position = 8100, 8700
+        ]
+
+        component "core/Diode" D_cp {
+            model_load_legacy = "1"
+        }
+        [
+            position = 8200, 7900
+        ]
+
+        component "core/Diode" D_cn {
+            model_load_legacy = "1"
+        }
+        [
+            position = 8200, 8100
+        ]
+
+        component "core/Current Measurement" Iload {
+        }
+        [
+            position = 8900, 7800
+        ]
+
+        component "core/Resistor" Rload {
+            resistance = "100.0"
+        }
+        [
+            position = 8900, 8200
+        ]
+
+        component "core/Voltage Measurement" Vdc {
+        }
+        [
+            position = 9200, 8100
+        ]
+
+        junction Neutral pe
+        [
+            position = 7400, 8500
+        ]
+
+        junction DC_plus pe
+        [
+            position = 8500, 7700
+        ]
+
+        junction DC_minus pe
+        [
+            position = 8500, 8500
+        ]
+
+        junction Phase_a pe
+        [
+            position = 7700, 8352
+        ]
+
+        junction Phase_b pe
+        [
+            position = 8000, 8352
+        ]
+
+        junction Phase_c pe
+        [
+            position = 8300, 8352
+        ]
+
+        connect Ground.node Neutral as Connection1
+        connect Source_a.n_node Neutral as Connection2
+        connect Source_a.p_node Ia.p_node as Connection3
+        connect Ia.n_node Phase_a as Connection4
+        connect D_ap.A Phase_a as Connection5
+        connect D_ap.K DC_plus as Connection6
+        connect D_an.A DC_minus as Connection7
+        connect D_an.K Phase_a as Connection8
+        connect Va.p_node Source_a.p_node as Connection9
+        connect Va.n_node Neutral as Connection10
+        connect Source_b.n_node Neutral as Connection11
+        connect Source_b.p_node Ib.p_node as Connection12
+        connect Ib.n_node Phase_b as Connection13
+        connect D_bp.A Phase_b as Connection14
+        connect D_bp.K DC_plus as Connection15
+        connect D_bn.A DC_minus as Connection16
+        connect D_bn.K Phase_b as Connection17
+        connect Vb.p_node Source_b.p_node as Connection18
+        connect Vb.n_node Neutral as Connection19
+        connect Source_c.n_node Neutral as Connection20
+        connect Source_c.p_node Ic.p_node as Connection21
+        connect Ic.n_node Phase_c as Connection22
+        connect D_cp.A Phase_c as Connection23
+        connect D_cp.K DC_plus as Connection24
+        connect D_cn.A DC_minus as Connection25
+        connect D_cn.K Phase_c as Connection26
+        connect Vc.p_node Source_c.p_node as Connection27
+        connect Vc.n_node Neutral as Connection28
+        connect DC_plus Iload.p_node as Connection29
+        connect Iload.n_node Rload.p_node as Connection30
+        connect Rload.n_node DC_minus as Connection31
+        connect Vdc.p_node DC_plus as Connection32
+        connect Vdc.n_node DC_minus as Connection33
+    }
+
+    default {
+        "core/Resistor" {
+            resistance = "1"
+            param_set = ""
+        }
+
+        "core/Voltage Source" {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            dtsm_switch_name = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/Current Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Diode" {
+            signal_access = "inherit"
+            switches_names_at_mask = "[]"
+            switches_names_at_mask_previous = "[]"
+            switches_option = "False"
+            resistance = "1.0"
+            snb_type = "none"
+            R = "100e3"
+            C = "1e-6"
+            show_monitoring = "False"
+            losses_estimation = "False"
+            load_xml_en = "User tables"
+            Import_diode_xml = "not selected"
+            xml_data = "{}"
+            diode_data = "{\'package_class\': \'Diode\', \'variables\': {}, \'constants\': {}, \'custom_tables\': {}, \'turn_on_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 400.0, 800.0, 1200.0], \'voltage_axis\': [0.0, 1800.0], \'temperature_axis\': [25.0, 125.0], \'energy\': [[[0.0, 0.0, 0.0, 0.0], [0.0, 0.4068, 1.001, 1.822]], [[0.0, 0.0, 0.0, 0.0], [0.0, 0.6317, 1.38, 1.784]]], \'parsed_formula\': \'E_turn_on_losses\'}, \'turn_off_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 400.0, 800.0, 1200.0], \'voltage_axis\': [0.0, 1800.0], \'temperature_axis\': [25.0, 125.0], \'energy\': [[[0.0, 0.0, 0.0, 0.0], [0.0, 0.6, 0.88, 1.177]], [[0.0, 0.0, 0.0, 0.0], [0.0, 0.9094, 1.25, 1.784]]], \'parsed_formula\': \'E_turn_off_losses\'}, \'conduction_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 100.0, 200.0, 400.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1400.0, 1600.0], \'temperature_axis\': [25.0, 125.0], \'voltage_drop\': [[0.0, 1.5, 1.8, 2.3, 2.69, 2.9, 3.1, 3.25, 3.41, 3.73, 4.0, 4.31], [0.0, 1.63, 2.09, 2.77, 3.37, 3.63, 3.8, 4.11, 4.37, 4.81, 5.29, 5.7]], \'parsed_formula\': \'v_conduction_losses\'}, \'c_function_code\': {\'output_fnc\': \'E_turn_on_losses = lookup3d(turn_on_losses_table, i, v, T, current_axis_turn_on_losses, voltage_axis_turn_on_losses, temperature_axis_turn_on_losses, 4, 2, 2);\nE_turn_off_losses = lookup3d(turn_off_losses_table, i, v, T,current_axis_turn_off_losses, voltage_axis_turn_off_losses, temperature_axis_turn_off_losses, 4, 2, 2);\nv_conduction_losses = lookup2d(conduction_losses_table, i, T,current_axis_conduction_losses, temperature_axis_conduction_losses, 12, 2);\ne_t_on = E_turn_on_losses;\ne_t_off = E_turn_off_losses;\nv_ce = v_conduction_losses;\n\', \'arb_defs\': \'real current_axis_turn_off_losses[4] = { 0.0, 400.0, 800.0, 1200.0 };\nreal voltage_axis_turn_off_losses[2] = { 0.0, 1800.0 };\nreal temperature_axis_turn_off_losses[2] = { 25.0, 125.0 };\nreal E_turn_off_losses;\nreal turn_off_losses_table[16] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.88, 1.177, 0.0, 0.0, 0.0, 0.0, 0.0, 0.9094, 1.25, 1.784 };\nreal current_axis_conduction_losses[12] = { 0.0, 100.0, 200.0, 400.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1400.0, 1600.0 };\nreal temperature_axis_conduction_losses[2] = { 25.0, 125.0 };\nreal v_conduction_losses;\nreal conduction_losses_table[24] = { 0.0, 1.5, 1.8, 2.3, 2.69, 2.9, 3.1, 3.25, 3.41, 3.73, 4.0, 4.31, 0.0, 1.63, 2.09, 2.77, 3.37, 3.63, 3.8, 4.11, 4.37, 4.81, 5.29, 5.7 };\nreal current_axis_turn_on_losses[4] = { 0.0, 400.0, 800.0, 1200.0 };\nreal voltage_axis_turn_on_losses[2] = { 0.0, 1800.0 };\nreal temperature_axis_turn_on_losses[2] = { 25.0, 125.0 };\nreal E_turn_on_losses;\nreal turn_on_losses_table[16] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.4068, 1.001, 1.822, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6317, 1.38, 1.784 };\n\'}}"
+            transistor_data = "{\'package_class\': \'IGBT\', \'variables\': {}, \'constants\': {}, \'custom_tables\': {}, \'turn_on_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 400.0, 800.0, 1200.0], \'voltage_axis\': [0.0, 1800.0], \'temperature_axis\': [25.0, 125.0], \'energy\': [[[0.0, 0.0, 0.0, 0.0], [0.0, 0.4068, 1.001, 1.822]], [[0.0, 0.0, 0.0, 0.0], [0.0, 0.6317, 1.38, 1.784]]], \'parsed_formula\': \'E_turn_on_losses\'}, \'turn_off_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 400.0, 800.0, 1200.0], \'voltage_axis\': [0.0, 1800.0], \'temperature_axis\': [25.0, 125.0], \'energy\': [[[0.0, 0.0, 0.0, 0.0], [0.0, 0.6, 0.88, 1.177]], [[0.0, 0.0, 0.0, 0.0], [0.0, 0.9094, 1.25, 1.784]]], \'parsed_formula\': \'E_turn_off_losses\'}, \'conduction_losses\': {\'type\': \'Table only\', \'formula\': None, \'current_axis\': [0.0, 100.0, 200.0, 400.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1400.0, 1600.0], \'temperature_axis\': [25.0, 125.0], \'voltage_drop\': [[0.0, 1.5, 1.8, 2.3, 2.69, 2.9, 3.1, 3.25, 3.41, 3.73, 4.0, 4.31], [0.0, 1.63, 2.09, 2.77, 3.37, 3.63, 3.8, 4.11, 4.37, 4.81, 5.29, 5.7]], \'parsed_formula\': \'v_conduction_losses\'}, \'c_function_code\': {\'output_fnc\': \'E_turn_on_losses = lookup3d(turn_on_losses_table, i, v, T, current_axis_turn_on_losses, voltage_axis_turn_on_losses, temperature_axis_turn_on_losses, 4, 2, 2);\nE_turn_off_losses = lookup3d(turn_off_losses_table, i, v, T,current_axis_turn_off_losses, voltage_axis_turn_off_losses, temperature_axis_turn_off_losses, 4, 2, 2);\nv_conduction_losses = lookup2d(conduction_losses_table, i, T,current_axis_conduction_losses, temperature_axis_conduction_losses, 12, 2);\ne_t_on = E_turn_on_losses;\ne_t_off = E_turn_off_losses;\nv_ce = v_conduction_losses;\n\', \'arb_defs\': \'real current_axis_turn_off_losses[4] = { 0.0, 400.0, 800.0, 1200.0 };\nreal voltage_axis_turn_off_losses[2] = { 0.0, 1800.0 };\nreal temperature_axis_turn_off_losses[2] = { 25.0, 125.0 };\nreal E_turn_off_losses;\nreal turn_off_losses_table[16] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.88, 1.177, 0.0, 0.0, 0.0, 0.0, 0.0, 0.9094, 1.25, 1.784 };\nreal current_axis_conduction_losses[12] = { 0.0, 100.0, 200.0, 400.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1400.0, 1600.0 };\nreal temperature_axis_conduction_losses[2] = { 25.0, 125.0 };\nreal v_conduction_losses;\nreal conduction_losses_table[24] = { 0.0, 1.5, 1.8, 2.3, 2.69, 2.9, 3.1, 3.25, 3.41, 3.73, 4.0, 4.31, 0.0, 1.63, 2.09, 2.77, 3.37, 3.63, 3.8, 4.11, 4.37, 4.81, 5.29, 5.7 };\nreal current_axis_turn_on_losses[4] = { 0.0, 400.0, 800.0, 1200.0 };\nreal voltage_axis_turn_on_losses[2] = { 0.0, 1800.0 };\nreal temperature_axis_turn_on_losses[2] = { 25.0, 125.0 };\nreal E_turn_on_losses;\nreal turn_on_losses_table[16] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.4068, 1.001, 1.822, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6317, 1.38, 1.784 };\n\'}}"
+            user_vars_diode = "User variables diode"
+            Vd = "1.2"
+            Rd = "0"
+            i_sw = "[0.0, 6.0, 12.0, 18.0, 24.0]"
+            v_sw = "[0.0, 600.0]"
+            temp_sw = "[25.0, 50.0, 75.0, 100.0, 125.0]"
+            vd_table_out = "[1.2, 1.2, 1.2, 1.2, 1.2]"
+            ed_off_table_out = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.2e-3, 0.4*2.2e-3, 0.8*2.2e-3, 0.68*2.2e-3, 0.9*2.2e-3], [0.65*2.2e-3, 0.9*2.2e-3, 1.2*2.2e-3, 1.5*2.2e-3, 1.7*2.2e-3], [0.9*2.2e-3, 1.3*2.2e-3, 1.7*2.2e-3, 1.9*2.2e-3, 2.25*2.2e-3], [1.1*2.2e-3, 1.7*2.2e-3, 2.1*2.2e-3, 2.3*2.2e-3, 2.5*2.2e-3]]"
+            load_switching_data_from_xml = "Import losses data from xml files"
+            temp_estimation = "False"
+            thermal_networks_type = "Foster"
+            diode_Rth = "[0.159, 0.133, 0.120, 0.038]"
+            diode_Tth = "[1.1e-1, 1.56e-2, 1.35e-3, 1.51e-4]"
+            diode_Cth = "[0.0029, 0.0097, 0.1068, 0.8500]"
+            loss_exec_rate = "100e-6"
+            dtsm_switch_name = ""
+            model_load_legacy = "0"
+        }
+
+        "core/Voltage Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+    }
+}

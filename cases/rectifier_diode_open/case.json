@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "case_id": "rectifier_diode_open",
+  "model_id": "three_phase_rectifier_fault",
+  "title": "三相整流桥 A 相上桥臂二极管开路",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/rectifier_diode_normal.json",
+    "configs/rectifier_diode_open.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

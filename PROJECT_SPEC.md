@@ -111,3 +111,13 @@ Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientif
 | validation / validation-history / results | 当前验证范围 / 历史证据索引 / 实际结果与任务记录 |
 
 日期、测试次数和实测数值集中到验证页面。新增能力应融入其所属章节，并同步受影响的导航与示例。
+
+## 对话式 Agent 案例接口
+
+新入口 `agent` / `verify-agent` 与旧 Boost 命令共用同一服务和验证分派。`GET /api/cases` 返回代码注册的三个案例；`POST /api/start` 接收 `case_id` 和可选 `text`，首次提交将案例绑定到版本2会话。后续不允许改案例，新会话保留旧证据。外部波形无仿真实验能力；可执行动作及参数由所属案例的工具Schema与校验器共同约束。
+
+公共状态、传输、页面和服务分别位于 `agent_state`、`agent_service`、`agent_page.html` 和 `agent_server`，Boost专属策略与历史协议继续独立维护。版本2会话保存case_id；整流桥轮次为agent_turn/case_report_v2，示例波形新轮次为case_report_v3（旧v1/v2按原协议复核），Boost轮次沿用原协议并保存case_id。每轮数值引用须对应复算字段；复核检查实际工具响应、正文和控制参数的绑定。实验计划绑定回答、来源、配置与确认，执行结果关联同一配置。
+
+示例波形的版本2比较工具从逐文件证据计算独立comparison.json，报告须包含逐对局部图、差异表及经程序校验的差值或倍率引用。比较使用原始时间轴及逐文件窗口；零分母、不同规则和未配对记录显式说明。完成范围仅从已通过轮次及相同源CSV哈希推导，供Schema限制重复建议；旧版比较工具保持原输出。具体使用与单位约定见[Agent接口](docs/agent.md)。
+
+整流桥为项目自建模型，源文件与哈希纳入版本管理；官方模型继续按安装依赖准备。模型细节、固定条件和参考判据在所属案例维护。使用方式见[Agent操作说明](docs/agent.md)。

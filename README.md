@@ -11,7 +11,7 @@
 | 入门学习与复现实验 | [首次实验](docs/first-experiment.md)、[建模练习](docs/modeling-practice.md) |
 | 执行和复核已有案例 | [案例发现与 CLI](docs/case-interface.md)、[Agent 工作流](docs/agent-workflow.md) |
 | 演示 Typhoon + 模型分析与确认复验 | [Boost + AI 演示操作](docs/boost-ai-demo.md) |
-| 与Agent对话并开展多轮复验 | [Typhoon实验分析Agent](docs/boost-agent.md) |
+| 与Agent对话并开展多轮复验 | [Typhoon实验分析Agent](docs/agent.md) |
 | 接收和识别外部波形 | [波形接收与复核](docs/external-waveforms.md)、[异常识别与大模型解释](docs/waveform-diagnosis.md)、[数据接收 Skill](.agents/skills/external-test-data-intake/SKILL.md) |
 | 接入新模型或测试要求 | [模型接入方法](docs/model-integration.md)、[资源与案例选择](docs/resources.md) |
 | 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |

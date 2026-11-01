@@ -2,6 +2,9 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ("agent_session", None): 1,
+    ("agent_turn", None): 1,
+    ("run", "three_phase_rectifier_fault"): 1,
     ("boost_agent_session", None): 1,
     ("boost_agent_turn", None): 1,
     ("boost_ai", "boost_closed_loop"): 1,

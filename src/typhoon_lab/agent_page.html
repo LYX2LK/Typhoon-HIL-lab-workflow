@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Typhoon Agent · 波形分析与验证</title>
+<style>
+__REPORT_STYLE__
+*{box-sizing:border-box}body{background:#fff}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #d5dde1;border-radius:10px;background:#fff;color:#263944;padding:9px 15px}button:hover{background:#f3f7f8}button:disabled{opacity:.45;cursor:default}.primary{background:#216b77;color:white;border-color:#216b77}.primary:hover{background:#185762}header{position:sticky;top:0;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid #edf0f2;padding:14px 28px;display:flex;align-items:center;gap:14px;z-index:2}.brand{font-weight:650;font-size:19px}.environment{font-size:16px;color:#65737b;flex:1}header a{text-decoration:none;font-size:16px;margin-right:8px}main{margin:0 auto 40px;padding-top:22px;max-width:980px;min-height:65vh}.welcome{padding:44px 0 30px}.welcome h1{font-size:34px;line-height:1.4;max-width:760px}.welcome p{color:#62717a;max-width:750px}.welcome .condition{font-size:16px}.speaker{font-weight:600;display:flex;align-items:center;gap:10px}.agent-mark{width:28px;height:28px;display:inline-grid;place-items:center;background:#216b77;border-radius:7px;color:white;font-size:15px}.tool-line{border:0;padding:6px 0}.tool-line summary{cursor:pointer;list-style:none}.tool-line.running summary:before{content:'◌';display:inline-block;animation:spin 2s linear infinite;margin-right:8px}.tool-line.completed summary:before{content:'✓';color:#216b77;margin-right:8px}.tool-line.error summary:before{content:'!';color:#ad5a2b;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}.question h3{margin-top:0}.option{cursor:pointer;padding:15px 17px;transition:border-color .15s}.option:has(input:checked){border:2px solid #216b77;padding:14px 16px;background:#f8fbfb}.option:has(input:disabled){cursor:default}.option input{margin-right:10px;accent-color:#216b77}.recommended{font-size:14px;color:#216b77;background:#e5f2f1;border-radius:5px;padding:3px 7px;margin-left:8px}.option p{padding-left:25px;line-height:1.6}.option .argument-note{font-size:16px;color:#70818b}.question button{margin-top:8px}.pending-box{border:1px solid #c5d9dc;border-radius:14px;padding:22px;margin:30px 0;background:#fafdfd}.pending-box h2{margin-top:0}.pending-box label{display:block;margin:15px 0;font-size:17px}.pending-box input[type=text]{border:1px solid #d5dde1;border-radius:7px;padding:7px 10px;width:220px}.pending-box input[type=checkbox]{accent-color:#216b77;margin-right:8px}.composer-shell{position:sticky;bottom:0;background:linear-gradient(transparent,#fff 15%);padding:20px 0 12px;z-index:1}.composer{display:flex;border:1px solid #d4dde2;border-radius:18px;padding:13px 13px 10px 18px;box-shadow:0 3px 15px #122d3d08;gap:12px;background:#fff;align-items:flex-end}.composer textarea{resize:none;min-height:48px;max-height:180px;width:100%;border:0;outline:0;font-size:17px;background:transparent;line-height:1.6}.composer button{flex-shrink:0}.footnote{font-size:15px;color:#65737b;text-align:center;margin:9px 0}.status-row{font-size:16px;color:#62757e;min-height:30px}.notice{color:#a14d2b;font-size:16px;white-space:pre-wrap}#session-path{overflow-wrap:anywhere;font-size:15px;color:#65737b}.run-links{font-size:16px}.run-links a{margin-right:10px}.retry{margin-top:10px}.top-actions{display:flex;gap:8px;align-items:center}.evidence-panel{margin:25px 0;font-size:16px;color:#657781}.answer-end{border-top:1px solid #edf0f2;margin-top:20px;padding-top:10px;font-size:15px;color:#65737b}@media(max-width:700px){header{padding:11px 16px}.environment{display:none}main{padding:10px 16px}.welcome h1{font-size:28px}.top-actions{margin-left:auto}header a{font-size:16px}.question,.pending-box{padding:16px}.user-message{max-width:95%}}
+.welcome{padding-top:32px}.welcome h1{margin:0 0 14px}.welcome .project-purpose{max-width:900px;color:#425763;font-size:18px}.workflow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;list-style:none;padding:0;margin:18px 0;font-size:16px;color:#47636d}.workflow li:not(:last-child)::after{content:'→';margin-left:10px;color:#7c9096}.case-intro{border:1px solid #d8e4e7;border-radius:14px;background:#f8fbfb;padding:17px 20px;margin:22px 0 18px}.case-intro h2{font-size:21px;line-height:1.5;margin:0 0 8px}.case-intro p{max-width:none;margin:8px 0;color:#425763}.case-details{font-size:16px;color:#65737b;margin-top:12px}.case-details summary,.case-context summary{cursor:pointer}.case-details p{font-size:16px}.case-context{font-size:16px;color:#65737b;border-bottom:1px solid #edf0f2;padding:4px 0 14px;margin-bottom:20px}.case-context p{margin:10px 0}@media(max-width:700px){.welcome{padding-top:24px}.welcome .project-purpose{font-size:17px}.case-intro{padding:15px 16px}.case-intro h2{font-size:20px}.workflow{gap:5px 8px}.workflow li:not(:last-child)::after{margin-left:8px}}
+main:has(#welcome:not([hidden])) .composer-shell{position:static}
+.case-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}.case-card{text-align:left;padding:17px;min-height:155px;line-height:1.6}.case-card strong{display:block;font-size:18px;margin-bottom:7px}.case-card span{display:block;font-size:15px;color:#62717a}.case-card[aria-checked="true"]{border:2px solid #216b77;background:#f1f8f8;padding:16px}@media(max-width:700px){.case-picker{grid-template-columns:1fr}.case-card{min-height:0}}
+</style>
+<header><span class="brand">Typhoon Agent</span><span class="environment">实验 · 分析 · 验证</span><div class="top-actions"><a href="/export" target="_blank" id="export-link">离线报告</a><button id="new-session">新会话</button></div></header>
+<main>
+<section class="welcome" id="welcome">
+<h1>Typhoon 实验分析与验证</h1>
+<p class="project-purpose">面向控制器测试，验证从波形采集、大模型分析到对照复验的协同流程，为后续水泵控制器测试接入提供基础。</p>
+<ol class="workflow" aria-label="分析与验证流程"><li>采集波形</li><li>计算指标</li><li>模型分析</li><li>提出建议</li><li>人工确认</li><li>对照复验</li><li>更新结论</li></ol>
+<div class="case-picker" id="case-picker" role="radiogroup" aria-label="选择案例"></div>
+<div class="case-intro"><h2 id="case-title"></h2><p id="case-description"></p><details class="case-details"><summary>数据来源与案例条件</summary><p class="condition" id="case-conditions"></p><p id="case-scope"></p></details></div>
+<button class="primary" id="start">开始案例分析</button>
+</section>
+<section class="case-context" id="case-context" hidden><details><summary id="context-title"></summary><p id="context-description"></p><p id="context-scope"></p></details></section>
+<section id="messages" aria-live="polite"></section>
+<section id="pending"></section>
+<section class="evidence-panel"><details><summary>运行证据与会话记录</summary><p id="run-links" class="run-links"></p><p id="session-path"></p></details></section>
+<section class="composer-shell"><div class="status-row" id="status">准备就绪，可开始案例验证。</div><p class="notice" id="notice"></p><form id="composer" class="composer"><textarea id="input" aria-label="向Agent追问" placeholder="追问波形、讨论候选解释，或让 Agent 提出新的验证建议…" rows="2"></textarea><button class="primary" id="send">发送 ↑</button></form><p class="footnote">Virtual HIL 为 PC 软件证据 · 模型解释需复阅 · 实验执行需确认</p></section>
+</main>
+<script>
+const csrf='__TOKEN__';
+const $=id=>document.getElementById(id);
+let cases=[],selectedCase='boost_input_disturbance';
+let state={messages:[],runs:{},busy:false},inFlight=false,currentRoot='',pendingId='',messageNodes=new Map(),selections=new Map();
+function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n}
+async function request(operation,data={}){
+ if(inFlight)return;inFlight=true;$('notice').textContent='';
+ try{const response=await fetch('/api/'+operation,{method:'POST',headers:{'Content-Type':'application/json','X-Agent-Token':csrf},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw Error(result.error||'操作失败');await refresh()}
+ catch(e){$('notice').textContent=e.message}finally{inFlight=false;controls()}
+}
+function currentCase(){return cases.find(c=>c.id===(state.case_id||selectedCase))||cases[0]}
+function updateCase(){
+ const spec=currentCase();if(!spec)return;
+ $('case-title').textContent=spec.title;$('case-description').textContent=spec.description;$('case-conditions').textContent=spec.conditions;$('case-scope').textContent=spec.scope;
+ $('context-title').textContent='当前案例：'+spec.title;$('context-description').textContent=spec.description;$('context-scope').textContent=spec.scope;
+ $('input').placeholder=state.messages.length?'追问波形、比较证据，或讨论下一步…':spec.placeholder;
+ $('start').textContent=spec.start_action;
+ document.querySelectorAll('.case-card').forEach(c=>{c.setAttribute('aria-checked',String(c.dataset.case===(state.case_id||selectedCase)));c.disabled=state.busy||inFlight||!!state.case_id||state.messages.length>0});
+ document.querySelector('.footnote').textContent=spec.source_kind==='external_waveforms'?'基于原始采集数据 · 分类与数值引用经程序校验 · 模型解释需复阅':'Virtual HIL 为 PC 软件证据 · 模型解释需复阅 · 对照实验需确认';
+}
+function controls(){
+ const ready=!!currentCase();$('start').disabled=state.busy||inFlight||!ready;
+ $('send').disabled=state.busy||inFlight||!ready;$('input').disabled=state.busy||inFlight||!ready;
+ $('new-session').disabled=state.busy||inFlight;
+ document.querySelectorAll('.question input,.question button').forEach(e=>{e.disabled=state.busy||e.closest('.question').dataset.turn!==state.active_turn||inFlight});
+ const latestError=state.messages.filter(m=>m.role==='error').at(-1);document.querySelectorAll('.retry').forEach(e=>{e.disabled=state.busy||inFlight||state.status!=='error'||e.dataset.error!==latestError?.id});
+ const cb=$('approve');if($('confirm'))$('confirm').disabled=state.busy||inFlight||!cb.checked;updateCase();
+}
+async function loadCases(){
+ const response=await fetch('/api/cases');if(!response.ok)throw Error('案例目录不可用');cases=(await response.json()).cases;
+ for(const spec of cases){const card=node('button',undefined,'case-card');card.type='button';card.dataset.case=spec.id;card.setAttribute('role','radio');card.append(node('strong',spec.title),node('span',spec.description));card.onclick=()=>{selectedCase=spec.id;controls()};$('case-picker').append(card)}
+ controls();
+}
+
+function choiceQuestion(message){
+ const q=message.answer.question;if(!q)return null;
+ const box=node('section',undefined,'question');box.dataset.turn=message.turn_id;box.append(node('h3',q.title.length<=60?q.title:'接下来怎么做？'));
+ const fallback=q.options.find(x=>x.recommended)||q.options[0];const chosen=selections.get(message.turn_id)||fallback.id;
+ for(const option of q.options){const label=node('label',undefined,'option'),input=document.createElement('input');input.type='radio';input.name='question-'+message.turn_id;input.value=option.id;input.checked=option.id===chosen;input.addEventListener('change',()=>selections.set(message.turn_id,option.id));label.append(input,node('strong',option.label));if(option.recommended)label.append(node('span','推荐','recommended'));if(option.description.length>120){const detail=node('details');detail.append(node('summary','查看原建议说明'),node('p',option.description));label.append(detail)}else label.append(node('p',option.description));if(option.tool==='run_experiment'){const a=option.arguments;label.append(node('p','实验：'+({delay_event:'延后施扰',repeat:'重复所引工况',baseline:'无扰动基准'}[a.operation])+' · 参考 '+a.reference_run+(a.event_at_s!==undefined?' · 施扰 '+a.event_at_s+' s':''),'argument-note'))}else label.append(node('p',({conclude:'生成阶段总结，不运行实验',deepen:'转入机理定位，先审查证据并制定下一步方案',discuss:'继续讨论，不运行实验',compare_waveforms:'比较所选记录，不运行实验',inspect_waveform:'查看所选波形与局部，不运行实验'}[option.tool]||'继续讨论'),'argument-note'));box.append(label)}
+ const button=node('button','选择并继续','primary');button.type='button';button.addEventListener('click',()=>{const selected=box.querySelector('input:checked');if(selected)request('choose',{turn_id:message.turn_id,option_id:selected.value})});box.append(button);return box;
+}
+function renderMessage(m){
+ const element=document.createElement(m.role==='tool'?'details':'article');
+ if(m.role==='user'){element.className='user-message';element.textContent=m.text}
+ else if(m.role==='tool'){element.className='tool-line '+m.status;element.append(node('summary',m.text));if(m.details)element.append(node('pre',JSON.stringify(m.details,null,2)))}
+ else if(m.role==='draft'){element.className='analysis-draft';element.append(node('p','分析正文已保存；结论状态与实验选项尚未校验，当前不可执行实验。','muted'));const body=node('div');body.innerHTML=m.html;element.append(body)}
+ else if(m.role==='error'){element.className='error';element.append(node('p',m.text));const retry=node('button','重新分析已有证据','retry');retry.dataset.error=m.id;retry.onclick=()=>request('retry',m.turn_id?{turn_id:m.turn_id}:{});element.append(retry)}
+ else if(m.role==='assistant'){const speaker=node('div',undefined,'speaker');speaker.append(node('span','T','agent-mark'),node('span','Typhoon Agent'));element.append(speaker);const body=node('div');body.innerHTML=m.html;const goal=body.querySelector('.assessment > .muted');if(goal){const value=m.answer.assessment?.goal;goal.textContent='目标：'+({characterize_response:'确认异常并评估启动残余解释',identify_mechanism:'定位具体机理'}[value]||value)}element.append(body);const question=choiceQuestion(m);if(question)element.append(question);element.append(node('p','基于本会话原始采样与真实模型调用 · '+m.turn_id,'answer-end'))}
+ return element;
+}
+function renderPending(){
+ const p=state.pending;if(!p){$('pending').replaceChildren();pendingId='';return}if(p.id===pendingId)return;pendingId=p.id;
+ const box=node('section',undefined,'pending-box');box.append(node('h2','确认实验：'+p.option.label),node('p',p.option.description));
+ const wrap=node('div',undefined,'table-wrap'),table=document.createElement('table');const head=document.createElement('tr');['改动','原值','执行值'].forEach(x=>head.append(node('th',x)));table.append(head);
+ const names={'/events':'施扰事件','/capture/duration_s':'采集时长 / s','/acceptance/min_samples':'最少采样点'};
+ if(p.differences.length===0){const row=document.createElement('tr');['重复运行','所引工况','配置保持一致'].forEach(x=>row.append(node('td',x)));table.append(row)}
+ for(const d of p.differences){const row=document.createElement('tr');[names[d.field]||d.field,typeof d.before==='object'?JSON.stringify(d.before):String(d.before),typeof d.after==='object'?JSON.stringify(d.after):String(d.after)].forEach(x=>row.append(node('td',x)));table.append(row)}wrap.append(table);box.append(wrap,node('p',state.case_id==='rectifier_diode_open'?'执行固定整流桥工况；2%数值参考判据保持，完成后比较已有记录。':'模型参数、PI与性能阈值保持原设置。执行后 Agent 会读取对照结果并更新分析。','muted'));
+ const operatorLabel=node('label','操作者 '),operator=document.createElement('input');operator.type='text';operator.id='operator';operator.value='实验操作者';operatorLabel.append(operator);box.append(operatorLabel);
+ const approveLabel=node('label'),approve=document.createElement('input');approve.type='checkbox';approve.id='approve';approve.onchange=controls;approveLabel.append(approve,document.createTextNode('我已核对验证目的与配置差异，确认执行本次软件实验'));box.append(approveLabel);
+ const button=node('button','确认并执行实验','primary');button.id='confirm';button.disabled=true;button.onclick=()=>request('confirm',{plan_id:p.id,token:p.confirmation_token,approved:approve.checked,operator:operator.value});box.append(button);
+ const details=document.createElement('details');details.append(node('summary','查看计划与证据关联'),node('pre',JSON.stringify(p,null,2)));box.append(details);$('pending').replaceChildren(box);box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+async function refresh(){
+ try{const response=await fetch('/api/state');if(!response.ok)throw Error('连接失败');const next=await response.json();const nearEnd=innerHeight+scrollY>=document.documentElement.scrollHeight-350;
+ if(currentRoot!==next.session_dir){selectedCase=next.default_case_id||'boost_input_disturbance';currentRoot=next.session_dir;$('messages').replaceChildren();messageNodes.clear();pendingId='';selections.clear()}
+ state=next;updateCase();$('welcome').hidden=Object.keys(state.runs).length>0||state.messages.length>0;$('case-context').hidden=!$('welcome').hidden;$('status').textContent=state.status==='ready'&&!$('welcome').hidden?'选择案例后发送问题，或点击开始。':state.message;
+ for(const message of state.messages){const key=JSON.stringify(message);const old=messageNodes.get(message.id);if(old&&old.key===key)continue;const element=renderMessage(message);if(old)old.node.replaceWith(element);else $('messages').append(element);messageNodes.set(message.id,{key,node:element})}
+ renderPending();controls();$('session-path').textContent=state.session_dir;
+ $('run-links').replaceChildren();for(const [id,run] of Object.entries(state.runs)){const a=node('a',id+' 原始记录');a.href='/files/'+run.path+'/report.html';a.target='_blank';$('run-links').append(a)}
+ if(nearEnd&&state.busy&&!state.pending)window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'});
+ }catch(e){$('notice').textContent='暂时无法连接Agent服务，请保留页面；恢复连接后会继续显示会话。'}
+}
+$('start').onclick=()=>request('start',{case_id:selectedCase});$('new-session').onclick=()=>request('new');$('composer').onsubmit=e=>{e.preventDefault();const text=$('input').value.trim();if(text){$('input').value='';request(state.messages.length?'say':'start',{text,case_id:state.case_id||selectedCase})}};$('input').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!$('send').disabled)$('composer').requestSubmit()}};
+loadCases().then(refresh).catch(e=>{$('notice').textContent=e.message});setInterval(refresh,1000);
+</script></html>

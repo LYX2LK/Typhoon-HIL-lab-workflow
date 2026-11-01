@@ -68,21 +68,23 @@ def _run(argv=None):
     p.add_argument("--write",action="store_true")
     p=sub.add_parser("demo-boost");p.add_argument("--port",type=int,default=8765)
     p.add_argument("--session-dir",help="resume a saved, idle demo session without running simulations")
-    p=sub.add_parser("agent-boost");p.add_argument("--port",type=int,default=8767)
-    p.add_argument("--session-dir",help="resume an idle conversational Agent session")
-    p=sub.add_parser("verify-boost-agent");p.add_argument("--run-dir",required=True)
-    p.add_argument("--write",action="store_true")
+    for name in ("agent", "agent-boost"):
+        p=sub.add_parser(name);p.add_argument("--port",type=int,default=8767)
+        p.add_argument("--session-dir",help="resume an idle Agent session")
+        p.add_argument("--case",choices=["boost_input_disturbance","oscilloscope_tu","rectifier_diode_open"],default="boost_input_disturbance")
+    for name in ("verify-agent", "verify-boost-agent"):
+        p=sub.add_parser(name);p.add_argument("--run-dir",required=True);p.add_argument("--write",action="store_true")
     p=sub.add_parser("compare-rectifier")
     for condition in ("baseline","low-input","heavy-load"):
         p.add_argument("--"+condition,required=True)
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
-        if args.command=="agent-boost":
-            from .boost_agent_server import serve
-            serve(args.port,resolve_project_file(args.session_dir) if args.session_dir else None);return 0
-        if args.command=="verify-boost-agent":
-            from .boost_agent import verify_session
+        if args.command in ("agent", "agent-boost"):
+            from .agent_server import serve
+            serve(args.port,resolve_project_file(args.session_dir) if args.session_dir else None,args.case);return 0
+        if args.command in ("verify-agent", "verify-boost-agent"):
+            from .agent import verify_session
             result=verify_session(resolve_project_file(args.run_dir),write=args.write)
             _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
         if args.command=="demo-boost":

@@ -3,6 +3,7 @@ from importlib import import_module
 from copy import deepcopy
 
 ADAPTERS = {
+    "three_phase_rectifier_fault": ("..rectifier_fault", "BridgeAdapter"),
     "generic_pv_plant": (".pv", "PVAdapter"),
     "rlc_filter": (".rlc", "RLCAdapter"),
     "boost_closed_loop": (".boost", "BoostAdapter"),

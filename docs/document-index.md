@@ -13,7 +13,7 @@
 | 接收 | [外部波形](external-waveforms.md) | 按 CSV/PNG 清单做离线分析与复核 |
 | 分析 | [波形异常识别](waveform-diagnosis.md) | 从数据包识别形态异常、定位事件并导入大模型解释 |
 | 分析 | [Boost + AI 在线演示](boost-ai-demo.md) | 从Virtual HIL记录调用真实模型，展示差异并确认对照实验 |
-| 分析 | [对话式实验Agent](boost-agent.md) | 模型调用证据工具、编排回答与选项，确认后多轮实验并更新解释 |
+| 分析 | [对话式实验Agent](agent.md) | 模型调用证据工具、编排回答与选项，确认后多轮实验并更新解释 |
 | 接入 | [模型接入](model-integration.md) | 登记新模型来源，建立适配器、判据和验证 |
 | 接入 | [案例与 CLI 接口](case-interface.md) | 查询案例发现、字段和 JSON 协议 |
 | 任务 | [Agent 工作流](agent-workflow.md) | 用自然语言提出实验任务并核对结果 |

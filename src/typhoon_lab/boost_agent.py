@@ -24,43 +24,13 @@ MAX_CALLS=5
 MAX_RUNS=8
 
 
-def api_call(turn_dir,index,payload,service_path):
-    """Save the real request/response; never persist auth or exception bodies."""
-    p=Path(turn_dir);stem=f"call-{index:02d}"
-    meta={"started_at":now(),"status":"error"};timer=time.monotonic()
-    try:
-        service,key=load_service(service_path)
-        meta.update({k:v for k,v in service.items() if k not in {"api_key_env","env_file"}})
-        body={"model":service["model"],"max_tokens":service["max_tokens"],"stream":False,
-              "temperature":service.get("temperature",0),**payload}
-        if "thinking" in service:body["thinking"]=service["thinking"]
-        write_json(p/(stem+".request.json"),body)
-        meta["http_request_sha256"]=sha256(p/(stem+".request.json"))
-        req=urllib.request.Request(service["base_url"].rstrip("/")+"/chat/completions",
-            data=json.dumps(body,ensure_ascii=False,allow_nan=False).encode("utf-8"),
-            headers={"Authorization":"Bearer "+key,"Content-Type":"application/json"})
-        with urllib.request.build_opener(NoRedirect()).open(req,timeout=service["timeout_s"]) as response:
-            raw=response.read(4*1024*1024+1)
-        if len(raw)>4*1024*1024:raise ValueError("模型响应超过大小限制")
-        (p/(stem+".response.json")).write_bytes(raw)
-        result=json.loads(raw.decode("utf-8"));choice=result["choices"][0]
-        meta.update({"response_id":result.get("id"),"returned_model":result.get("model"),"usage":result.get("usage"),
-                     "finish_reason":choice.get("finish_reason"),"status":"completed"})
-        return choice["message"],choice["finish_reason"]
-    except Exception as exc:
-        meta["error"]={"type":type(exc).__name__,"http_status":getattr(exc,"code",None)}
-        if isinstance(exc,urllib.error.HTTPError) and exc.code==400:
-            try:
-                error=json.loads(exc.read(8192).decode("utf-8")).get("error",{})
-                meta["schema_error"]={k:str(error[k]).replace(key,"[redacted]")[:500] for k in ("type","code","param","message") if k in error}
-            except (ValueError,UnicodeError,AttributeError,TypeError,KeyError):pass
-        raise RuntimeError(f"模型服务调用失败（{type(exc).__name__}，HTTP {getattr(exc,'code','—')}）；请求和已有响应已留存") from None
-    finally:
-        meta["elapsed_s"]=time.monotonic()-timer;meta["completed_at"]=now()
-        write_json(p/(stem+".meta.json"),meta)
+from .agent_service import api_call
 
 
-class AgentSession:
+from .agent_state import PersistentSession
+
+
+class AgentSession(PersistentSession):
     def __init__(self,session_dir=None,service_path=None):
         self.guard=threading.RLock();self.worker=None
         self.service=Path(service_path or PROJECT/"configs/ai_service_agent.json")
@@ -80,18 +50,6 @@ class AgentSession:
             check=verify_session(self.root)
             if check["record_status"]!="passed":raise ValueError("会话复核失败，不能恢复")
 
-    def persist(self,event,details):
-        with self.guard:
-            self.state["revision"]+=1
-            write_json(self.root/"session.json",self.state)
-            journal=self.root/"events.jsonl";previous="0"*64
-            if journal.exists():
-                lines=journal.read_text(encoding="utf-8").splitlines()
-                if lines:previous=json.loads(lines[-1])["sha256"]
-            value={"at":now(),"revision":self.state["revision"],"event":event,"details":details,
-                   "state_sha256":digest(self.state),"previous_sha256":previous}
-            value["sha256"]=digest(value)
-            with journal.open("a",encoding="utf-8") as f:f.write(json.dumps(value,ensure_ascii=False,allow_nan=False)+"\n")
 
     def snapshot(self):
         from .boost_agent_render import message_html
@@ -100,29 +58,13 @@ class AgentSession:
             if message["role"]=="assistant":message["html"]=message_html(self.root,message)
         return state
 
-    def add(self,role,text="",**values):
-        with self.guard:
-            m={"id":secrets.token_hex(8),"role":role,"text":text,"at":now(),**values}
-            self.state["messages"].append(m);self.persist("message",{"id":m["id"],"role":role})
-            return m["id"]
 
-    def tool_status(self,title,status="running",details=None,message_id=None):
-        with self.guard:
-            if message_id is None:return self.add("tool",title,status=status,details=details)
-            m=next(x for x in self.state["messages"] if x["id"]==message_id)
-            m.update(status=status,details=details);self.persist("tool_update",{"id":message_id,"status":status})
 
-    def _option(self,turn_id,option_id):
-        if turn_id!=self.state["active_turn"]:raise ValueError("这组建议已有后续对话，请使用最新选项")
-        turn=next(x for x in self.state["turns"] if x["id"]==turn_id)
-        answer=read(self.root/turn["path"]/"answer.json")
-        question=answer.get("question")
-        option=next((x for x in question["options"] if x["id"]==option_id),None) if question else None
-        if option is None:raise ValueError("选项不属于本轮模型回答")
-        return turn,option
 
     def launch(self,operation,data):
         with self.guard:
+            if data.get("case_id") not in (None, "boost_input_disturbance"):
+                raise ValueError("旧版Boost会话仅支持Boost；请新建会话选择其他案例")
             if self.state["busy"]:raise ValueError("Agent正在处理当前任务，请等待")
             if operation=="start":
                 if self.state["runs"]:raise ValueError("本会话已开始，请继续对话或新建会话")
@@ -233,7 +175,7 @@ class AgentSession:
         needs_comparison=len(evidence)>1 and (new_experiment or not set(evidence).issubset(analyzed_runs))
         investigation=context_for(evidence,valid_runs,self.root,self.state.get("investigation_goal","characterize_response"),intent)
         turn_id=f"T{len(self.state['turns'])+1:03d}";p=self.root/"turns"/turn_id;p.mkdir(parents=True)
-        for source in (PROJECT/"src"/"typhoon_lab").glob("boost_agent*.py"):
+        for source in [*(PROJECT/"src"/"typhoon_lab").glob("boost_agent*.py"), *(PROJECT/"src"/"typhoon_lab").glob("agent*.py")]:
             target=p/"code_snapshot"/source.name;target.parent.mkdir(exist_ok=True);shutil.copy2(source,target)
         shutil.copy2(PROJECT/"src"/"typhoon_lab"/"boost_agent_page.html",p/"code_snapshot"/"boost_agent_page.html")
         history=history_for(self.state["messages"])
@@ -255,6 +197,7 @@ class AgentSession:
         answer=None;final_index=None;tool_outputs=[];narrative=None;text_index=None
         manifest={"kind":"boost_agent_turn","record_format_version":1,"analysis_method_version":1,"started_at":now(),"status":"error",
                   "request_sha256":request_hash,"run_refs":{k:valid_runs[k] for k in evidence},"output_contract":"strict_tool_v6","wire_protocol":"markdown_refs_v3"}
+        if self.state.get("kind")=="agent_session":manifest["case_id"]=self.state["case_id"]
         try:
             for index in range(1,MAX_CALLS+1):
                 have_compare=any(x["name"]=="compare_runs" for x in tool_outputs)
@@ -355,7 +298,7 @@ def report_error(path,index,exc,category):
 
 def verify_session(root,write=False):
     root=Path(root).resolve();problems=[];state=read(root/"session.json")
-    if state.get("kind")!="boost_agent_session" or state.get("schema_version")!=1:problems.append("unsupported session version")
+    if not ((state.get("kind")=="boost_agent_session" and state.get("schema_version")==1) or (state.get("kind")=="agent_session" and state.get("schema_version")==2 and state.get("case_id")=="boost_input_disturbance")):problems.append("unsupported session version")
     previous="0"*64;last=None
     for line in (root/"events.jsonl").read_text(encoding="utf-8").splitlines():
         row=json.loads(line);signature=row.pop("sha256")
@@ -377,6 +320,7 @@ def verify_session(root,write=False):
         try:
             p=safe(turn["path"]);m=read(p/"manifest.json")
             if m.get("kind")!="boost_agent_turn" or m.get("analysis_method_version")!=1:raise ValueError("unknown turn version")
+            if state.get("kind")=="agent_session" and m.get("case_id")!=state["case_id"]:raise ValueError("turn case differs")
             for required in ("input.json","evidence.json"):
                 if required not in m.get("artifacts",{}):problems.append("required turn artifact is not hashed: "+required)
             for rel,h in m["artifacts"].items():
