@@ -4,6 +4,8 @@
 
 ## 查找和校验
 
+本次寄送板卡的 `check-tle9877`、`lin-encode`、`lin-decode` 复用下文 JSON 信封，experiment_status 与 record_status 均为 null；操作与字段含义见[样机软件准备](tle9877-software-preparation.md)。`pmsm_software_preview` 是独立的软件预演案例，参数假设与样机接入状态分别表达。
+
 ```powershell
 .\lab.ps1 list-cases --json
 .\lab.ps1 validate-case --case im_speed_tracking --json

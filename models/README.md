@@ -25,3 +25,5 @@ Git 不保存空目录，准备命令会自动补建这两个预留目录。现�
 来源清单中的模型及面板使用 `installation_relative_path`、`sha256` 和所属模型的 `thcc_version`。官方条目使用 `kind=official_teaching_example_local_dependency`，由准备命令处理；有权提交的自主模型应使用独立来源类别。Generic PV plant 条目还登记官方 HzWatt 测试脚本的路径与哈希；光伏自动实验只需要模型，未依赖 SCADA 面板。运行中的 HzWatt/额定功率改动保存在结果模型副本中。
 
 安装根目录由统一入口定位，详见 [环境配置](../docs/environment.md)。
+
+`pmsm_software_preview` 从安装的 PMSM closed loop SVPWM control 示例按字节准备；9V 等效星形假设、初始化与事件改动仅保存在每次运行副本。参数来源与使用范围见[样机软件准备](../docs/tle9877-software-preparation.md)，不与样机已确认参数混用。

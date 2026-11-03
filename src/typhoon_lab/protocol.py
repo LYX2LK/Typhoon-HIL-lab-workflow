@@ -5,7 +5,7 @@ import json
 import os
 import sys
 
-COMMANDS = ('doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
+COMMANDS = ('check-tle9877', 'lin-encode', 'lin-decode', 'doctor', 'prepare-models', 'smoke', 'inspect', 'run', 'sweep', 'report', 'verify',
             'compare-rectifier', 'list-cases', 'validate-case', 'run-case', 'practice-model',
             'analyze-waveforms', 'verify-waveforms', 'diagnose-waveforms', 'explain-waveforms', 'verify-diagnosis',
             'analyze-boost', 'plan-boost', 'execute-boost-plan', 'verify-boost-ai', 'demo-boost','agent','verify-agent','agent-boost','verify-boost-agent')

@@ -18,6 +18,8 @@
 | 接入 | [案例与 CLI 接口](case-interface.md) | 查询案例发现、字段和 JSON 协议 |
 | 任务 | [Agent 工作流](agent-workflow.md) | 用自然语言提出实验任务并核对结果 |
 | 需求 | [水泵控制器需求](pump-hil-intake.md) | 查该专题的材料、缺口和接入准备 |
+| 接入 | [寄送控制板接口与 LIN](tle9877-hil-intake.md) | 查本次控制板引线、PMSM 参数、LIN/PWM 协议及剩余联调条件 |
+| 实验 | [样机软件准备](tle9877-software-preparation.md) | 执行参数/接口检查、LIN 离线编解码和 PMSM 软件预演 |
 | 查找 | [学习资源与案例](resources.md) | 选择案例及查找官方资料 |
 | 环境 | [环境配置](environment.md) | 指定安装目录、准备模型和做最小检查 |
 | 排错 | [故障排查](troubleshooting.md) | 按失败阶段定位问题 |

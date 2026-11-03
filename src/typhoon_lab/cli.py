@@ -36,6 +36,16 @@ def _run(argv=None):
     p=sub.add_parser("validate-case");p.add_argument("--case",required=True)
     p=sub.add_parser("run-case");p.add_argument("--case",required=True)
     p=sub.add_parser("practice-model");p.add_argument("--model-file",required=True)
+    p=sub.add_parser("check-tle9877");p.add_argument("--profile",default="configs/tle9877_sample.json")
+    p.add_argument("--current-a",type=float)
+    p=sub.add_parser("lin-encode");p.add_argument("--rpm",type=float,required=True)
+    p.add_argument("--post-set",type=int,default=0)
+    p.add_argument("--profile",default="configs/tle9877_sample.json")
+    p=sub.add_parser("lin-decode");p.add_argument("--frame",choices=["control","status","version"],required=True)
+    p.add_argument("--data",required=True);p.add_argument("--identifier",type=lambda x:int(x,0))
+    p.add_argument("--identifier-kind",choices=["id","pid"],default="id")
+    p.add_argument("--checksum",type=lambda x:int(x,0))
+    p.add_argument("--profile",default="configs/tle9877_sample.json")
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
@@ -80,6 +90,14 @@ def _run(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command in ("check-tle9877","lin-encode","lin-decode"):
+            from .tle9877 import check_sample, encode_control, decode_frame
+            profile=resolve_project_file(args.profile)
+            if args.command=="check-tle9877": result=check_sample(profile,args.current_a)
+            elif args.command=="lin-encode": result=encode_control(args.rpm,args.post_set,profile_path=profile)
+            else: result=decode_frame(args.frame,args.data,identifier=args.identifier,
+                identifier_kind=args.identifier_kind,received_checksum=args.checksum,profile_path=profile)
+            _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
         if args.command in ("agent", "agent-boost"):
             from .agent_server import serve
             serve(args.port,resolve_project_file(args.session_dir) if args.session_dir else None,args.case);return 0

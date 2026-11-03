@@ -3,6 +3,7 @@ from importlib import import_module
 from copy import deepcopy
 
 ADAPTERS = {
+    "pmsm_software_preview": ("..pmsm_preview", "PMSMPreviewAdapter"),
     "three_phase_rectifier_fault": ("..rectifier_fault", "BridgeAdapter"),
     "generic_pv_plant": (".pv", "PVAdapter"),
     "rlc_filter": (".rlc", "RLCAdapter"),

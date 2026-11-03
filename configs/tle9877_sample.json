@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "sample_id": "tle9877_received_board",
+  "scope": "supplied_facts_not_hardware_measurements",
+  "sources": {
+    "ldf": {
+      "workspace_path": "../docs/LIN.ldf",
+      "sha256": "d0effaec3cd0513490de7e380051fa7aa75b0c77711370a5fe9f3a160ae1a95e",
+      "project_copy": "data/tle9877/LIN.ldf"
+    },
+    "wiring": {
+      "workspace_path": "../docs/电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "9564b2632b5a60fc00716d4fb1622171298e356e494d2f7544696d133256a9ec"
+    },
+    "datasheet": {
+      "workspace_path": "../docs/Infineon-TLE9877QXA40-DataSheet（试样的样机控制芯片）.pdf",
+      "sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1"
+    },
+    "meeting": {
+      "workspace_path": "../docs/联合实验室建设方案研讨会议纪要.md",
+      "sha256": "d5bbc6b6eb7bf3928e609f7350a1cffb4bab393c3b89578e61ac602c7c49277c"
+    },
+    "parameters": {
+      "workspace_path": "../docs/assets/tle9877/motor-parameters.png",
+      "sha256": "3bad8737cf0140de875d3d82d900bab1c21fff13a0a3ba1591c48e18963f3077"
+    }
+  },
+  "interfaces": [
+    {
+      "row": 2,
+      "name": "正极",
+      "lead": "BAT引线",
+      "connection": "BAT",
+      "source_note": "输入直流电源，建议9V（不超过10V）",
+      "role": "power_in",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 3,
+      "name": "PWM",
+      "lead": "PWM-IN引线",
+      "connection": "PWM-IN",
+      "source_note": "见通讯协议，PWM控制转速",
+      "role": "command_in",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 4,
+      "name": "LIN",
+      "lead": "LIN-IN引线",
+      "connection": "LIN-IN",
+      "source_note": "见通讯协议，LIN控制转速",
+      "role": "command_in",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 5,
+      "name": "负极",
+      "lead": "GND1引线",
+      "connection": "GND1",
+      "source_note": "输入地，接直流电源",
+      "role": "power_return",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 6,
+      "name": "U",
+      "lead": "U引线",
+      "connection": "U",
+      "source_note": "电机U相",
+      "role": "phase_node",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 7,
+      "name": "V",
+      "lead": "V引线",
+      "connection": "V",
+      "source_note": "电机V相",
+      "role": "phase_node",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 8,
+      "name": "W",
+      "lead": "W引线",
+      "connection": "W",
+      "source_note": "电机W相",
+      "role": "phase_node",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 9,
+      "name": "VM",
+      "lead": "VM引线",
+      "connection": "C27连接MOS位置",
+      "source_note": "母线电压线，控制板产生",
+      "role": "board_bus_node",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 10,
+      "name": "SL",
+      "lead": "SL引线",
+      "connection": "M5 MOS管S脚",
+      "source_note": "三相低端MOS输出汇合线",
+      "role": "low_side_source_node",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 11,
+      "name": "SHP",
+      "lead": "采样SHP引线",
+      "connection": "R33连接采样焊盘",
+      "source_note": "无位置传感器，电流采样正端，按照0.5mΩ设计",
+      "role": "sense_positive",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 12,
+      "name": "SHN",
+      "lead": "采样SHN引线",
+      "connection": "R35连接采样焊盘",
+      "source_note": "无位置传感器，电流采样负端，按照0.5mΩ设计",
+      "role": "sense_negative",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 13,
+      "name": "GH1",
+      "lead": "GH1引线",
+      "connection": "M4位置MOS的G脚",
+      "source_note": "U相高端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 14,
+      "name": "GH2",
+      "lead": "GH2引线",
+      "connection": "M3位置MOS的G脚",
+      "source_note": "V相高端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 15,
+      "name": "GH3",
+      "lead": "GH3引线",
+      "connection": "M2位置MOS的G脚",
+      "source_note": "W相高端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 16,
+      "name": "GL1",
+      "lead": "GL1引线",
+      "connection": "M7位置MOS的G脚",
+      "source_note": "U相低端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 17,
+      "name": "GL2",
+      "lead": "GL2引线",
+      "connection": "M6位置MOS的G脚",
+      "source_note": "V相低端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 18,
+      "name": "GL3",
+      "lead": "GL3引线",
+      "connection": "M5位置MOS的G脚",
+      "source_note": "W相低端驱动,数字IO，实际电压18V/2=9V ",
+      "role": "gate_out",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    },
+    {
+      "row": 19,
+      "name": "信号地",
+      "lead": "系统地",
+      "connection": "接负极",
+      "source_note": "信号地，与输入负极等电位",
+      "role": "signal_reference",
+      "hil_channel": null,
+      "electrical_contract_confirmed": false
+    }
+  ],
+  "board": {
+    "recommended_supply_v": 9,
+    "maximum_supply_v": 10,
+    "chip_model_confirmed": false,
+    "firmware_version": null,
+    "position_sensor": "none",
+    "shunt_resistance_ohm": 0.0005
+  },
+  "motor": {
+    "type": "PMSM",
+    "connection": "delta",
+    "slots": 12,
+    "poles": 10,
+    "rotor": "interior",
+    "phase_resistance_ohm": {
+      "value": 0.005,
+      "unit": "ohm",
+      "source": "parameters",
+      "state": "provided_definition_pending"
+    },
+    "phase_inductance_h": {
+      "value": 1.1e-05,
+      "unit": "H",
+      "source": "parameters",
+      "state": "provided_definition_pending"
+    },
+    "pole_pairs": {
+      "value": 5,
+      "unit": "1",
+      "source": "parameters",
+      "state": "provided"
+    },
+    "max_speed_setting_rpm": {
+      "value": 5700,
+      "unit": "rpm",
+      "source": "parameters",
+      "state": "provided_definition_pending"
+    },
+    "rated_voltage_v": {
+      "value": 13.5,
+      "unit": "V",
+      "source": "wiring:电机方案",
+      "state": "provided_definition_pending"
+    },
+    "rated_speed_rpm": {
+      "value": 5400,
+      "unit": "rpm",
+      "source": "wiring:电机方案",
+      "state": "provided_definition_pending"
+    },
+    "rated_torque_nm": {
+      "value": 0.54,
+      "unit": "Nm",
+      "source": "wiring:电机方案",
+      "state": "provided_definition_pending"
+    },
+    "ld_h": {
+      "value": null,
+      "unit": "H",
+      "source": "not_supplied",
+      "state": "missing"
+    },
+    "lq_h": {
+      "value": null,
+      "unit": "H",
+      "source": "not_supplied",
+      "state": "missing"
+    },
+    "pm_flux_wb": {
+      "value": null,
+      "unit": "Wb",
+      "source": "not_supplied",
+      "state": "missing"
+    },
+    "inertia_kgm2": {
+      "value": null,
+      "unit": "kg m2",
+      "source": "not_supplied",
+      "state": "missing"
+    },
+    "friction_nms": {
+      "value": null,
+      "unit": "Nm s",
+      "source": "not_supplied",
+      "state": "missing"
+    },
+    "load_model": null,
+    "winding_parameter_definition_confirmed": false
+  },
+  "feedback": {
+    "injection_node_confirmed": false,
+    "csa_gain": null,
+    "zero_offset_v": null,
+    "common_mode_range_v": null,
+    "differential_range_v": null,
+    "sample_window_s": null,
+    "filter": null,
+    "additional_sensorless_feedback": null
+  },
+  "lin": {
+    "checksum_policy": "enhanced_for_three_business_frames_pending_capture_confirmation",
+    "control_reserved_fill": 0,
+    "speed_invalid_raw": 255,
+    "temperature_invalid_raw": 255,
+    "initial_post_set": 7,
+    "allowed_command_post_set": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "pending": [
+    "actual_chip_and_firmware",
+    "gate_conditioning_and_reference",
+    "retained_power_stage_and_phase_nodes",
+    "feedback_injection_and_scaling",
+    "sensorless_startup_and_feedback",
+    "motor_parameter_definitions",
+    "motor_missing_parameters",
+    "lin_schedule_confirmation",
+    "lin_pwm_priority_and_stop_sequence",
+    "hil_device_and_io_specifications"
+  ]
+}

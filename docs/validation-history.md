@@ -2,6 +2,20 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-11-03：样机参数、LIN 离线工具与 PMSM 软件预演
+
+按用户直接提供的板卡资料建立参数/18 条引线配置与 LDF 字节副本，实现离线检查及三个业务帧的编解码。280 项 unittest 通过，覆盖独立报文向量、无效/未定义编码、PID/校验、错误输入、软件预演边界、事件丢失和零速绝对误差。
+
+PMSM 预演使用 9V 等效星形假设、内部角度反馈及模型控制器；实际采集 0.8s、100kSa/s、80000 点。三个事件首变采样分别为 0.200051s、0.350051s、0.550051s；四个固定窗口的最大绝对转速误差为 5.879281、2.010516、4.644092、1.704499rpm，均小于 50rpm。软件判据与记录复核 passed，样机性能 not_evaluated。
+
+初次完整采集的零速窗口误差 834.545439rpm，实验 failed、记录复核 passed。代码检查发现示例电流指令只处理正值；在预演副本中采用有理化 MTPA 关系并保留 q 轴符号，使用相同数值工况、窗口和判据复验通过。首次 Virtual HIL 原生进程退出与互斥拒绝也保留，未确认原生进程退出原因；仅恢复本任务拥有的精确模型会话。原始样机文件和失败记录保留。
+
+- [完成记录、实际命令与最终复核汇总](../results/agent-tasks/20261102-212718-tle9877-preparation-8a61/summary.md)。
+- [PMSM 最终报告](../results/20261103-095519-case-pmsm_software_preview-4741ec/runs/01-pmsm_software_preview/report.html)、[最终批次复核](../results/20261103-095519-case-pmsm_software_preview-4741ec/verification.json)。
+- [最终代码版本的 RLC 基准与三点扫描回归](../results/20261103-095744-case-rlc_steady_state-d9970b/report.md)。
+
+实体接线、实际固件无感启动、Δ 参数对应、单分流反馈和硬件时序按[后续接入清单](tle9877-software-preparation.md#下一步接入)继续推进。
+
 ## 2026-10-31：Boost + AI 会议演示与确认复验
 
 修复T002的“追问选项无效”：旧v4允许空收尾message_ref却与业务要求冲突；新v5/markdown_refs_v2按工具种类生成约束，并将收尾/深入投影为已声明的目标请求。独立短label解决多建议同段导致的标题引用问题。实际T002离线契约复现及234项测试通过，无真实模型调用或新实验。[记录](../results/agent-tasks/20261031-agent-option-contract-4c92/summary.md)。

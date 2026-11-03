@@ -1,0 +1,237 @@
+
+
+LIN_description_file;
+LIN_protocol_version = "2.1";
+LIN_language_version = "2.1";
+LIN_speed = 19.2 kbps;
+
+Nodes {
+  Master: ECU, 5 ms, 0.1 ms ;
+  Slaves: EWP ;
+}
+
+Signals {
+  ControlSetspeed: 8, 255, ECU, EWP ;
+  PostSet: 3, 7, ECU, EWP ;
+  Setspeed: 8, 255, EWP, ECU ;
+  ActualSpeed: 8, 255, EWP, ECU ;
+  Voltage: 8, 255, EWP, ECU ;
+  Temperature: 8, 255, EWP, ECU ;
+  Current: 8, 255, EWP, ECU ;
+  ST_PRM_END: 2, 3, EWP, ECU ;
+  ST_RPM_MONI: 2, 3, EWP, ECU ;
+  ST_EMMOD_IN: 2, 3, EWP, ECU ;
+  ERR_ST_OTMP: 2, 3, EWP, ECU ;
+  ERR_ST_OCU: 2, 3, EWP, ECU ;
+  ERR_ST_DRYR: 2, 3, EWP, ECU ;
+  ERR_ST_U: 2, 3, EWP, ECU ;
+  ERR_ST_Block: 2, 3, EWP, ECU ;
+  NOD_ERR: 2, 3, EWP, ECU ;
+  ST_PRM: 3, 7, EWP, ECU ;
+  COM_ERR: 1, 0, EWP, ECU ;
+  Version: 8, 0, EWP, ECU ;
+  VARIANTLIN_Reserved: 8, 0, EWP, ECU ;
+  Reserved: 2, 0, EWP, ECU ;
+}
+
+Diagnostic_signals {
+  MasterReqB0: 8, 0 ;
+  MasterReqB1: 8, 0 ;
+  MasterReqB2: 8, 0 ;
+  MasterReqB3: 8, 0 ;
+  MasterReqB4: 8, 0 ;
+  MasterReqB5: 8, 0 ;
+  MasterReqB6: 8, 0 ;
+  MasterReqB7: 8, 0 ;
+  SlaveRespB0: 8, 0 ;
+  SlaveRespB1: 8, 0 ;
+  SlaveRespB2: 8, 0 ;
+  SlaveRespB3: 8, 0 ;
+  SlaveRespB4: 8, 0 ;
+  SlaveRespB5: 8, 0 ;
+  SlaveRespB6: 8, 0 ;
+  SlaveRespB7: 8, 0 ;
+}
+
+
+
+Frames {
+  ControlLIN: 38, ECU, 2 {
+    ControlSetspeed, 0 ;
+    PostSet, 12 ;
+  }
+  StatusLIN: 37, EWP, 8 {
+    Setspeed, 0 ;
+    ActualSpeed, 8 ;
+    Voltage, 16 ;
+    Temperature, 24 ;
+    Current, 32 ;
+    ST_PRM_END, 40 ;
+    ST_RPM_MONI, 42 ;
+    ST_EMMOD_IN, 44 ;
+    ERR_ST_OTMP, 46 ;
+    ERR_ST_OCU, 48 ;
+    ERR_ST_DRYR, 50 ;
+    ERR_ST_U, 52 ;
+    ERR_ST_Block, 54 ;
+    NOD_ERR, 58 ;
+    ST_PRM, 60 ;
+    COM_ERR, 63 ;
+    Reserved, 56 ;
+  }
+  VARIANTLIN: 39, EWP, 2 {
+    Version, 0 ;
+    VARIANTLIN_Reserved, 8 ;
+  }
+}
+
+
+
+Diagnostic_frames {
+  MasterReq: 0x3c {
+    MasterReqB0, 0 ;
+    MasterReqB1, 8 ;
+    MasterReqB2, 16 ;
+    MasterReqB3, 24 ;
+    MasterReqB4, 32 ;
+    MasterReqB5, 40 ;
+    MasterReqB6, 48 ;
+    MasterReqB7, 56 ;
+  }
+  SlaveResp: 0x3d {
+    SlaveRespB0, 0 ;
+    SlaveRespB1, 8 ;
+    SlaveRespB2, 16 ;
+    SlaveRespB3, 24 ;
+    SlaveRespB4, 32 ;
+    SlaveRespB5, 40 ;
+    SlaveRespB6, 48 ;
+    SlaveRespB7, 56 ;
+  }
+}
+
+Node_attributes {
+  EWP{
+    LIN_protocol = "2.1" ;
+    configured_NAD = 0xA ;
+    initial_NAD = 0xA ;
+    product_id = 0x48, 0x1900, 1 ;
+    response_error = COM_ERR ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
+    configurable_frames {
+      StatusLIN ;
+      ControlLIN ;
+      VARIANTLIN ;
+    }
+  }
+}
+
+Schedule_tables {
+ EWPTEST {
+    ControlLIN delay 10 ms ;
+    StatusLIN delay 10 ms ;
+  }
+ CheckVersion {
+    VARIANTLIN delay 500 ms ;
+  }
+}
+
+
+Signal_encoding_types {
+  COM_ERR_Encoding {
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  ControlSetspeed_Encoding {
+    physical_value, 0, 254, 22.4, 0, "RPM" ;
+  }
+  Current_Encoding {
+    physical_value, 0, 254, 0.2, 0, "A" ;
+  }
+  ERR_ST_Block_Encoding {
+    logical_value, 0, "Deblocking not active" ;
+    logical_value, 1, "Deblocking active" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ERR_ST_DRYR_Encoding {
+    logical_value, 0, "No dry run detected" ;
+    logical_value, 1, "Dry run detected" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ERR_ST_OCU_Encoding {
+    logical_value, 0, "No overcurrent" ;
+    logical_value, 1, "Overcurrent occurred" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ERR_ST_OTMP_Encoding {
+    logical_value, 0, "No overtemperature" ;
+    logical_value, 1, "Overtemperature" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ERR_ST_U_Encoding {
+    logical_value, 0, "Supply voltage in specified range" ;
+    logical_value, 1, "Supply voltage out of specified range" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  NOD_ERR_Encoding {
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error occurred" ;
+    logical_value, 2, "Status: error has changed" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  PostSet_Encoding {
+    logical_value, 0, "no_post" ;
+    logical_value, 1, "stage1" ;
+    logical_value, 2, "stage2" ;
+    logical_value, 3, "stage3" ;
+    logical_value, 4, "stage4" ;
+    logical_value, 5, "stage5" ;
+    logical_value, 7, "initial" ;
+  }
+  ST_EMMOD_IN_Encoding {
+    logical_value, 0, "Low (off)" ;
+    logical_value, 1, "High (on)" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ST_PRM_END_Encoding {
+    logical_value, 0, "Post run completed" ;
+    logical_value, 1, "Post run cancelled" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  ST_RPM_MONI_Encoding {
+    logical_value, 0, "rotation monitoring active" ;
+    logical_value, 1, "No rotation monitoring" ;
+    logical_value, 3, "Signal invalid" ;
+  }
+  Setspeed_Encoding {
+    physical_value, 0, 254, 22.4, 0, "RPM" ;
+  }
+  Temperature_Encoding {
+    physical_value, 0, 210, 1, -50, "C" ;
+  }
+  Voltage_Encoding {
+    physical_value, 0, 254, 0.1, 0, "V" ;
+  }
+}
+
+Signal_representation {
+  COM_ERR_Encoding: COM_ERR ;
+  ControlSetspeed_Encoding: ControlSetspeed ;
+  Current_Encoding: Current ;
+  ERR_ST_Block_Encoding: ERR_ST_Block ;
+  ERR_ST_DRYR_Encoding: ERR_ST_DRYR ;
+  ERR_ST_OCU_Encoding: ERR_ST_OCU ;
+  ERR_ST_OTMP_Encoding: ERR_ST_OTMP ;
+  ERR_ST_U_Encoding: ERR_ST_U ;
+  NOD_ERR_Encoding: NOD_ERR ;
+  PostSet_Encoding: PostSet, ST_PRM ;
+  ST_EMMOD_IN_Encoding: ST_EMMOD_IN ;
+  ST_PRM_END_Encoding: ST_PRM_END ;
+  ST_RPM_MONI_Encoding: ST_RPM_MONI ;
+  Setspeed_Encoding: Setspeed, ActualSpeed ;
+  Temperature_Encoding: Temperature ;
+  Voltage_Encoding: Voltage ;
+}

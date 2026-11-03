@@ -1,0 +1,1 @@
+{"schema_version":1,"case_id":"pmsm_software_preview","model_id":"pmsm_software_preview","title":"低压 PMSM 软件预演：启动、调速、负载变化和零速命令","backend":"virtual_hil","model_origin_ref":"models/origin.json","configs":["configs/pmsm_software_preview.json"],"acceptance_ref":"acceptance.md"}

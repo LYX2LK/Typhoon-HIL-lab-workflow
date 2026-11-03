@@ -14,6 +14,8 @@
 | 与Agent对话并开展多轮复验 | [Typhoon实验分析Agent](docs/agent.md) |
 | 接收和识别外部波形 | [波形接收与复核](docs/external-waveforms.md)、[异常识别与大模型解释](docs/waveform-diagnosis.md)、[数据接收 Skill](.agents/skills/external-test-data-intake/SKILL.md) |
 | 接入新模型或测试要求 | [模型接入方法](docs/model-integration.md)、[资源与案例选择](docs/resources.md) |
+| 准备本次寄送控制板联调 | [控制板引线、LIN 与电机参数](docs/tle9877-hil-intake.md) |
+| 执行样机软件准备与 PMSM 预演 | [参数检查、LIN 离线编解码与预演命令](docs/tle9877-software-preparation.md) |
 | 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |
 
 需要按页面查找教程、接口和专题说明时，见[文档导航](docs/document-index.md)。

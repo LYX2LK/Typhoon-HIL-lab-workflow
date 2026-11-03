@@ -74,5 +74,13 @@
     "reference_url": "https://unbscholar.lib.unb.ca/items/1481f82f-78d4-4fe2-a52d-489c0a3f4dd4",
     "scope": "Simplified six-diode resistive bridge; not the thesis system or classifier.",
     "diode_model": "LC R=1 ohm, solver step 0.25 us; HIL404 Pro 3; Virtual HIL"
+  },
+  "pmsm_software_preview": {
+    "kind": "official_teaching_example_local_dependency",
+    "installation_relative_path": "examples/models/electrical drives/pmsm closed loop svpwm control/pmsm closed loop svpwm control.tse",
+    "sha256": "7260b491213f361023468183141f02d78b30a03a14a4edb5dd4c31f2d098c662",
+    "thcc_version": "2026.3",
+    "redistribution": "unconfirmed",
+    "scope": "Per-run low-voltage software rehearsal; equivalent-star assumptions; no sample firmware or IO."
   }
 }

@@ -2,6 +2,7 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ("run", "pmsm_software_preview"): 1,
     ("agent_session", None): 1,
     ("agent_turn", None): 1,
     ("run", "three_phase_rectifier_fault"): 1,
