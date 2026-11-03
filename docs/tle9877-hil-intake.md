@@ -2,6 +2,8 @@
 
 资料接收日期：2026-11-02。供课题组与汉象联调人员核对接线、配置软件和准备首轮测试。案例暂沿用 TLE9877 名称；实际芯片型号仍需核对实物。
 
+初次接触芯片、电路和电机控制时，先读[零基础图文教程](beginner/README.md)，再用本文查询板级事实和待确认项。
+
 **资料已接入参数与接口检查、LIN 离线编解码和独立 PMSM 软件预演。** 操作见[样机软件准备](tle9877-software-preparation.md)，实测与范围见[验证状态](validation.md)。样机本身仍处于接入准备阶段，LIN 设备驱动、实体接线和对应实际固件的完整反馈模型待补齐。
 
 ## 1. 新资料让哪些事项明确了
@@ -17,7 +19,7 @@
 | LIN | 2.1、19200 bit/s，ECU 主节点、EWP 从节点 | 帧定义与换算可先离线实现；实际硬件及 SDK 另行选择和核对 |
 | 算法／用途 | 材料出现电子水泵协议、EWP 节点及水泵相关状态；没有明确本板实际控制算法 | 可以按所交付协议准备工具；无需把旧参考方案的电压、双电机等要求带入本次样机 |
 
-来源：[引线及方案 Excel](D:/Typhoon/docs/电机控制板引线连接位置信号及方案说明.xlsx)、[LIN.ldf](D:/Typhoon/docs/LIN.ldf)、[电机参数截图](D:/Typhoon/docs/assets/tle9877/motor-parameters.png)。下文“已确认”均指资料明确给出，硬件实测结果另行记录。
+来源：引线及方案 Excel、电机参数截图的档案名、摘要与获取方式见[原始资料索引](../data/tle9877/README.md)，协议使用 [LIN.ldf 字节副本](../data/tle9877/LIN.ldf)。下文“已确认”均指资料明确给出，硬件实测结果另行记录。
 
 ## 2. 引线怎么理解
 
@@ -193,7 +195,7 @@ Excel “PWM控制协议”页第一张图片给出的命令输入条件为：�
 
 ## 7. lab-workflow 的下一步已可以具体化
 
-按 [模型接入方法](model-integration.md) 与 [项目实现约定](../PROJECT_SPEC.md) 推进。第一批中的参数/接口配置、LIN 离线编解码及检查已形成[可执行工具](tle9877-software-preparation.md)；另有独立参数假设的 PMSM 软件预演。联合设备日志和第二批设备接入继续按实际条件推进。
+第一批中的参数/接口配置、LIN 离线编解码及检查已形成[可执行工具](tle9877-software-preparation.md)；另有独立参数假设的 PMSM 软件预演。现已增加 [I/O 合同、电机参数表和现场记录](tle9877-field-commissioning.md)、[LIN 设备接口及 Mock](tle9877-lin-adapter.md)，并单独保存 [实体 smoke 计划](../cases/tle9877_hil_smoke/README.md)。设备驱动、反馈模型和实际运行继续按具体条件推进。
 
 ### 第一批：不连接板卡的工作
 
@@ -222,11 +224,11 @@ Excel “PWM控制协议”页第一张图片给出的命令输入条件为：�
 |---|---|
 | 电机控制板引线连接位置信号及方案说明.xlsx | `9564b2632b5a60fc00716d4fb1622171298e356e494d2f7544696d133256a9ec` |
 | LIN.ldf | `d0effaec3cd0513490de7e380051fa7aa75b0c77711370a5fe9f3a160ae1a95e` |
-| [控制边界标注截图](D:/Typhoon/docs/assets/tle9877/control-boundary.png) | `8ab3cdd22ab21a0793dd4116b2505cb11715c848fa7b917900cd8b68ddfcf800` |
-| [电机参数截图](D:/Typhoon/docs/assets/tle9877/motor-parameters.png) | `3bad8737cf0140de875d3d82d900bab1c21fff13a0a3ba1591c48e18963f3077` |
+| 控制边界标注截图（获取见[档案索引](../data/tle9877/README.md)） | `8ab3cdd22ab21a0793dd4116b2505cb11715c848fa7b917900cd8b68ddfcf800` |
+| 电机参数截图（获取见[档案索引](../data/tle9877/README.md)） | `3bad8737cf0140de875d3d82d900bab1c21fff13a0a3ba1591c48e18963f3077` |
 
 - 板级事实：上述 Excel 的“引脚分配”单元格及“电机方案”“PWM控制协议”“lin控制协议”嵌入图片。
-- 报文定义：[原始 LIN.ldf](D:/Typhoon/docs/LIN.ldf) 的 Nodes、Signals、Frames、Node_attributes、Schedule_tables、Signal_encoding_types、Signal_representation 段。
+- 报文定义：[原始 LIN.ldf 的字节副本](../data/tle9877/LIN.ldf) 的 Nodes、Signals、Frames、Node_attributes、Schedule_tables、Signal_encoding_types、Signal_representation 段。
 - [R1] [Microchip AN2059](https://ww1.microchip.com/downloads/en/appnotes/00002059b.pdf)：LIN ID/PID 与校验规则，附录 A 第 26 页核对 0x25、0x26、0x27 的 PID；仅用于协议规则说明，不替代样机说明。
 - [R2] [Microchip LIN Data Link Layer](https://developerhelp.microchip.com/xwiki/bin/view/applications/lin/data-link-layer/)：主节点帧头、调度表与时隙定义。结合本 LDF 推导 20ms 重复周期。
-- 学习与现场准备：[样机测试准备与入门指南](D:/Typhoon/docs/TLE9877样机测试准备与入门指南_2026-11-02.md)。
+- 学习与现场准备：[本仓库入门教程](beginner/README.md)、[现场联调步骤与模板](tle9877-field-commissioning.md)。

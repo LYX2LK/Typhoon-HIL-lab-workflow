@@ -1,6 +1,6 @@
 # Typhoon HIL 与 AI Agent 教学工作流
 
-本项目提供修改参数、采集波形、比较结果和编写报告的实验流程，面向有电机或电力电子基础、尚不熟悉 Typhoon 与 Python 的读者。常规案例采用官方示例模型；另有从空白原理图建立的 RLC 教学练习。运行使用软件自带 Python，通过统一入口执行。
+本项目提供修改参数、采集波形、比较结果和编写报告的实验流程。已有电机或电力电子基础的读者可直接按任务进入；初次接触芯片、电路和控制的读者，先读[样机测试零基础教程](docs/beginner/README.md)。常规案例采用官方示例模型；另有从空白原理图建立的 RLC 教学练习。运行使用软件自带 Python，通过统一入口执行。
 
 仿真实验采用 **Virtual HIL**：模型在电脑上按仿真时间推进，以非实时方式运行，没有外部 I/O。每次实验保存配置、模型副本、代码快照、实际数据和判定依据。
 
@@ -8,6 +8,7 @@
 
 | 想完成的任务 | 入口 |
 |---|---|
+| 从零理解本次样机、芯片、电路与控制 | [离线图文教程](docs/beginner/index.html)、[学习路线与 Markdown 正文](docs/beginner/README.md) |
 | 入门学习与复现实验 | [首次实验](docs/first-experiment.md)、[建模练习](docs/modeling-practice.md) |
 | 执行和复核已有案例 | [案例发现与 CLI](docs/case-interface.md)、[Agent 工作流](docs/agent-workflow.md) |
 | 演示 Typhoon + 模型分析与确认复验 | [Boost + AI 演示操作](docs/boost-ai-demo.md) |
@@ -16,6 +17,7 @@
 | 接入新模型或测试要求 | [模型接入方法](docs/model-integration.md)、[资源与案例选择](docs/resources.md) |
 | 准备本次寄送控制板联调 | [控制板引线、LIN 与电机参数](docs/tle9877-hil-intake.md) |
 | 执行样机软件准备与 PMSM 预演 | [参数检查、LIN 离线编解码与预演命令](docs/tle9877-software-preparation.md) |
+| 准备样机现场联调 | [I/O 合同、参数与现场记录](docs/tle9877-field-commissioning.md)、[LIN Mock](docs/tle9877-lin-adapter.md) |
 | 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |
 
 需要按页面查找教程、接口和专题说明时，见[文档导航](docs/document-index.md)。

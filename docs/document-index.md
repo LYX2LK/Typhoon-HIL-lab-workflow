@@ -4,6 +4,7 @@
 
 | 类别 | 文档 | 何时阅读 |
 |---|---|---|
+| 入门 | [样机测试零基础图文教程](beginner/index.html)、[Markdown 正文](beginner/README.md) | 从电压、电流和芯片开始，学习引线、电机控制、反馈、LIN/PWM 与软件预演，配原图、手册截图和练习答案 |
 | 入门 | [首次实验](first-experiment.md) | 用 RLC 完成 GUI 操作、采集、报告与复核 |
 | 入门 | [建模练习](modeling-practice.md) | 从空白图建立 RLC、增加测量点、脚本采集并独立重做 GUI 操作 |
 | 实验 | [RLC 参数扫描](experiments.md) | 查看参数、信号与解析判据 |
@@ -20,6 +21,7 @@
 | 需求 | [水泵控制器需求](pump-hil-intake.md) | 查该专题的材料、缺口和接入准备 |
 | 接入 | [寄送控制板接口与 LIN](tle9877-hil-intake.md) | 查本次控制板引线、PMSM 参数、LIN/PWM 协议及剩余联调条件 |
 | 实验 | [样机软件准备](tle9877-software-preparation.md) | 执行参数/接口检查、LIN 离线编解码和 PMSM 软件预演 |
+| 接入 | [样机现场联调](tle9877-field-commissioning.md)、[LIN 设备接口与 Mock](tle9877-lin-adapter.md) | 填写 I/O 合同、电机参数及现场记录，预演设备调用与错误日志 |
 | 查找 | [学习资源与案例](resources.md) | 选择案例及查找官方资料 |
 | 环境 | [环境配置](environment.md) | 指定安装目录、准备模型和做最小检查 |
 | 排错 | [故障排查](troubleshooting.md) | 按失败阶段定位问题 |

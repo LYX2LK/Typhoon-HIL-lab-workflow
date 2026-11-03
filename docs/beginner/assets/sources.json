@@ -1,0 +1,139 @@
+{
+  "assets": [
+    {
+      "asset": "docs/beginner/assets/motor-parameters.png",
+      "source": "D:\\Typhoon\\docs\\assets\\tle9877\\motor-parameters.png",
+      "sha256": "3bad8737cf0140de875d3d82d900bab1c21fff13a0a3ba1591c48e18963f3077",
+      "operation": "byte_copy"
+    },
+    {
+      "asset": "docs/beginner/assets/control-boundary.png",
+      "source": "D:\\Typhoon\\docs\\assets\\tle9877\\control-boundary.png",
+      "sha256": "8ab3cdd22ab21a0793dd4116b2505cb11715c848fa7b917900cd8b68ddfcf800",
+      "operation": "byte_copy"
+    },
+    {
+      "asset": "docs/beginner/assets/pmsm-preview-waveforms.png",
+      "source": "D:\\Typhoon\\lab-workflow\\results\\20261103-095519-case-pmsm_software_preview-4741ec\\runs\\01-pmsm_software_preview\\waveforms.png",
+      "sha256": "363e5dbbd1362ac3975fd02fc59daa92a5a9b402fbfadf829f07941623054d0a",
+      "operation": "byte_copy",
+      "scope": "existing_virtual_hil_record"
+    },
+    {
+      "asset": "docs/beginner/assets/motor-specification.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "e452cbcc58983c6b39cee7e747bc6a1497507f60788676698fad932577ae4d87",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "电机方案",
+      "zip_member": "xl/media/image1.png"
+    },
+    {
+      "asset": "docs/beginner/assets/motor-solution.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "0a8770a4b772b59f3aacec340d424526e9c1f5be8fa2c3063c78ada78e0003cf",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "电机方案",
+      "zip_member": "xl/media/image2.png"
+    },
+    {
+      "asset": "docs/beginner/assets/pwm-protocol-table.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "d5b2e987924f11dcd80e1e2f482a5576da211fbe01cc9ff2631cd48dc132641a",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "PWM控制协议",
+      "zip_member": "xl/media/image3.png"
+    },
+    {
+      "asset": "docs/beginner/assets/pwm-protocol-curve.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "1cb701b23d19598d2433513cf08170d1dc3d32679821d32d11167dae019dbdd0",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "PWM控制协议",
+      "zip_member": "xl/media/image4.png"
+    },
+    {
+      "asset": "docs/beginner/assets/lin-protocol-1.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "d4bc45794f98f7b4d214c50d26d005859e6e5ae56f1be9a1534304dbcdd4b14d",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "lin控制协议",
+      "zip_member": "xl/media/image5.png"
+    },
+    {
+      "asset": "docs/beginner/assets/lin-protocol-2.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "8ba38c78c674d8e9a00404bfcc95ca999b1942f711de0eb3c60b3d4e136fb85c",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "lin控制协议",
+      "zip_member": "xl/media/image6.png"
+    },
+    {
+      "asset": "docs/beginner/assets/lin-protocol-3.png",
+      "source": "D:\\Typhoon\\docs\\电机控制板引线连接位置信号及方案说明.xlsx",
+      "sha256": "d3bb157848680c0346d9500bc2b38e2f169fd136e182e946c9b6c045ed9caf99",
+      "operation": "zip_image_byte_extraction",
+      "sheet": "lin控制协议",
+      "zip_member": "xl/media/image7.png"
+    },
+    {
+      "asset": "docs/beginner/assets/datasheet-p010.png",
+      "source": "D:\\Typhoon\\docs\\Infineon-TLE9877QXA40-DataSheet（试样的样机控制芯片）.pdf",
+      "sha256": "33c49f30e11a2a9dd0c4cc06b666559171eee840de9dfa3e3f97718e090fdca8",
+      "operation": "full_page_render",
+      "pdf_page_1_based": 10,
+      "source_sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1",
+      "renderer": "pdftoppm",
+      "scale_to_px": 2200
+    },
+    {
+      "asset": "docs/beginner/assets/datasheet-p011.png",
+      "source": "D:\\Typhoon\\docs\\Infineon-TLE9877QXA40-DataSheet（试样的样机控制芯片）.pdf",
+      "sha256": "84307cbe19182e6668e6f12d0d31dcce9bdb17e36fc76be4fb4a713817746e13",
+      "operation": "full_page_render",
+      "pdf_page_1_based": 11,
+      "source_sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1",
+      "renderer": "pdftoppm",
+      "scale_to_px": 2200
+    },
+    {
+      "asset": "docs/beginner/assets/datasheet-p080.png",
+      "source": "D:\\Typhoon\\docs\\Infineon-TLE9877QXA40-DataSheet（试样的样机控制芯片）.pdf",
+      "sha256": "5f971c846ba8077dfebe3efd3bc9aeb8c4fb9e70bc0d8041f50cb8b930771aa6",
+      "operation": "full_page_render",
+      "pdf_page_1_based": 80,
+      "source_sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1",
+      "renderer": "pdftoppm",
+      "scale_to_px": 2200
+    },
+    {
+      "asset": "docs/beginner/assets/datasheet-p082.png",
+      "source": "D:\\Typhoon\\docs\\Infineon-TLE9877QXA40-DataSheet（试样的样机控制芯片）.pdf",
+      "sha256": "d36808ee94be22747b7c5b50c42b6f3b178d0561c93f8201ac6624ad2c1eb5aa",
+      "operation": "full_page_render",
+      "pdf_page_1_based": 82,
+      "source_sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1",
+      "renderer": "pdftoppm",
+      "scale_to_px": 2200
+    }
+  ],
+  "conceptual_diagrams": [
+    {
+      "asset": "docs/beginner/assets/system-loop.svg",
+      "source": "author_generated",
+      "scope": "conceptual_function_diagram",
+      "sha256": "0b9ec0889e4cf8c6786dea1273f06b9a4c4e1545fb2431b071e65b8f6294aefa"
+    },
+    {
+      "asset": "docs/beginner/assets/control-loops.svg",
+      "source": "author_generated",
+      "scope": "conceptual_function_diagram",
+      "sha256": "6299497ce2956784e9009d0904f84a8821b3be593751f2fa36c3ee5400b877c1"
+    },
+    {
+      "asset": "docs/beginner/assets/hil-loop.svg",
+      "source": "author_generated",
+      "scope": "conceptual_function_diagram",
+      "sha256": "da1b2355263a7433e97a8cd5deb1829f8a5221636f75b7d751e4105332ca42af"
+    }
+  ]
+}

@@ -22,6 +22,8 @@ Git 不保存空目录，准备命令会自动补建这两个预留目录。现�
 
 新增模型先核对来源和再分发权限。自主创建且有权公开的模型可纳入 Git；第三方模型按其明确许可管理并保留出处。当前根目录忽略规则只覆盖本层 `.tse` 和 `.cus`，不覆盖预留子目录。其他官方原始材料（如 SVG）按各自来源和许可单独核对。
 
+根目录已有 `three_phase_rectifier_fault.tse` 的项目自建例外，现另预留 `tle9877_hil_plant.tse` 和同名 `.cus` 的明确例外。TLE9877 实体模型尚未创建；落地时将实际源文件、必要面板和 SHA-256/来源说明一起提交到 origin.json。命名例外本身不登记可执行能力，也不改变官方示例的来源和权限状态。提交前可用 `git check-ignore -v --no-index models/tle9877_hil_plant.tse` 核对；无忽略匹配时通常返回 1，有 `!` 例外时看规则内容。
+
 来源清单中的模型及面板使用 `installation_relative_path`、`sha256` 和所属模型的 `thcc_version`。官方条目使用 `kind=official_teaching_example_local_dependency`，由准备命令处理；有权提交的自主模型应使用独立来源类别。Generic PV plant 条目还登记官方 HzWatt 测试脚本的路径与哈希；光伏自动实验只需要模型，未依赖 SCADA 面板。运行中的 HzWatt/额定功率改动保存在结果模型副本中。
 
 安装根目录由统一入口定位，详见 [环境配置](../docs/environment.md)。

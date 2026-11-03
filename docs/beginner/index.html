@@ -1,0 +1,1894 @@
+<!doctype html><html lang="zh-CN"><head><link rel="icon" href="data:,"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从零理解样机测试 · Typhoon 图文教程</title><meta name="description" content="面向零基础读者的样机测试教程：电路、芯片、电机控制、电流反馈、LIN/PWM、Typhoon 预演和测试准备。"><style>
+:root{--paper:#fbfaf6;--ink:#253b42;--muted:#60757b;--accent:#276a62;--line:#dbe4df;--reader-size:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:34px}body{margin:0;background:var(--paper);color:var(--ink);font:var(--reader-size)/1.85 'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif}
+a{color:#21665f;text-underline-offset:4px}a:hover{color:#954b28}button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #ba7b43;outline-offset:4px}
+.skip{position:absolute;top:-100px}.skip:focus{top:12px;left:20px;background:white;padding:12px;z-index:20}
+aside{position:fixed;inset:0 auto 0 0;width:280px;padding:34px 25px;background:#eff3ef;border-right:1px solid var(--line);overflow:auto;font-size:15px}
+.eyebrow{font-size:12px;letter-spacing:2px;color:#57786b}.brand{font-weight:750;font-size:25px;line-height:1.4;margin:12px 0}.intro-note{color:var(--muted);font-size:14px;margin:12px 0 22px}
+nav a{display:flex;align-items:center;gap:12px;padding:10px 9px;margin:3px -9px;text-decoration:none;border-radius:7px;color:#3e5958}nav a span{font-size:12px;font-weight:700;min-width:34px;color:#668074}nav a.active{background:white;box-shadow:inset 3px 0 var(--accent);font-weight:700;color:#20564f}
+.searchbox{margin:22px 0 12px}.searchbox label{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}.searchbox input{width:100%;border:1px solid #b8c9c1;border-radius:7px;background:#fff;padding:8px 10px;font-size:14px}
+#search-results{display:grid;gap:7px;font-size:13px;margin-top:8px}#search-results a{line-height:1.5}#search-status{font-size:12px;color:var(--muted)}
+.tools{display:flex;gap:8px;margin-top:18px}.tools button{border:1px solid #bdcec5;border-radius:6px;background:transparent;color:#355b50;padding:4px 10px;font-size:14px}.image-note{font-size:12px;color:var(--muted);margin-top:15px}
+main{margin-left:280px;max-width:1320px;padding:58px 76px 100px}.course-label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#8f5d35;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:26px}
+article{margin-bottom:90px;padding-bottom:65px;border-bottom:1px solid var(--line);scroll-margin-top:30px}h1{font-size:34px;line-height:1.4;letter-spacing:-.6px;margin:16px 0 20px}h2{font-size:25px;line-height:1.5;margin:48px 0 17px}h3{font-size:20px;line-height:1.5;margin:32px 0 12px}p{margin:16px 0}strong{font-weight:700;color:#1d524c}li{padding-left:3px;margin:7px 0}ul,ol{padding-left:27px}
+.table-wrap{overflow:auto;margin:24px 0;border:1px solid var(--line);border-radius:9px;background:#fff}table{border-collapse:collapse;width:100%;font-size:.88em;line-height:1.7}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #e4ebe6;min-width:110px}th{background:#ecf1ed;font-weight:650;color:#36584d}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfa}
+pre{background:#22373e;color:#edf6f4;overflow:auto;border-radius:9px;padding:22px 24px;font-size:14px;line-height:1.8;margin:24px 0;tab-size:4}code{font-family:Consolas,'Cascadia Code',monospace}p code,td code,li code{background:#e8eee9;border-radius:4px;padding:2px 5px;color:#234b43;font-size:.9em}
+img{display:block;max-width:100%;height:auto;margin:0 auto}.image-button{display:block;width:100%;padding:18px;border:1px solid #dbe3df;border-radius:10px;background:white;margin:26px 0 10px;text-align:center;cursor:zoom-in}.image-button img{max-height:540px;object-fit:contain}.image-button::after{content:'点击放大原图';display:block;color:#677c75;font-size:12px;margin-top:9px}.concept-diagram{margin:28px 0}.concept-diagram .image-button{padding:5px}.concept-diagram img{width:100%;max-height:none}figcaption{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+details{background:#eff4ef;border:1px solid #d4e1d8;border-radius:9px;padding:15px 20px;margin:24px 0}summary{cursor:pointer;color:#296154;font-weight:650}details[open] summary{margin-bottom:13px}
+dialog{width:min(1280px,96vw);max-height:94vh;border:0;border-radius:12px;padding:24px;background:#fff;color:var(--ink);overflow:auto}dialog::backdrop{background:#14272cbd}.dialog-header{display:flex;position:sticky;top:-24px;align-items:center;justify-content:space-between;gap:20px;background:#fff;padding:10px 0 14px;border-bottom:1px solid var(--line);z-index:2}.dialog-header p{margin:0;font-size:15px}.dialog-header button{padding:7px 16px;border:1px solid #b5c7bd;background:#f2f5f1;border-radius:6px;font-size:14px}#zoom-image{width:100%;max-height:none;margin-top:22px}
+footer{font-size:14px;color:var(--muted)}
+@media(max-width:1150px){main{padding:40px 36px}aside{width:245px;padding:28px 20px}main{margin-left:245px}h1{font-size:30px}}
+@media(max-width:780px){aside{position:relative;width:auto;border-right:0;border-bottom:1px solid var(--line);padding:24px}main{margin:0;padding:28px 22px}nav{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px}nav a{font-size:13px;padding:8px}.brand{font-size:25px}.intro-note{margin-bottom:10px}.searchbox{margin-top:14px}h1{font-size:29px}h2{font-size:23px}.image-button{padding:8px}th,td{padding:10px;font-size:14px}pre{padding:16px;font-size:13px}article{margin-bottom:55px;padding-bottom:40px}}
+@media print{aside,.course-label,.skip{display:none}main{margin:0;padding:0;max-width:none}body{font-size:11pt;background:white}article{page-break-before:always;margin:0;border:0;padding:0}article:first-of-type{page-break-before:auto}h1,h2,h3{break-after:avoid}pre,figure,.image-button{break-inside:avoid}.image-button{border:0;cursor:default}.image-button::after{display:none}a{color:inherit}details{background:white}pre{white-space:pre-wrap;background:#f2f3f2;color:#222}}
+</style></head><body>
+<a class="skip" href="#content">跳到正文</a>
+<aside><div class="eyebrow">TYPHOON · LEARNING NOTES</div><div class="brand">从零理解<br>样机测试</div><p class="intro-note">从电压与电流开始，读懂这块板、这套模型和一次测试。</p><nav aria-label="章节导航"><a href="#start" data-chapter="start"><span>开始</span>学习路线</a><a href="#electricity" data-chapter="electricity"><span>01</span>电与整套系统</a><a href="#board" data-chapter="board"><span>02</span>芯片、控制板与引线</a><a href="#motor" data-chapter="motor"><span>03</span>电机与控制</a><a href="#feedback" data-chapter="feedback"><span>04</span>反馈与 HIL</a><a href="#communication" data-chapter="communication"><span>05</span>LIN 与 PWM 练习</a><a href="#practice" data-chapter="practice"><span>06</span>Typhoon 预演导读</a><a href="#preparation" data-chapter="preparation"><span>07</span>样机测试准备</a><a href="#reference" data-chapter="reference"><span>查阅</span>术语、资料与原图</a></nav>
+<div class="searchbox"><label for="course-search">查一个术语或问题</label><input id="course-search" type="search" placeholder="例如：分流、2240、无感" autocomplete="off"><div id="search-status" role="status"></div><div id="search-results"></div></div>
+<div class="tools" aria-label="阅读工具"><button type="button" data-size="-1" aria-label="缩小正文字号">A−</button><button type="button" data-size="1" aria-label="放大正文字号">A＋</button><button type="button" id="print-reader">打印</button></div><p class="image-note">图片可点击放大，按 Esc 返回。<br>本页可离线阅读；官方外链需联网。</p></aside>
+<main id="content"><div class="course-label">零基础图文教程 · 七章学习与动手练习</div><article id="start" data-chapter-title="学习路线"><h1 id="start--从零理解这次样机测试">从零理解这次样机测试</h1>
+<p>这套教程写给<strong>此前没有学过芯片、电路和电机控制，最近才熟悉 Typhoon 操作的你</strong>。目的是让你能读懂本次样机资料、理解联调人员在检查什么，并独立完成电脑上的学习练习。先从一条完整的工作过程建立认识，再逐步认识里面的器件、信号和软件。</p>
+<p>贯穿全套教程的问题是：<strong>我们要求电机转到某个速度，这个要求怎样变成电机动作，又怎样知道动作是否正确？</strong></p>
+<p>阅读方式：<a href="index.html">离线图文阅读页</a>适合在浏览器中按章节阅读、查词和放大图片；本目录 Markdown 保存可编辑正文。离线页直接打开即可使用。</p>
+<h2 id="start--先看懂一张图">先看懂一张图</h2>
+<p><img src="assets/system-loop.svg" alt="要求、动作与反馈的简化关系" /></p>
+<p>这张示意图由本教程绘制。先沿箭头记住：提出要求 → 程序决定动作 → 电机响应 → 把实际情况送回来。电源向功率通路提供能量，控制程序决定怎样使用它。第 1 章会解释这些词。</p>
+<h3 id="start--再对照你提供的原图">再对照你提供的原图</h3>
+<p><img src="assets/motor-solution.png" alt="本次资料中的控制系统方案图" /></p>
+<p>图源：你提供的《电机控制板引线连接位置信号及方案说明.xlsx》，“电机方案”页内嵌原图。此图用于理解功能关系；图中写的是 TLE9879，本次名称沿用 TLE9877，实际型号需核对实物。</p>
+<p>第一次只看五处：左侧车辆接口提出要求，中间芯片执行控制，右侧功率级控制电能进入电机，圆圈 M 是电机，下方电流测量把运行信息送回芯片。图中的其他缩写会在后面逐个解释。</p>
+<p>你已经接触过 Typhoon，因此可以先把“电机模型”想成电脑里按电机规律计算的对象。接下来要理解的是：这个对象需要什么输入，会产生什么反馈，以及真实控制板如何与它交互。</p>
+<h2 id="start--按这个顺序学习">按这个顺序学习</h2>
+<p>每次学一章，完成章末小练习再继续。时间是安排学习的参考，遇到不熟的词可以停下来查最后一页。</p>
+<table>
+<thead>
+<tr>
+<th>次序</th>
+<th>教程</th>
+<th>本章能回答的问题</th>
+<th>建议时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="#electricity">电、电路与整套系统</a></td>
+<td>电压、电流是什么？控制、供电和测量怎样配合？</td>
+<td>45～60 分钟</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#board">芯片、控制板与 18 条引线</a></td>
+<td>MCU、固件、MOSFET、GH/GL 分别做什么？怎样读原理图？</td>
+<td>60～90 分钟</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#motor">电机怎样转，控制怎样起作用</a></td>
+<td>PMSM、三相、闭环、FOC、无感分别是什么意思？</td>
+<td>60～90 分钟</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#feedback">电流怎样测，HIL 怎样接进闭环</a></td>
+<td>10A 为什么对应 5mV？为什么反馈时刻也很重要？</td>
+<td>60～90 分钟</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#communication">LIN 与 PWM：边算边做</a></td>
+<td>2240rpm 怎样变成 64 00？状态报文怎样读？</td>
+<td>60～90 分钟</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#practice">在 Typhoon 中做一次有解释的预演</a></td>
+<td>怎样看模型、运行命令、读波形和判断结果？</td>
+<td>60～120 分钟</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#preparation">把学习变成样机测试准备</a></td>
+<td>如何整理资料、提问题、读报告和逐步排查？</td>
+<td>45～60 分钟</td>
+</tr>
+<tr>
+<td>随时查</td>
+<td><a href="#reference">术语、资料与图片索引</a></td>
+<td>缩写是什么意思？原图和手册关键页在哪里？</td>
+<td>按需</td>
+</tr>
+</tbody>
+</table>
+<p>第一轮先读正文和算例，英文官方链接留到第二轮按需查阅。电机控制中的矩阵推导、寄存器逐位配置和控制器整定，等碰到具体问题时再深入。</p>
+<h2 id="start--学习时准备什么">学习时准备什么</h2>
+<p>一台能打开项目文件的电脑、现有 Typhoon 环境、PowerShell，以及一个记录问题的笔记即可。第 1～5 章的练习主要是画图、计算和离线命令。第 6 章先读已有报告，需要自己运行时再使用 Virtual HIL。</p>
+<p>本教程中的命令均明确标注用途。离线编解码只处理数字；Virtual HIL 预演运行电脑内模型。真实板卡的供电、信号测量和反馈注入，需要按实际设备、改装接线图和实验负责人确定的步骤开展。</p>
+<h2 id="start--读本次资料时分清三种内容">读本次资料时，分清三种内容</h2>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>本次例子</th>
+<th>学习时怎么用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>资料明确提供的信息</td>
+<td>引线表建议板卡 9V、上限不超过 10V；分流电阻 0.5mΩ；电机 10 极</td>
+<td>认识当前对象；同时保留来源和适用位置</td>
+</tr>
+<tr>
+<td>为软件预演选定的条件</td>
+<td>模型内控制器、理想角度、等效星形参数、特定负载和事件</td>
+<td>学习模型和数据流程；查清采用这些条件的原因</td>
+</tr>
+<tr>
+<td>需要进一步确认的信息</td>
+<td>实际芯片及固件、栅极调理、采样窗口、缺失电机参数</td>
+<td>整理成可以回答的具体问题</td>
+</tr>
+</tbody>
+</table>
+<p>板级事实和待确认项集中维护在<a href="../tle9877-hil-intake.md">样机接入记录</a>与<a href="../../configs/tle9877_sample.json">样机配置</a>。软件预演条件维护在<a href="../../configs/pmsm_software_preview.json">预演配置</a>。教程解释这些信息的含义，后续参数更新以对应配置和接入记录为准。</p>
+<h2 id="start--学完后用这五件事检查自己">学完后，用这五件事检查自己</h2>
+<ol>
+<li>能从“转速要求”出发，画出控制、驱动、电机和反馈的关系。</li>
+<li>能在资料中找到一条线，说明它的功能、方向和参考点；不清楚的地方能具体写出来。</li>
+<li>能手算并用工具核对一组 LIN 命令与状态。</li>
+<li>能解释预演报告中的参考、实际转速、电流、转矩和事件。</li>
+<li>能区分“命令编码正确”“板卡接受命令”“模型响应正确”这几个不同的证据。</li>
+</ol>
+<p>现在从<a href="#electricity">第 1 章</a>开始。已经看过原先的准备指南，也建议按这个顺序补一遍基础。</p>
+</article><article id="electricity" data-chapter-title="电与整套系统"><h1 id="electricity--1-电电路与整套系统">1. 电、电路与整套系统</h1>
+<p><a href="#start">学习入口</a> · 下一章：<a href="#board">芯片、控制板与引线</a></p>
+<p>本章目标：看懂“电源提供能量，控制器决定怎样使用能量，测量把运行情况送回来”这件事。只需要四则运算。</p>
+<h2 id="electricity--11-先把电压和电流分开">1.1 先把电压和电流分开</h2>
+<p><strong>电压</strong>表示两点之间的电势差，单位是伏特 V。说“这里是 9V”，完整含义应当是“这里相对于某个参考点是 9V”。电源正端相对负端的电压，就是常见的供电电压。</p>
+<p><strong>电流</strong>表示电荷流动的快慢，单位是安培 A。电流沿电路的通路流动；同一个电源电压下，实际流过多少电流，还取决于连接的对象及其工作状态。</p>
+<p>可以暂时用水路帮助想象：压力差对应电压，流量对应电流，形成通路后才能持续流动。这个比喻只帮助理解“推动条件”和“流动结果”，电机和开关电路的具体行为仍要按电路规律分析。</p>
+<p>因此，“给板子 9V”与“电机流过 10A”说的是两种量。看到数字，先看单位，再看它属于哪个位置。</p>
+<h2 id="electricity--12-电阻用一个简单关系认识电路">1.2 电阻：用一个简单关系认识电路</h2>
+<p><strong>电阻</strong>描述元件阻碍电流的程度，单位是欧姆 Ω。对于理想电阻：</p>
+<pre><code class="language-text">电阻两端的电压 = 通过它的电流 × 电阻
+V = I × R
+</code></pre>
+<p>例如，一个 2Ω 的电阻流过 3A，电压就是 3×2=6V。这是计算例子。</p>
+<p>本次材料有两个名字相似、用途不同的电阻：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>提供值</th>
+<th>在哪里、做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电机“相电阻”</td>
+<td>0.005Ω = 5mΩ</td>
+<td>描述电机绕组的电阻特性；具体参数定义还需对应模型</td>
+</tr>
+<tr>
+<td>电流采样用的分流电阻</td>
+<td>0.0005Ω = 0.5mΩ</td>
+<td>在测量通路产生很小的电压，供芯片判断电流</td>
+</tr>
+</tbody>
+</table>
+<p>“分流电阻”也叫 shunt。在这个测量用途里，它串入被测电流的通路，通过两端电压推算电流。</p>
+<p>对 0.5mΩ 分流电阻：</p>
+<pre><code class="language-text">10A × 0.0005Ω = 0.005V = 5mV
+</code></pre>
+<p>5mV 很小，后面需要放大和采样。第 4 章会沿着这 5mV 继续往下讲。</p>
+<h2 id="electricity--13-先认识常用单位">1.3 先认识常用单位</h2>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>换算</th>
+<th>本次会在哪里遇到</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m，毫</td>
+<td>千分之一，0.001</td>
+<td>mV、mΩ、ms</td>
+</tr>
+<tr>
+<td>μ，微</td>
+<td>百万分之一，0.000001</td>
+<td>μH、μs</td>
+</tr>
+<tr>
+<td>k，千</td>
+<td>1000 倍</td>
+<td>kHz、kbps</td>
+</tr>
+<tr>
+<td>H，亨利</td>
+<td>电感单位</td>
+<td>电机绕组电感</td>
+</tr>
+<tr>
+<td>Hz，赫兹</td>
+<td>每秒重复次数</td>
+<td>PWM 频率</td>
+</tr>
+<tr>
+<td>rpm</td>
+<td>每分钟转数</td>
+<td>电机转速</td>
+</tr>
+<tr>
+<td>N·m</td>
+<td>转矩单位</td>
+<td>电机的转动作用</td>
+</tr>
+</tbody>
+</table>
+<p>这次的 11μH = 0.000011H。0.005Ω 和 0.0005Ω 相差 10 倍，抄参数时数一个零就会产生很大偏差。建议始终连同单位一起抄写。</p>
+<h2 id="electricity--14-电感和电容它们会影响变化有多快">1.4 电感和电容：它们会影响“变化有多快”</h2>
+<p><strong>电感</strong>可以先理解为会抵抗电流快速变化的特性。电机绕组具有电感，因此开关电压虽然跳变，电流通常会连续变化，并带有起伏。</p>
+<p><strong>电容</strong>可以储存电荷，常用于平缓供电变化。你在原理图中看到电源旁边接到地的电容，很多都在帮助供电或测量电路工作。</p>
+<p>本次先记住一个用途：分析波形时，“电压发生变化”和“电流、转速随之变化”可能发生在不同时间。电路和机械对象都有自己的响应过程。</p>
+<h2 id="electricity--15-一套电机系统有三条需要同时看的线索">1.5 一套电机系统有三条需要同时看的线索</h2>
+<p>沿着下面三句话读系统图：</p>
+<ol>
+<li><strong>能量从哪里来</strong>：电源经过功率电路，把能量送到电机，再变成机械运动和损耗。</li>
+<li><strong>要求从哪里来</strong>：上位机或车辆控制器给出要求，控制板把要求转换成开关控制。</li>
+<li><strong>实际情况怎样回来</strong>：测量电流、电压等量，控制程序据此调整输出、估计状态或进入保护。</li>
+</ol>
+<figure class="concept-diagram"><img src="assets/system-loop.svg" alt="电与整套系统功能关系示意图"><figcaption>本教程绘制的功能关系示意图</figcaption></figure><p>例如要求 2240rpm，程序不会只把“2240”写到某根电机线上。它要决定开关怎样切换，并持续查看反馈。转速是这整套过程产生的结果。</p>
+<p><strong>负载</strong>指电机正在带动的对象给它的机械作用，比如泵送液体产生的阻力。负载变重时，即使要求的转速不变，电机需要的转矩和电流也可能变化。</p>
+<h2 id="electricity--16-控制器被控对象和闭环">1.6 控制器、被控对象和闭环</h2>
+<p><strong>控制器</strong>负责根据要求和反馈决定下一步动作。这里主要是控制板中运行的程序。</p>
+<p><strong>被控对象</strong>是被它调节的系统。这里可包括逆变器、电机和机械负载，具体划分取决于测试边界。</p>
+<p><strong>反馈</strong>是反映对象状态的信息。反馈重新进入控制器，形成回路，就叫<strong>闭环</strong>。</p>
+<p>用熟悉的空调类比：设定 26℃，测量室温，再决定制冷强度。电机控制也需要设定、反馈与调整，只是对象和时间尺度不同。</p>
+<p>一个最简单的转速误差例子：</p>
+<pre><code class="language-text">参考转速 = 想达到的速度 = 2400rpm
+实际转速 = 测量或模型给出的速度 = 2350rpm
+误差 = 参考 - 实际 = 50rpm
+</code></pre>
+<p>“误差是多少”是一件事，“误差是否允许”还需要测试事先给定判据。不能看到 50 就自动认为合格或不合格。</p>
+<h2 id="electricity--17-到-typhoon-里哪些东西变成了模型">1.7 到 Typhoon 里，哪些东西变成了模型</h2>
+<p>你在 Typhoon 原理图里放置电源、开关、电机，连接测量信号，就是在给计算程序描述对象。它按设定参数和计算规律输出各时刻的电流、速度等结果。</p>
+<p>当前 PMSM 软件预演把控制器、逆变器、电机和负载都放在模型里。程序里的参考值变化，模型里的控制器跟着调整，模型里的电机响应，数据再保存成波形。</p>
+<p>后续实体 HIL 的目标是让真实控制板参与闭环：板卡给出驱动，仿真系统计算对象响应，再经适配电路把反馈送回板卡。这个过程需要真实电气接口和实时运行条件，第 4 章展开。</p>
+<h2 id="electricity--18-本次看到几个电压怎样避免混淆">1.8 本次看到几个电压，怎样避免混淆</h2>
+<p>引线表给这块寄送测试板的说明是<strong>建议 9V，不超过 10V</strong>。电机方案图上的 13.5V 是电机额定点资料。芯片手册还会列芯片自身的工作范围。</p>
+<p>三个数字描述的对象和条件不同。准备实物供电时，首先使用针对本块测试板的说明，并由负责人结合固件和改装状态落实。教程里模型的 9V 则是预演配置中的理想直流母线值。</p>
+<h2 id="electricity--19-小练习">1.9 小练习</h2>
+<p>先自己写答案，再展开核对。</p>
+<ol>
+<li>0.5mΩ 是多少 Ω？10A 通过它产生多少 mV？</li>
+<li>参考为 1800rpm，实际为 1770rpm，按“参考减实际”误差是多少？</li>
+<li>如果只有命令输入，反馈线断了，还能说正常闭环已经建立吗？</li>
+<li>“芯片可以在某个电压范围工作”能否直接决定整块改装板的供电？还要看什么？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>0.0005Ω；10×0.0005=0.005V=5mV。</li>
+<li>30rpm。</li>
+<li>还不能。需要确认实际反馈路径、控制器使用的信息及对应响应。</li>
+<li>需要看板级说明、其他器件、改装状态和固件条件。本次先遵循测试板提供方给出的板级条件。</li>
+</ol>
+</details>
+<p>能用自己的话说清“要求—动作—响应—反馈”，就可以进入<a href="#board">第 2 章</a>。</p>
+</article><article id="board" data-chapter-title="芯片、控制板与引线"><h1 id="board--2-芯片控制板与-18-条引线">2. 芯片、控制板与 18 条引线</h1>
+<p>上一章：<a href="#electricity">电与整套系统</a> · <a href="#start">学习入口</a> · 下一章：<a href="#motor">电机与控制</a></p>
+<p>本章目标：读懂控制板上的各部分分别做什么；看到 GH1、SHP 等标签时，知道从哪里开始查。先学读图，再考虑具体接线。</p>
+<h2 id="board--21-芯片和控制板是什么关系">2.1 芯片和控制板是什么关系</h2>
+<p><strong>芯片 IC</strong>是把电子功能集成在一个小封装里的器件。<strong>控制板 PCB</strong>则把芯片、电阻、电容、功率开关和连接器等，通过板上的铜线连接起来。</p>
+<p>芯片型号告诉我们这个器件具有什么能力。整块板实际怎样工作，还取决于外围电路和内部运行的程序。</p>
+<p><strong>MCU，微控制器</strong>，可以先理解为专门执行控制任务的小计算机。它有执行程序的处理器、保存程序的存储器，以及收发信号的电路。</p>
+<p><strong>固件 firmware</strong>是烧写到板卡上运行的程序，包括启动、通信、控制、保护和状态管理。芯片支持 FOC，并不等于当前固件一定采用某个特定 FOC 算法；这要看实际程序和说明。</p>
+<h2 id="board--22-在芯片内部先找五个功能">2.2 在芯片内部先找五个功能</h2>
+<p>下图来自你提供的 TLE9877QXA40 芯片手册，第 10 页，Figure 1。图片保留整页，点击可放大。</p>
+<p><img src="assets/datasheet-p010.png" alt="芯片手册第 10 页：内部功能框图" /></p>
+<p>按以下顺序看，不必一次理解所有方框：</p>
+<table>
+<thead>
+<tr>
+<th>图中名称</th>
+<th>先怎样理解</th>
+<th>与本次测试的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm Cortex-M3</td>
+<td>执行程序的处理器</td>
+<td>运行控制与通信逻辑</td>
+</tr>
+<tr>
+<td>FLASH / SRAM</td>
+<td>程序存储和运行时工作区</td>
+<td>固件版本、运行变量属于这一层</td>
+</tr>
+<tr>
+<td>CCU6 / PWM</td>
+<td>产生定时开关控制的模块</td>
+<td>配合驱动器控制六路功率开关</td>
+</tr>
+<tr>
+<td>MOSFET driver</td>
+<td>把控制意图变成适合栅极的驱动</td>
+<td>对应 GH/GL 等输出</td>
+</tr>
+<tr>
+<td>OP AMP / ADC / LIN</td>
+<td>小信号放大、模拟转数字、总线收发</td>
+<td>对应反馈测量和外部命令</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ADC，模数转换器</strong>，把连续变化的电压转成程序可以读取的数字。<strong>运算放大器 OP AMP</strong>在本场景中帮助放大小电流采样电压。<strong>LIN 收发器</strong>负责总线电气信号的收发，后面还要有协议和固件配合。</p>
+<p>手册及<a href="https://www.infineon.com/part/TLE9877QXA40">Infineon 官方产品说明</a>确认这一芯片集成处理器、LIN、采样与桥驱动等功能；功率级的六个 MOSFET 位于外部电路。</p>
+<h2 id="board--23-mosfet受控制的功率开关">2.3 MOSFET：受控制的功率开关</h2>
+<p><strong>MOSFET</strong>在这里可以先看成电子开关。常见三个端子是 G、D、S：</p>
+<table>
+<thead>
+<tr>
+<th>端子</th>
+<th>中文</th>
+<th>在本场景中的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G，Gate</td>
+<td>栅极</td>
+<td>接收驱动，控制开关状态</td>
+</tr>
+<tr>
+<td>D，Drain</td>
+<td>漏极</td>
+<td>电流通路的一端</td>
+</tr>
+<tr>
+<td>S，Source</td>
+<td>源极</td>
+<td>电流通路的另一端，也是理解驱动电压的重要参考</td>
+</tr>
+</tbody>
+</table>
+<p>“栅极驱动”关注的是 G 相对于 S 的电压，即 VGS。上桥 MOSFET 的源极会随相节点变化，所以栅极相对地的电压，与栅极相对源极的驱动电压，需要分别理解。</p>
+<p><strong>栅极驱动器</strong>负责较快地给栅极充放电，使 MOSFET 按要求开关。电机的大部分功率电流经过功率开关与绕组；控制信号负责决定这些开关的动作。</p>
+<h2 id="board--24-三相桥为什么有六路驱动">2.4 三相桥：为什么有六路驱动</h2>
+<p>三相电机有 U、V、W 三个外部相节点。每相由一只上桥开关和一只下桥开关构成一个桥臂，三相共六只。</p>
+<pre><code class="language-text">以 U 相为例：
+
+母线正端
+   │
+ 上桥 MOSFET  ← GH1 驱动其栅极
+   │
+   ├────────→ U 相节点，连接电机
+   │
+ 下桥 MOSFET  ← GL1 驱动其栅极
+   │
+低端公共节点／分流测量路径
+</code></pre>
+<p>V、W 两相分别对应 GH2/GL2、GH3/GL3。上桥和下桥按控制规律切换，三相绕组中形成所需电流。</p>
+<p><strong>死区 dead time</strong>是同一桥臂切换时预留的短暂空档，帮助避免上下开关同时导通形成直通。真实电路还存在二极管、延迟和诊断，所以上面只用于理解结构。</p>
+<h2 id="board--25-对着你给的截图读一遍">2.5 对着你给的截图读一遍</h2>
+<p><img src="assets/control-boundary.png" alt="你提供的 TLE9877 应用电路截图" /></p>
+<p>图源：你提供的控制边界截图，原样收录。它是理解器件连接的材料，实际改装接线需另有对应图纸。</p>
+<p>按四步找：</p>
+<ol>
+<li>中间写 TLE9877 的大框是芯片，右边六个开关符号是外部功率 MOSFET。</li>
+<li>沿 GH1 找到右侧第一只上桥 MOSFET 的 G 端，再沿 GL1 找到对应下桥 G 端。</li>
+<li>找右下方 Rshunt，这是把电流转成小电压的分流电阻；OP1、OP2 通向采样链。</li>
+<li>再看左边的 LIN、供电和其他输入，区分“要求怎样进来”与“功率怎样送出去”。</li>
+</ol>
+<p>原图左侧还有 Hall 字样的器件示意。针对本次电机，提供的引线说明写“无位置传感器”，因此这张通用应用图不能用来认定本次样机装了霍尔传感器。红框也只帮助定位图上信号，最终保留与替代哪些电路，应看实际 HIL 改装图。</p>
+<h2 id="board--26-ghglshsl-分别是什么意思">2.6 GH、GL、SH、SL 分别是什么意思</h2>
+<p><img src="assets/datasheet-p080.png" alt="芯片手册第 80 页：桥驱动模块" /></p>
+<p>图源：所提供手册，第 80 页，Figure 29。第一次只看最右侧 GHx、SHx、GLx、SL 四个名称，x 表示 1、2、3 中的一相。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>芯片图中对应的功能</th>
+<th>读资料时要区分什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GHx</td>
+<td>上桥栅极驱动</td>
+<td>查对应相及相对哪个参考点测量</td>
+</tr>
+<tr>
+<td>GLx</td>
+<td>下桥栅极驱动</td>
+<td>查低端参考及信号调理</td>
+</tr>
+<tr>
+<td>SHx</td>
+<td>相应上桥源极／相节点相关连接</td>
+<td>与 GHx 配合理解上桥驱动参考</td>
+</tr>
+<tr>
+<td>SL</td>
+<td>低端源极公共节点相关连接</td>
+<td>与采样通路及公共参考有关</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SHP、SHN 是板级引线表中的采样标签；SH1、SH2、SH3 是芯片图里的另一组名称。</strong> 它们名字相似，查表时要逐字看清。SHP/SHN 到 OP1/OP2 的具体连接，需要实际板图核对。</p>
+<h2 id="board--27-18-条线先按功能分组">2.7 18 条线先按功能分组</h2>
+<p>完整序号、焊接位置和原始出处见<a href="../tle9877-hil-intake.md#2-%E5%BC%95%E7%BA%BF%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3">样机接口表</a>。先用下表建立分类，避免一口气背 18 个名称。</p>
+<table>
+<thead>
+<tr>
+<th>功能组</th>
+<th>本次标签</th>
+<th>从板卡角度怎样理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>供电和参考，3 条</td>
+<td>BAT、GND1、系统地</td>
+<td>为板卡供电，建立相应参考；接地与隔离方案需结合平台</td>
+</tr>
+<tr>
+<td>外部命令，2 条</td>
+<td>PWM-IN、LIN-IN</td>
+<td>接收运行要求；LIN 线上也会有板卡响应</td>
+</tr>
+<tr>
+<td>功率与相关节点，5 条</td>
+<td>U、V、W、VM、SL</td>
+<td>与三相桥、母线和低端节点有关；实际保留／断开／替代方式待确认</td>
+</tr>
+<tr>
+<td>电流采样，2 条</td>
+<td>SHP、SHN</td>
+<td>把差分采样电压送向板卡测量链</td>
+</tr>
+<tr>
+<td>六路驱动，6 条</td>
+<td>GH1～3、GL1～3</td>
+<td>从 MOS 栅极位置引出驱动信息，供适配电路接收</td>
+</tr>
+</tbody>
+</table>
+<p>VM 原文是“母线电压线，控制板产生”，这还不足以把它定义成一个 HIL 模拟输出注入端。U/V/W 也属于电气节点，不能只因为名称像“信号”就当作低压测量输入。</p>
+<h2 id="board--28-输入和输出要先说站在哪一边">2.8 “输入”和“输出”要先说站在哪一边</h2>
+<p>同一根驱动线，对板卡可能是输出，对接收它的 HIL 调理电路则是输入。反馈线刚好反过来。</p>
+<p>读接口表时，可以在每条记录旁补四项：<strong>由谁产生、由谁接收、相对哪里测量、采用什么范围与时序</strong>。四项里有未知，就写具体未知项。</p>
+<p>例如 GH1 可以先写：“板卡功率 MOS 栅极引出 → 待确定调理电路 → HIL 驱动捕获；参考点、幅值与共模待确认。”这比只写“数字 IO”更有助于后续落实。</p>
+<p>Excel 的“18V/2=9V”还没有解释分压发生的位置、实际输出端和上桥共模处理。因此本教程用它说明待确认问题，实际 HIL 输入电平需按转接板规格确定。</p>
+<h2 id="board--29-看芯片脚号时再打开这一页">2.9 看芯片脚号时再打开这一页</h2>
+<p><img src="assets/datasheet-p011.png" alt="芯片手册第 11 页：封装引脚" /></p>
+<p>图源：所提供手册，第 11 页，Figure 2。这里的数字是<strong>芯片封装脚号</strong>。Excel 18 条引线前面的数字是<strong>表格序号</strong>。另外，M4、R33、C27 是板上器件位号，分别表示某个 MOSFET、电阻、电容。三套编号分别用于三个层次。</p>
+<h2 id="board--210-小练习">2.10 小练习</h2>
+<ol>
+<li>芯片、控制板、固件分别是什么？</li>
+<li>GH1 与 U 相节点各在什么位置，作用有什么不同？</li>
+<li>芯片图里的 SH1 和板级标签 SHP 能否仅凭名称当作同一根线？</li>
+<li>若别人说“这是一根 9V 数字信号”，至少还要问哪两类信息？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>芯片是器件，控制板连接多个器件，固件是在其上执行的程序。</li>
+<li>GH1 控制上桥 MOS 栅极；U 是桥臂中点连接电机的功率节点。</li>
+<li>需要查实际连接。相似名称不能替代电路映射。</li>
+<li>参考点、实际范围与共模、是否已调理，以及接收端的规格和时序要求，至少应明确其中相关项。</li>
+</ol>
+</details>
+<p>接下来进入<a href="#motor">第 3 章</a>，把这些开关与电机转动联系起来。</p>
+</article><article id="motor" data-chapter-title="电机与控制"><h1 id="motor--3-电机怎样转控制怎样起作用">3. 电机怎样转，控制怎样起作用</h1>
+<p>上一章：<a href="#board">芯片、控制板与引线</a> · <a href="#start">学习入口</a> · 下一章：<a href="#feedback">反馈与 HIL</a></p>
+<p>本章目标：把“电流、电磁转矩、转速”连成一条因果关系，并认识控制程序中最常出现的词。第一遍理解方向和作用即可。</p>
+<h2 id="motor--31-先认识电机里面的两个部分">3.1 先认识电机里面的两个部分</h2>
+<p><img src="assets/motor-specification.png" alt="所提供材料中的电机结构和规格" /></p>
+<p>图源：引线 Excel，“电机方案”页第一张原图。</p>
+<p>看图中间的<strong>定子</strong>和右侧的<strong>转子</strong>。定子相对外壳固定，含有绕组；转子与轴一起旋转。本次资料写 PMSM、内置式转子、12 槽 10 极、Δ 绕组。</p>
+<p><strong>PMSM</strong>全称 Permanent Magnet Synchronous Motor，中文是永磁同步电机。转子含永磁体，定子绕组中的电流建立磁场，两者相互作用产生转矩。</p>
+<p>“同步”表示正常同步运行时，转子与定子旋转磁场保持对应的转速关系。它不表示转速永远准确，也不表示电机天然知道外部命令。</p>
+<h2 id="motor--32-三相是什么意思">3.2 三相是什么意思</h2>
+<p>可以先把 U、V、W 理解为三个按规律配合的电流通道。合适的三相电流能合成旋转的磁场，使转子持续受到转动作用。</p>
+<p>你会看到三条电流曲线随时间交替变正、变负。<strong>负电流</strong>表示相对于选定正方向反向流动，本身是正常的电机运行现象。是否异常，要结合幅值、相位、工况和判据判断。</p>
+<p><strong>Δ，三角形接法</strong>与<strong>Y，星形接法</strong>描述绕组之间的连接。相同的三个外部端子，并不意味着内部连接相同。绕组支路电流、外部线电流和参数定义也可能不同。</p>
+<p>本次提供的电机是 Δ 接法，软件预演采用明确假设的等效星形参数。要建立样机对应模型，需先对齐绕组参数与目标组件的定义，所需条件见<a href="../tle9877-hil-intake.md#3-%E7%94%B5%E6%9C%BA%E5%8F%82%E6%95%B0%E5%B7%B2%E7%BB%99%E5%87%BA%E4%BB%80%E4%B9%88%E8%BF%98%E7%BC%BA%E4%BB%80%E4%B9%88">接入记录</a>。</p>
+<h2 id="motor--33-转速与转矩是两种量">3.3 转速与转矩是两种量</h2>
+<p><strong>转速</strong>是转得多快，常用 rpm，即每分钟转数。<strong>转矩</strong>是推动物体转动的作用，单位 N·m。相同转速下，负载较重，可能需要更大的转矩。</p>
+<p>拿手摇一个带阻力的轮子：你可以让它一直保持同样快，但阻力增大后，需要更用力。电机也会在相同转速下改变电流和电磁转矩。</p>
+<p><strong>电磁转矩</strong>来自电机中的电磁作用。<strong>负载转矩</strong>描述外部机械负载对轴的作用。按适当的符号约定，电磁转矩超过负载与损耗所需的部分用于加速；接近平衡时，转速趋于稳定。</p>
+<p><strong>转动惯量</strong>描述对象改变转速有多困难。它越大，相同净转矩下加减速越慢。电机尺寸可以提供几何线索，但不能代替已经确认的惯量参数。</p>
+<h2 id="motor--34-10-极为什么是-5-极对">3.4 10 极为什么是 5 极对</h2>
+<p>一对磁极包含一个 N 极和一个 S 极，所以 10 极对应 5 极对。资料中的 12 槽描述定子结构，不能拿 12 去当极对数。</p>
+<p>电机控制还会用到<strong>机械角度</strong>和<strong>电角度</strong>：</p>
+<pre><code class="language-text">机械转一圈：轴转过一整圈
+对于 5 极对电机：对应 5 个电角度周期
+
+电频率（Hz）= 机械转速（rpm）÷ 60 × 极对数
+</code></pre>
+<p>例如 2400rpm = 每秒 40 圈，5 极对时电频率是 200Hz。<strong>200Hz 是这个例子中的电频率</strong>；开关 PWM 的频率是另一个量，外部 PWM-IN 命令频率又是第三个量。</p>
+<h2 id="motor--35-pwm-为什么能控制电机">3.5 PWM 为什么能控制电机</h2>
+<p>PWM 是脉宽调制。一个重复周期内，高电平持续时间占总周期的比例叫<strong>占空比</strong>。</p>
+<pre><code class="language-text">周期 T = 一次完整重复的时间
+频率 f = 1 ÷ T
+占空比 D = 高电平时间 ÷ 周期
+</code></pre>
+<p>例如每 50μs 重复一次，就是 20kHz。高电平持续 20μs，占空比为 40%。这是算例；20kHz 也是当前软件预演的开关设定，实际样机频率仍需确认。</p>
+<p>功率开关的端点电压在开关过程中变化，绕组的电感让电流按相应规律变化。控制器调节三相开关时序，从而影响电流、转矩和转速。</p>
+<p>这里的“40%”首先描述脉冲时间比例。若 PWM 被用作外部通信命令，它表示什么运行状态，还要查专门的协议映射。第 5 章会结合本次 PWM-IN 图表解释。</p>
+<h2 id="motor--36-闭环为什么要一层层调节">3.6 闭环为什么要一层层调节</h2>
+<p>一种常见结构是外层调转速、内层调电流。可以按四步理解：</p>
+<ol>
+<li>转速环查看“想多快”和“现在多快”的差距。</li>
+<li>根据差距提出转矩或电流要求。</li>
+<li>电流环查看实际电流是否达到要求，再调整电压控制量。</li>
+<li>PWM 模块把电压控制量转换为开关动作，电机响应后再反馈。</li>
+</ol>
+<p><strong>控制环</strong>就是持续执行“比较—调整—反馈”的过程。内层通常需要更快地处理电流变化，外层按机械变化的特点工作；实际执行周期由固件决定。</p>
+<figure class="concept-diagram"><img src="assets/control-loops.svg" alt="电机与控制功能关系示意图"><figcaption>本教程绘制的功能关系示意图</figcaption></figure><p>如果上位机每 20ms 更新一次运行命令，芯片仍然可以在其间执行很多次内部控制。通信更新周期与控制周期分属不同层次。</p>
+<h2 id="motor--37-foc-到底在做什么">3.7 FOC 到底在做什么</h2>
+<p><strong>FOC，磁场定向控制</strong>，是一种组织电机控制计算的方法。转子磁场一直在转，直接盯着三条起伏的相电流处理比较复杂。FOC 把电流换到跟随转子旋转的参考方向上，得到常见的 d、q 两个分量，再分别调节。</p>
+<p>第一轮可以这样理解：d 方向与转子磁场相关，q 方向主要与转矩产生相关。不同电机类型和运行区域下，具体电流分配会变化，不能把“d 永远为零”当成通用规则。</p>
+<p>沿着软件图，你可能见到这些名称：</p>
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>在流程里做什么</th>
+<th>第一次学到哪一步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clarke / Park 变换</td>
+<td>把三相电流换到便于控制的坐标</td>
+<td>认识输入输出及为什么需要角度</td>
+</tr>
+<tr>
+<td>PI 控制器</td>
+<td>根据当前误差和累计误差调整输出</td>
+<td>理解它会持续修正，先不整定参数</td>
+</tr>
+<tr>
+<td>SVPWM</td>
+<td>把电压要求变成三相开关时间</td>
+<td>知道它位于控制计算与开关之间</td>
+</tr>
+<tr>
+<td>MTPA</td>
+<td>在一定条件下选择电流分配，提高每单位电流的转矩效果</td>
+<td>知道它会影响 d/q 电流指令</td>
+</tr>
+<tr>
+<td>限幅</td>
+<td>把某个控制量限制在设定范围</td>
+<td>查明限的是电流、转矩还是其他量</td>
+</tr>
+</tbody>
+</table>
+<p>这些术语用来帮助读模型。当前软件预演使用示例控制器并作了明确修改；本次样机固件采用什么算法和参数，需要由固件说明确认。</p>
+<p>FOC 与采样关系的进一步参考：<a href="https://www.ti.com/lit/pdf/spract7">TI 单分流 FOC 应用说明</a>，第 2 节。第一遍看框图即可。</p>
+<h2 id="motor--38-无感为什么仍然需要测量">3.8 “无感”为什么仍然需要测量</h2>
+<p>这里的<strong>无感 sensorless</strong>通常指没有专门的转子位置传感器。程序仍要利用电流、电压、模型参数等信息估计转子状态。</p>
+<p><strong>状态估计器／观测器</strong>是根据可测量的量和模型，推算难以直接测量状态的算法。电机运动产生的<strong>反电动势</strong>可以提供状态信息。采用反电动势估计的方法在低速时信息较弱，因此常需要专门的启动和切换过程；不同算法可能采用其他办法。</p>
+<p>一个便于理解的示例过程是：准备和检查 → 对齐或建立初始状态 → 按预定规律升速 → 满足条件后采用估计角度闭环 → 正常运行。它用于说明“启动是一段过程”，实际样机顺序以固件为准。</p>
+<p>Microchip 的<a href="https://onlinedocs.microchip.com/oxy/GUID-686B08E8-FD18-4AAD-87B9-32B527406A88-en-US-3/GUID-942885A0-341F-425F-94BD-714A4351EF12.html">官方无感单分流示例</a>给出了其中一种实现，可作为原理补充。</p>
+<h2 id="motor--39-为什么模型能转样机接入后还要验证">3.9 为什么模型能转，样机接入后还要验证</h2>
+<p>当前预演直接使用模型内部的转子角度，控制器容易取得所需位置。真实无感固件需要自己估计，还要面对采样、延迟、参数偏差和启动条件。</p>
+<p>因此预演很适合让你观察“调速和加负载后，电流、转矩、转速怎样变化”。要回答真实样机是否能启动、能否正确保护，则需要把实际固件及其反馈路径接入对应测试。</p>
+<h2 id="motor--310-对着参数截图读名字">3.10 对着参数截图读名字</h2>
+<p><img src="assets/motor-parameters.png" alt="你提供的电机参数截图" /></p>
+<p>图源：你提供的参数截图，原样收录。</p>
+<table>
+<thead>
+<tr>
+<th>截图或模型字段</th>
+<th>含义</th>
+<th>本次使用时要补充什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase Resistance / Rs</td>
+<td>绕组电阻参数</td>
+<td>确认“相”的定义及 Δ 与目标模型的对应</td>
+</tr>
+<tr>
+<td>Phase Inductance</td>
+<td>绕组电感参数</td>
+<td>确认测量条件、参数口径及与 Ld/Lq 的关系</td>
+</tr>
+<tr>
+<td>Pole Pairs</td>
+<td>极对数</td>
+<td>当前提供值 5，与 10 极一致</td>
+</tr>
+<tr>
+<td>Max. Speed</td>
+<td>某配置中的最大速度设置</td>
+<td>确认作用位置及与固件限幅的关系</td>
+</tr>
+<tr>
+<td>Ld / Lq</td>
+<td>d/q 方向电感</td>
+<td>样机配置中仍有待补项</td>
+</tr>
+<tr>
+<td>PM flux</td>
+<td>永磁磁链，反映永磁磁场与绕组的联系</td>
+<td>需要参数来源或反电动势常数的对应定义</td>
+</tr>
+<tr>
+<td>Inertia</td>
+<td>转动惯量</td>
+<td>需要轴上对象及模型范围</td>
+</tr>
+</tbody>
+</table>
+<p>模型要求的参数可以查 <a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three_phase_permanent_magnet_synchronous_machine.html">Typhoon PMSM 组件说明</a>。先对照组件参数名称，再看公式。</p>
+<h2 id="motor--311-小练习">3.11 小练习</h2>
+<ol>
+<li>负载增加、参考转速不变时，为什么仍可能看到电流变化？</li>
+<li>5 极对电机以 1800rpm 旋转，对应电频率是多少？</li>
+<li>“无位置传感器”和“没有任何测量”有什么区别？</li>
+<li>为什么只有一个 11μH 数字，还不足以直接认定 Ld、Lq 都已经确认？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>控制器需要产生更多转矩抵消增加的负载，常通过改变电流实现。</li>
+<li>1800÷60×5=150Hz。</li>
+<li>前者仍可用电流、电压等信息估计位置；后者没有建立这种测量依据。</li>
+<li>需要知道这个数的定义、测量条件、绕组接法，以及目标模型要求。Ld 和 Lq 可能不同。</li>
+</ol>
+</details>
+<p>下一章沿着反馈路径，看看控制程序怎样取得这些信息。</p>
+</article><article id="feedback" data-chapter-title="反馈与 HIL"><h1 id="feedback--4-电流怎样测hil-怎样接进闭环">4. 电流怎样测，HIL 怎样接进闭环</h1>
+<p>上一章：<a href="#motor">电机与控制</a> · <a href="#start">学习入口</a> · 下一章：<a href="#communication">LIN 与 PWM</a></p>
+<p>本章目标：理解从“电流”到“程序读数”的每一步，并画清真实板卡和仿真模型的交界。</p>
+<h2 id="feedback--41-沿着-10a-走到程序里">4.1 沿着 10A 走到程序里</h2>
+<p>电流不能直接变成程序里的变量，需要经过测量链。对本次单分流场景，可以按下面的功能顺序理解：</p>
+<pre><code class="language-text">被测电流
+  → 分流电阻两端的小电压
+  → 滤波与放大
+  → ADC 采样得到数字
+  → 固件按标定关系换算
+  → 电流重构、控制与保护
+</code></pre>
+<p>这条链里，某一步的比例、正负号、偏置或时刻出现问题，都会改变控制器“看见”的电流。</p>
+<h2 id="feedback--42-差分电压与共模先做一道算术">4.2 差分电压与共模，先做一道算术</h2>
+<p>SHP、SHN 是本次板级电流采样引线。<strong>差分电压</strong>是两点相减；<strong>共模电压</strong>可以先理解为这两个点整体相对参考地的位置。</p>
+<pre><code class="language-text">例 A：SHP=0.005V，SHN=0V，差值=0.005V
+例 B：SHP=1.005V，SHN=1V，差值=0.005V
+</code></pre>
+<p>两例差值相同，但两端相对地的位置不同。某个输入电路能正确测例 A，并不意味着它必然能接受例 B。实际允许范围要查芯片、板级电路和调理电路。</p>
+<p>这两个例子只解释差分与共模，均不作为实际注入设定。</p>
+<h2 id="feedback--43-看懂芯片手册的采样图">4.3 看懂芯片手册的采样图</h2>
+<p><img src="assets/datasheet-p082.png" alt="芯片手册第 82 页：电流采样放大器" /></p>
+<p>图源：你提供的手册，第 82 页，Figure 30。</p>
+<p>按从左到右的顺序看：</p>
+<ol>
+<li>RSH 是分流电阻，电流在它两端产生电压差。</li>
+<li>Low-pass filter 是低通滤波，帮助抑制不需要的高频干扰，同时也会影响动态响应。</li>
+<li>OP2、OP1 是芯片输入名称；右边的放大器用增益 G 放大差值。</li>
+<li>VZERO 给测量信号设置零点偏置，右侧 ADC 把电压转换成数字。</li>
+</ol>
+<p>图中关系为：</p>
+<pre><code class="language-text">送入 ADC 的电压 = VZERO + (VOP2 - VOP1) × G
+</code></pre>
+<p>这说明同样的分流电压，采用不同增益、偏置或接线极性，会得到不同读数。<strong>板级 SHP/SHN 与芯片 OP2/OP1 的映射仍需按实际连接确认。</strong></p>
+<h3 id="feedback--计算例子为什么-5mv-和-26v-都可能出现在讨论里">计算例子：为什么 5mV 和 2.6V 都可能出现在讨论里</h3>
+<p>假设某条测量链的 G=20，VZERO=2.5V，正方向的 10A 对应 5mV：</p>
+<pre><code class="language-text">分流电压差：10 × 0.0005 = 0.005V
+放大后的增量：0.005 × 20 = 0.1V
+送 ADC 的电压：2.5 + 0.1 = 2.6V
+</code></pre>
+<p>这里的增益和偏置是教学假设。5mV 属于放大器前的小差分量，2.6V 属于假设的放大偏置之后；是否可在某处注入，取决于真实电路。向前级注入后级数值，会把量程和物理含义弄错。</p>
+<p>“只差一点偏置”也可能影响很大。对 0.5mΩ 分流电阻，额外 1mV 差分电压等效于 2A。这个算例说明为什么需要认真确认零点和标定。</p>
+<h2 id="feedback--44-单分流为什么能看三相电流">4.4 单分流为什么能看三相电流</h2>
+<p><strong>单分流</strong>指用一个公共电流测量位置，在不同开关状态和采样时刻取得信息，再重构所需的相电流。</p>
+<p>最容易误解的一点是：公共分流电流会随开关状态改变，它不是把 Ia、Ib、Ic 简单求平均。对于理想三线电机端口，三条外部线电流在同一时刻满足电流和接近零；这条电路约束本身也不足以告诉我们某一时刻分流电流是多少。</p>
+<p>固件要知道“此刻哪个开关组合生效”，再把此刻分流读数解释为相应电流信息。有效电平持续得足够久，测量链稳定、ADC 在合适时刻采样，信息才可用。</p>
+<p><a href="https://www.ti.com/lit/pdf/spract7">TI 官方应用说明</a>专门讨论单分流的有效测量时间及重构问题。学习阶段先理解“开关状态、模拟反馈、采样时刻必须对应”。</p>
+<h2 id="feedback--45-同样的幅值晚到也会改变含义">4.5 同样的幅值，晚到也会改变含义</h2>
+<p>假设某次有效开关状态持续一小段时间，固件安排在中间采样。如果仿真反馈经过计算、输出和调理后到得太晚，ADC 可能读取到前一状态或切换过渡过程。</p>
+<p>因此检查反馈要分两步：</p>
+<table>
+<thead>
+<tr>
+<th>要检查什么</th>
+<th>典型问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数值关系</td>
+<td>10A 对应多少差分电压？正负号、增益和偏置是否正确？</td>
+</tr>
+<tr>
+<td>时间关系</td>
+<td>这个电压代表哪个开关时刻？输出延迟和稳定时间是否允许 ADC 正确采样？</td>
+</tr>
+</tbody>
+</table>
+<p>这也是为什么低频 LIN 状态读数很适合监视，却难以替代高速电流反馈或快速保护动作的时间证据。</p>
+<h2 id="feedback--46-hil-是在测试什么">4.6 HIL 是在测试什么</h2>
+<p>HIL 是 Hardware-in-the-Loop，硬件在环。针对控制器的 HIL 测试保留真实控制器，让仿真器实时计算它所控制的对象，并通过电气接口交换驱动与反馈。</p>
+<p>可以对照三种情形：</p>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>控制器在哪里</th>
+<th>电机和负载在哪里</th>
+<th>主要能学习或验证什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>真实运行系统</td>
+<td>真实板卡</td>
+<td>真实电机及负载</td>
+<td>实际系统行为，需对应设备与操作条件</td>
+</tr>
+<tr>
+<td>当前软件预演</td>
+<td>模型内控制器</td>
+<td>模型内对象</td>
+<td>模型、事件、采集、分析和运行现象</td>
+</tr>
+<tr>
+<td>后续控制器 HIL</td>
+<td>真实板卡</td>
+<td>实时仿真对象</td>
+<td>在确认的接口与模型范围内验证板卡行为</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实时</strong>指仿真计算及 I/O 要跟上真实控制器的时间。真实板卡不会因为电脑计算慢而自动等待。当前 Virtual HIL 则在电脑上按仿真时间推进，适合预演，不连接外部板卡形成真实闭环。其虚拟 I/O 回环规则见 <a href="https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html">Typhoon 官方说明</a>。</p>
+<h2 id="feedback--47-把未来的闭环画出来">4.7 把未来的闭环画出来</h2>
+<figure class="concept-diagram"><img src="assets/hil-loop.svg" alt="反馈与 HIL功能关系示意图"><figcaption>本教程绘制的功能关系示意图</figcaption></figure><p>这是<strong>拟接入的功能关系图</strong>。具体留下多少功率电路、在哪里注入、哪些诊断需要保留，要由实际改装图确定。尤其是 GH/GL 来自 MOS 栅极，SHP/SHN 来自小信号采样位置，二者量程和参考方式不同。</p>
+<p><strong>信号调理</strong>可以包括分压、放大、偏置、滤波、隔离和电平转换，使两端电气条件匹配。<strong>隔离</strong>用于控制两侧电气连接关系；是否隔离、怎样建立参考，需按平台和转接板设计执行。</p>
+<p>HIL 模型里电机产生的“10A”，首先是计算结果。经反馈接口送回板卡的是相应的电气测量信息，例如经确认的采样端电压；控制器 HIL 中通常不需要通过电机功率线向板卡送回那 10A 功率电流。</p>
+<h2 id="feedback--48-你现在就能准备的接口笔记">4.8 你现在就能准备的接口笔记</h2>
+<p>每条路径都用下面的句式记录：</p>
+<pre><code class="language-text">发送方：谁产生这个量？
+物理量：电压、电流、开关状态，还是协议字段？
+位置：从哪一个节点引出、注入哪里？
+接收方：哪个设备、哪个通道使用它？
+数值：单位、比例、偏置、方向、范围、参考点？
+时序：何时更新、何时采样、允许多少延迟？
+依据：哪份资料明确给出，哪些仍需答复？
+</code></pre>
+<p>以 SHP/SHN 为例，你已经可以填“分流设计值为 0.5mΩ”；对注入位置、芯片端映射、共模和采样窗口，先保留具体问题。这样拿到答复后能直接补成接口合同。</p>
+<h2 id="feedback--49-小练习">4.9 小练习</h2>
+<ol>
+<li>20A 对应 0.5mΩ 分流电阻两端多少 mV？</li>
+<li>上述假设 G=20、VZERO=2.5V 下，这一正方向电流对应的 ADC 输入电压是多少？</li>
+<li>为什么模拟反馈幅值正确，还可能使电流重构出错？</li>
+<li>当前软件预演中使用模型内部角度，能据此证明样机无感启动已经通过吗？需要补什么证据？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>20×0.0005=0.01V=10mV。</li>
+<li>2.5+0.01×20=2.7V，仍只是教学假设。</li>
+<li>可能存在延迟、采样时刻、开关状态对应、稳定时间或极性问题，需要分别观测。</li>
+<li>还需实际固件、对应反馈、接口及时序条件下的启动和切换证据。</li>
+</ol>
+</details>
+<p>下一章开始做无需接板的通信练习。</p>
+</article><article id="communication" data-chapter-title="LIN 与 PWM 练习"><h1 id="communication--5-lin-与-pwm边算边做">5. LIN 与 PWM：边算边做</h1>
+<p>上一章：<a href="#feedback">反馈与 HIL</a> · <a href="#start">学习入口</a> · 下一章：<a href="#practice">Typhoon 预演</a></p>
+<p>本章目标：弄懂外部命令怎样表示，并亲手解读一组字节。所有命令都是<strong>离线计算</strong>，无需连接板卡，不会发送真实总线信号。</p>
+<h2 id="communication--51-先区分三种软件">5.1 先区分三种软件</h2>
+<table>
+<thead>
+<tr>
+<th>软件或文件</th>
+<th>在哪里、做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>板卡固件</td>
+<td>运行在芯片上，执行实际启停、控制、通信和保护</td>
+</tr>
+<tr>
+<td>项目 Python 工具</td>
+<td>运行在电脑上，检查资料、编解码、调用仿真和整理结果</td>
+</tr>
+<tr>
+<td>LIN.ldf</td>
+<td>描述总线节点、帧、字段和换算规则的文件，工具按它解释数据</td>
+</tr>
+</tbody>
+</table>
+<p>LDF 可以理解为本次通信的“字典和排班表”。有了字典，电脑能计算报文；要让报文真正出现在 LIN 线上，还需要 LIN 主节点设备、收发器、驱动及实际调度。</p>
+<h2 id="communication--52-两种外部调速接口各怎样表达要求">5.2 两种外部调速接口，各怎样表达要求</h2>
+<p><strong>LIN</strong>通过数字报文表达命令，并能按协议读取状态。<strong>PWM-IN</strong>通过输入脉冲的占空比和其他条件表达命令。本次两者都出现在资料里，优先级、超时切换和非活动状态仍需确认。</p>
+<p>另外六路 GH/GL 也可能呈现 PWM 开关波形，它们负责桥驱动，与 PWM-IN 的调速语义和时间尺度不同。</p>
+<h2 id="communication--53-先用一分钟学会字节和十六进制">5.3 先用一分钟学会字节和十六进制</h2>
+<p><strong>bit，位</strong>，取值是 0 或 1。<strong>byte，字节</strong>，含 8 位，可以表示 0～255。</p>
+<p><strong>十六进制</strong>用 0～9 和 A～F 表示数字，A=10，F=15。前缀 0x 表示十六进制；报文串中常省略前缀。</p>
+<pre><code class="language-text">0x64 = 6×16 + 4 = 十进制 100
+0xFF = 15×16 + 15 = 十进制 255
+0x20 = 十进制 32 = 二进制 0010 0000
+</code></pre>
+<p>所以 data=[100,0] 和 data_hex=&quot;64 00&quot; 可以描述同一组两个字节。看到不同显示方式，先统一进制再比较。</p>
+<h2 id="communication--54-本次-lin-上的角色与帧">5.4 本次 LIN 上的角色与帧</h2>
+<p>LDF 给出主节点 ECU、从节点 EWP，速率 19200bit/s。这里 ECU 是命令一方的协议名称，测试时可由合适设备承担；EWP 是板卡一方。</p>
+<p>一次常规帧包括<strong>帧头</strong>和<strong>响应</strong>。主节点发起帧头，规定的数据发布者发送数据和校验。读状态时也需要主节点发起相应帧头，再由板卡回应。<a href="https://www.st.com/resource/en/application_note/an3055-getting-started-with-stm8a-lin-package-stswstm8alin-stmicroelectronics.pdf">ST 官方 LIN 说明，第 2 节</a></p>
+<table>
+<thead>
+<tr>
+<th>本项目别名</th>
+<th>LDF 帧名</th>
+<th>6 位 ID</th>
+<th>PID</th>
+<th>数据长度</th>
+<th>数据发布者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>control</td>
+<td>ControlLIN</td>
+<td>0x26，十进制 38</td>
+<td>0xA6</td>
+<td>2 字节</td>
+<td>ECU</td>
+</tr>
+<tr>
+<td>status</td>
+<td>StatusLIN</td>
+<td>0x25，十进制 37</td>
+<td>0x25</td>
+<td>8 字节</td>
+<td>EWP</td>
+</tr>
+<tr>
+<td>version</td>
+<td>VARIANTLIN</td>
+<td>0x27，十进制 39</td>
+<td>0xE7</td>
+<td>2 字节</td>
+<td>EWP</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ID</strong>用于标识帧；<strong>PID</strong>在 ID 上加了协议规定的校验位。具体硬件 SDK 要求传 ID 还是 PID，要查接口说明。<strong>checksum，校验和</strong>用于检查传输数据是否与校验值一致，它不评价转速是否达标。</p>
+<p><img src="assets/lin-protocol-2.png" alt="原始材料中的 LIN 报文方向和 ID" /></p>
+<p>图源：引线 Excel，“lin控制协议”页原图。先看两行的传输方向和 Frame ID。图中 0x1900/0x1901 是另一栏 Message ID 标签，不能拿来替代上表的总线帧 ID。</p>
+<h2 id="communication--55-练习一把-2240rpm-编成命令">5.5 练习一：把 2240rpm 编成命令</h2>
+<p>LDF 中的转速规则是：</p>
+<pre><code class="language-text">转速（rpm）= raw × 22.4
+raw 是一个字节里的原始码，常规有效范围 0～254
+255，即 0xFF，按本次资料处理为无效值
+</code></pre>
+<p>手算 2240÷22.4=100，十六进制是 0x64。控制帧第一个字节就取 64。</p>
+<p>第二个字节还包含后运行设置 <strong>PostSet</strong>，位于整帧 bit 12～14，也就是第二个字节的 bit 4～6。普通 no_post 设置为 0，其余未分配位按本次工具约定填零，所以得到：</p>
+<pre><code class="language-text">控制帧的数据域：64 00
+</code></pre>
+<p>在 PowerShell 中，一次执行一条命令：</p>
+<pre><code class="language-powershell">Set-Location 'D:\Typhoon\lab-workflow'
+.\lab.ps1 lin-encode --rpm 2240 --post-set 0 --json
+</code></pre>
+<p><code>Set-Location</code> 是进入项目目录；<code>.\lab.ps1</code> 调用项目入口；<code>lin-encode</code> 选择编码；<code>--rpm</code> 指定转速；<code>--json</code> 让结果按带字段名的文本输出。</p>
+<p>在返回的 result 中找这些字段：</p>
+<pre><code class="language-json">{
+  &quot;data_hex&quot;: &quot;64 00&quot;,
+  &quot;requested_rpm&quot;: 2240.0,
+  &quot;encoded_rpm&quot;: 2240.0,
+  &quot;firmware_target_rpm&quot;: null,
+  &quot;sent_to_hardware&quot;: false
+}
+</code></pre>
+<p>这是摘出的重点字段。<code>null</code> 表示当前没有该数值；<code>false</code> 表示否。firmware_target_rpm 为空，因为离线编码不能告诉我们真实固件限幅后采用什么目标。</p>
+<h3 id="communication--再改一次请求-2250rpm">再改一次：请求 2250rpm</h3>
+<pre><code class="language-powershell">.\lab.ps1 lin-encode --rpm 2250 --post-set 0 --json
+</code></pre>
+<p>2250÷22.4≈100.446，工具按最近码取整，得到 raw=100，所以编码仍为 2240rpm。这种离散化叫<strong>量化</strong>。请求值与编码值要分别保存。</p>
+<p>工具采用最近有效码、中点向上；输入范围为 0～5689.6rpm。最高有效码 254×22.4=5689.6rpm。资料中的额定转速、截图最大设置和固件平台上限还有其他来源，具体关系见<a href="../tle9877-hil-intake.md#6-%E9%9C%80%E8%A6%81%E6%8F%90%E4%BE%9B%E6%96%B9%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%BE%84%E6%B8%85%E7%9A%84%E5%B7%AE%E5%BC%82">接入记录</a>。</p>
+<h2 id="communication--56-练习二看看高位字段怎样改变字节">5.6 练习二：看看高位字段怎样改变字节</h2>
+<pre><code class="language-powershell">.\lab.ps1 lin-encode --rpm 2240 --post-set 2 --json
+</code></pre>
+<p>PostSet=2，对应第二字节的 bit 4～6，因此该字节数值为 2×16=32，即 0x20。结果数据域为 <strong>64 20</strong>。这只是离线打包演示，stage2 的真实持续时间和动作还需固件说明。</p>
+<p>本工具允许作为常规输入的 PostSet 为 0～5；6 未定义，7 为初始状态。后运行是状态机行为，需要确认触发、取消、目标和退出条件。</p>
+<h2 id="communication--57-练习三把编码的命令解读回来">5.7 练习三：把编码的命令解读回来</h2>
+<pre><code class="language-powershell">.\lab.ps1 lin-decode --frame control --data '64 00' --identifier 0xA6 --identifier-kind pid --checksum 0xF4 --json
+</code></pre>
+<p>预期看到：ControlSetspeed 的 raw=100、value=2240；PostSet 的 label=no_post；checksum_verified=true。</p>
+<p><code>--data</code> 只放数据域。PID、checksum、break 和 sync 均不拼进这串数据。当前工具对这三个业务帧使用增强校验准备，真实设备设置仍需与固件和抓包核对。</p>
+<h2 id="communication--58-练习四逐字节读状态">5.8 练习四：逐字节读状态</h2>
+<p>使用这一组教学样例：</p>
+<pre><code class="language-text">64 64 5A 50 0A 00 00 00
+</code></pre>
+<p>从 byte 0 开始计数，前五个字段这样读：</p>
+<table>
+<thead>
+<tr>
+<th>字节</th>
+<th>十六进制</th>
+<th>十进制 raw</th>
+<th>LDF 换算</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0，Setspeed</td>
+<td>64</td>
+<td>100</td>
+<td>×22.4rpm</td>
+<td>板卡反馈的目标字段 2240rpm</td>
+</tr>
+<tr>
+<td>1，ActualSpeed</td>
+<td>64</td>
+<td>100</td>
+<td>×22.4rpm</td>
+<td>板卡反馈的速度字段 2240rpm</td>
+</tr>
+<tr>
+<td>2，Voltage</td>
+<td>5A</td>
+<td>90</td>
+<td>×0.1V</td>
+<td>9V</td>
+</tr>
+<tr>
+<td>3，Temperature</td>
+<td>50</td>
+<td>80</td>
+<td>−50℃</td>
+<td>30℃</td>
+</tr>
+<tr>
+<td>4，Current</td>
+<td>0A</td>
+<td>10</td>
+<td>×0.2A</td>
+<td>2A</td>
+</tr>
+</tbody>
+</table>
+<p>这些数是<strong>报文按字段定义表达的值</strong>。其中电流究竟是哪一测量量、怎样滤波，速度来自什么估计，都要查固件说明；也要保留 HIL 模型自身的速度作为另一列。</p>
+<pre><code class="language-powershell">.\lab.ps1 lin-decode --frame status --data '64 64 5A 50 0A 00 00 00' --checksum 0x5D --json
+</code></pre>
+<p>最后三字节包含多个位字段。工具返回的 label 帮你按字典解释；例如 ST_RPM_MONI=0 表示转速监测启用。应逐字段阅读，不能把所有状态一律当作“0 正常、1 故障”。</p>
+<p><img src="assets/lin-protocol-3.png" alt="原始材料中的 LIN 字段表" /></p>
+<p>图源：引线 Excel，“lin控制协议”页原表。第一次只对照前五行、Byte Number、Physical Resolution 和 offset。图表与 LDF 的部分名称、枚举和上限存在差异，软件当前用 LDF 名称作主键，差异见接入记录。</p>
+<h2 id="communication--59-练习五看看无效值怎样表现">5.9 练习五：看看无效值怎样表现</h2>
+<pre><code class="language-powershell">.\lab.ps1 lin-decode --frame status --data '64 FF 5A 50 0A 00 00 00' --json
+</code></pre>
+<p>第二字节变成 FF，ActualSpeed 会返回 raw=255、validity=invalid、value=null。它没有变成“5712rpm”，也没有自动变成零。</p>
+<p>此时命令顶层仍可能 status=passed，意思是“成功解析这组输入”。判断读数可用性，还要看字段的 validity。本命令未提供 checksum，checksum_verified 为 false。</p>
+<p>继续试版本帧：</p>
+<pre><code class="language-powershell">.\lab.ps1 lin-decode --frame version --data '01 00' --json
+</code></pre>
+<p>Version 的原码是 1，validity 为 unencoded，因为 LDF 没有给出版本编码解释。应保留原码，取得版本格式说明后再解释成具体版本号。</p>
+<h2 id="communication--510-10ms-时隙与-20ms-周期怎样读">5.10 10ms 时隙与 20ms 周期怎样读</h2>
+<p>LDF 的 EWPTEST 调度如下：</p>
+<pre><code class="language-text">时隙开始：   0ms          10ms          20ms          30ms
+帧：         Control      Status        Control       Status
+</code></pre>
+<p>相邻时隙间隔 10ms；同一帧每两个时隙重复一次，名义间隔 20ms，即每秒 50 次。时隙包含安排给该帧及相应间隔的时间，不应把 10ms 理解成数据一直在传输 10ms。</p>
+<p>CheckVersion 是另一张调度表，不能仅因为它写在 LDF 里，就认为它会自动插进 EWPTEST。实际调度由主节点工具或程序选择执行。</p>
+<p><img src="assets/lin-protocol-1.png" alt="原始材料中的 LIN 调速曲线和周期文字" /></p>
+<p>图源：引线 Excel，“lin控制协议”页原图。上图提示低速、高速平台；下方写“推荐 10ms”，与 LDF 中同帧 20ms 的安排需要确认。下方另列休眠指令，它不属于当前三个业务帧离线工具的功能范围。</p>
+<h2 id="communication--511-pwm-in占空比必须按本次协议读">5.11 PWM-IN：占空比必须按本次协议读</h2>
+<p><img src="assets/pwm-protocol-table.png" alt="本次材料中的外部 PWM 调速协议表" /></p>
+<p>图源：引线 Excel，“PWM控制协议”页第一张原图。图左是协议中的连接器示意，与 18 条测试引线的序号属于不同编号体系。</p>
+<p>先找四处：推荐频率 100Hz；1%～7% 为紧急最大速度；8%～12% 写停止；0% 会与后运行条件关联。</p>
+<p>100Hz 对应周期 10ms。若占空比 10%，高电平时间为 1ms；5% 则为 0.5ms。但根据这份协议，5% 位于紧急最大速度区，10% 位于停止区。<strong>占空比小并不自动表示转得慢。</strong></p>
+<p><img src="assets/pwm-protocol-curve.png" alt="同页另一张 PWM 调速曲线" /></p>
+<p>曲线与表格在部分边界表达上有差异，完整问题已经列入<a href="../tle9877-hil-intake.md#5-pwm-%E8%B0%83%E9%80%9F%E5%8D%8F%E8%AE%AE%E6%9C%89%E5%93%AA%E4%BA%9B%E6%93%8D%E4%BD%9C%E5%90%AB%E4%B9%89">接入记录</a>。实体操作时采用双方确认的具体命令和非活动接口状态；本章只做读图与离线算术。</p>
+<h2 id="communication--512-小练习">5.12 小练习</h2>
+<ol>
+<li>raw=50 按本次转速线性规则对应多少 rpm？</li>
+<li>0x50 是十进制 50 吗？作为温度 raw 时是多少℃？</li>
+<li>100Hz、占空比 16% 的高电平时间是多少？</li>
+<li>同帧每 20ms 一次，每秒多少次？</li>
+<li>接到“工具通过”的输出后，怎样进一步确认字段是否有效、是否发过硬件？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>50×22.4=1120rpm。这是线性编码结果，实际固件平台行为另查。</li>
+<li>0x50=80；80−50=30℃。</li>
+<li>周期 10ms，高电平 1.6ms。</li>
+<li>1000÷20=50 次。</li>
+<li>查看 scope、每个字段的 validity、checksum_verified，以及编码结果 sent_to_hardware。离线工具没有证明板卡收到命令。</li>
+</ol>
+</details>
+<p>接下来用已经准备好的软件模型，把“要求—响应—结果记录”完整看一遍。</p>
+</article><article id="practice" data-chapter-title="Typhoon 预演导读"><h1 id="practice--6-在-typhoon-中做一次有解释的预演">6. 在 Typhoon 中做一次有解释的预演</h1>
+<p>上一章：<a href="#communication">LIN 与 PWM</a> · <a href="#start">学习入口</a> · 下一章：<a href="#preparation">测试准备</a></p>
+<p>本章目标：把一个已经准备好的模型读懂，运行时知道它在改变什么，拿到波形后知道先看哪里。建议先看已有记录，再决定是否自己运行。</p>
+<h2 id="practice--61-先认识这一套文件">6.1 先认识这一套文件</h2>
+<table>
+<thead>
+<tr>
+<th>文件类型或位置</th>
+<th>可以怎样理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.tse</td>
+<td>Typhoon 原理图，描述模型里的器件和信号连接</td>
+</tr>
+<tr>
+<td>.cpd</td>
+<td>编译后供仿真加载的文件</td>
+</tr>
+<tr>
+<td>.cus</td>
+<td>HIL SCADA 的面板配置，用于交互和显示</td>
+</tr>
+<tr>
+<td>configs 中的 JSON</td>
+<td>告诉项目程序本次参数、事件、采样和判据</td>
+</tr>
+<tr>
+<td>results 中的一次运行目录</td>
+<td>保存本次模型副本、数据、报告和复核依据</td>
+</tr>
+</tbody>
+</table>
+<p><strong>编译</strong>是把模型转换成仿真执行所需形式。<strong>加载</strong>是把编译结果交给执行系统。<strong>启动仿真</strong>后，模型时间才开始推进。界面出现 VIRTUAL HIL MODE 表示采用虚拟模式，还要进一步确认仿真是否实际在运行。</p>
+<p>本章通过统一命令完成这些步骤，暂时不用自己搭建一套 SCADA 面板。GUI 基本操作可按<a href="../modeling-practice.md">已有建模练习</a>复习。</p>
+<h2 id="practice--62-先看现有结果认识要做的实验">6.2 先看现有结果，认识要做的实验</h2>
+<p>打开这份<a href="../../results/20261103-095519-case-pmsm_software_preview-4741ec/runs/01-pmsm_software_preview/report.html">已有预演报告</a>。它是已经留存的一次软件运行记录；完整证据入口见<a href="../validation-history.md">验证索引</a>。</p>
+<p><img src="assets/pmsm-preview-waveforms.png" alt="已留存 PMSM 软件预演的完整波形" /></p>
+<p>图源：上述运行记录的 waveforms.png，按字节复制。图中的横轴为仿真时间；蓝色实线与橙色虚线等图例见下文。它采用等效星形假设和理想内部角度反馈。</p>
+<p>先按三个图层阅读：</p>
+<table>
+<thead>
+<tr>
+<th>图层</th>
+<th>英文图例</th>
+<th>中文含义</th>
+<th>第一眼看什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上图，Speed</td>
+<td>Model speed / Applied reference</td>
+<td>模型速度／实际施加的参考</td>
+<td>参考何时改变，速度随后怎样响应</td>
+</tr>
+<tr>
+<td>中图，Phase current</td>
+<td>Ia_A / Ib_A / Ic_A</td>
+<td>三相电流，单位 A</td>
+<td>启动、调速、加负载、零速时的变化</td>
+</tr>
+<tr>
+<td>下图，Torque</td>
+<td>Electromagnetic torque / Applied load</td>
+<td>电磁转矩／实际施加的负载</td>
+<td>加减速与负载变化如何对应</td>
+</tr>
+</tbody>
+</table>
+<p>先只描述看见的变化，再解释可能原因。例如：“0.35s 左右参考没变，负载增大，转矩和电流也改变，速度短暂变化后恢复。”这比只写“正常”包含更多信息。</p>
+<h2 id="practice--63-运行前把工况按时间写下来">6.3 运行前，把工况按时间写下来</h2>
+<p><strong>工况</strong>就是实验在什么条件下进行。当前配置的时间安排如下：</p>
+<table>
+<thead>
+<tr>
+<th>仿真时刻</th>
+<th>改变什么</th>
+<th>想观察什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动</td>
+<td>参考 1800rpm，负载 0.01N·m</td>
+<td>从静止附近进入运行，电流和速度如何建立</td>
+</tr>
+<tr>
+<td>0.2s</td>
+<td>参考改为 2400rpm</td>
+<td>加速过程、超调及稳定后的误差</td>
+</tr>
+<tr>
+<td>0.35s</td>
+<td>负载改为 0.03N·m</td>
+<td>参考不变时，控制器怎样应对负载变化</td>
+</tr>
+<tr>
+<td>0.55s</td>
+<td>参考改为 0rpm</td>
+<td>模型控制器怎样减速及调节到零速附近</td>
+</tr>
+<tr>
+<td>0.8s</td>
+<td>采集结束，停止本次仿真</td>
+<td>是否拿到了完整记录</td>
+</tr>
+</tbody>
+</table>
+<p>这些要求直接施加给模型内控制器。本次运行命令没有把第 5 章的 LIN 帧发给真实板卡。</p>
+<p>软件模型的参数和算法范围见<a href="../tle9877-software-preparation.md#pmsm-%E8%BD%AF%E4%BB%B6%E9%A2%84%E6%BC%94">软件准备说明</a>。磁链、惯量、部分电感和控制设定包含预演假设；样机事实另存。</p>
+<h2 id="practice--64-读懂两份配置的分工">6.4 读懂两份配置的分工</h2>
+<p>用文本查看器分别打开：</p>
+<ul>
+<li><a href="../../configs/tle9877_sample.json">tle9877_sample.json</a>：材料事实、接口与待确认项。可以把它当作“我们对样机已经知道什么”。</li>
+<li><a href="../../configs/pmsm_software_preview.json">pmsm_software_preview.json</a>：本次软件实验具体怎样执行。可以把它当作“这次模型按什么条件运行”。</li>
+</ul>
+<p>在预演配置中先找四组：parameters 是参数，events 是事件，capture 是采集，acceptance 是预先规定的评价要求。</p>
+<p>例如惯量参数的含义在上一章已经解释过。此时你只需指出它在文件中采用哪个值、属于什么来源，而不必立刻自己选一个更合适的惯量。</p>
+<h2 id="practice--65-检查环境与案例">6.5 检查环境与案例</h2>
+<p>先回到 PowerShell，一次执行一条命令：</p>
+<pre><code class="language-powershell">Set-Location 'D:\Typhoon\lab-workflow'
+.\lab.ps1 doctor
+</code></pre>
+<p>doctor 检查配套解释器、安装与模块。若这里报错，按<a href="../environment.md">环境说明</a>核对安装路径，先处理具体错误。</p>
+<p>再执行：</p>
+<pre><code class="language-powershell">.\lab.ps1 check-tle9877 --current-a 10 --json
+</code></pre>
+<p>在 result 中观察 interfaces、missing_motor_parameters、pending 与 shunt_relation。应能找到 18 条接口、部分缺失电机参数，以及 10A 对应的理想 0.005V 差分关系。</p>
+<p>sample_model_ready=false 和 hardware_ready=false 的含义是：完整样机模型与实体接入仍待验收。这个状态可以与本次独立软件预演可运行同时存在。</p>
+<p>继续准备本机官方模型并检查案例：</p>
+<pre><code class="language-powershell">.\lab.ps1 prepare-models --json
+.\lab.ps1 validate-case --case pmsm_software_preview --json
+</code></pre>
+<p>prepare-models 从本机匹配安装准备项目副本。validate-case 检查材料、配置、代码支持和已登记证据；它本身不启动一次新仿真。</p>
+<h2 id="practice--66-自己执行一次软件预演">6.6 自己执行一次软件预演</h2>
+<p>如果已有 Typhoon 实验或 GUI 正占用仿真运行，先保留现场，等它正常结束或由操作人停止后再做本节。一次只执行一个仿真实验。</p>
+<pre><code class="language-powershell">.\lab.ps1 run-case --case pmsm_software_preview --json
+</code></pre>
+<p>它会依次准备本次副本、设置参数、编译、加载、启动、采集、停止、分析并复核。0.8s 是模型里的仿真时间，实际等待时间还包含编译、加载与软件执行，因此可能明显更久。</p>
+<p>结束后先找到返回的 <strong>run_dir</strong>。这是本次批次目录，后面所有文件都沿它查找。旧报告的日期和目录名不应代替本次返回路径。</p>
+<p>如果 status 为 failed，先看哪个评价项未达标；如果为 error，先看执行阶段和 error 字段。保留原输出，按<a href="../troubleshooting.md">故障排查</a>定位问题。</p>
+<h2 id="practice--67-找到本次报告和原始数据">6.7 找到本次报告和原始数据</h2>
+<p>批次目录里有一个 runs/01-pmsm_software_preview 子记录。你会找到：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>学习时先用它回答什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>report.html</td>
+<td>本次条件和结果是什么，波形怎样变化？</td>
+</tr>
+<tr>
+<td>waveforms.png</td>
+<td>参考、速度、电流与转矩怎样对应？</td>
+</tr>
+<tr>
+<td>waveforms.csv</td>
+<td>原始每个采样点是多少？</td>
+</tr>
+<tr>
+<td>config.json</td>
+<td>这次实际请求采用什么条件？</td>
+</tr>
+<tr>
+<td>capture.json</td>
+<td>采了哪些信号，单位、采样率和时间范围是什么？</td>
+</tr>
+<tr>
+<td>events.json</td>
+<td>请求的改变有没有实际生效，何时被观察到？</td>
+</tr>
+<tr>
+<td>metrics.json</td>
+<td>用哪个窗口和公式得到什么结果？</td>
+</tr>
+<tr>
+<td>verification.json</td>
+<td>记录一致性和指标复算是否通过？</td>
+</tr>
+</tbody>
+</table>
+<p>当前 run-case 会自动复核新结果，第一次阅读时直接查看这些文件即可。历史记录的 verify/report 会写文件，如需重建，应按<a href="../../PROJECT_SPEC.md#%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%E5%A4%84%E7%90%86">历史记录处理约定</a>先复制完整记录和依赖，在副本上操作。</p>
+<h2 id="practice--68-按四个问题读波形">6.8 按四个问题读波形</h2>
+<h3 id="practice--问题一命令真的改变了吗">问题一：命令真的改变了吗</h3>
+<p>先找参考与负载曲线。竖虚线标出计划事件时刻；实际改变要结合采到的命令信号和 events.json，不能只凭图上画了一根竖线判断。</p>
+<h3 id="practice--问题二对象怎样响应">问题二：对象怎样响应</h3>
+<p>0.2s 后速度有加速过程，可能先超过目标再回落，这叫<strong>超调</strong>。随后进入较小误差范围，需要一定时间，这属于动态响应。</p>
+<p>0.35s 后负载增大，速度可能短暂下跌，电磁转矩和电流随之调整。结合这些量，才能区分“参考变了”和“对象被扰动了”。</p>
+<h3 id="practice--问题三零速命令具体做了什么">问题三：零速命令具体做了什么</h3>
+<p>0.55s 后当前模型采用控制器主动调节，负载命令仍在。零速附近仍可能有电流和保持转矩，减速过程也可能短暂越过零速。负速度表示模型按定义反向运动。</p>
+<p>这个场景帮助理解当前软件控制器的行为。真实固件的停止、关断、后运行及恢复，需要另外给出状态和观测依据。</p>
+<h3 id="practice--问题四评价用的是哪段数据">问题四：评价用的是哪段数据</h3>
+<p>本案例给每次变化留出 0.1s，再对后续规定窗口计算最大绝对转速误差。按当前工况，窗口是 0.10～0.20s、0.30～0.35s、0.45～0.55s、0.65～0.80s，实际边界和样本数看 metrics.json。</p>
+<p><strong>最大绝对误差</strong>是先逐点算“实际减参考”的绝对值，再取窗口里最大的那个。它与平均误差不同；平均值小，仍可能有一瞬间偏差很大。</p>
+<h2 id="practice--69-采样率步长和控制周期各是什么">6.9 采样率、步长和控制周期各是什么</h2>
+<p><strong>仿真步长</strong>是计算模型按多小的时间推进。<strong>控制周期</strong>是控制计算多长时间更新一次。<strong>采样间隔</strong>是保存的相邻数据点相距多久。</p>
+<p>它们还要与第 3 章的电频率、开关频率及第 5 章的通信周期区分。</p>
+<p>当前预演采样率为 100kSa/s，即每秒保存约 100000 个采样点，间隔为 10μs。记录 0.8s，点数为 80000。这个采样条件能显示当前记录中的变化，是否足以评价更短的事件，还要比较事件时间尺度和所需精度。</p>
+<p>CSV 中机械速度以 rad/s 保存；图上换成 rpm，关系为：</p>
+<pre><code class="language-text">rpm = rad/s × 30 ÷ π
+</code></pre>
+<p>因此不能只因为 CSV 中速度数字与图上不同，就判定两者矛盾。先检查单位。</p>
+<h2 id="practice--610-怎样理解通过">6.10 怎样理解“通过”</h2>
+<p>本次软件判据维护在<a href="../../cases/pmsm_software_preview/acceptance.md">案例验收说明</a>。这里重点认识两个字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>判断的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>experiment_status</td>
+<td>当前工况的数据是否满足事先规定的判据？</td>
+</tr>
+<tr>
+<td>record_status</td>
+<td>文件及其关联是否一致，指标能否按规定方法复算？</td>
+</tr>
+</tbody>
+</table>
+<p>转速误差满足 50rpm 是当前软件预演的检查要求；三相电流和检查用于电路一致性。这些要求的适用范围写在案例内，真实样机的性能与保护判据要按测试需求另外确定。</p>
+<h2 id="practice--611-完成一次学习记录">6.11 完成一次学习记录</h2>
+<p>先按原配置完整做一轮，写下：</p>
+<ol>
+<li>本次 run_dir，以及报告和原始 CSV 的位置。</li>
+<li>三个事件各改变了什么，实际生效证据在哪。</li>
+<li>加负载之后，参考、电流、转矩和速度怎样变化。</li>
+<li>四个窗口的评价结果，以及两个状态字段的含义。</li>
+<li>当前哪些条件采用预演假设，哪些问题要等样机接入验证。</li>
+</ol>
+<p>进阶练习可以把“如果负载变化更大，会发生什么”写成预测。要做对照时，先另存配置，明确只改变哪一个因素、固定什么和怎样判断，再检查支持范围。第一轮无需改参数。</p>
+<h2 id="practice--612-小练习">6.12 小练习</h2>
+<ol>
+<li>100000Sa/s 的采样间隔是多少？0.8s 有多少点？</li>
+<li>0.35s 增加负载，0.1s 后开始评价，对应从哪个时刻起？</li>
+<li>窗口平均误差为零，能否保证最大绝对误差小？</li>
+<li>模型里的零速命令，与真实板卡的功率输出已关断，是否是同一个判断？</li>
+</ol>
+<details>
+<summary>参考答案</summary>
+<ol>
+<li>10μs；80000 点。</li>
+<li>0.45s。</li>
+<li>不能。正负误差可能相互抵消，需要逐点算绝对值并取最大值。</li>
+<li>两者需要不同观测。零速是速度要求；关断还要看驱动、功率级状态和实际电流等证据。</li>
+</ol>
+</details>
+<p>下一章把学到的内容整理成可以用于联调的准备成果。</p>
+</article><article id="preparation" data-chapter-title="样机测试准备"><h1 id="preparation--7-把学习变成样机测试准备">7. 把学习变成样机测试准备</h1>
+<p>上一章：<a href="#practice">Typhoon 预演</a> · <a href="#start">学习入口</a> · <a href="#reference">术语与资料索引</a></p>
+<p>本章目标：学完概念后，能拿出具体笔记、接口问题和测试记录，并参与联调沟通。这里按你当前的知识起点安排任务，实物步骤由实际设备与负责人落实。</p>
+<h2 id="preparation--71-先把准备好了说具体">7.1 先把“准备好了”说具体</h2>
+<p>样机测试准备可以逐层完成：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>完成后你能拿出什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>理解系统</td>
+<td>一张闭环图，指出命令、控制器、驱动、对象和反馈</td>
+</tr>
+<tr>
+<td>理解资料</td>
+<td>一份术语对照，能找到每个重要参数和引线的来源</td>
+</tr>
+<tr>
+<td>软件练习</td>
+<td>手算和工具一致的 LIN 样例，一次有解释的预演阅读记录</td>
+</tr>
+<tr>
+<td>接入准备</td>
+<td>每条真实路径的节点、方向、参考、量程与时序问题</td>
+</tr>
+<tr>
+<td>实体验证</td>
+<td>负责人确认的接线与步骤，以及实际操作产生的波形和日志</td>
+</tr>
+</tbody>
+</table>
+<p>前四层可以先推进。遇到具体接口未知，写清是什么未知，同时继续不依赖它的学习和离线工作。</p>
+<h2 id="preparation--72-学习任务一自己画两张闭环图">7.2 学习任务一：自己画两张闭环图</h2>
+<p>第一张画当前软件预演：模型内控制器 → 模型逆变器与电机 → 模型反馈 → 模型内控制器。</p>
+<p>第二张画拟接入系统：外部命令 → 真实板卡 → 驱动调理与捕获 → 实时对象模型 → 反馈输出与调理 → 真实板卡。</p>
+<p>用框线圈出真实硬件，给每个跨框箭头写一个具体量。例如“六路驱动的开关状态”“按采样比例表示的电流反馈”，不要只写“数据”。</p>
+<p>完成后能解释：两张图中，谁在执行控制算法？角度从哪里来？哪些线需要真实电气规格？</p>
+<h2 id="preparation--73-学习任务二给-18-条引线做读表笔记">7.3 学习任务二：给 18 条引线做读表笔记</h2>
+<p>按<a href="../tle9877-hil-intake.md#2-%E5%BC%95%E7%BA%BF%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3">接入记录</a>逐项阅读，先复述用途，再把未知写成可回答的问题。可以在自己的笔记中使用下面格式：</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>我理解的用途</th>
+<th>已有依据</th>
+<th>下一项需要明确的信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GH1</td>
+<td>U 相上桥栅极引出，供调理后捕获驱动</td>
+<td>引线表的 M4 G 脚</td>
+<td>引出端是否已分压；相对哪个点测量；接入哪个调理通道</td>
+</tr>
+<tr>
+<td>SHP/SHN</td>
+<td>差分电流测量路径</td>
+<td>引线表 0.5mΩ 与焊接位置</td>
+<td>与 OP1/OP2 对应；注入在滤波前还是后；允许共模与采样窗口</td>
+</tr>
+<tr>
+<td>LIN-IN</td>
+<td>LIN 总线接口</td>
+<td>LDF 和引线表</td>
+<td>主节点设备、SDK、实际调度与停止流程</td>
+</tr>
+</tbody>
+</table>
+<p>这张表用于你的学习，不必复制一套参数事实到多个地方。新的正式答复应更新<a href="../../configs/tle9877_sample.json">样机配置</a>及所属接入记录。</p>
+<h2 id="preparation--74-学习任务三建立四列转速记录">7.4 学习任务三：建立四列转速记录</h2>
+<p>以后看日志时，用四列避免把不同环节混为一谈：</p>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>从哪里来</th>
+<th>它回答什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>请求转速</td>
+<td>人或测试脚本输入</td>
+<td>原本想要什么</td>
+</tr>
+<tr>
+<td>编码转速</td>
+<td>根据 raw 与 LDF 换算</td>
+<td>报文实际能表达什么</td>
+</tr>
+<tr>
+<td>板卡反馈转速</td>
+<td>LIN 状态或其他固件接口</td>
+<td>板卡报告自己估计或测得多少</td>
+</tr>
+<tr>
+<td>模型转速</td>
+<td>HIL 对象模型</td>
+<td>仿真对象当前算出多少</td>
+</tr>
+</tbody>
+</table>
+<p>固件反馈的目标字段 Setspeed 还可以作为独立一列，用来核对限幅和状态机行为。各列都保留原始值、单位、有效性、时间戳和来源。</p>
+<p>例如请求 2250rpm，编码为 2240rpm，首先是量化产生的差异。若板卡反馈另一个目标值，再检查固件平台或限制；若模型速度与目标偏离，再结合实际驱动和反馈看控制过程。</p>
+<h2 id="preparation--75-学习任务四读一组证据写三句话">7.5 学习任务四：读一组证据，写三句话</h2>
+<p>先读第 6 章的现有预演报告，尝试写：</p>
+<ol>
+<li><strong>条件</strong>：“在本次软件参数、内部角度反馈和指定负载下，执行了哪些事件。”</li>
+<li><strong>观察</strong>：“在哪个时刻，哪几个信号发生了怎样的变化，指标是多少。”</li>
+<li><strong>含义</strong>：“按哪个窗口与判据得到什么结论；接入样机还需要哪些条件。”</li>
+</ol>
+<p>“图看起来很好”“AI 判断正常”都没有说明测量和判定依据。Agent 可以帮助整理问题和分析数据，实际闭环的时序由仿真器与控制板承担，报告结论仍要落到具体记录上。</p>
+<h2 id="preparation--76-与板卡方平台方沟通时问题怎样变具体">7.6 与板卡方、平台方沟通时，问题怎样变具体</h2>
+<p>把每个问题写成“目前知道什么 → 还差什么 → 需要哪种交付”。以下用于准备沟通材料，不会自动发送给任何人。</p>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>具体问题示例</th>
+<th>希望取得的材料</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本与流程</td>
+<td>本次实物的芯片、板号、固件版本是什么？在 9V 条件下怎样唤醒、运行、停止和恢复？</td>
+<td>版本记录与逐步操作说明</td>
+</tr>
+<tr>
+<td>功率级边界</td>
+<td>哪些 MOS 和采样电路保留？U/V/W、VM、SL 分别怎样连接？</td>
+<td>标明保留、断开、替代部分的实际改装图</td>
+</tr>
+<tr>
+<td>栅极捕获</td>
+<td>“18V/2=9V”的除以 2 在哪里实现？各路参考、共模和边沿条件是什么？</td>
+<td>调理原理、通道映射和输入输出规格</td>
+</tr>
+<tr>
+<td>电流采样</td>
+<td>SHP/SHN 对应哪个芯片输入？增益、偏置、滤波和采样窗口怎样设置？</td>
+<td>电路映射与当前固件采样配置</td>
+</tr>
+<tr>
+<td>无感控制</td>
+<td>当前算法需要哪些电流、电压或诊断信息？启动与切换需要什么条件？</td>
+<td>算法接口与状态说明</td>
+</tr>
+<tr>
+<td>电机模型</td>
+<td>5mΩ、11μH 是什么定义？Ld/Lq、磁链、惯量和负载怎样取得？</td>
+<td>带定义、单位和来源的参数表</td>
+</tr>
+<tr>
+<td>通信与停止</td>
+<td>采用哪张调度表？PWM 与 LIN 谁优先？命令超时和后运行如何结束？</td>
+<td>已验证样帧、调度与状态转换说明</td>
+</tr>
+</tbody>
+</table>
+<p>拿到答复后，检查它是否针对这块实物及这份固件，是否明确单位和参考点。通用芯片功能图适合解释原理，实际接口参数需要相应版本证据。</p>
+<h2 id="preparation--77-到实体联调时怎样理解推进顺序">7.7 到实体联调时，怎样理解推进顺序</h2>
+<p>以下是理解各阶段目的的路线，具体电压、命令、接线与操作步骤需由实际设备方案确定。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>先解决的问题</th>
+<th>典型证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>确认对象与边界</td>
+<td>这是什么板、什么固件、哪些电路参与测试？</td>
+<td>版本、实物对应、改装图、通道表</td>
+</tr>
+<tr>
+<td>在确认条件下建立通信</td>
+<td>帧头、响应和解码是否对应？</td>
+<td>原始 ID/PID、数据、校验、设备时间戳</td>
+</tr>
+<tr>
+<td>检查驱动与反馈路径</td>
+<td>方向、倍率、参考点、有效时刻是否正确？</td>
+<td>已知状态或数值对应的捕获与测量</td>
+</tr>
+<tr>
+<td>建立一个正常闭环</td>
+<td>设定后是否有实际驱动、对象响应和一致反馈？</td>
+<td>同步关联的命令、驱动、反馈和模型波形</td>
+</tr>
+<tr>
+<td>验证停止及恢复</td>
+<td>结束条件和状态机是否达到预期？</td>
+<td>驱动状态、电流、速度、状态与恢复过程</td>
+</tr>
+<tr>
+<td>扩展已定义工况</td>
+<td>在明确扰动下，响应是否符合固定要求？</td>
+<td>扰动生效、响应窗口、指标与判定依据</td>
+</tr>
+</tbody>
+</table>
+<p>前面没有对应证据时，先定位缺口。正常闭环和停止过程建立后，再选择一个目标明确的异常用例。</p>
+<h2 id="preparation--78-不转时按信号链逐段看">7.8 “不转”时，按信号链逐段看</h2>
+<ol>
+<li><strong>要求是否成立</strong>：原始命令是什么？编码是否有效？当前接口和状态允许运行吗？</li>
+<li><strong>板卡怎样回应</strong>：有没有响应帧？反馈目标、故障或状态是什么？实际固件版本是否匹配？</li>
+<li><strong>有没有实际驱动</strong>：六路信号是否出现？捕获是否经过正确调理？相序和极性是否对应？</li>
+<li><strong>对象是否收到驱动</strong>：模型输入是否变化？母线、开关与电机参数是否按本次条件生效？</li>
+<li><strong>反馈怎样返回</strong>：电流对应什么数值和时刻？是否还有相电压或诊断路径需要满足？</li>
+<li><strong>启动卡在哪个状态</strong>：是准备、开环升速、估计切换、保护还是后运行？需要固件侧什么观测？</li>
+</ol>
+<p>这些是逐项核查的候选位置，最后结论必须由本次证据支持。仅看到“LIN 正常”只能说明通信的一部分已经工作。</p>
+<h2 id="preparation--79-一页学习记录模板">7.9 一页学习记录模板</h2>
+<p>复制下面内容到自己的笔记。保留“未知”是有用的，它告诉你下一步查什么。</p>
+<pre><code class="language-text">学习主题／日期：
+今天要回答的一个问题：
+使用的文件及位置：
+我画的系统或信号链：
+
+资料明确给出的内容：
+我为理解而采用的假设：
+还需要确认的内容：
+
+计算例子或实际命令：
+预期看到什么：
+实际看到什么：
+结果文件或截图位置：
+我能据此说明什么：
+
+下一步只推进的一件事：
+</code></pre>
+<h2 id="preparation--710-最后做一次自检">7.10 最后做一次自检</h2>
+<p>能不用照抄教程，回答下面八题，就具备继续跟进样机准备的基础了。</p>
+<ol>
+<li>芯片、功率 MOS 和电机分别承担什么？</li>
+<li>六路 GH/GL 与外部 PWM-IN 有什么关系和区别？</li>
+<li>0.5mΩ 分流电阻下，10A 为什么对应 5mV？</li>
+<li>为什么注入节点、参考点和采样时刻要一起确认？</li>
+<li>raw=100、0x64、2240rpm 怎样联系起来？</li>
+<li>为什么控制和状态各占 10ms 时隙，同一帧却每 20ms 重复？</li>
+<li>当前预演的控制器在哪里？为什么还要验证样机无感启动？</li>
+<li>一份报告需要哪些信息，才能从“看见变化”走到“满足要求”？</li>
+</ol>
+<details>
+<summary>核对要点</summary>
+<ol>
+<li>芯片执行程序并提供采样、通信、驱动等功能；功率 MOS 控制能量通路；电机产生机械作用。</li>
+<li>外部 PWM-IN 表达命令，六路 GH/GL 控制三相功率开关；各自的电气条件和协议不同。</li>
+<li>按 V=I×R，10×0.0005=0.005V。</li>
+<li>同一物理量在不同节点可能有不同幅值、偏置和时间；ADC 必须在正确条件下取得对应信息。</li>
+<li>十进制 100 等于十六进制 64，再乘 22.4rpm/code 得到 2240rpm。</li>
+<li>一次循环包含两个连续时隙，总长 20ms。</li>
+<li>在模型内部，采用内部角度与预演参数；实际固件的估计、反馈与时序仍需实体验证。</li>
+<li>条件和来源、实际事件与原始数据、单位和同步、计算窗口与公式、预设阈值，以及记录复核和适用范围。</li>
+</ol>
+</details>
+<p>对某一题仍不确定，就沿<a href="#reference">术语和资料索引</a>回到对应章节。你可以把尚未理解的一小段原图、字段或波形位置记录下来，再逐项补齐。</p>
+</article><article id="reference" data-chapter-title="术语、资料与原图"><h1 id="reference--术语资料与图片索引">术语、资料与图片索引</h1>
+<p><a href="#start">学习入口</a></p>
+<p>本页用于读图和查词。第一次学习时优先跟随各章，遇到缩写再回来。</p>
+<h2 id="reference--常用术语">常用术语</h2>
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>中文或通俗解释</th>
+<th>主要章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC / chip</td>
+<td>芯片，集成电子功能的器件</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>PCB / board</td>
+<td>电路板，连接芯片和外围器件</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>MCU</td>
+<td>微控制器，执行控制程序的小计算机</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>firmware</td>
+<td>固件，运行在板卡上的程序</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>peripheral</td>
+<td>外设，芯片内的定时、采样和通信等功能模块</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>register</td>
+<td>寄存器，程序读写硬件配置或状态的位置</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>ADC</td>
+<td>模数转换器，把电压转成数字</td>
+<td><a href="#board">2</a>、<a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>OP AMP / CSA</td>
+<td>运算放大器／电流采样放大器</td>
+<td><a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>MOSFET / G / D / S</td>
+<td>功率开关；栅极／漏极／源极</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>gate driver</td>
+<td>栅极驱动器，控制功率开关栅极</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>inverter</td>
+<td>逆变器，本场景中将直流电经开关转换成三相输出</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>DC bus</td>
+<td>直流母线，功率电路的直流供电侧</td>
+<td><a href="#electricity">1</a>、<a href="#board">2</a></td>
+</tr>
+<tr>
+<td>shunt</td>
+<td>分流电阻，通过小压降测量电流</td>
+<td><a href="#electricity">1</a>、<a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>differential / common mode</td>
+<td>差分／共模，两个端点的差值／整体参考位置</td>
+<td><a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>gain / offset</td>
+<td>增益／偏置，倍率／零点位置等校正量</td>
+<td><a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>PMSM</td>
+<td>永磁同步电机</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>BLDC</td>
+<td>无刷直流电机；相关驱动产品资料常出现此名称，具体电机与控制方式仍看对应定义</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>stator / rotor</td>
+<td>定子／转子，固定部分／随轴旋转部分</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>pole pairs</td>
+<td>极对数，成对 N/S 磁极的对数</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>torque / load / inertia</td>
+<td>转矩／负载／惯量</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>FOC</td>
+<td>磁场定向控制，按转子磁场方向组织电流控制</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>sensorless / observer</td>
+<td>无位置传感器控制／根据测量估计状态的算法</td>
+<td><a href="#motor">3</a></td>
+</tr>
+<tr>
+<td>PWM / duty cycle</td>
+<td>脉宽调制／占空比</td>
+<td><a href="#motor">3</a>、<a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>dead time</td>
+<td>死区，同桥臂切换时预留的空档</td>
+<td><a href="#board">2</a></td>
+</tr>
+<tr>
+<td>LIN / LDF</td>
+<td>本次使用的通信总线／描述节点、帧和信号的文件</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>frame / signal</td>
+<td>帧，一次组织好的通信单元／其中定义的字段</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>ID / PID / checksum</td>
+<td>帧标识／带保护位的标识／数据校验和</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>raw / physical value</td>
+<td>原始码／按规则换算的物理值</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>schedule / slot</td>
+<td>调度表／其中安排给一项通信的时隙</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>post-run</td>
+<td>后运行，触发后继续执行特定动作的状态流程</td>
+<td><a href="#communication">5</a></td>
+</tr>
+<tr>
+<td>HIL / plant</td>
+<td>硬件在环／被仿真的对象</td>
+<td><a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>Virtual HIL</td>
+<td>在电脑中运行的虚拟仿真环境</td>
+<td><a href="#feedback">4</a>、<a href="#practice">6</a></td>
+</tr>
+<tr>
+<td>DI / DO / AI / AO</td>
+<td>从对应设备看，数字输入／数字输出／模拟输入／模拟输出</td>
+<td><a href="#feedback">4</a></td>
+</tr>
+<tr>
+<td>compile / load / run</td>
+<td>编译／加载／运行</td>
+<td><a href="#practice">6</a></td>
+</tr>
+<tr>
+<td>sample rate / time step</td>
+<td>保存数据的采样速率／模型计算推进的时间步长</td>
+<td><a href="#practice">6</a></td>
+</tr>
+<tr>
+<td>reference / feedback</td>
+<td>希望达到的参考值／实际测量或估计反馈</td>
+<td><a href="#electricity">1</a></td>
+</tr>
+<tr>
+<td>overshoot / settle</td>
+<td>超过目标的暂态偏差／逐步进入较小误差范围</td>
+<td><a href="#practice">6</a></td>
+</tr>
+<tr>
+<td>acceptance / verification</td>
+<td>按事先要求评价实验／核对记录与复算一致性</td>
+<td><a href="#practice">6</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="reference--你提供的材料建议怎样读">你提供的材料，建议怎样读</h2>
+<table>
+<thead>
+<tr>
+<th>材料</th>
+<th>第一轮读什么</th>
+<th>后面用来回答什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../../docs/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E6%9D%BF%E5%BC%95%E7%BA%BF%E8%BF%9E%E6%8E%A5%E4%BD%8D%E7%BD%AE%E4%BF%A1%E5%8F%B7%E5%8F%8A%E6%96%B9%E6%A1%88%E8%AF%B4%E6%98%8E.xlsx">引线 Excel</a></td>
+<td>引脚分配、各页原图</td>
+<td>本板的引出点、供电说明、电机方案和协议</td>
+</tr>
+<tr>
+<td><a href="../../../docs/Infineon-TLE9877QXA40-DataSheet%EF%BC%88%E8%AF%95%E6%A0%B7%E7%9A%84%E6%A0%B7%E6%9C%BA%E6%8E%A7%E5%88%B6%E8%8A%AF%E7%89%87%EF%BC%89.pdf">芯片手册 PDF</a></td>
+<td>第 10、11、79～82 页</td>
+<td>内部模块、芯片脚、桥驱动、采样链</td>
+</tr>
+<tr>
+<td><a href="../../data/tle9877/LIN.ldf">LIN.ldf 项目副本</a></td>
+<td>Nodes、Frames、Schedule_tables、Signal_encoding_types</td>
+<td>节点、字段位置、换算、枚举和调度</td>
+</tr>
+<tr>
+<td><a href="assets/motor-parameters.png">电机参数截图</a></td>
+<td>四个参数的名称、值和单位</td>
+<td>与模型需要的参数逐项对应</td>
+</tr>
+<tr>
+<td><a href="assets/control-boundary.png">控制电路截图</a></td>
+<td>芯片、右侧功率桥、下方分流电阻</td>
+<td>驱动与反馈的物理路径</td>
+</tr>
+<tr>
+<td><a href="../../../docs/%E8%81%94%E5%90%88%E5%AE%9E%E9%AA%8C%E5%AE%A4%E5%BB%BA%E8%AE%BE%E6%96%B9%E6%A1%88%E7%A0%94%E8%AE%A8%E4%BC%9A%E8%AE%AE%E7%BA%AA%E8%A6%81.md">会议纪要</a></td>
+<td>本次样机、材料、平台和分工相关内容</td>
+<td>确定谁提供资料、谁确认方案及测试目的</td>
+</tr>
+</tbody>
+</table>
+<p>外层原材料在本机 D:\Typhoon\docs。学习用图片另存到本教程 assets 中，便于配合正文阅读；完整板级事实以<a href="../tle9877-hil-intake.md">接入记录</a>与<a href="../../configs/tle9877_sample.json">样机配置</a>为准。</p>
+<h3 id="reference--芯片手册怎样查">芯片手册怎样查</h3>
+<p>先按“我想知道什么”查目录，再定位图表。看电气参数时，同时读<strong>条件、最小值、典型值、最大值和脚注</strong>。典型值帮助理解某些代表条件，保证范围与适用条件要看具体表述。</p>
+<p><strong>Absolute maximum ratings，绝对最大额定值</strong>用于描述器件承受极限相关条件；日常运行设定应使用对应的推荐或规定工作条件，并结合板级设计。查看某个芯片的能力，也要确认实际芯片型号与版本。</p>
+<p>本教程手册截图来自你提供的 Rev.2.2，2025-09-15 版本，按 PDF 页序渲染；所选页的印刷页码与 PDF 页序一致。</p>
+<h2 id="reference--图片索引">图片索引</h2>
+<p>原始截图及 Excel 内嵌图片按字节保存，手册页为整页渲染。原图文字、名称和图间差异保留，正文在相关位置说明含义。</p>
+<table>
+<thead>
+<tr>
+<th>图片</th>
+<th>来源位置</th>
+<th>教程用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="assets/motor-specification.png">电机结构和规格</a></td>
+<td>Excel“电机方案”，xl/media/image1.png</td>
+<td>认识定子、转子与额定参数</td>
+</tr>
+<tr>
+<td><a href="assets/motor-solution.png">控制系统方案</a></td>
+<td>同页，image2.png</td>
+<td>认识命令、芯片、功率与反馈</td>
+</tr>
+<tr>
+<td><a href="assets/pwm-protocol-table.png">PWM 表格</a></td>
+<td>Excel“PWM控制协议”，image3.png</td>
+<td>读命令区间与接口说明</td>
+</tr>
+<tr>
+<td><a href="assets/pwm-protocol-curve.png">PWM 曲线</a></td>
+<td>同页，image4.png</td>
+<td>对照表格并识别边界待确认项</td>
+</tr>
+<tr>
+<td><a href="assets/lin-protocol-1.png">LIN 曲线与周期</a></td>
+<td>Excel“lin控制协议”，image5.png</td>
+<td>理解平台区与周期问题</td>
+</tr>
+<tr>
+<td><a href="assets/lin-protocol-2.png">LIN 方向与 ID</a></td>
+<td>同页，image6.png</td>
+<td>对照帧方向与标识</td>
+</tr>
+<tr>
+<td><a href="assets/lin-protocol-3.png">LIN 字段表</a></td>
+<td>同页，image7.png</td>
+<td>练习字节、位、比例和偏置</td>
+</tr>
+<tr>
+<td><a href="assets/control-boundary.png">电路截图</a></td>
+<td>你提供的截图</td>
+<td>沿驱动和采样路径读电路</td>
+</tr>
+<tr>
+<td><a href="assets/motor-parameters.png">参数截图</a></td>
+<td>你提供的截图</td>
+<td>认识参数名称和定义</td>
+</tr>
+<tr>
+<td><a href="assets/datasheet-p010.png">手册第 10 页</a></td>
+<td>Figure 1</td>
+<td>芯片内部功能</td>
+</tr>
+<tr>
+<td><a href="assets/datasheet-p011.png">手册第 11 页</a></td>
+<td>Figure 2</td>
+<td>封装引脚编号</td>
+</tr>
+<tr>
+<td><a href="assets/datasheet-p080.png">手册第 80 页</a></td>
+<td>Figure 29</td>
+<td>栅极驱动及参考</td>
+</tr>
+<tr>
+<td><a href="assets/datasheet-p082.png">手册第 82 页</a></td>
+<td>Figure 30</td>
+<td>差分放大、偏置与 ADC</td>
+</tr>
+<tr>
+<td><a href="assets/pmsm-preview-waveforms.png">PMSM 完整波形</a></td>
+<td>已留存预演记录</td>
+<td>学习调速、负载变化与零速响应</td>
+</tr>
+</tbody>
+</table>
+<p>具体来源、文件摘要和手册页序见<a href="assets/sources.json">图片来源清单</a>。</p>
+<p>离线阅读页另配三张本教程绘制的简化示意图：<a href="assets/system-loop.svg">要求与反馈</a>、<a href="assets/control-loops.svg">转速环与电流环</a>、<a href="assets/hil-loop.svg">拟接入 HIL 闭环</a>。它们解释功能关系，实际接口以对应方案为准。</p>
+<h2 id="reference--官方补充资料">官方补充资料</h2>
+<p>按需要阅读即可，第一遍无需把英文材料从头读完。</p>
+<ul>
+<li><a href="https://www.infineon.com/part/TLE9877QXA40">Infineon TLE9877QXA40</a>：核对芯片功能及外部功率级边界。</li>
+<li><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three_phase_permanent_magnet_synchronous_machine.html">Typhoon PMSM 组件</a>：对照模型参数、星形／三角形连接及机械量。</li>
+<li><a href="https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html">Typhoon 虚拟 I/O 回环</a>：理解 Virtual HIL 的软件回环方式。</li>
+<li><a href="https://www.ti.com/lit/pdf/spract7">TI 单分流无感 FOC 应用说明</a>：先看第 2 节框图，需要时再看采样时间和重构。</li>
+<li><a href="https://onlinedocs.microchip.com/oxy/GUID-686B08E8-FD18-4AAD-87B9-32B527406A88-en-US-3/GUID-942885A0-341F-425F-94BD-714A4351EF12.html">Microchip 单分流 PMSM 示例</a>：理解一种实际无感启动、估计与采样实现。</li>
+<li><a href="https://www.st.com/resource/en/application_note/an3055-getting-started-with-stm8a-lin-package-stswstm8alin-stmicroelectronics.pdf">ST AN3055 LIN 介绍</a>：优先读第 2 节，认识帧头、响应、校验与调度。</li>
+</ul>
+<h2 id="reference--继续到项目操作">继续到项目操作</h2>
+<p>学过这套教程后，日常命令用<a href="../tle9877-software-preparation.md">软件准备说明</a>快速查询，板级细节查<a href="../tle9877-hil-intake.md">接入记录</a>，实际完成范围查<a href="../validation.md">验证状态</a>。</p>
+</article><footer>正文以同目录 Markdown 为可维护版本。板级事实、参数与实际结果沿正文链接查阅。</footer></main>
+<dialog id="image-dialog" aria-label="图片放大"><div class="dialog-header"><p id="zoom-caption"></p><button type="button" id="close-image">关闭图片</button></div><img id="zoom-image" alt=""></dialog><script>
+document.querySelectorAll('table').forEach(table=>{const wrap=document.createElement('div');wrap.className='table-wrap';table.replaceWith(wrap);wrap.append(table)});
+const dialog=document.getElementById('image-dialog'),zoom=document.getElementById('zoom-image'),caption=document.getElementById('zoom-caption');
+document.querySelectorAll('article img').forEach(img=>{const button=document.createElement('button');button.className='image-button';button.type='button';button.setAttribute('aria-label','放大图片：'+img.alt);img.replaceWith(button);button.append(img);button.addEventListener('click',()=>{zoom.src=img.src;zoom.alt=img.alt;caption.textContent=img.alt;dialog.showModal()})});
+document.getElementById('close-image').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});
+let size=18;document.querySelectorAll('[data-size]').forEach(button=>button.addEventListener('click',()=>{size=Math.max(15,Math.min(24,size+Number(button.dataset.size)));document.documentElement.style.setProperty('--reader-size',size+'px')}));
+document.getElementById('print-reader').addEventListener('click',()=>window.print());
+const navLinks=[...document.querySelectorAll('nav a')];function select(id){navLinks.forEach(a=>a.classList.toggle('active',a.dataset.chapter===id))}
+const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible.length)select(visible[0].target.id)},{rootMargin:'-5% 0px -65% 0px'});document.querySelectorAll('article').forEach(article=>observer.observe(article));select(location.hash.slice(1)||'start');
+const sections=[...document.querySelectorAll('article h2,article h3')].map(h=>{const lines=[];let n=h.nextElementSibling;while(n&&!/^H[123]$/.test(n.tagName)){lines.push(n.textContent);n=n.nextElementSibling}return{title:h.textContent,chapter:h.closest('article').dataset.chapterTitle,body:lines.join(' '),id:h.id}});
+const search=document.getElementById('course-search'),results=document.getElementById('search-results'),status=document.getElementById('search-status');search.addEventListener('input',()=>{results.replaceChildren();const q=search.value.trim().toLocaleLowerCase();if(!q){status.textContent='';return}const found=sections.filter(s=>(s.title+' '+s.body).toLocaleLowerCase().includes(q));status.textContent=found.length?'找到 '+found.length+' 处，显示前 8 处':'未找到，请换一个词';found.slice(0,8).forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;a.textContent=s.chapter+' · '+s.title;results.append(a)})});
+document.documentElement.dataset.readerReady='true';
+</script></body></html>

@@ -12,6 +12,8 @@
 
 本次寄送板卡的参数/接口检查与 LIN 离线编解码使用独立准备命令，不调用设备或实时反馈；事实配置与 PMSM 软件预演假设分开保存。命令、输入范围与状态含义见[样机软件准备](docs/tle9877-software-preparation.md)。PMSM 预演复用 run 类型及公共执行器，样机接入与性能状态另行验收。
 
+LIN 主节点接口与 Mock 使用 [LIN 适配约定](docs/tle9877-lin-adapter.md)；当前只提供离线 Mock 命令，不绑定厂家 SDK。I/O 合同和电机参数接收表是工作资料，原有静态检查规则保持。实体 smoke 先保存 plan.json，设备执行器和反馈链实现前不进入现有 Virtual HIL case.json 注册。
+
 ## 执行器与适配器
 
 案例目录、字段与路径边界、显式注册及 JSON 协议见 [案例与 CLI 接口](docs/case-interface.md)。案例标识与模型标识分离；案例文件不选择 Python 类。`list-cases`、`validate-case` 不调用 API 或写结果。`--json` 仅改变输出通道与响应信封，保持相同实验逻辑和退出码；`record_status` 只在实际复核后填写。发现命令的成功不依赖所有案例校验通过，各案例保留其可用性和缺口。`run-case` 先校验全部输入，再复用执行器串行运行并逐项复核，自动保存批次及本机证据索引；性能失败继续，执行或记录异常停止。

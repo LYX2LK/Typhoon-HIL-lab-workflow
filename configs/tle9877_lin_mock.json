@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "scope": "mock_only",
+  "rpm": 2240,
+  "post_set": 0,
+  "cycles": 2,
+  "read_version": true,
+  "wake_up": true,
+  "response_timeout_s": 0.008,
+  "steps": [
+    {
+      "operation": "request",
+      "frame": "version",
+      "outcome": "ok",
+      "data": "01 00",
+      "pid": 231,
+      "checksum": 23,
+      "delay_s": 0.001
+    },
+    {
+      "operation": "publish",
+      "frame": "control",
+      "outcome": "ok",
+      "expected_data": "64 00",
+      "expected_checksum": 244
+    },
+    {
+      "operation": "request",
+      "frame": "status",
+      "outcome": "ok",
+      "data": "64 64 5A 50 0A 00 00 00",
+      "pid": 37,
+      "checksum": 93,
+      "delay_s": 0.001
+    },
+    {
+      "operation": "publish",
+      "frame": "control",
+      "outcome": "ok",
+      "expected_data": "64 00",
+      "expected_checksum": 244
+    },
+    {
+      "operation": "request",
+      "frame": "status",
+      "outcome": "ok",
+      "data": "64 64 5A 50 0A 00 00 00",
+      "pid": 37,
+      "checksum": 93,
+      "delay_s": 0.001
+    }
+  ]
+}

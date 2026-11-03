@@ -75,6 +75,8 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 
 自建模型教学练习使用 `practice-model --model-file results/agent-tasks/<任务标识>/modeling/rlc_handbuilt.tse --json`；建模步骤见[练习说明](modeling-practice.md)。它产生独立的 `modeling_practice` 记录，复核与报告仍使用 `verify`、`report`；此命令不注册新适配器，也不接受案例 JSON 指定任意模型路径。
 
+样机准备命令见[操作说明](tle9877-software-preparation.md)。`lin-mock` 的场景、日志、副作用与退出码见 [LIN 接口](tle9877-lin-adapter.md)；它创建独立 Mock 包，experiment_status / record_status 均为 null。实体 `tle9877_hil_smoke` 当前仅有 plan.json，未登记为可执行案例。
+
 外部数据 analyze-waveforms / verify-waveforms 的清单、状态和副作用见 [外部数据接口](external-waveforms.md)。它们复用此 JSON 信封，experiment_status 为 null，数据质量、分析完成度与性能状态在 result 中分别返回。
 
 派生波形识别 diagnose-waveforms / explain-waveforms / verify-diagnosis 的参数、状态和副作用见[识别接口](waveform-diagnosis.md)。其 experiment_status 同样为 null，分类分析与解释生成分别表达；只有实际复核填写 record_status。

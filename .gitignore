@@ -6,6 +6,9 @@ __pycache__/
 /models/*.tse
 /models/*.cus
 !/models/three_phase_rectifier_fault.tse
+# Reserved project-authored TLE9877 plant; add provenance when the model exists.
+!/models/tle9877_hil_plant.tse
+!/models/tle9877_hil_plant.cus
 
 # Local model service credentials
 demo.env.local

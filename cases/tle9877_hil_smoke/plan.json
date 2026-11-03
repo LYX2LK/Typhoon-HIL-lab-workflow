@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "case_id": "tle9877_hil_smoke",
+  "backend": "physical_hil",
+  "state": "planned_awaiting_device_and_feedback_integration",
+  "execution_enabled": false,
+  "contract_ref": "configs/tle9877_hil_contract.json",
+  "motor_ref": "configs/tle9877_motor_pending.json",
+  "procedure_ref": "docs/tle9877-field-commissioning.md",
+  "record_template_ref": "docs/templates/tle9877-field-record.md",
+  "command": {
+    "rpm": null,
+    "post_set": null,
+    "stop_procedure": null
+  },
+  "criteria": {
+    "response_timeout_s": null,
+    "run_duration_s": null,
+    "settling_s": null,
+    "maximum_speed_error_rpm": null,
+    "stop_speed_rpm": null,
+    "stop_deadline_s": null,
+    "maximum_current_a": null
+  },
+  "stages": [
+    "document_and_wiring_review",
+    "non_driving_signal_checks",
+    "version_and_status",
+    "one_confirmed_normal_condition",
+    "confirmed_stop",
+    "recovery_and_record_review"
+  ],
+  "pending": [
+    "physical_hil_backend",
+    "lin_vendor_driver",
+    "gate_conditioning",
+    "sensorless_feedback_model",
+    "confirmed_motor_parameters",
+    "site_criteria"
+  ]
+}

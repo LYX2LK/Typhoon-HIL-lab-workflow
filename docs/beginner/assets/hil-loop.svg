@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430" role="img" aria-labelledby="title desc">
+<title id="title">真实控制板与实时仿真对象的拟接入关系</title><desc id="desc">功能方案示意；实际保留电路、注入节点、量程和时序按确认的改装与调理方案落实。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#48606a"/></marker></defs>
+<rect width="100%" height="100%" fill="#fcfcf9"/>
+<g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#22383d">
+<text x="34" y="40" font-size="25" font-weight="700">真实控制板与实时仿真对象的拟接入关系</text>
+<rect x="35" y="100" width="230" height="80" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="150.0" y="133.0" text-anchor="middle" font-size="22">LIN 主节点</text>
+<text x="150.0" y="163.0" text-anchor="middle" font-size="22">或已确认命令源</text>
+<rect x="410" y="100" width="240" height="80" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="530.0" y="133.0" text-anchor="middle" font-size="22">真实控制板</text>
+<text x="530.0" y="163.0" text-anchor="middle" font-size="22">与固件</text>
+<rect x="790" y="100" width="260" height="80" rx="12" fill="#fff0df" stroke="#95632c" stroke-width="2"/>
+<text x="920.0" y="133.0" text-anchor="middle" font-size="22">驱动信号</text>
+<text x="920.0" y="163.0" text-anchor="middle" font-size="22">调理与捕获</text>
+<rect x="790" y="285" width="260" height="80" rx="12" fill="#edf1f8" stroke="#355779" stroke-width="2"/>
+<text x="920.0" y="318.0" text-anchor="middle" font-size="22">实时逆变器</text>
+<text x="920.0" y="348.0" text-anchor="middle" font-size="22">与电机模型</text>
+<rect x="410" y="285" width="240" height="80" rx="12" fill="#f2edf9" stroke="#6d558a" stroke-width="2"/>
+<text x="530.0" y="318.0" text-anchor="middle" font-size="22">反馈输出</text>
+<text x="530.0" y="348.0" text-anchor="middle" font-size="22">调理与注入</text>
+<path d="M265 125 H410" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="335" y="110" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">命令</text>
+<path d="M410 160 H265" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="337" y="185" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">LIN 状态</text>
+<path d="M650 140 H790" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="720" y="121" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">六路驱动</text>
+<path d="M920 180 V285" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="977" y="241" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">开关状态</text>
+<path d="M790 325 H650" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="720" y="305" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">所需反馈</text>
+<path d="M530 285 V180" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="578" y="241" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">电气反馈</text>
+<text x="34" y="410" font-size="17" fill="#5e6f73">功能方案示意；实际保留电路、注入节点、量程和时序按确认的改装与调理方案落实。</text></g></svg>

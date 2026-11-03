@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" role="img" aria-labelledby="title desc">
+<title id="title">要求怎样变成动作，又怎样取得反馈</title><desc id="desc">功能关系示意；箭头表示作用与信息传递，电源另向功率通路提供能量。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#48606a"/></marker></defs>
+<rect width="100%" height="100%" fill="#fcfcf9"/>
+<g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#22383d">
+<text x="34" y="40" font-size="25" font-weight="700">要求怎样变成动作，又怎样取得反馈</text>
+<rect x="35" y="140" width="165" height="80" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="117.5" y="188.0" text-anchor="middle" font-size="22">转速要求</text>
+<rect x="270" y="140" width="170" height="80" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="355.0" y="188.0" text-anchor="middle" font-size="22">控制程序</text>
+<rect x="510" y="140" width="220" height="80" rx="12" fill="#fff0df" stroke="#95632c" stroke-width="2"/>
+<text x="620.0" y="188.0" text-anchor="middle" font-size="22">驱动与功率开关</text>
+<rect x="800" y="140" width="250" height="80" rx="12" fill="#edf1f8" stroke="#355779" stroke-width="2"/>
+<text x="925.0" y="188.0" text-anchor="middle" font-size="22">电机与负载</text>
+<rect x="545" y="285" width="220" height="70" rx="12" fill="#f2edf9" stroke="#6d558a" stroke-width="2"/>
+<text x="655.0" y="328.0" text-anchor="middle" font-size="22">测量与状态估计</text>
+<rect x="545" y="65" width="150" height="50" rx="12" fill="#fff0df" stroke="#95632c" stroke-width="2"/>
+<text x="620.0" y="98.0" text-anchor="middle" font-size="22">电源</text>
+<path d="M200 180 H270" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<path d="M440 180 H510" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<path d="M730 180 H800" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="765" y="166" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">电能</text>
+<path d="M620 115 V140" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<path d="M925 220 V320 H765" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="903" y="299" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">运行信息</text>
+<path d="M545 320 H355 V220" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="380" y="302" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">反馈</text>
+<text x="34" y="400" font-size="17" fill="#5e6f73">功能关系示意；箭头表示作用与信息传递，电源另向功率通路提供能量。</text></g></svg>

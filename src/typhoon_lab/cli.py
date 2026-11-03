@@ -46,6 +46,9 @@ def _run(argv=None):
     p.add_argument("--identifier-kind",choices=["id","pid"],default="id")
     p.add_argument("--checksum",type=lambda x:int(x,0))
     p.add_argument("--profile",default="configs/tle9877_sample.json")
+    p=sub.add_parser("lin-mock");p.add_argument("--scenario",default="configs/tle9877_lin_mock.json")
+    p.add_argument("--output-dir",help="new output directory; default creates a unique results/lin-mock package")
+    p.add_argument("--profile",default="configs/tle9877_sample.json")
     for name,default in [("run","configs/rlc_baseline.json"),("sweep","configs/rlc_sweep.json")]:
         p=sub.add_parser(name);p.add_argument("--config",default=default)
     for name in ["report","verify"]:
@@ -90,6 +93,12 @@ def _run(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=="lin-mock":
+            from .lin_session import run_mock_scenario
+            result=run_mock_scenario(resolve_project_file(args.scenario),
+                resolve_project_file(args.output_dir) if args.output_dir else None,
+                profile_path=resolve_project_file(args.profile))
+            _publish(result,indent=2);return 0 if result["status"]=="passed" else 1
         if args.command in ("check-tle9877","lin-encode","lin-decode"):
             from .tle9877 import check_sample, encode_control, decode_frame
             profile=resolve_project_file(args.profile)

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "sample_id": "tle9877_received_board",
+  "scope": "physical_model_parameter_intake",
+  "state": "pending_parameter_definitions",
+  "source_profile": "configs/tle9877_sample.json",
+  "connection_from_supplier": "delta",
+  "target_model_representation": null,
+  "supplied_resistance_ohm": {
+    "value": 0.005,
+    "definition": "pending",
+    "source": "parameters_screenshot"
+  },
+  "supplied_inductance_h": {
+    "value": 1.1e-05,
+    "definition": "pending",
+    "source": "parameters_screenshot"
+  },
+  "winding_parameter_definition": null,
+  "model_parameter_definition": null,
+  "conversion_method_and_assumptions": null,
+  "parameters": {
+    "rs_ohm": {
+      "value": null,
+      "unit": "ohm",
+      "basis": "pending",
+      "evidence": null
+    },
+    "ld_h": {
+      "value": null,
+      "unit": "H",
+      "basis": "pending",
+      "evidence": null
+    },
+    "lq_h": {
+      "value": null,
+      "unit": "H",
+      "basis": "pending",
+      "evidence": null
+    },
+    "pm_flux_wb": {
+      "value": null,
+      "unit": "Wb",
+      "basis": "pending",
+      "evidence": null
+    },
+    "inertia_kgm2": {
+      "value": null,
+      "unit": "kg m2",
+      "basis": "pending",
+      "evidence": null
+    },
+    "friction_nms": {
+      "value": null,
+      "unit": "Nm s",
+      "basis": "pending",
+      "evidence": null
+    },
+    "pole_pairs": {
+      "value": 5,
+      "unit": "1",
+      "basis": "supplied",
+      "evidence": "configs/tle9877_sample.json#motor.pole_pairs"
+    }
+  },
+  "load_model": null,
+  "temperature_and_measurement_conditions": null,
+  "confirmed_by": null,
+  "confirmed_at": null
+}
