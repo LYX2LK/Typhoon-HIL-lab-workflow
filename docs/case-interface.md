@@ -79,6 +79,8 @@ configs 和 model_origin_ref 相对于项目根目录，分别限制在 configs/
 
 外部数据 analyze-waveforms / verify-waveforms 的清单、状态和副作用见 [外部数据接口](external-waveforms.md)。它们复用此 JSON 信封，experiment_status 为 null，数据质量、分析完成度与性能状态在 result 中分别返回。
 
+现场文件使用 `analyze-field-data --intake … --input-dir … --output-dir …` 与 `verify-field-data --run-dir … [--write]`，见[现场数据接口](field-data.md)。分析写入新包；专用复核默认只读，通用 verify 也可识别。experiment_status 为 null，判据结果与数据质量、样机性能、记录复核分别表达；复核一致时退出 0，不改写判据失败结论。
+
 派生波形识别 diagnose-waveforms / explain-waveforms / verify-diagnosis 的参数、状态和副作用见[识别接口](waveform-diagnosis.md)。其 experiment_status 同样为 null，分类分析与解释生成分别表达；只有实际复核填写 record_status。
 
 Boost的analyze-boost / plan-boost / execute-boost-plan / verify-boost-ai及本机demo-boost界面见[在线分析与复验](boost-ai-demo.md)。派生分析的experiment_status为null；execute-boost-plan返回实际仿真与复核状态。

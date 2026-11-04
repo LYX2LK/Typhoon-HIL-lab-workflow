@@ -13,6 +13,9 @@ def verify_run(run_dir,write=True):
         from .agent import verify_session
         return verify_session(run_dir,write=write)
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
+    if manifest.get('kind')=='field_test_data':
+        from .field_records import verify_field
+        return verify_field(run_dir,write=write)
     if manifest.get("kind")=="boost_ai":
         from .boost_ai import verify_ai
         return verify_ai(run_dir,write=write)

@@ -18,6 +18,7 @@
 | 准备本次寄送控制板联调 | [控制板引线、LIN 与电机参数](docs/tle9877-hil-intake.md) |
 | 执行样机软件准备与 PMSM 预演 | [参数检查、LIN 离线编解码与预演命令](docs/tle9877-software-preparation.md) |
 | 准备样机现场联调 | [I/O 合同、参数与现场记录](docs/tle9877-field-commissioning.md)、[LIN Mock](docs/tle9877-lin-adapter.md) |
+| 整理样机现场数据与判定 | [多来源文件、时间关联与离线判据](docs/field-data.md)、[采集交接说明](docs/tle9877-data-collection.md) |
 | 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |
 
 需要按页面查找教程、接口和专题说明时，见[文档导航](docs/document-index.md)。

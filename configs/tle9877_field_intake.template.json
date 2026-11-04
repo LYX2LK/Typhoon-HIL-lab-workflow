@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "dataset_id": "tle9877-first-field-session",
+  "purpose": "首次正常闭环、停止与恢复的离线数据记录；填写实际设备、列名、单位与依据后使用。",
+  "references": {
+    "hil_contract": {
+      "path": "configs/tle9877_hil_contract.json",
+      "sha256": null
+    },
+    "field_record": {
+      "path": null,
+      "sha256": null
+    }
+  },
+  "sources": [
+    {
+      "id": "lin",
+      "file": "lin.csv",
+      "format": "lin_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "unconfirmed",
+      "provenance": {
+        "value": null,
+        "status": "unconfirmed",
+        "source": ""
+      },
+      "device": {
+        "model": null,
+        "serial": null,
+        "firmware_or_software": null
+      },
+      "metadata": {
+        "measurement_point": null,
+        "voltage_reference": null,
+        "range": null,
+        "probe_ratio": null,
+        "probe_compensation_applied": null,
+        "sample_rate_hz": null,
+        "trigger": null,
+        "export_settings": null
+      },
+      "time": {
+        "field": "time_s",
+        "unit": {
+          "value": "s",
+          "status": "unconfirmed",
+          "source": ""
+        },
+        "clock_domain": "lin-pending",
+        "max_gap_s": null
+      },
+      "alignment": null,
+      "columns": {
+        "direction": "direction",
+        "identifier": "identifier",
+        "identifier_kind": "identifier_kind",
+        "data": "data",
+        "checksum": "checksum",
+        "driver_status": "driver_status"
+      }
+    },
+    {
+      "id": "gates",
+      "file": "gates.csv",
+      "format": "waveform_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "unconfirmed",
+      "provenance": {
+        "value": null,
+        "status": "unconfirmed",
+        "source": ""
+      },
+      "device": {
+        "model": null,
+        "serial": null,
+        "firmware_or_software": null
+      },
+      "metadata": {
+        "measurement_point": null,
+        "voltage_reference": null,
+        "range": null,
+        "probe_ratio": null,
+        "probe_compensation_applied": null,
+        "sample_rate_hz": null,
+        "trigger": null,
+        "export_settings": null
+      },
+      "time": {
+        "field": "time_s",
+        "unit": {
+          "value": "s",
+          "status": "unconfirmed",
+          "source": ""
+        },
+        "clock_domain": "gates-pending",
+        "max_gap_s": null
+      },
+      "alignment": null,
+      "signals": [
+        {
+          "id": "gh1",
+          "column": "GH1",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "gl1",
+          "column": "GL1",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "gh2",
+          "column": "GH2",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "gl2",
+          "column": "GL2",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "gh3",
+          "column": "GH3",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "gl3",
+          "column": "GL3",
+          "role": "gate",
+          "unit": {
+            "value": "V",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        }
+      ]
+    },
+    {
+      "id": "feedback",
+      "file": "feedback.csv",
+      "format": "waveform_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "unconfirmed",
+      "provenance": {
+        "value": null,
+        "status": "unconfirmed",
+        "source": ""
+      },
+      "device": {
+        "model": null,
+        "serial": null,
+        "firmware_or_software": null
+      },
+      "metadata": {
+        "measurement_point": null,
+        "voltage_reference": null,
+        "range": null,
+        "probe_ratio": null,
+        "probe_compensation_applied": null,
+        "sample_rate_hz": null,
+        "trigger": null,
+        "export_settings": null
+      },
+      "time": {
+        "field": "time_s",
+        "unit": {
+          "value": "s",
+          "status": "unconfirmed",
+          "source": ""
+        },
+        "clock_domain": "feedback-pending",
+        "max_gap_s": null
+      },
+      "alignment": null,
+      "signals": [
+        {
+          "id": "shp",
+          "column": "SHP",
+          "role": "feedback_voltage",
+          "unit": {
+            "value": "mV",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "shn",
+          "column": "SHN",
+          "role": "feedback_voltage",
+          "unit": {
+            "value": "mV",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "file": "model.csv",
+      "format": "waveform_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "unconfirmed",
+      "provenance": {
+        "value": null,
+        "status": "unconfirmed",
+        "source": ""
+      },
+      "device": {
+        "model": null,
+        "serial": null,
+        "firmware_or_software": null
+      },
+      "metadata": {
+        "measurement_point": null,
+        "voltage_reference": null,
+        "range": null,
+        "probe_ratio": null,
+        "probe_compensation_applied": null,
+        "sample_rate_hz": null,
+        "trigger": null,
+        "export_settings": null
+      },
+      "time": {
+        "field": "time_s",
+        "unit": {
+          "value": "s",
+          "status": "unconfirmed",
+          "source": ""
+        },
+        "clock_domain": "model-pending",
+        "max_gap_s": null
+      },
+      "alignment": null,
+      "signals": [
+        {
+          "id": "speed",
+          "column": "speed_rpm",
+          "role": "model_speed",
+          "unit": {
+            "value": "rpm",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "ia",
+          "column": "Ia_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "ib",
+          "column": "Ib_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        },
+        {
+          "id": "ic",
+          "column": "Ic_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "unconfirmed",
+            "source": ""
+          },
+          "measurement_point": null
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "run",
+      "label": "run",
+      "source_id": "lin",
+      "time_s": null,
+      "confirmed": false,
+      "basis": ""
+    },
+    {
+      "id": "stop",
+      "label": "stop",
+      "source_id": "lin",
+      "time_s": null,
+      "confirmed": false,
+      "basis": ""
+    },
+    {
+      "id": "recovery",
+      "label": "recovery",
+      "source_id": "lin",
+      "time_s": null,
+      "confirmed": false,
+      "basis": ""
+    }
+  ],
+  "criteria": [
+    {
+      "confirmed": false,
+      "basis": "",
+      "max_gap_s": null,
+      "min_samples": 3,
+      "window_s": null,
+      "id": "speed",
+      "type": "speed_tracking",
+      "signal": "model.speed",
+      "target_rpm": null,
+      "max_error_rpm": null
+    },
+    {
+      "confirmed": false,
+      "basis": "",
+      "max_gap_s": null,
+      "min_samples": 3,
+      "window_s": null,
+      "id": "current",
+      "type": "max_current",
+      "signal": "model.ia",
+      "limit_a": null
+    },
+    {
+      "confirmed": false,
+      "basis": "",
+      "max_gap_s": null,
+      "min_samples": 3,
+      "window_s": null,
+      "id": "stop",
+      "type": "stop",
+      "signal": "model.speed",
+      "event_id": "stop",
+      "threshold_rpm": null,
+      "deadline_s": null,
+      "hold_s": null,
+      "max_time_uncertainty_s": null
+    }
+  ]
+}

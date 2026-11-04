@@ -2,6 +2,18 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-11-03：样机现场数据接收、关联与离线判定
+
+新增 field_test_data 记录与 analyze-field-data / verify-field-data，支持多通道数值 CSV、LIN 帧 CSV 和既有 bus.jsonl。显式记录来源、单位、时钟变换及误差；转速、电流和停止判据条件不足时保持未评估。原始文件和随包 LDF 可搬迁复核，原两列波形和编解码入口兼容。
+
+全套 317 项 unittest 通过（84.703s），包括新增 25 项现场数据测试；最终图表布局与记录时间修订后，25 项专项复验通过。合成正常样例三项判据 passed，收紧阈值的样例三项 failed；两者 record_status 均 passed、样机性能 not_evaluated。历史 LIN Mock 的 5 条交换与 PMSM 的 80000 点采样导入、复核通过，独立时钟保留，未生成共同时间图。HTML、完整图和局部图完成视觉检查。
+
+- [完成记录、命令、原件保护与界面核对](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/summary.md)。
+- [通过样例报告](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/delivery-pass/report.html)、[失败样例报告](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/delivery-fail/report.html)。
+- [既有文件独立导入报告](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/delivery-existing/report.html)。
+
+本轮只开展离线文件处理，模型和设备执行链保持，未重跑 Virtual HIL 或操作实体设备。现场来源确认、同步测量、实际判据和厂家特殊格式适配继续按实际材料落实。
+
 ## 2026-11-03：接入合同、LIN 接口与现场计划
 
 按评估补充 I/O 电气合同、实体电机参数接收表、现场步骤与人工记录模板，允许逐条标记不连接。`tle9877_hil_smoke` 单独保存 plan.json，尚无 case.json 或实体执行能力。用户明确第 2 点保持原有设计，因此没有增加严格就绪检查，原 check-tle9877、事实配置与 PMSM 预演实现保持原字节。

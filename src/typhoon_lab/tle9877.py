@@ -51,6 +51,11 @@ def load_profile(path=DEFAULT_PROFILE):
     source = (PROJECT/reference['project_copy']).resolve()
     if not source.is_relative_to(PROJECT/'data/tle9877') or sha256(source) != reference['sha256']:
         raise ValueError('LDF snapshot is missing, changed or outside data/tle9877')
+    return profile, parse_sample_ldf(source)
+
+
+def parse_sample_ldf(source):
+    """Parse an explicit supplied-board LDF, including portable record snapshots."""
     # Included in THCC's bundled Python; no Typhoon session or online dependency.
     import ldfparser
     ldf = ldfparser.parse_ldf_to_dict(str(source))
@@ -71,7 +76,7 @@ def load_profile(path=DEFAULT_PROFILE):
             if min(bits)<0 or max(bits)>=length*8 or used & bits or s['publisher']!=f['publisher']:
                 raise ValueError('invalid LDF signal layout or publisher')
             used |= bits
-    return profile, ldf
+    return ldf
 
 
 def _encodings(ldf):
@@ -82,6 +87,15 @@ def _encodings(ldf):
 def decode_frame(frame, data, *, identifier=None, identifier_kind='id', received_checksum=None,
                  profile_path=DEFAULT_PROFILE):
     profile,ldf=load_profile(profile_path)
+    return decode_frame_from_ldf(ldf, frame, data, identifier=identifier,
+        identifier_kind=identifier_kind, received_checksum=received_checksum,
+        checksum_policy=profile['lin']['checksum_policy'])
+
+
+def decode_frame_from_ldf(ldf, frame, data, *, identifier=None, identifier_kind='id',
+                          received_checksum=None,
+                          checksum_policy='enhanced_for_three_business_frames_pending_capture_confirmation'):
+    """Pure decoding; callers retain raw frames and the LDF used for interpretation."""
     frame=FRAME_ALIASES.get(frame,frame)
     frames={f['name']:f for f in ldf['frames']}
     if frame not in frames:
@@ -121,7 +135,7 @@ def decode_frame(frame, data, *, identifier=None, identifier_kind='id', received
     return {'status':'passed','scope':'offline_decode','frame':frame,'id':f['frame_id'],
         'pid':pid(f['frame_id']),'publisher':f['publisher'],'data':data,'data_hex':' '.join(f'{b:02X}' for b in data),
         'checksum':expected_checksum,'checksum_verified':received_checksum is not None,
-        'checksum_policy':profile['lin']['checksum_policy'],'signals':decoded,
+        'checksum_policy':checksum_policy,'signals':decoded,
         'unassigned_bits_raw':unassigned,'warnings':['nonzero unassigned control bits'] if unassigned else []}
 
 

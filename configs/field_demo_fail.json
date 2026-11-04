@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "dataset_id": "synthetic-field-fail",
+  "purpose": "核对多源导入、显式时钟变换与离线判据；全部数据为合成样例。",
+  "sources": [
+    {
+      "id": "capture",
+      "file": "capture.csv",
+      "format": "waveform_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "synthetic",
+      "provenance": {
+        "value": "generated CSV for file-tool validation",
+        "status": "confirmed",
+        "source": "deterministic synthetic example definition"
+      },
+      "device": "synthetic scope export",
+      "time": {
+        "field": "time_ms",
+        "unit": {
+          "value": "ms",
+          "status": "confirmed",
+          "source": "deterministic synthetic example definition"
+        },
+        "clock_domain": "synthetic_scope",
+        "max_gap_s": 0.0011
+      },
+      "alignment": {
+        "group": "demo",
+        "scale": 1,
+        "offset_s": -0.01,
+        "uncertainty_s": 0.00025,
+        "valid_range_s": [
+          0.01,
+          1.01
+        ],
+        "basis": "synthetic scope timestamps equal common time + 10ms"
+      },
+      "signals": [
+        {
+          "id": "requested",
+          "column": "requested_rpm",
+          "role": "requested_speed",
+          "unit": {
+            "value": "rpm",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic requested_rpm"
+        },
+        {
+          "id": "encoded",
+          "column": "encoded_rpm",
+          "role": "encoded_speed",
+          "unit": {
+            "value": "rpm",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic encoded_rpm"
+        },
+        {
+          "id": "model",
+          "column": "model_rpm",
+          "role": "model_speed",
+          "unit": {
+            "value": "rpm",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic model_rpm"
+        },
+        {
+          "id": "ia",
+          "column": "Ia_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic Ia_A"
+        },
+        {
+          "id": "ib",
+          "column": "Ib_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic Ib_A"
+        },
+        {
+          "id": "ic",
+          "column": "Ic_A",
+          "role": "current",
+          "unit": {
+            "value": "A",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic Ic_A"
+        },
+        {
+          "id": "shp",
+          "column": "SHP_mV",
+          "role": "feedback_voltage",
+          "unit": {
+            "value": "mV",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic SHP_mV"
+        },
+        {
+          "id": "gh1",
+          "column": "GH1",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GH1"
+        },
+        {
+          "id": "gl1",
+          "column": "GL1",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GL1"
+        },
+        {
+          "id": "gh2",
+          "column": "GH2",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GH2"
+        },
+        {
+          "id": "gl2",
+          "column": "GL2",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GL2"
+        },
+        {
+          "id": "gh3",
+          "column": "GH3",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GH3"
+        },
+        {
+          "id": "gl3",
+          "column": "GL3",
+          "role": "gate",
+          "unit": {
+            "value": "1",
+            "status": "confirmed",
+            "source": "deterministic synthetic example definition"
+          },
+          "measurement_point": "synthetic GL3"
+        }
+      ],
+      "detail_window_s": [
+        0.55,
+        0.95
+      ]
+    },
+    {
+      "id": "lin",
+      "file": "lin.csv",
+      "format": "lin_csv",
+      "encoding": "utf-8-sig",
+      "source_kind": "synthetic",
+      "provenance": {
+        "value": "generated business frames; no hardware transmission",
+        "status": "confirmed",
+        "source": "deterministic synthetic example definition"
+      },
+      "device": "synthetic LIN export",
+      "time": {
+        "field": "time_ms",
+        "unit": {
+          "value": "ms",
+          "status": "confirmed",
+          "source": "deterministic synthetic example definition"
+        },
+        "clock_domain": "synthetic_lin",
+        "max_gap_s": 0.021
+      },
+      "alignment": {
+        "group": "demo",
+        "scale": 1,
+        "offset_s": 0,
+        "uncertainty_s": 0.00025,
+        "valid_range_s": [
+          0,
+          1
+        ],
+        "basis": "synthetic common-clock definition"
+      },
+      "columns": {
+        "direction": "direction",
+        "identifier": "identifier",
+        "identifier_kind": "identifier_kind",
+        "data": "data",
+        "checksum": "checksum",
+        "driver_status": "driver_status"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "run",
+      "label": "合成正常运行段开始",
+      "source_id": "lin",
+      "time_s": 0.1,
+      "confirmed": true,
+      "basis": "synthetic event definition"
+    },
+    {
+      "id": "stop",
+      "label": "合成停止请求",
+      "source_id": "lin",
+      "time_s": 0.6,
+      "confirmed": true,
+      "basis": "explicit synthetic stop request, not inferred from LIN zero code"
+    },
+    {
+      "id": "recovery",
+      "label": "合成记录结束",
+      "source_id": "capture",
+      "time_s": 1.01,
+      "confirmed": true,
+      "basis": "synthetic record endpoint"
+    }
+  ],
+  "criteria": [
+    {
+      "confirmed": true,
+      "basis": "example limits only, not board acceptance criteria",
+      "max_gap_s": 0.0011,
+      "min_samples": 10,
+      "id": "speed",
+      "type": "speed_tracking",
+      "signal": "capture.model",
+      "window_s": [
+        0.21,
+        0.51
+      ],
+      "target_rpm": 2240,
+      "max_error_rpm": 0.5
+    },
+    {
+      "confirmed": true,
+      "basis": "example limits only, not board acceptance criteria",
+      "max_gap_s": 0.0011,
+      "min_samples": 10,
+      "id": "current",
+      "type": "max_current",
+      "signal": "capture.ia",
+      "window_s": [
+        0.01,
+        1.01
+      ],
+      "limit_a": 0.9
+    },
+    {
+      "confirmed": true,
+      "basis": "example limits only, not board acceptance criteria",
+      "max_gap_s": 0.0011,
+      "min_samples": 10,
+      "id": "stop",
+      "type": "stop",
+      "signal": "capture.model",
+      "window_s": [
+        0.61,
+        1.01
+      ],
+      "event_id": "stop",
+      "threshold_rpm": 5,
+      "deadline_s": 0.1,
+      "hold_s": 0.1,
+      "max_time_uncertainty_s": 0.001
+    }
+  ]
+}

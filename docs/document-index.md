@@ -12,6 +12,7 @@
 | 实验 | [单相整流](rectifier-experiments.md) | 学习新案例的工况、判据和比较 |
 | 方法 | [Boost 扰动分析](boost-disturbance-analysis.md) | 查原始数据复算、对照结果与解释边界 |
 | 接收 | [外部波形](external-waveforms.md) | 按 CSV/PNG 清单做离线分析与复核 |
+| 接收 | [现场数据](field-data.md)、[采集交接](tle9877-data-collection.md) | 整理多通道 CSV 与 LIN 日志，保留时钟依据并按已确认项目作离线判定 |
 | 分析 | [波形异常识别](waveform-diagnosis.md) | 从数据包识别形态异常、定位事件并导入大模型解释 |
 | 分析 | [Boost + AI 在线演示](boost-ai-demo.md) | 从Virtual HIL记录调用真实模型，展示差异并确认对照实验 |
 | 分析 | [对话式实验Agent](agent.md) | 模型调用证据工具、编排回答与选项，确认后多轮实验并更新解释 |

@@ -1,5 +1,7 @@
 # 验证状态与实测结论
 
+**2026-11-03 现场数据工具：** 新增多通道 CSV、LIN JSONL/帧 CSV 导入、显式时钟变换、独立转速来源、转速/电流/停止判据、离线 HTML/Markdown/PNG 与包内复核。全套 317 项 unittest 通过，其中现场数据 25 项；最终图表及记录修订后专项 25 项复验通过。通过/失败合成样例均符合预期，失败记录仍复核 passed；既有 LIN Mock 和 80000 点 PMSM 文件导入、复核通过，二者时钟未关联、样机性能未评估。原件保持，未重跑 Virtual HIL 或操作设备。[使用说明](field-data.md)、[采集交接](tle9877-data-collection.md)、[实际证据](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/summary.md)。
+
 **2026-11-03 样机接入工作表与 LIN Mock：** 增加覆盖 18 条引线的 I/O 合同、独立实体参数接收表、现场步骤/记录模板和待接入的 smoke 计划；原 `check-tle9877` 实现及通过条件保持。新增设备接口与脚本化 Mock，全套 292 项 unittest 通过，其中 12 项覆盖收发、调度、超时、PID/校验/长度错误、设备与关闭异常、晚唤醒等行为。实际 CLI 的正常 Mock 会话通过，超时及错误校验和会话按预期 failed，均保留日志。来源引用改为仓库索引，原件及原 PMSM 预演代码未修改。本轮未运行 Virtual HIL 或实体设备，实际驱动与反馈模型继续待接入。[评估、改进与核对记录](../results/agent-tasks/20261103-105148-tle9877-review-dec8/summary.md)。
 
 **2026-11-03 样机软件准备：** 已形成 18 条引线及参数事实配置、LDF 字节副本、`check-tle9877` / `lin-encode` / `lin-decode` 离线工具和独立 PMSM 软件预演案例。280 项 unittest 通过；PMSM 实际 Virtual HIL 采集 80000 点，启动、调速、负载变化和零速四个窗口均通过固定 50rpm 检查，最大误差分别为 5.8793、2.0105、4.6441、1.7045rpm；事件生效与记录复核通过。预演控制器补充正负转矩处理，原零速阶段 failed 对照及首次进程异常保留。最终 RLC 基准和三点扫描回归、复核通过。使用见[操作说明](tle9877-software-preparation.md)，证据见[本轮完成记录](../results/agent-tasks/20261102-212718-tle9877-preparation-8a61/summary.md)。这些是等效星形假设与内部角度反馈下的软件检查；样机实物、无感算法、单分流注入与实体 I/O 待接入，样机性能为 not_evaluated。

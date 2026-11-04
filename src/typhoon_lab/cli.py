@@ -58,6 +58,11 @@ def _run(argv=None):
     p.add_argument("--output-dir",required=True)
     p=sub.add_parser("verify-waveforms");p.add_argument("--run-dir",required=True)
     p.add_argument("--write",action="store_true",help="save verification.json; default read-only")
+    p=sub.add_parser("analyze-field-data")
+    p.add_argument("--intake",required=True);p.add_argument("--input-dir",required=True)
+    p.add_argument("--output-dir",required=True)
+    p=sub.add_parser("verify-field-data");p.add_argument("--run-dir",required=True)
+    p.add_argument("--write",action="store_true",help="save verification.json; default read-only")
     p=sub.add_parser("diagnose-waveforms")
     p.add_argument("--source-run",required=True);p.add_argument("--rules",required=True)
     p.add_argument("--output-dir",required=True)
@@ -93,6 +98,15 @@ def _run(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=="analyze-field-data":
+            from .field_records import analyze_field
+            result=analyze_field(resolve_project_file(args.intake),resolve_project_file(args.input_dir),
+                                 resolve_project_file(args.output_dir))
+            _publish(result,indent=2);return 0 if result['status']=='passed' else 1
+        if args.command=="verify-field-data":
+            from .field_records import verify_field
+            result=verify_field(resolve_project_file(args.run_dir),write=args.write)
+            _publish(result,indent=2);return 0 if result['status']=='passed' else 1
         if args.command=="lin-mock":
             from .lin_session import run_mock_scenario
             result=run_mock_scenario(resolve_project_file(args.scenario),

@@ -14,6 +14,8 @@
 
 LIN 主节点接口与 Mock 使用 [LIN 适配约定](docs/tle9877-lin-adapter.md)；当前只提供离线 Mock 命令，不绑定厂家 SDK。I/O 合同和电机参数接收表是工作资料，原有静态检查规则保持。实体 smoke 先保存 plan.json，设备执行器和反馈链实现前不进入现有 Virtual HIL case.json 注册。
 
+多来源现场文件由 [field-data](docs/field-data.md) 的独立入口处理，记录类型为 field_test_data，配置/方法/记录版本分别登记。保留原始文件、包内 LDF、显式转换与时间依据；只对已确认项目作离线判定。专用复核默认只读并从包内材料重算，通用 verify 可分派；experiment_status 保持 null。报告更新通过新建分析包完成。
+
 ## 执行器与适配器
 
 案例目录、字段与路径边界、显式注册及 JSON 协议见 [案例与 CLI 接口](docs/case-interface.md)。案例标识与模型标识分离；案例文件不选择 Python 类。`list-cases`、`validate-case` 不调用 API 或写结果。`--json` 仅改变输出通道与响应信封，保持相同实验逻辑和退出码；`record_status` 只在实际复核后填写。发现命令的成功不依赖所有案例校验通过，各案例保留其可用性和缺口。`run-case` 先校验全部输入，再复用执行器串行运行并逐项复核，自动保存批次及本机证据索引；性能失败继续，执行或记录异常停止。
