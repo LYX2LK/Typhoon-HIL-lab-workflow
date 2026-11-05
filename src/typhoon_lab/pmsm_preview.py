@@ -110,7 +110,9 @@ class PMSMPreviewAdapter:
                 'scope':SCOPE}
 
     def prepare(self,api,c):
-        p=c['parameters']
+        return self.prepare_model(api,c['parameters'],c['events'],c['assumptions'])
+
+    def prepare_model(self,api,p,events,assumptions):
         init=f'''import math
 Ts = {PERIOD!r}
 Tss = Ts
@@ -168,7 +170,7 @@ Kiw = Kpw*wpi
             output=api.term(source,'out')
             initial=p[target]*scale
             api.set_property_values(source,{'def_value':str(initial),'execution_rate':'Ts'})
-            for i,e in enumerate(c['events']):
+            for i,e in enumerate(events):
                 if e['target']!=target: continue
                 step=api.create_component('core/Step',name=f'LabStep{i}',position=(6500+i*120,7900))
                 adder=api.create_component('core/Sum',name=f'LabSum{i}',position=(6580+i*120,8000))
@@ -186,7 +188,7 @@ Kiw = Kpw*wpi
         api.create_connection(api.term(api.get_item('PMSM JMAG_sp_outputs'),'T'),api.term(probe,'in'))
         return {'machine_readback':{k:actual[k] for k in applied},'initialization_code':init,
                 'current_command_function':SIGNED_MTPA,
-                'assumptions':c['assumptions'],'scope':SCOPE,'control_period_s':PERIOD}
+                'assumptions':assumptions,'scope':SCOPE,'control_period_s':PERIOD}
 
     def initialize(self,hil,c):
         from .runtime import require

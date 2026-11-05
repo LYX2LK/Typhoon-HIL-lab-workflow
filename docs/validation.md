@@ -1,5 +1,7 @@
 # 验证状态与实测结论
 
+**2026-11-05 样机图形界面预演。** 在 THCC 2026.3 通过 Schematic Editor 和 HIL SCADA 完成编译、加载 Virtual HIL、四次手动触发、CSV 导出及停止和重启检查。四段各 40,000 点，100–200 ms 窗口的最大绝对转速误差均低于 50 rpm。该结果适用于练习模型。[操作教程](tle9877-gui-practice.md) · [原始数据与验收记录](../results/gui-practice/20261105-gui-validation/summary.md)
+
 **2026-11-03 现场数据工具：** 新增多通道 CSV、LIN JSONL/帧 CSV 导入、显式时钟变换、独立转速来源、转速/电流/停止判据、离线 HTML/Markdown/PNG 与包内复核。全套 317 项 unittest 通过，其中现场数据 25 项；最终图表及记录修订后专项 25 项复验通过。通过/失败合成样例均符合预期，失败记录仍复核 passed；既有 LIN Mock 和 80000 点 PMSM 文件导入、复核通过，二者时钟未关联、样机性能未评估。原件保持，未重跑 Virtual HIL 或操作设备。[使用说明](field-data.md)、[采集交接](tle9877-data-collection.md)、[实际证据](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/summary.md)。
 
 **2026-11-03 样机接入工作表与 LIN Mock：** 增加覆盖 18 条引线的 I/O 合同、独立实体参数接收表、现场步骤/记录模板和待接入的 smoke 计划；原 `check-tle9877` 实现及通过条件保持。新增设备接口与脚本化 Mock，全套 292 项 unittest 通过，其中 12 项覆盖收发、调度、超时、PID/校验/长度错误、设备与关闭异常、晚唤醒等行为。实际 CLI 的正常 Mock 会话通过，超时及错误校验和会话按预期 failed，均保留日志。来源引用改为仓库索引，原件及原 PMSM 预演代码未修改。本轮未运行 Virtual HIL 或实体设备，实际驱动与反馈模型继续待接入。[评估、改进与核对记录](../results/agent-tasks/20261103-105148-tle9877-review-dec8/summary.md)。

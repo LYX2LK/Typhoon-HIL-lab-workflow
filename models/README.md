@@ -29,3 +29,5 @@ Git 不保存空目录，准备命令会自动补建这两个预留目录。现�
 安装根目录由统一入口定位，详见 [环境配置](../docs/environment.md)。
 
 `pmsm_software_preview` 从安装的 PMSM closed loop SVPWM control 示例按字节准备；9V 等效星形假设、初始化与事件改动仅保存在每次运行副本。参数来源与使用范围见[样机软件准备](../docs/tle9877-software-preparation.md)，不与样机已确认参数混用。
+
+`tle9877_gui_practice.tse` 和 `tle9877_gui_practice.cus` 是同版本安装源派生的本机教学文件。模型沿用 9 V 预演参数，运行给定由 HIL SCADA 面板施加。文件准备和手操步骤见[样机图形界面预演](../docs/tle9877-gui-practice.md)。
