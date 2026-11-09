@@ -1,0 +1,291 @@
+{
+  "inspected_at": "2026-11-06T16:03:28+08:00",
+  "scope": "Read-only environment and static capability checks; no simulation or device operation",
+  "doctor_observed": {
+    "status": "passed",
+    "python": "3.11.4",
+    "thcc_version": "2026.3",
+    "typhoon_hil_api": "1.32.1",
+    "typhoontest": "1.35.6",
+    "numpy": "2.2.3",
+    "matplotlib": "3.10.0",
+    "simulation_verified": false
+  },
+  "validate_case": {
+    "schema_version": 1,
+    "command": "validate-case",
+    "status": "passed",
+    "run_dir": null,
+    "record_status": null,
+    "experiment_status": null,
+    "artifacts": {},
+    "result": {
+      "status": "passed",
+      "case_id": "boost_input_disturbance",
+      "availability": "available",
+      "missing_local_dependencies": [],
+      "case": {
+        "schema_version": 1,
+        "case_id": "boost_input_disturbance",
+        "model_id": "boost_closed_loop",
+        "title": "Boost 输入扰动与延后施扰对照",
+        "backend": "virtual_hil",
+        "model_origin_ref": "models/origin.json",
+        "configs": [
+          "configs/boost_vin_drop.json",
+          "configs/boost_vin_rise.json",
+          "configs/boost_vin_drop_late.json",
+          "configs/boost_vin_rise_late.json"
+        ],
+        "acceptance_ref": "acceptance.md"
+      },
+      "integrity": {
+        "status": "passed",
+        "problems": []
+      },
+      "software_support": {
+        "status": "passed",
+        "registered": true,
+        "capabilities": {
+          "configuration_schema_version": 2,
+          "analysis_method_version": 1,
+          "run": true,
+          "runtime_events": true,
+          "capture_signals": [
+            "Vout",
+            "Iin",
+            "ReferenceApplied",
+            "VinMeasured"
+          ],
+          "signal_details": [
+            {
+              "api_name": "Vout",
+              "column": "Vout_V",
+              "unit": "V"
+            },
+            {
+              "api_name": "Iin",
+              "column": "Iin_A",
+              "unit": "A"
+            },
+            {
+              "api_name": "ReferenceApplied",
+              "column": "ReferenceApplied_V",
+              "unit": "V"
+            },
+            {
+              "api_name": "VinMeasured",
+              "column": "VinMeasured_V",
+              "unit": "V"
+            }
+          ],
+          "configuration_fields": {
+            "parameters": {
+              "input_voltage_v": {
+                "type": "number",
+                "unit": "V",
+                "minimum": 0.01,
+                "maximum": 1000,
+                "setting_stage": "after_load_before_start",
+                "limit_source": "current_validated_scope"
+              },
+              "reference_voltage_v": {
+                "type": "number",
+                "unit": "V",
+                "minimum": 0.01,
+                "maximum": 100,
+                "setting_stage": "after_load_before_start",
+                "limit_source": "current_validated_scope",
+                "dependency": {
+                  "also_used_during": "model_copy_before_compile",
+                  "when": "reference_event"
+                }
+              },
+              "pwm_enabled": {
+                "type": "boolean",
+                "allowed_values": [
+                  true
+                ],
+                "setting_stage": "after_load_before_start"
+              }
+            },
+            "capture": {
+              "start_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 0,
+                "maximum": 0,
+                "setting_stage": "capture_setup",
+                "limit_source": "current_validated_scope"
+              },
+              "duration_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 0.2,
+                "maximum": 5,
+                "setting_stage": "capture_setup",
+                "limit_source": "current_validated_scope"
+              },
+              "sample_rate_hz": {
+                "type": "number",
+                "unit": "Hz",
+                "minimum": 10000,
+                "maximum": 200000,
+                "setting_stage": "capture_setup",
+                "limit_source": "current_validated_scope"
+              },
+              "wall_timeout_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 10,
+                "maximum": 300,
+                "setting_stage": "capture_setup",
+                "limit_source": "current_validated_scope"
+              }
+            },
+            "acceptance": {
+              "steady_state_relative_error": {
+                "type": "number",
+                "unit": null,
+                "minimum": 0.0001,
+                "maximum": 0.2,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "pre_event_relative_error": {
+                "type": "number",
+                "unit": null,
+                "minimum": 0.0001,
+                "maximum": 0.2,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "settling_band_relative": {
+                "type": "number",
+                "unit": null,
+                "minimum": 0.0001,
+                "maximum": 0.2,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "max_settling_time_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 0.001,
+                "maximum": 4,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "max_overshoot_fraction": {
+                "type": "number",
+                "unit": null,
+                "minimum": 0,
+                "maximum": 1,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "max_deviation_relative": {
+                "type": "number",
+                "unit": null,
+                "minimum": 0,
+                "maximum": 1,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "steady_window_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 0.001,
+                "maximum": 1,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "pre_event_window_s": {
+                "type": "number",
+                "unit": "s",
+                "minimum": 0.001,
+                "maximum": 1,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              },
+              "min_samples": {
+                "type": "integer",
+                "unit": "count",
+                "minimum": 256,
+                "maximum": 100000,
+                "setting_stage": "analysis_only",
+                "limit_source": "current_validated_scope"
+              }
+            }
+          },
+          "events": {
+            "max_per_run": 1,
+            "targets": {
+              "reference_voltage_v": {
+                "value_minimum": 0.01,
+                "value_maximum": 100,
+                "setting_stage": "model_copy_before_compile",
+                "type": "number",
+                "unit": "V",
+                "limit_source": "current_validated_scope"
+              },
+              "input_voltage_v": {
+                "value_minimum": 0.01,
+                "value_maximum": 1000,
+                "setting_stage": "scheduled_source_change",
+                "type": "number",
+                "unit": "V",
+                "limit_source": "current_validated_scope"
+              }
+            },
+            "time_unit": "s",
+            "time_quantum_s": 0.0001,
+            "time_minimum_ref": "acceptance.pre_event_window_s",
+            "time_maximum_ref": "capture.duration_s",
+            "recovery_window_required": true,
+            "time_quantum_source": "model_control_period"
+          },
+          "sweep": null,
+          "conditional_constraints": [
+            "reference_above_input_before_and_after_event",
+            "event_changes_value",
+            "event_time_within_capture_and_recovery_window",
+            "capture_even_integer_samples_within_minimum_and_100000"
+          ]
+        },
+        "configuration_checks": [
+          {
+            "config": "configs/boost_vin_drop.json",
+            "status": "passed",
+            "code": null
+          },
+          {
+            "config": "configs/boost_vin_rise.json",
+            "status": "passed",
+            "code": null
+          },
+          {
+            "config": "configs/boost_vin_drop_late.json",
+            "status": "passed",
+            "code": null
+          },
+          {
+            "config": "configs/boost_vin_rise_late.json",
+            "status": "passed",
+            "code": null
+          }
+        ],
+        "problems": []
+      },
+      "runtime_validation": {
+        "status": "not_verified",
+        "simulation_verified": false,
+        "runs": [],
+        "reason": "evidence code is stale"
+      },
+      "scope": "read-only static checks; optional evidence recomputation; no API calls or simulation",
+      "next_steps": []
+    },
+    "error": null
+  }
+}

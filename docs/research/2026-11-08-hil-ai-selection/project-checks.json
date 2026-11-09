@@ -1,0 +1,857 @@
+{
+  "checked_on": "2026-11-08",
+  "timezone": "Asia/Shanghai",
+  "scope": "Read-only static case validation and source inspection; no simulation, hardware operation, package installation, checkpoint download or algorithm evaluation.",
+  "cases": [
+    {
+      "command": "pmsm_software_preview",
+      "exit_code": 0,
+      "payload": {
+        "schema_version": 1,
+        "command": "validate-case",
+        "status": "passed",
+        "run_dir": null,
+        "record_status": null,
+        "experiment_status": null,
+        "artifacts": {},
+        "result": {
+          "status": "passed",
+          "case_id": "pmsm_software_preview",
+          "availability": "available",
+          "missing_local_dependencies": [],
+          "case": {
+            "schema_version": 1,
+            "case_id": "pmsm_software_preview",
+            "model_id": "pmsm_software_preview",
+            "title": "低压 PMSM 软件预演：启动、调速、负载变化和零速命令",
+            "backend": "virtual_hil",
+            "model_origin_ref": "models/origin.json",
+            "configs": [
+              "configs/pmsm_software_preview.json"
+            ],
+            "acceptance_ref": "acceptance.md"
+          },
+          "integrity": {
+            "status": "passed",
+            "problems": []
+          },
+          "software_support": {
+            "status": "passed",
+            "registered": true,
+            "capabilities": {
+              "configuration_schema_version": 1,
+              "analysis_method_version": 1,
+              "run": true,
+              "runtime_events": true,
+              "capture_signals": [
+                "w",
+                "Ia",
+                "Ib",
+                "Ic",
+                "LabTorque",
+                "LabReference",
+                "LabLoad"
+              ],
+              "signal_details": [
+                {
+                  "api_name": "w",
+                  "column": "MechanicalSpeed_rad_s",
+                  "unit": "rad/s"
+                },
+                {
+                  "api_name": "Ia",
+                  "column": "Ia_A",
+                  "unit": "A"
+                },
+                {
+                  "api_name": "Ib",
+                  "column": "Ib_A",
+                  "unit": "A"
+                },
+                {
+                  "api_name": "Ic",
+                  "column": "Ic_A",
+                  "unit": "A"
+                },
+                {
+                  "api_name": "LabTorque",
+                  "column": "ElectromagneticTorque_Nm",
+                  "unit": "Nm"
+                },
+                {
+                  "api_name": "LabReference",
+                  "column": "Reference_rad_s",
+                  "unit": "rad/s"
+                },
+                {
+                  "api_name": "LabLoad",
+                  "column": "Load_Nm",
+                  "unit": "Nm"
+                }
+              ],
+              "configuration_fields": {
+                "parameters": {
+                  "dc_bus_v": {
+                    "type": "number",
+                    "unit": "V",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "phase_resistance_ohm": {
+                    "type": "number",
+                    "unit": "ohm",
+                    "minimum": 0.001,
+                    "maximum": 0.1,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "ld_h": {
+                    "type": "number",
+                    "unit": "H",
+                    "minimum": 0.000001,
+                    "maximum": 0.001,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "lq_h": {
+                    "type": "number",
+                    "unit": "H",
+                    "minimum": 0.000001,
+                    "maximum": 0.001,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "pm_flux_wb": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.02,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "inertia_kgm2": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.000001,
+                    "maximum": 0.001,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "pole_pairs": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 1,
+                    "maximum": 20,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "reference_speed_rpm": {
+                    "type": "number",
+                    "unit": "rpm",
+                    "minimum": 100,
+                    "maximum": 3000,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "load_torque_nm": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0,
+                    "maximum": 0.1,
+                    "setting_stage": "model_copy_before_compile",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "capture": {
+                  "start_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0,
+                    "maximum": 0,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "duration_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.1,
+                    "maximum": 2,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "sample_rate_hz": {
+                    "type": "number",
+                    "unit": "Hz",
+                    "minimum": 20000,
+                    "maximum": 200000,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "wall_timeout_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 30,
+                    "maximum": 600,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "acceptance": {
+                  "settle_after_change_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.02,
+                    "maximum": 0.3,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_speed_error_rpm": {
+                    "type": "number",
+                    "unit": "rpm",
+                    "minimum": 1,
+                    "maximum": 200,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_phase_current_sum_a": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.1,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "min_samples": {
+                    "type": "integer",
+                    "unit": "count",
+                    "minimum": 2000,
+                    "maximum": 100000,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "min_window_samples": {
+                    "type": "number",
+                    "unit": "count",
+                    "minimum": 10,
+                    "maximum": 10000,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  }
+                }
+              },
+              "events": {
+                "max_per_run": 3,
+                "targets": {
+                  "reference_speed_rpm": {
+                    "value_minimum": 0,
+                    "value_maximum": 3000,
+                    "setting_stage": "model_copy_before_compile",
+                    "type": "number",
+                    "unit": "rpm",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "load_torque_nm": {
+                    "value_minimum": 0,
+                    "value_maximum": 0.1,
+                    "setting_stage": "model_copy_before_compile",
+                    "type": "number",
+                    "unit": null,
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "time_unit": "s",
+                "time_quantum_s": 0.00005,
+                "time_minimum_s": 0.02,
+                "time_maximum_ref": "capture.duration_s",
+                "time_quantum_source": "model_control_period"
+              },
+              "sweep": null,
+              "conditional_constraints": [
+                "software_preview_scope_and_assumptions_required",
+                "validated_salient_hypothesis_lq_gt_ld",
+                "events_sorted_unique_and_on_control_grid",
+                "complete_settled_window_after_each_event",
+                "full_capture_at_most_100000_samples"
+              ]
+            },
+            "configuration_checks": [
+              {
+                "config": "configs/pmsm_software_preview.json",
+                "status": "passed",
+                "code": null
+              }
+            ],
+            "problems": []
+          },
+          "runtime_validation": {
+            "status": "not_verified",
+            "simulation_verified": false,
+            "runs": [],
+            "reason": "evidence code is stale"
+          },
+          "scope": "read-only static checks; optional evidence recomputation; no API calls or simulation",
+          "next_steps": []
+        },
+        "error": null
+      }
+    },
+    {
+      "command": "boost_input_disturbance",
+      "exit_code": 0,
+      "payload": {
+        "schema_version": 1,
+        "command": "validate-case",
+        "status": "passed",
+        "run_dir": null,
+        "record_status": null,
+        "experiment_status": null,
+        "artifacts": {},
+        "result": {
+          "status": "passed",
+          "case_id": "boost_input_disturbance",
+          "availability": "available",
+          "missing_local_dependencies": [],
+          "case": {
+            "schema_version": 1,
+            "case_id": "boost_input_disturbance",
+            "model_id": "boost_closed_loop",
+            "title": "Boost 输入扰动与延后施扰对照",
+            "backend": "virtual_hil",
+            "model_origin_ref": "models/origin.json",
+            "configs": [
+              "configs/boost_vin_drop.json",
+              "configs/boost_vin_rise.json",
+              "configs/boost_vin_drop_late.json",
+              "configs/boost_vin_rise_late.json"
+            ],
+            "acceptance_ref": "acceptance.md"
+          },
+          "integrity": {
+            "status": "passed",
+            "problems": []
+          },
+          "software_support": {
+            "status": "passed",
+            "registered": true,
+            "capabilities": {
+              "configuration_schema_version": 2,
+              "analysis_method_version": 1,
+              "run": true,
+              "runtime_events": true,
+              "capture_signals": [
+                "Vout",
+                "Iin",
+                "ReferenceApplied",
+                "VinMeasured"
+              ],
+              "signal_details": [
+                {
+                  "api_name": "Vout",
+                  "column": "Vout_V",
+                  "unit": "V"
+                },
+                {
+                  "api_name": "Iin",
+                  "column": "Iin_A",
+                  "unit": "A"
+                },
+                {
+                  "api_name": "ReferenceApplied",
+                  "column": "ReferenceApplied_V",
+                  "unit": "V"
+                },
+                {
+                  "api_name": "VinMeasured",
+                  "column": "VinMeasured_V",
+                  "unit": "V"
+                }
+              ],
+              "configuration_fields": {
+                "parameters": {
+                  "input_voltage_v": {
+                    "type": "number",
+                    "unit": "V",
+                    "minimum": 0.01,
+                    "maximum": 1000,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "reference_voltage_v": {
+                    "type": "number",
+                    "unit": "V",
+                    "minimum": 0.01,
+                    "maximum": 100,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope",
+                    "dependency": {
+                      "also_used_during": "model_copy_before_compile",
+                      "when": "reference_event"
+                    }
+                  },
+                  "pwm_enabled": {
+                    "type": "boolean",
+                    "allowed_values": [
+                      true
+                    ],
+                    "setting_stage": "after_load_before_start"
+                  }
+                },
+                "capture": {
+                  "start_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0,
+                    "maximum": 0,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "duration_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.2,
+                    "maximum": 5,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "sample_rate_hz": {
+                    "type": "number",
+                    "unit": "Hz",
+                    "minimum": 10000,
+                    "maximum": 200000,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "wall_timeout_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 10,
+                    "maximum": 300,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "acceptance": {
+                  "steady_state_relative_error": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.2,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "pre_event_relative_error": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.2,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "settling_band_relative": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.2,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_settling_time_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.001,
+                    "maximum": 4,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_overshoot_fraction": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0,
+                    "maximum": 1,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_deviation_relative": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0,
+                    "maximum": 1,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "steady_window_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.001,
+                    "maximum": 1,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "pre_event_window_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.001,
+                    "maximum": 1,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "min_samples": {
+                    "type": "integer",
+                    "unit": "count",
+                    "minimum": 256,
+                    "maximum": 100000,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  }
+                }
+              },
+              "events": {
+                "max_per_run": 1,
+                "targets": {
+                  "reference_voltage_v": {
+                    "value_minimum": 0.01,
+                    "value_maximum": 100,
+                    "setting_stage": "model_copy_before_compile",
+                    "type": "number",
+                    "unit": "V",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "input_voltage_v": {
+                    "value_minimum": 0.01,
+                    "value_maximum": 1000,
+                    "setting_stage": "scheduled_source_change",
+                    "type": "number",
+                    "unit": "V",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "time_unit": "s",
+                "time_quantum_s": 0.0001,
+                "time_minimum_ref": "acceptance.pre_event_window_s",
+                "time_maximum_ref": "capture.duration_s",
+                "recovery_window_required": true,
+                "time_quantum_source": "model_control_period"
+              },
+              "sweep": null,
+              "conditional_constraints": [
+                "reference_above_input_before_and_after_event",
+                "event_changes_value",
+                "event_time_within_capture_and_recovery_window",
+                "capture_even_integer_samples_within_minimum_and_100000"
+              ]
+            },
+            "configuration_checks": [
+              {
+                "config": "configs/boost_vin_drop.json",
+                "status": "passed",
+                "code": null
+              },
+              {
+                "config": "configs/boost_vin_rise.json",
+                "status": "passed",
+                "code": null
+              },
+              {
+                "config": "configs/boost_vin_drop_late.json",
+                "status": "passed",
+                "code": null
+              },
+              {
+                "config": "configs/boost_vin_rise_late.json",
+                "status": "passed",
+                "code": null
+              }
+            ],
+            "problems": []
+          },
+          "runtime_validation": {
+            "status": "not_verified",
+            "simulation_verified": false,
+            "runs": [],
+            "reason": "evidence code is stale"
+          },
+          "scope": "read-only static checks; optional evidence recomputation; no API calls or simulation",
+          "next_steps": []
+        },
+        "error": null
+      }
+    },
+    {
+      "command": "im_speed_step",
+      "exit_code": 0,
+      "payload": {
+        "schema_version": 1,
+        "command": "validate-case",
+        "status": "passed",
+        "run_dir": null,
+        "record_status": null,
+        "experiment_status": null,
+        "artifacts": {},
+        "result": {
+          "status": "passed",
+          "case_id": "im_speed_step",
+          "availability": "available",
+          "missing_local_dependencies": [],
+          "case": {
+            "schema_version": 1,
+            "case_id": "im_speed_step",
+            "model_id": "induction_motor_closed_loop",
+            "title": "感应电机运行中转速参考阶跃",
+            "backend": "virtual_hil",
+            "model_origin_ref": "models/origin.json",
+            "configs": [
+              "configs/im_speed_step_1430_to_850.json"
+            ],
+            "acceptance_ref": "acceptance.md"
+          },
+          "integrity": {
+            "status": "passed",
+            "problems": []
+          },
+          "software_support": {
+            "status": "passed",
+            "registered": true,
+            "capabilities": {
+              "configuration_schema_version": 2,
+              "analysis_method_version": 1,
+              "run": true,
+              "runtime_events": true,
+              "capture_signals": [
+                "Speed",
+                "Torque",
+                "LabSpeedReference",
+                "LabLoadCommand"
+              ],
+              "signal_details": [
+                {
+                  "api_name": "Speed",
+                  "column": "Speed_rpm",
+                  "unit": "rpm"
+                },
+                {
+                  "api_name": "Torque",
+                  "column": "ElectromagneticTorque_Nm",
+                  "unit": "N m"
+                },
+                {
+                  "api_name": "LabSpeedReference",
+                  "column": "SpeedReference_rpm",
+                  "unit": "rpm"
+                },
+                {
+                  "api_name": "LabLoadCommand",
+                  "column": "LoadCommand_Nm",
+                  "unit": "N m"
+                }
+              ],
+              "configuration_fields": {
+                "parameters": {
+                  "grid_phase_rms_v": {
+                    "type": "number",
+                    "unit": "V",
+                    "minimum": 1,
+                    "maximum": 1000,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "grid_frequency_hz": {
+                    "type": "number",
+                    "unit": "Hz",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "grid_phase_deg": {
+                    "type": "number",
+                    "unit": "deg",
+                    "minimum": -360,
+                    "maximum": 360,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "reference_speed_rpm": {
+                    "type": "number",
+                    "unit": "rpm",
+                    "minimum": 200,
+                    "maximum": 1700,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope",
+                    "dependency": {
+                      "also_used_during": "model_copy_before_compile",
+                      "when": "events_nonempty"
+                    }
+                  },
+                  "load_pu": {
+                    "type": "number",
+                    "unit": "pu",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "setting_stage": "after_load_before_start",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "capture": {
+                  "start_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0,
+                    "maximum": 0,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "duration_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.02,
+                    "maximum": 5,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "sample_rate_hz": {
+                    "type": "number",
+                    "unit": "Hz",
+                    "minimum": 10000,
+                    "maximum": 200000,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "wall_timeout_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 10,
+                    "maximum": 300,
+                    "setting_stage": "capture_setup",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "acceptance": {
+                  "window_start_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0,
+                    "maximum": 5,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "window_end_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.001,
+                    "maximum": 5,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "max_relative_speed_error": {
+                    "type": "number",
+                    "unit": null,
+                    "minimum": 0.0001,
+                    "maximum": 0.2,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "min_sample_rate_hz": {
+                    "type": "number",
+                    "unit": "Hz",
+                    "minimum": 10000,
+                    "maximum": 200000,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "min_samples": {
+                    "type": "integer",
+                    "unit": "count",
+                    "minimum": 256,
+                    "maximum": 100000,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope"
+                  },
+                  "pre_event_window_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.01,
+                    "maximum": 2,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope",
+                    "when": "events_nonempty"
+                  },
+                  "post_event_delay_s": {
+                    "type": "number",
+                    "unit": "s",
+                    "minimum": 0.1,
+                    "maximum": 4,
+                    "setting_stage": "analysis_only",
+                    "limit_source": "current_validated_scope",
+                    "when": "events_nonempty"
+                  }
+                }
+              },
+              "events": {
+                "max_per_run": 1,
+                "targets": {
+                  "reference_speed_rpm": {
+                    "value_minimum": 200,
+                    "value_maximum": 1700,
+                    "setting_stage": "model_copy_before_compile",
+                    "type": "number",
+                    "unit": "rpm",
+                    "limit_source": "current_validated_scope"
+                  }
+                },
+                "time_unit": "s",
+                "time_quantum_s": 0.0001,
+                "time_minimum_s": 0.02,
+                "time_minimum_ref": "acceptance.pre_event_window_s",
+                "time_maximum_ref": "capture.duration_s",
+                "time_quantum_source": "model_control_period"
+              },
+              "sweep": null,
+              "conditional_constraints": [
+                "event_changes_value",
+                "event_time_within_capture",
+                "capture_contains_pre_and_post_event_windows",
+                "capture_samples_within_minimum_and_100000"
+              ]
+            },
+            "configuration_checks": [
+              {
+                "config": "configs/im_speed_step_1430_to_850.json",
+                "status": "passed",
+                "code": null
+              }
+            ],
+            "problems": []
+          },
+          "runtime_validation": {
+            "status": "not_verified",
+            "simulation_verified": false,
+            "runs": [],
+            "reason": "evidence code is stale"
+          },
+          "scope": "read-only static checks; optional evidence recomputation; no API calls or simulation",
+          "next_steps": []
+        },
+        "error": null
+      }
+    }
+  ],
+  "inspected_sources": [
+    "src/typhoon_lab/pmsm_preview.py",
+    "src/typhoon_lab/adapters/induction.py",
+    "cases/tle9877_hil_smoke/plan.json",
+    "docs/tle9877-gui-practice.md",
+    "docs/roadmap.md",
+    "PROJECT_SPEC.md"
+  ],
+  "physical_smoke_observed": {
+    "execution_enabled": false,
+    "state": "planned_awaiting_device_and_feedback_integration"
+  },
+  "limitations": [
+    "Historical doctor output is dated 2026-11-06 and was not rerun.",
+    "Static availability does not establish runtime performance.",
+    "Current runtime evidence for all three checked cases is not_verified because evidence code is stale."
+  ]
+}
