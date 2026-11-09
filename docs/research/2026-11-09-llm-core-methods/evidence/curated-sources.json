@@ -1,0 +1,135 @@
+[
+  {
+    "id": "S1",
+    "title": "AutoHIL",
+    "url": "https://conf.researchr.org/details/issta-2026/issta-2026-research-papers/64/AutoHIL-LLM-Based-ECU-Functional-Test-Generation-through-Domain-Knowledge-Augmentati",
+    "version_status": "ISSTA 2026",
+    "reading_depth": "官方摘要"
+  },
+  {
+    "id": "S2",
+    "title": "Large Language Models as Falsifiers for Cyber-Physical Systems",
+    "url": "https://arxiv.org/html/2609.20752v1",
+    "version_status": "2026-09 预印本 v1",
+    "reading_depth": "相关正文、代码 README"
+  },
+  {
+    "id": "S3",
+    "title": "On the Role of Large Language Models in Robustness-Guided Requirement Falsification",
+    "url": "https://doi.org/10.1145/3832139",
+    "version_status": "ISSTA/PACMSE 2026",
+    "reading_depth": "官方摘要、公开工件元数据"
+  },
+  {
+    "id": "S4",
+    "title": "Large Language Models Can Deliver Accurate and Interpretable Time Series Anomaly Detection",
+    "url": "https://doi.org/10.1145/3711896.3737239",
+    "version_status": "KDD 2025；正文为 2024 arXiv v1",
+    "reading_depth": "版本区分、相关正文、部分代码"
+  },
+  {
+    "id": "S5",
+    "title": "Delving into Large Language Models for Effective Time-Series Anomaly Detection",
+    "url": "https://papers.nips.cc/paper_files/paper/2025/file/950a34c7b107111570077078e1b5b8ef-Paper-Conference.pdf",
+    "version_status": "NeurIPS 2025",
+    "reading_depth": "摘要、作者代码入口；未完整取得 PDF"
+  },
+  {
+    "id": "S6",
+    "title": "Can LLMs Understand Time Series Anomalies?",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/05774fb74e863308c4b460c9f49f6918-Paper-Conference.pdf",
+    "version_status": "ICLR 2025",
+    "reading_depth": "公开正文相关部分"
+  },
+  {
+    "id": "S7",
+    "title": "ATTLLM",
+    "url": "https://ieeexplore.ieee.org/abstract/document/11701917/",
+    "version_status": "ASCC 2026",
+    "reading_depth": "官方摘要"
+  },
+  {
+    "id": "S8",
+    "title": "TraceBench",
+    "url": "https://arxiv.org/html/2608.27182v1",
+    "version_status": "2026-08 预印本 v1",
+    "reading_depth": "相关方法、实验与附录"
+  },
+  {
+    "id": "S9",
+    "title": "[survey] Industrial Fault Diagnosis: A Survey on Evolution Towards LLMs and Agentic Systems",
+    "url": "https://ieeexplore.ieee.org/abstract/document/11718786/",
+    "version_status": "IEEE IoT Journal，2026-10-01 Early Access",
+    "reading_depth": "官方摘要"
+  },
+  {
+    "id": "S10",
+    "title": "S2S-FDD",
+    "url": "https://arxiv.org/html/2603.08048v1",
+    "version_status": "已核验 2026-03 arXiv v1；不据此推定会议状态",
+    "reading_depth": "相关方法、实验"
+  },
+  {
+    "id": "S11",
+    "title": "BatteryAgent",
+    "url": "https://arxiv.org/html/2512.24686v1",
+    "version_status": "已读 2025-12 arXiv v1",
+    "reading_depth": "方法、消融与案例"
+  },
+  {
+    "id": "S12",
+    "title": "When LLMs Sit Above Diagnostic Tools: Unrealized Complementarity in Industrial Fault Diagnosis",
+    "url": "https://arxiv.org/html/2610.05031v1",
+    "version_status": "2026-10 预印本 v1",
+    "reading_depth": "相关方法、比较结果"
+  },
+  {
+    "id": "S13",
+    "title": "Harnessing Vision-Language Models for Time Series Anomaly Detection",
+    "url": "https://arxiv.org/html/2506.06836v1",
+    "version_status": "已读 2025-06 arXiv v1",
+    "reading_depth": "方法、评价及主表"
+  },
+  {
+    "id": "S14",
+    "title": "Argos: Agentic Time-Series Anomaly Detection with Autonomous Rule Generation via Large Language Models",
+    "url": "https://arxiv.org/html/2501.14170v1",
+    "version_status": "已读 2025-01 arXiv v1",
+    "reading_depth": "方法、实验设置、官方代码说明"
+  },
+  {
+    "id": "S15",
+    "title": "Large Language Model Guided Knowledge Distillation for Time Series Anomaly Detection",
+    "url": "https://www.ijcai.org/proceedings/2024/0239.pdf",
+    "version_status": "IJCAI 2024",
+    "reading_depth": "公开正文方法部分"
+  },
+  {
+    "id": "S16",
+    "title": "FD-LLM",
+    "url": "https://arxiv.org/html/2412.01218v1",
+    "version_status": "已读 2024-12 arXiv v1",
+    "reading_depth": "方法、数据划分及训练设置"
+  },
+  {
+    "id": "S17",
+    "title": "Can LLM Agents Efficiently Identify Appliance Faults? Insights From Diagnosing a Simulated Appliance",
+    "url": "https://arxiv.org/html/2610.19291v1",
+    "version_status": "2026-10 预印本 v1",
+    "reading_depth": "动作/观测接口、真值反馈、评价"
+  },
+  {
+    "id": "S18",
+    "title": "Can Large Language Models Help Experimental Design for Causal Discovery?",
+    "url": "https://arxiv.org/html/2503.01139v1",
+    "version_status": "已读 2025-03 arXiv v1",
+    "reading_depth": "方法；DAG 与硬干预边界"
+  },
+  {
+    "id": "S19",
+    "title": "Timely Clinical Diagnosis through Active Test Selection",
+    "url": "https://arxiv.org/html/2510.18988v1",
+    "version_status": "已读 2025-10 arXiv v1",
+    "reading_depth": "BED 方法与迁移边界；跨领域参考"
+  }
+]

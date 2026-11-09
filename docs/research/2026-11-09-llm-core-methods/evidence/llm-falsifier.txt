@@ -1,0 +1,4049 @@
+Large Language Models as Falsifiers for Cyber-Physical Systems
+Skip to main content
+Report GitHub Issue
+×
+Title:
+Content selection saved. Describe the issue below:
+Description:
+Submit without GitHub
+Submit in GitHub
+Why HTML?
+Report Issue
+Back to Abstract
+Download PDF
+Contents
+Reading mode
+Colour theme
+Abstract.
+1
+Introduction
+2
+Background
+Running example
+3
+Related Work
+4
+Methodology
+4.1
+Overview
+Running example
+4.2
+Semantic Information Enhancement
+4.3
+Critical Time Points
+5
+Evaluation
+5.1
+Evaluation Setup
+Benchmarks
+Implementation Details
+Models
+Baselines and Evaluation Protocol
+ARCH-COMP 2025 Baselines
+5.2
+Comparison with Existing Tools
+5.3
+Ablation Studies
+5.4
+Effect of Model Choice
+5.5
+Explainability
+6
+Limitations
+7
+Conclusion and Discussion
+Acknowledgements
+References
+License: arXiv.org perpetual non-exclusive license
+arXiv:2609.20752v1 [eess.SY] 17 Sep 2026
+Large Language Models as Falsifiers for Cyber-Physical Systems
+CCS:
+Computer systems organization Embedded and cyber-physical systems
+CCS:
+Computing methodologies Natural language processing
+CCS:
+Theory of computation Logic and verification
+Ali ArjomandBigdeli
+email:
+aarjomandbig@cs.stonybrook.edu
+Affiliation:
+Stony Brook University
+,
+Stony Brook
+,
+New York
+,
+USA
+,
+Jiawei Zhou
+email:
+jiawei.zhou.1@stonybrook.edu
+Affiliation:
+Stony Brook University
+,
+Stony Brook
+,
+New York
+,
+USA
+and
+Stanley Bak
+email:
+stanley.bak@stonybrook.edu
+Affiliation:
+Stony Brook University
+,
+Stony Brook
+,
+New York
+,
+USA
+2026
+Abstract.
+Falsification searches for counterexamples to formal specifications in cyber-physical systems (CPS). With specifications written in Signal Temporal Logic (STL), falsification can be formulated as a robustness optimization problem, traditionally tackled with black-box search algorithms. In parallel, large language models (LLMs) have recently emerged as surprisingly effective optimizers when coupled with iterative prompting. In this work, we connect these ideas and introduce
+LLM-Falsifier
+, an LLM-based approach that falsifies specifications by minimizing the STL robustness degree. Beyond generic prompt-based optimization, our key idea is to expose the LLM to semantic information that is natural for language models but absent from standard numerical optimizers, including natural-language input and output names, output trajectories, and critical-time witnesses for the minimum robustness value. These additions enable smarter and more sample-efficient robustness search. On the ARCH-COMP falsification benchmarks,
+LLM-Falsifier
+is shown to outperform existing falsification tools based on a range of optimization paradigms, from surrogate-based and Bayesian optimization to search-based testing, on 14 of 21 specifications when measured by the average number of simulations required to find a counterexample.
+Keywords:
+falsification, cyber-physical systems, large language models, signal temporal logic, robustness
+1.
+Introduction
+Falsification is a search for errors in cyber-physical system (CPS) designs. Given a model (typically a Simulink or Python simulator) and a specification expressed in Signal Temporal Logic (STL)
+(
+Maler and Nickovic, 2004
+)
+, a falsification algorithm tries to find an initial state and input signal that cause the model to violate the specification.
+Such specifications detail expected requirements for the dynamical system, such as achieving time-sensitive goals, preventing unsafe behaviors, and ensuring desirable behaviors over specific time periods.
+Classical logics have Boolean semantics, where a formula is either true or false. STL can also be interpreted with quantitative semantics that evaluate how strongly a signal satisfies or violates a specification
+(
+Donzé and Maler, 2010
+)
+.
+This quantitative interpretation, known as the
+robustness degree
+or
+robustness value
+, assigns a real number that quantifies the margin of satisfaction or violation
+(
+Fainekos and Pappas, 2009
+;
+Rizk et al., 2009
+)
+.
+This allows a given specification and a system trajectory (i.e., a “signal”) to be systematically transformed into a single scalar robustness value, where the sign denotes whether the specification is satisfied or violated, and the magnitude captures how strongly that satisfaction or violation occurs. This key property enables STL to frame the falsification problem as a numeric optimization problem where the goal is to minimize the robustness value.
+Figure 1.
+LLM-Falsifier
+prompts a large language model to generate samples for a CPS falsification problem.
+Block diagram of the closed-loop LLM-Falsifier workflow. The STL specification and system files feed a static model summarization step that builds a meta-prompt. The LLM proposes a candidate input, the simulator runs it, and an STL monitor computes the robustness value and critical time. If the robustness is negative the loop terminates with a counterexample; otherwise the sample and its feedback are appended to the prompt history and the loop repeats.
+The robustness measure in STL is non-smooth and non-convex due to the nested min/max operators in its definition.
+Traditional falsification approaches solve this problem using black-box, derivative-free optimization strategies.
+Recently, large language models (LLMs) have also been shown to be capable of solving derivative-free optimization problems using an iterative prompting technique called Optimization by PROmpting (OPRO)
+(
+Yang et al., 2024
+)
+.
+In OPRO, a meta-prompt combines a natural-language description of the problem with previously evaluated solution–score pairs, and at each optimization step the LLM is prompted to generate several new candidate solutions.
+These candidates are scored outside the LLM, and only the best-scoring solutions found so far are kept in the meta-prompt, sorted by score, for the next step.
+In contrast to traditional optimization methods, OPRO therefore uses natural-language prompts to iteratively propose candidate solutions from the problem description.
+In this work, we connect these two ideas and introduce
+LLM-Falsifier
+, which is, to our knowledge, the first LLM-driven robustness-guided falsifier for CPS.
+Our central claim is that LLMs can directly perform falsification by optimizing robustness values, and that they become substantially more effective when the search process is expressed using natural-language-based semantic information that they are naturally good at exploiting.
+We draw inspiration from OPRO, but both our problem and our search loop differ. Instead of focusing solely on numerical search and relying on a single scalar score for each sample, we enrich the process with semantic and contextual feedback that the LLM can reason about. This feedback includes natural-language names for inputs and outputs, output signal values over time, and a
+critical time point
+that witnesses the minimum robustness value.
+The critical time point is the time at which the final robustness value exhibits sensitivity to changes in the signal, and we show that including the output signal values at this time in the prompt improves LLM-driven falsification performance.
+Together, these components enable the model to leverage semantic comprehension and causal reasoning more effectively, introduce a strong inductive bias, and guide exploration using informative heuristics that accelerate falsification.
+Beyond the content of the prompt, the search loop itself also differs from OPRO: because every candidate input must be evaluated by a simulation, our loop starts without any initial samples, requests a single sample per iteration, and involves no external ranking or selection among candidates (Section
+4.1
+).
+The proposed closed-loop falsification workflow is shown in Figure
+1
+: given the
+STL Specification
+and the
+System Files
+, a
+Static Model Summarization
+step extracts model information such as input and output signal names to fill in a
+Meta-Prompt
+, the
+LLM
+proposes the next sample, a
+Simulator
+runs it, and an
+STL Monitor
+computes the robustness value
+ρ
+\rho
+together with its critical time.
+If
+ρ
+<
+0
+\rho<0
+, a counterexample has been found; otherwise the sample, its robustness, and the associated output-signal and critical-time information are appended to the prompt as
+Sample-Robustness Pairs
+, and the process repeats (Section
+4.1
+).
+We evaluate
+LLM-Falsifier
+on the Applied Verification for Continuous and Hybrid Systems competition (ARCH-COMP) benchmarks. The results demonstrate state-of-the-art performance, with our approach often outperforming specialized falsification tools based on classical optimization algorithms.
+Throughout the paper,
+sample efficiency
+refers to the number of candidate inputs that must be generated and simulated before a counterexample is found. This is the primary cost measure in falsification, where every sample requires an expensive simulation, and it is the quantity reported by the ARCH-COMP evaluation protocol.
+On six specifications, the LLM typically finds a falsifying input on the very
+first
+simulation, an outcome that is essentially impossible for a purely numerical optimizer, which has no information before its first sample.
+We further study the effect of the underlying model and reasoning effort, including an open-source model, and inspect the reasoning traces of the LLM to understand how it constructs falsifying inputs.
+The main contributions of this paper are as follows:
+•
+We introduce
+LLM-Falsifier
+, a method that lets an LLM directly perform CPS falsification by iteratively proposing inputs that optimize STL robustness values.
+•
+We show that LLMs can exploit semantic information, such as natural-language variable names, output trajectories, and critical-time witnesses, to conduct smarter and more sample-efficient robustness optimization.
+•
+We evaluate
+LLM-Falsifier
+on the ARCH-COMP 2025 benchmarks and show that it outperforms widely adopted falsification tools based on a range of optimization paradigms, from surrogate-based and Bayesian optimization to search-based testing, on 14 out of 21 specifications.
+The implementation of
+LLM-Falsifier
+and the scripts used in our experiments are publicly available.
+1
+1
+1
+https://github.com/aliabigdeli/llm-falsifier
+This paper is organized as follows.
+Section
+2
+provides background on the STL falsification problem, Section
+3
+discusses related work, and Section
+4
+introduces our methodology, describing the LLM-based falsification workflow and its enhancements with natural-language signal names, output signal values, and critical time points.
+Section
+5
+presents our experimental evaluation on the ARCH-COMP falsification benchmarks, including an ablation study quantifying the effect of each enhancement and a comparison of LLMs.
+Section
+6
+discusses limitations and Section
+7
+concludes with a summary of findings.
+Throughout, we use the ARCH-COMP Automatic Transmission benchmark and its specification AT1 as a running example, introduced in Section
+2
+and followed through the method and the evaluation.
+2.
+Background
+Let
+𝕋
+⊆
+ℝ
+≥
+0
+\mathbb{T}\subseteq\mathbb{R}_{\geq 0}
+denote the time domain (typically
+[
+0
+,
+T
+end
+]
+[0,T_{\mathrm{end}}]
+). In CPS falsification, a simulator (model) is a function
+ℳ
+\mathcal{M}
+that, given an initial state
+x
+0
+x_{0}
+and an input signal
+u
+:
+𝕋
+→
+ℝ
+n
+i
+u:\mathbb{T}\to\mathbb{R}^{n_{i}}
+, produces an output signal
+𝐱
+:
+𝕋
+→
+ℝ
+n
+o
+\mathbf{x}:\mathbb{T}\to\mathbb{R}^{n_{o}}
+, with
+𝐱
+⁡
+(
+⋅
+)
+=
+ℳ
+⁡
+(
+x
+0
+,
+u
+⁡
+(
+⋅
+)
+)
+\mathbf{x}(\cdot)=\mathcal{M}(x_{0},u(\cdot))
+.
+The syntax of (bounded) STL is given by the grammar
+φ
+:
+:=
+true
+​
+∣
+μ
+∣
+​
+¬
+φ
+​
+∣
+φ
+1
+∧
+φ
+2
+∣
+​
+φ
+1
+​
+𝐔
+[
+a
+,
+b
+]
+​
+φ
+2
+,
+\varphi::=\text{true}\;\mid\;\mu\;\mid\;\neg\varphi\;\mid\;\varphi_{1}\wedge\varphi_{2}\;\mid\;\varphi_{1}\;\mathbf{U}_{[a,b]}\;\varphi_{2},
+where the atom
+μ
+≡
+h
+⁡
+(
+𝐱
+⁡
+(
+t
+)
+)
+≥
+0
+\mu\equiv h(\mathbf{x}(t))\geq 0
+and
+0
+≤
+a
+≤
+b
+0\leq a\leq b
+are real time bounds. From the
+until
+operator
+𝐔
+[
+a
+,
+b
+]
+\mathbf{U}_{[a,b]}
+we can derive the bounded temporal operators
+𝐅
+\mathbf{F}
+(eventually) and
+𝐆
+\mathbf{G}
+(globally):
+𝐅
+[
+a
+,
+b
+]
+​
+φ
+=
+true
+​
+𝐔
+[
+a
+,
+b
+]
+​
+φ
+,
+𝐆
+[
+a
+,
+b
+]
+​
+φ
+=
+¬
+𝐅
+[
+a
+,
+b
+]
+​
+¬
+φ
+.
+\mathbf{F}_{[a,b]}\varphi\;=\;\mathrm{true}\;\mathbf{U}_{[a,b]}\;\varphi,\ \mathbf{G}_{[a,b]}\varphi\;=\;\neg\mathbf{F}_{[a,b]}\neg\varphi.
+STL admits a quantitative semantics that assigns to every triple
+(
+φ
+,
+𝐱
+,
+t
+)
+(\varphi,\mathbf{x},t)
+a
+robustness degree
+in
+ℝ
+∪
+{
+∞
+,
+−
+∞
+}
+\mathbb{R}\cup\{\infty,-\infty\}
+denoted
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+\rho(\varphi,\mathbf{x},t)
+. The robustness encodes both satisfaction and the margin of satisfaction: by convention
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+>
+0
+\rho(\varphi,\mathbf{x},t)>0
+indicates satisfaction at time
+t
+t
+,
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+<
+0
+\rho(\varphi,\mathbf{x},t)<0
+indicates violation,
+and the magnitude
+|
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+|
+|\rho(\varphi,\mathbf{x},t)|
+measures how strongly
+φ
+\varphi
+is satisfied or violated. We use the standard min/max-based definition of robustness semantics
+(
+Maler and Nickovic, 2004
+;
+Fainekos et al., 2012
+)
+:
+(1)
+ρ
+⁡
+(
+true
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\text{true},\mathbf{x},t)
+=
+∞
+,
+\displaystyle\;=\;\infty,
+(2)
+ρ
+⁡
+(
+μ
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\mu,\mathbf{x},t)
+=
+h
+⁡
+(
+𝐱
+⁡
+(
+t
+)
+)
+,
+\displaystyle\;=\;h(\mathbf{x}(t)),
+(3)
+ρ
+⁡
+(
+¬
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\neg\varphi,\mathbf{x},t)
+=
+−
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+,
+\displaystyle\;=\;-\,\rho(\varphi,\mathbf{x},t),
+(4)
+ρ
+⁡
+(
+φ
+1
+∧
+φ
+2
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\varphi_{1}\wedge\varphi_{2},\mathbf{x},t)
+=
+min
+⁡
+(
+ρ
+⁡
+(
+φ
+1
+,
+𝐱
+,
+t
+)
+,
+ρ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+)
+)
+.
+\displaystyle\;=\;\min\big(\rho(\varphi_{1},\mathbf{x},t),\ \rho(\varphi_{2},\mathbf{x},t)\big).
+For a time-bounded
+until
+formula,
+ψ
+≡
+φ
+1
+​
+𝐔
+[
+a
+,
+b
+]
+​
+φ
+2
+\psi\equiv\varphi_{1}\ \mathbf{U}_{[a,b]}\ \varphi_{2}
+, the standard quantitative semantics is
+(5)
+ρ
+⁡
+(
+ψ
+,
+𝐱
+,
+t
+)
+=
+sup
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+min
+⁡
+(
+ρ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+′
+)
+,
+inf
+t
+′′
+∈
+[
+t
+,
+t
+′
+]
+ρ
+⁡
+(
+φ
+1
+,
+𝐱
+,
+t
+′′
+)
+)
+.
+\rho(\psi,\mathbf{x},t)=\sup_{t^{\prime}\in t+[a,b]}\min\Big(\rho(\varphi_{2},\mathbf{x},t^{\prime}),\ \inf_{t^{\prime\prime}\in[t,t^{\prime}]}\rho(\varphi_{1},\mathbf{x},t^{\prime\prime})\Big).
+From this definition, one can derive simplified robustness formulas for the
+F
+(eventually) and
+G
+(globally) operators:
+(6)
+ρ
+⁡
+(
+𝐅
+[
+a
+,
+b
+]
+​
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\mathbf{F}_{[a,b]}\varphi,\mathbf{x},t)
+=
+sup
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+′
+)
+,
+\displaystyle=\sup_{t^{\prime}\in t+[a,b]}\rho(\varphi,\mathbf{x},t^{\prime}),
+(7)
+ρ
+⁡
+(
+𝐆
+[
+a
+,
+b
+]
+​
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\rho(\mathbf{G}_{[a,b]}\varphi,\mathbf{x},t)
+=
+inf
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+′
+)
+.
+\displaystyle=\inf_{t^{\prime}\in t+[a,b]}\rho(\varphi,\mathbf{x},t^{\prime}).
+Problem Statement (STL Falsification):
+Given a model
+ℳ
+\mathcal{M}
+and STL formula
+φ
+\varphi
+, the falsification problem is to find an initial condition
+x
+0
+x_{0}
+and admissible input signal
+u
+⁡
+(
+⋅
+)
+u(\cdot)
+such that the resulting trajectory
+𝐱
+=
+ℳ
+⁡
+(
+x
+0
+,
+u
+)
+\mathbf{x}=\mathcal{M}(x_{0},u)
+violates
+φ
+\varphi
+.
+Using quantitative semantics, falsification is commonly cast as the following optimization problem:
+(8)
+min
+(
+x
+0
+,
+u
+)
+⁡
+ρ
+⁡
+(
+φ
+,
+ℳ
+⁡
+(
+x
+0
+,
+u
+)
+,
+0
+)
+.
+\min_{(x_{0},u)}\ \rho(\varphi,\mathcal{M}(x_{0},u),0).
+A solution with objective value
+ρ
+⁡
+(
+φ
+,
+ℳ
+⁡
+(
+x
+0
+,
+u
+)
+,
+0
+)
+<
+0
+\rho(\varphi,\mathcal{M}(x_{0},u),0)<0
+constitutes a counterexample (witness) that falsifies the specification.
+The nested use of
+min
+\min
+,
+sup
+\sup
+, and
+inf
+\inf
+, as well as the complexity of the CPS simulation model
+ℳ
+\mathcal{M}
+, make the robustness function in general non-smooth and non-convex, which in turn motivates the widespread use of derivative-free and heuristic optimization methods in falsification
+(
+Fainekos et al., 2012
+;
+Khandait et al., 2025
+)
+.
+The search problem is often simplified by constraining the input signal using a finite parameterization, for example, the input may be restricted to be a piecewise-linear interpolation between values given at evenly spaced time points.
+This is the standard approach in tools such as Breach
+(
+Donzé, 2010
+)
+and S-TaLiRo
+(
+Annpureddy et al., 2011
+)
+.
+Two stacked plots over a fifty second horizon. The top plot shows the throttle input of two samples: one drops smoothly from one hundred to zero between seventeen and twenty-five seconds, the other stays at one hundred; the brake is zero for both. The bottom plot shows the resulting vehicle speed traces with a dashed horizontal bound at one hundred twenty and a shaded window from zero to twenty seconds. Both traces reach about one hundred twenty at twenty seconds. An inset zooms in around that time and shows that one trace is slightly below the bound, robustness plus zero point four two, and the other slightly above it, robustness minus zero point two one.
+Figure 2.
+The running example.
+(a) Two candidate inputs for the Automatic Transmission model, each given by
+7
+7
+throttle and
+3
+3
+brake control points (markers) that are interpolated in between: full throttle at the first three control points and none afterwards (blue), and full throttle throughout (red); the brake is zero in both.
+(b) The resulting speed traces, the bound
+speed
+≤
+120
+\texttt{speed}\leq 120
+of
+φ
+AT1
+\varphi_{\mathrm{AT1}}
+(dashed), and its time window
+[
+0
+,
+20
+]
+[0,20]
+(shaded).
+In both cases the supremum of the speed over the window is attained at
+t
+∗
+=
+20
+t^{*}=20
+(dotted), so the robustness is the signed distance from the trace to the bound at
+t
+∗
+t^{*}
+(inset):
++
+0.42
++0.42
+for the blue trace, which stays below the bound inside the window and exceeds it only afterwards, and
+−
+0.21
+-0.21
+for the red trace, which is a counterexample.
+Two stacked plots over a fifty second horizon. The top plot shows the throttle input of two samples: one drops smoothly from one hundred to zero between seventeen and twenty-five seconds, the other stays at one hundred; the brake is zero for both. The bottom plot shows the resulting vehicle speed traces with a dashed horizontal bound at one hundred twenty and a shaded window from zero to twenty seconds. Both traces reach about one hundred twenty at twenty seconds. An inset zooms in around that time and shows that one trace is slightly below the bound, robustness plus zero point four two, and the other slightly above it, robustness minus zero point two one.
+Running example
+To make these definitions concrete, we use the
+Automatic Transmission
+(AT) benchmark
+(
+Hoxha et al., 2015
+)
+from the ARCH-COMP falsification competition
+(
+Khandait et al., 2025
+)
+as a running example throughout the paper.
+The model
+ℳ
+\mathcal{M}
+is a Simulink model of a vehicle with an automatic transmission, simulated over the horizon
+𝕋
+=
+[
+0
+,
+50
+]
+\mathbb{T}=[0,50]
+seconds.
+It has two input signals, the
+throttle
+position with range
+[
+0,100
+]
+[0,100]
+and the
+brake
+with range
+[
+0,325
+]
+[0,325]
+, and three output signals: the vehicle
+speed
+, the engine speed
+rpm
+, and the selected
+gear
+.
+The initial state is fixed (the vehicle starts at rest), so the search is over the input signal
+u
+⁡
+(
+t
+)
+=
+(
+throttle
+​
+(
+t
+)
+,
+brake
+​
+(
+t
+)
+)
+u(t)=(\texttt{throttle}(t),\texttt{brake}(t))
+only.
+As the specification of the running example we use the AT1 specification of the benchmark,
+φ
+AT1
+=
+𝐆
+[
+0
+,
+20
+]
+​
+(
+speed
+≤
+120
+)
+,
+\varphi_{\mathrm{AT1}}\;=\;\mathbf{G}_{[0,20]}\,(\texttt{speed}\leq 120),
+which states that the vehicle speed must not exceed
+120
+120
+during the first
+20
+20
+seconds.
+Its only atom is
+μ
+≡
+h
+⁡
+(
+𝐱
+⁡
+(
+t
+)
+)
+≥
+0
+\mu\equiv h(\mathbf{x}(t))\geq 0
+with
+h
+​
+(
+𝐱
+​
+(
+t
+)
+)
+=
+120
+−
+speed
+​
+(
+t
+)
+h(\mathbf{x}(t))=120-\texttt{speed}(t)
+, so by Eqs. (
+2
+) and (
+7
+) the robustness of a trajectory is
+ρ
+⁡
+(
+φ
+AT1
+,
+𝐱
+,
+0
+)
+=
+inf
+t
+∈
+[
+0
+,
+20
+]
+(
+120
+−
+speed
+​
+(
+t
+)
+)
+=
+120
+−
+sup
+t
+∈
+[
+0
+,
+20
+]
+speed
+​
+(
+t
+)
+,
+\rho(\varphi_{\mathrm{AT1}},\mathbf{x},0)\;=\;\inf_{t\in[0,20]}\big(120-\texttt{speed}(t)\big)\;=\;120-\sup_{t\in[0,20]}\texttt{speed}(t),
+i.e., the margin by which the peak speed in the first
+20
+20
+seconds stays below
+120
+120
+.
+It is positive as long as the speed stays below the bound and becomes negative exactly when the speed exceeds
+120
+120
+somewhere in the window.
+Figure
+2
+(b) shows two such trajectories.
+The first peaks at
+119.6
+119.6
+within the window, so its robustness is
+≈
+0.4
+\approx 0.4
+and it does not violate the specification, even though its speed exceeds
+120
+120
+shortly after
+t
+=
+20
+t=20
+, outside the window; the second reaches
+120.2
+120.2
+at
+t
+=
+20
+t=20
+, has robustness
+≈
+−
+0.2
+\approx-0.2
+, and constitutes a counterexample.
+Following the signal parameterization that Ψ-TaLiRo uses for ARCH-COMP Instance 1 (Section
+5.1
+), the throttle signal is given by
+7
+7
+control points and the brake signal by
+3
+3
+control points, evenly spaced over the
+50
+50
+-second horizon and interpolated in between.
+A candidate input is therefore a vector in
+[
+0,100
+]
+7
+×
+[
+0,325
+]
+3
+[0,100]^{7}\times[0,325]^{3}
+, and the falsification problem in Eq. (
+8
+) for
+φ
+AT1
+\varphi_{\mathrm{AT1}}
+becomes a
+10
+10
+-dimensional box-constrained search for throttle and brake control points whose interpolated signals drive the speed above
+120
+120
+before
+t
+=
+20
+t=20
+seconds.
+The two inputs of Figure
+2
+(a) are such vectors: full throttle at the first three control points and none afterwards,
+(
+100,100,100
+,
+0
+,
+0
+,
+0
+,
+0
+,
+0
+,
+0
+,
+0
+)
+(100,100,100,0,0,0,0,\,0,0,0)
+, produces the near miss, whereas full throttle at all seven control points,
+(
+100
+,
+…
+,
+100
+,
+0
+,
+0
+,
+0
+)
+(100,\dots,100,\,0,0,0)
+, produces the counterexample; the brake is zero in both.
+Section
+4
+shows how
+LLM-Falsifier
+performs this search, and Section
+5
+reports how many simulations it needs (the AT1 rows of Tables
+1
+–
+3
+).
+3.
+Related Work
+Correctness is especially important in CPS, as mistakes can have real-world consequences. While formal approaches like model checking
+(
+Clarke et al., 1994
+)
+and deductive verification
+(
+Owre et al., 1996
+)
+continue to make progress in CPS domains
+(
+Fulton et al., 2015
+)
+, the complexity of CPS, the ad-hoc nature of engineering in practice, and the fundamental undecidability of the verification problem for many practical cases
+(
+Henzinger et al., 1995
+)
+limit the applicability of these methods. Test-driven methods like falsification have been developed as practical alternatives with wider applicability at the cost of less rigorous guarantees
+(
+Kapinski et al., 2016
+)
+.
+Classical CPS falsification is largely framed as black-box, derivative-free optimization over the STL robustness landscape, with mature toolchains such as Breach
+(
+Donzé, 2010
+)
+and S-TaLiRo
+(
+Annpureddy et al., 2011
+)
+providing simulation, monitoring, and a search backbone. The ARCH-COMP falsification category
+(
+Khandait et al., 2025
+)
+consolidates a diverse set of strategies on top of this foundation, including surrogate-based methods (ARIsTEO, FlexiFal, FReaK), Bayesian optimization (Ψ-TaLiRo’s ConBO-LS), search-based testing (ATheNA), automata learning (FalCAuN), and Monte Carlo Tree Search (ForeSee); per-tool descriptions are given in Section
+5.1
+. Our work differs from all of these by using a large language model itself as the search engine, exploiting semantic signal names, output trajectories, and critical-time witnesses that classical numerical optimizers cannot consume.
+STL is also used beyond falsification, for example in planning
+(
+Mehdipour et al., 2019
+)
+, robotics
+(
+Haghighi et al., 2019
+)
+, automotive
+(
+Fainekos et al., 2012
+)
+and multi-agent systems
+(
+Pant et al., 2018
+)
+, as well as for monitoring
+(
+Donzé et al., 2013
+;
+Deshmukh et al., 2017
+;
+Bartocci et al., 2018a
+)
+and specification mining
+(
+Jin et al., 2013
+)
+.
+Within numerical falsification, the formulation of the robustness measure determines the complexity of the optimization. Options beyond the min/max semantics used in this work include arithmetic-geometric mean robustness
+(
+Mehdipour et al., 2019
+)
+, MIP formulations
+(
+Belta and Sadraddini, 2019
+)
+, and smooth cumulative semantics
+(
+Haghighi et al., 2019
+)
+, which replace hard min/max operations with smooth aggregates suited to gradient-based optimization and control synthesis. They may also benefit LLM-driven falsification, but the notion of critical time would need to be reconsidered if the robustness semantics are adjusted.
+Our critical time points, which identify times in the simulation
+output
+signals, are related to trace diagnostics for STL, which have been used for fault localization in Simulink/Stateflow models
+(
+Bartocci et al., 2018b
+)
+and to extend robustness to distinguish between input and output signals
+(
+Ferrère et al., 2019
+)
+, building on earlier diagnostics for LTL and MTL
+(
+Ferrère et al., 2015
+)
+. Other work studies the harder problem of identifying the times and values of
+input
+signals responsible for a counterexample
+(
+Diwakaran et al., 2017
+)
+. Rather than providing complete trace diagnostics in the prompt, we select a single witness time and its associated signal values as a compact guide for the search process.
+Large language models have recently been used as general-purpose decision-making and search modules through in-context learning (ICL), where the model is conditioned on natural-language instructions and a small set of examples rather than updated through gradient-based training. This capability became especially prominent with GPT-3
+(
+Brown et al., 2020
+)
+and has since been explored in several sequential decision-making settings, including reinforcement learning
+(
+Laskin et al., 2022
+;
+Monea et al., 2024
+)
+. More broadly, these efforts reflect the growing use of foundation models to support engineering workflows
+(
+Yüksel et al., 2023
+)
+. Closely related to our setting, Optimization by PROmpting (OPRO)
+(
+Yang et al., 2024
+)
+uses an LLM as an iterative, derivative-free optimizer by prompting it with an optimization problem description and previously evaluated solution–score pairs.
+At each optimization step, the meta-prompt is used to generate several new candidate solutions, which are then evaluated and ranked outside the LLM, with only the best-scoring solutions retained (and sorted by score) in the next meta-prompt. This strategy can be viewed as a form of hill climbing: the LLM proposes multiple candidates (exploration), and a small subset is selected outside the LLM for further improvement (exploitation).
+Our work addresses a related but different challenge, namely the combination of numerical and linguistic reasoning for optimization in falsification, where each candidate evaluation is a simulation;
+LLM-Falsifier
+therefore needs no initial samples, generates a single sample per iteration, and does not rely on an external selection strategy (Section
+4.1
+).
+Within software engineering, LLMs have also been investigated for testing-related tasks such as test generation and fuzzing
+(
+Xia et al., 2024
+;
+Asmita et al., 2024
+)
+, and for constructing counterexamples that refute incorrect programs
+(
+Sinha et al., 2025
+)
+.
+These works suggest that LLMs can help propose informative inputs by exploiting structure expressed in natural language, code, or prior execution feedback.
+In the CPS domain, LLMs have been proposed as a component of formal testing pipelines for learning-enabled systems
+(
+Zheng et al., 2024
+)
+and are widely used to generate test scenarios for automated driving
+(
+Zhao et al., 2026
+)
+, typically operating on high-level scenario descriptions with Boolean pass/fail outcomes rather than continuous input signals scored by a robustness monitor.
+However, CPS falsification differs fundamentally from conventional software fuzzing. In many software-testing settings, executions are relatively cheap and the main challenge is to generate diverse, high-value seeds. In contrast, falsification typically relies on expensive simulations of dynamical systems, and each query is evaluated through a robustness objective derived from an STL specification. As a result, the search must be much more sample-efficient and tightly coupled to quantitative feedback from the monitor.
+To the best of our knowledge, this is the first study to employ an LLM directly as a robustness-guided falsifier for CPS. We demonstrate that LLMs already have the reasoning ability required for counterexample search in falsification, and that this ability can be strengthened by integrating semantic and numerical feedback.
+4.
+Methodology
+This section presents our LLM-driven approach for CPS falsification. Section
+4.1
+describes the closed-loop
+LLM-Falsifier
+architecture. Section
+4.2
+then develops a sequence of four progressively enriched meta-prompt variants (MP1–MP4) that expose increasing amounts of semantic context to the LLM, and Section
+4.3
+formalizes the critical-time witness used by the most enriched variant.
+4.1.
+Overview
+The starting point is the STL falsification problem in Eq. (
+8
+).
+LLM-Falsifier
+addresses it by treating a large language model as the derivative-free optimizer: at each iteration, the LLM proposes a new candidate input from a prompt that summarizes the history of past samples and their robustness values. Figure
+1
+shows the closed-loop workflow. Given the
+STL Specification
+and the
+System Files
+(e.g., a Simulink model), a
+Static Model Summarization
+step extracts static model information for the
+Meta-Prompt
+. The
+LLM
+proposes the next sample, the
+Simulator
+runs it, and an
+STL Monitor
+returns the robustness value
+ρ
+\rho
+along with its witness time, which we call the
+critical time
+. If
+ρ
+<
+0
+\rho<0
+, the process terminates; otherwise the sample and its robustness, together with any additional per-sample feedback we choose to include (defined in Section
+4.2
+), are appended to the prompt as
+Sample-Robustness Pairs
+, and the loop repeats.
+The history is empty in the first iteration, so the first simulated input is already proposed by the LLM; each iteration requests exactly one sample and therefore costs exactly one simulation, and the prompt retains the ten most recent samples in chronological order without any score-based selection or reordering.
+What concretely populates the Meta-Prompt and the Sample-Robustness Pairs defines the prompt variant; we develop these variants next.
+Running example
+For the AT running example of Section
+2
+, one iteration of the loop proceeds as follows.
+The Static Model Summarization step parses the Simulink model files and recovers the input names
+throttle
+and
+brake
+with their ranges, and it extracts the output name
+speed
+from the specification
+φ
+AT1
+\varphi_{\mathrm{AT1}}
+, since that is the signal the specification constrains; together with the specification itself and the signal parameterization (
+7
+7
+throttle and
+3
+3
+brake control points), this information populates the Meta-Prompt.
+Figure
+3
+shows the resulting prompt.
+The LLM replies with a single candidate point, i.e., ten numbers giving the throttle and brake values at the control points, which we parse from its response.
+The Simulator interpolates these values into continuous input signals, runs the Simulink model for
+50
+50
+seconds, and returns the output trace, from which the STL Monitor evaluates
+ρ
+⁡
+(
+φ
+AT1
+,
+𝐱
+,
+0
+)
+=
+120
+−
+sup
+t
+∈
+[
+0
+,
+20
+]
+speed
+​
+(
+t
+)
+\rho(\varphi_{\mathrm{AT1}},\mathbf{x},0)=120-\sup_{t\in[0,20]}\texttt{speed}(t)
+together with its critical time, the time in
+[
+0
+,
+20
+]
+[0,20]
+at which the speed is largest.
+For the first history entry shown in Figure
+3
+, which is the near miss of Figure
+2
+, the speed peaked at
+119.6
+119.6
+(rounded in the prompt) at
+t
+=
+20
+t=20
+seconds, so
+ρ
+=
+0.419
+>
+0
+\rho=0.419>0
+and the specification is not yet violated: the point, its robustness, the sampled speed trajectory, and the critical-time witness are appended to the history, and the LLM is prompted again.
+The search stops as soon as a proposed point yields
+ρ
+<
+0
+\rho<0
+, i.e., a throttle and brake profile under which the speed exceeds
+120
+120
+within the first
+20
+20
+seconds.
+Section
+5.5
+shows the reasoning with which the LLM arrives at such a point for this example, and the AT1 rows of Tables
+1
+–
+3
+report how many simulations this takes.
+4.2.
+Semantic Information Enhancement
+Example of our Prompt for the AT System
+You are an optimization assistant for a system falsification task. Your goal is to find input parameters that violate system specifications (negative robustness values indicate violations).
+SYSTEM SPECIFICATION TO VIOLATE:
+STL Formula: G[0, 20] (speed <= 120)
+OUTPUT VARIABLES:
+speed
+INPUT CONTROL PARAMETERS:
+The input space has 10 dimensions representing control parameters:
+Dimension 1: [0.0, 100.0] -
+Throttle level at t=0.0s
+⋮Dimension 7: [0.0, 100.0] -
+Throttle level at t=50.0s
+Dimension 8: [0.0, 325.0] -
+Brake pressure at t=0.0s
+⋮Dimension 10: [0.0, 325.0] -
+Brake pressure at t=50.0s
+OPTIMIZATION CONTEXT:
+- Lower robustness values are better (negative values indicate specification violations)
+- Use the semantic meaning of each dimension and the specification requirements to make informed decisions
+-
+Pay attention to the system output states to understand how inputs affect system behavior
+RECENT OPTIMIZATION HISTORY (last 10 samples):
+Sample 1: [’100.000’, …, ’0.000’] -> Robustness: 0.419
+Output of Sample 1: speed: at 0.0s = 0.0, at 8.3s = 82.5,…, at 50.0s = 81.5;
+Robustness value of 0.419 for this sample originates from state values at time = 20.0s: speed = 119.6
+⋮
+Based on this history and the specification requirements, generate a new sample point that is different from all points above and is likely to achieve a lower robustness value
+(violation).
+Consider:
+1. Which parameter combinations led to lower robustness values in the history
+2. The physical/logical meaning of each parameter and how it affects the output variables
+3. How the specification constrains the output variables and what inputs might violate these constraints
+4. How the system outputs changed with different input parameters
+5. Patterns in the output states that might indicate approaching or achieving violations
+Figure 3.
+Enriched meta-prompt (MP4) for the specification AT1 of the Automatic Transmission benchmark; removing the colored augmentations yields the baseline prompt MP1.
+Text box showing the full meta-prompt sent to the LLM for the Automatic Transmission benchmark. It contains the STL specification to violate, named output variables, named input control dimensions with ranges, optimization guidance, and a history of past samples annotated with robustness values, output trajectories, and critical-time information. Colored text marks the three progressive prompt augmentations.
+We start from a minimal instantiation of the loop, which we call
+Meta-Prompt 1 (MP1)
+. In MP1, input dimensions are listed by index with no natural-language names, no specification, and no output information; the per-sample feedback in the prompt history is the scalar robustness only. MP1 corresponds to Figure
+3
+with all colored augmentations removed, and represents our simplest (least enriched) meta-prompt for the falsification problem in Eq. (
+8
+), i.e., numeric solution–score pairs only, within the loop of Section
+4.1
+.
+This baseline treats falsification as a purely numeric, black-box search where input dimensions are listed by index with no semantic information.
+This forgoes a potential advantage of LLM-based optimization, the ability to reason about the semantics and causality within a model.
+To exploit those capabilities, we modify the meta-prompt to include more context.
+Concretely, we include (i) the natural language names of the inputs and outputs, (ii) the output state signal values, and (iii) a single witness time that we call the
+critical time point
+, whose signal values are relevant to the computed robustness score.
+These modifications serve to turn a pure numerical search into a contextual reasoning task that the LLM can potentially solve more effectively.
+An example of a prompt, slightly modified for brevity, containing these enhancements is shown in Figure
+3
+.
+The prompt corresponds to the one used to falsify the specification AT1 of the
+Automatic Transmission
+(AT) benchmark
+(
+Hoxha et al., 2015
+)
+from the ARCH-COMP
+(
+Khandait et al., 2025
+)
+competition.
+The colors correspond to the different levels of proposed enhancements.
+Specification context (shown in
+violet
+)
+includes the STL formula of the requirement to be violated. Providing this explicit objective (for example,
+G[0,20](speed <= 120)
+) directs the LLM toward input changes that influence the specification-relevant output signals. Additionally, we automatically extract the relevant output signal name from the STL specification and explicitly include it in the prompt. Beyond including the specification itself, we provide explicit guidance instructing the model to leverage it to encourage logical reasoning.
+Since the STL specification references signal names, we also give each input dimension a text name associated with its physical meaning, such as throttle or brake values at specific times, along with the relevant output variables (e.g.,
+speed
+). This enables the LLM to reason about causal relationships, such as inferring that increasing the throttle input may increase vehicle speed output.
+This augmentation defines
+Meta-Prompt 2 (MP2)
+, which extends the baseline prompt (MP1) with the
+violet
+specification and signal-name context shown in Figure
+3
+.
+Output-signal feedback (shown in
+blue
+)
+expands the optimization history beyond scalar robustness scores by including the output state signal trajectories.
+Since full output traces are large and could bloat the prompt, we include a compact representation instead: pointwise output state values sampled at the same times as the input control points. This keeps the prompt concise while preserving the key information the LLM needs to reason about cause and effect. When the prompt includes output signal values, we further include explicit instructions encouraging the model to leverage this information, as shown in the figure. Adding this
+blue
+output-signal context on top of MP2 defines
+Meta-Prompt 3 (MP3)
+.
+Critical time points (shown in
+cyan
+)
+add to each history sample a computed time point and the signal values at that time, which serve as a witness to the robustness value.
+The exact definition and details of this calculation will be explained next in Section
+4.3
+. Adding this
+cyan
+critical-time information on top of MP3 yields
+Meta-Prompt 4 (MP4)
+, our full prompt variant.
+These refinements preserve the baseline
+LLM-Falsifier
+loop while potentially leveraging model domain information (signal names, output state values and critical point) to bias the LLM toward semantically meaningful searches. In summary, MP1 is the baseline prompt, MP2 adds specification and signal-name context, MP3 additionally includes output signal values, and MP4 further adds critical-time information. In our ablation study, we show that this leads to more focused samples and faster discovery of counterexamples.
+4.3.
+Critical Time Points
+In order to better focus the falsification search, one enhancement was to explicitly identify the times that serve as a witness to the minimum robustness.
+To accomplish this, we define the
+critical time point
+τ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+∈
+ℝ
+\tau(\varphi,\mathbf{x},t)\in\mathbb{R}
+, which identifies the time at which the robustness
+ρ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+\rho(\varphi,\mathbf{x},t)
+is realized.
+Similar to the quantitative semantics of STL,
+τ
+\tau
+can be computed recursively based on the syntax of the formula:
+(9)
+τ
+⁡
+(
+true
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\text{true},\mathbf{x},t)
+=
+t
+,
+\displaystyle=t,
+(10)
+τ
+⁡
+(
+μ
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\mu,\mathbf{x},t)
+=
+t
+,
+\displaystyle=t,
+(11)
+τ
+⁡
+(
+¬
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\neg\varphi,\mathbf{x},t)
+=
+τ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+)
+,
+\displaystyle=\tau(\varphi,\mathbf{x},t),
+(12)
+τ
+⁡
+(
+φ
+1
+∧
+φ
+2
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\varphi_{1}\wedge\varphi_{2},\mathbf{x},t)
+=
+{
+τ
+⁡
+(
+φ
+1
+,
+𝐱
+,
+t
+)
+if
+​
+ρ
+​
+(
+φ
+1
+,
+𝐱
+,
+t
+)
+≤
+ρ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+)
+τ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+)
+otherwise
+\displaystyle=\begin{cases}\tau(\varphi_{1},\mathbf{x},t)&\text{if }\rho(\varphi_{1},\mathbf{x},t)\leq\rho(\varphi_{2},\mathbf{x},t)\\
+\tau(\varphi_{2},\mathbf{x},t)&\text{otherwise}\end{cases}
+Note that for negation, although the robustness value changes sign, the critical time point remains the same.
+The critical time point for the
+F
+(eventually) and
+G
+(globally) operators can be defined as the time at which the subformula achieves its maximum (for
+F
+) or minimum (for
+G
+) robustness value.
+One complication with these is that if
+φ
+\varphi
+contains nested temporal operators, it is important to return the critical time point of the
+inner
+subformula, not the outer one.
+(13)
+τ
+⁡
+(
+𝐅
+[
+a
+,
+b
+]
+​
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\mathbf{F}_{[a,b]}\varphi,\mathbf{x},t)
+=
+τ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+∗
+)
+\displaystyle=\tau(\varphi,\mathbf{x},t^{*})
+where
+​
+t
+∗
+\displaystyle\text{where }t^{*}
+=
+arg
+sup
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+ρ
+(
+φ
+,
+𝐱
+,
+t
+′
+)
+\displaystyle=\arg\sup_{t^{\prime}\in t+[a,b]}\rho(\varphi,\mathbf{x},t^{\prime})
+(14)
+τ
+⁡
+(
+𝐆
+[
+a
+,
+b
+]
+​
+φ
+,
+𝐱
+,
+t
+)
+\displaystyle\tau(\mathbf{G}_{[a,b]}\varphi,\mathbf{x},t)
+=
+τ
+⁡
+(
+φ
+,
+𝐱
+,
+t
+∗
+)
+\displaystyle=\tau(\varphi,\mathbf{x},t^{*})
+where
+​
+t
+∗
+\displaystyle\text{where }t^{*}
+=
+arg
+inf
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+ρ
+(
+φ
+,
+𝐱
+,
+t
+′
+)
+\displaystyle=\arg\inf_{t^{\prime}\in t+[a,b]}\rho(\varphi,\mathbf{x},t^{\prime})
+When the supremum or infimum in Eqs. (
+13
+) and (
+14
+) is attained at several times, our implementation takes the earliest one.
+An illustrative example showing the need to define the critical time point using the inner subformula is shown in Figure
+4
+for
+φ
+=
+𝐆
+[
+0
+,
+10
+]
+​
+𝐅
+[
+1
+,
+3
+]
+​
+(
+x
+≥
+0
+)
+\varphi=\mathbf{G}_{[0,10]}\,\mathbf{F}_{[1,3]}(x\geq 0)
+.
+Here, the critical time corresponding to the solid blue line
+x
+⁡
+(
+t
+)
+x(t)
+is
+t
+sup
+∗
+=
+3
+t^{*}_{\sup}=3
+(red vertical line), where the signal
+x
+⁡
+(
+t
+)
+x(t)
+remains low for the next two seconds (the dotted black line is two seconds wide).
+The outer time
+t
+inf
+∗
+t^{*}_{\inf}
+(magenta vertical line) evaluates to time
+2.0
+2.0
+.
+Put another way, at
+t
+=
+2
+t=2
+, the robustness of subformula
+𝐅
+[
+1
+,
+3
+]
+​
+(
+x
+≥
+0
+)
+\mathbf{F}_{[1,3]}(x\geq 0)
+is minimized.
+If the signal value was reduced at the critical time, the robustness of the overall formula would decrease.
+In the figure, this is shown by the dotted blue line, which represents a modified interpolated output signal,
+slightly reduced at the critical time (the blue dot is moved downward).
+The robustness
+ρ
+\rho
+decreases from
+ρ
+=
+0.6
+\rho=0.6
+with the original solid blue signal to
+ρ
+=
+0.54
+\rho=0.54
+with the modified dotted blue one.
+Of course, it is difficult to precisely manipulate the output signal, but this justifies its use as a reasonable target for the falsifier.
+Line plot of a signal over time for the nested formula G over 0 to 10 of F over 1 to 3 of x greater than or equal to 0. The inner critical time at t equals 3 is marked in red and the outer time at t equals 2 in magenta. A dotted blue curve shows that lowering the signal at the inner critical time reduces the overall robustness from 0.6 to 0.54.
+Figure 4.
+Critical time for
+φ
+=
+𝐆
+[
+0
+,
+10
+]
+​
+𝐅
+[
+1
+,
+3
+]
+​
+(
+x
+≥
+0
+)
+\varphi=\mathbf{G}_{[0,10]}\,\mathbf{F}_{[1,3]}(x\geq 0)
+. The critical time
+t
+sup
+∗
+=
+3
+t_{\sup}^{*}=3
+is determined by the inner temporal operator, not by the outer one (
+t
+inf
+∗
+=
+2
+t_{\inf}^{*}=2
+). Lowering the signal at
+t
+sup
+∗
+t_{\sup}^{*}
+(dotted blue) reduces the robustness from
+0.6
+0.6
+to
+0.54
+0.54
+.
+Line plot of a signal over time for the nested formula G over 0 to 10 of F over 1 to 3 of x greater than or equal to 0. The inner critical time at t equals 3 is marked in red and the outer time at t equals 2 in magenta. A dotted blue curve shows that lowering the signal at the inner critical time reduces the overall robustness from 0.6 to 0.54.
+For an until formula,
+φ
+1
+​
+𝐔
+[
+a
+,
+b
+]
+​
+φ
+2
+\varphi_{1}\mathbf{U}_{[a,b]}\varphi_{2}
+, the critical time point corresponds to the inner time associated with either
+t
+∗
+t^{*}
+(derived from
+φ
+1
+\varphi_{1}
+), or
+t
+∗
+⁣
+∗
+t^{**}
+(derived from
+φ
+2
+\varphi_{2}
+), depending on which subformula’s robustness is smaller:
+(15)
+τ
+⁡
+(
+φ
+1
+​
+𝐔
+[
+a
+,
+b
+]
+​
+φ
+2
+,
+𝐱
+,
+t
+)
+=
+{
+τ
+⁡
+(
+φ
+1
+,
+𝐱
+,
+t
+∗
+)
+if
+​
+ρ
+​
+(
+φ
+1
+,
+𝐱
+,
+t
+∗
+)
+≤
+ρ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+∗
+⁣
+∗
+)
+τ
+⁡
+(
+φ
+2
+,
+𝐱
+,
+t
+∗
+⁣
+∗
+)
+otherwise
+\displaystyle\tau(\varphi_{1}\mathbf{U}_{[a,b]}\varphi_{2},\mathbf{x},t)=\begin{cases}\tau(\varphi_{1},\mathbf{x},t^{*})&\text{if }\rho(\varphi_{1},\mathbf{x},t^{*})\leq\rho(\varphi_{2},\mathbf{x},t^{**})\\
+\tau(\varphi_{2},\mathbf{x},t^{**})&\text{otherwise}\end{cases}
+t
+∗
+=
+arg
+inf
+t
+′′
+∈
+[
+t
+,
+t
+∗
+⁣
+∗
+]
+ρ
+(
+φ
+1
+,
+𝐱
+,
+t
+′′
+)
+\displaystyle t^{*}=\arg\inf_{t^{\prime\prime}\in[t,t^{**}]}\rho(\varphi_{1},\mathbf{x},t^{\prime\prime})
+t
+∗
+⁣
+∗
+=
+arg
+sup
+t
+′
+∈
+t
++
+[
+a
+,
+b
+]
+min
+(
+ρ
+(
+φ
+2
+,
+𝐱
+,
+t
+′
+)
+,
+inf
+t
+′′
+∈
+[
+t
+,
+t
+′
+]
+ρ
+(
+φ
+1
+,
+𝐱
+,
+t
+′′
+)
+)
+\displaystyle t^{**}=\arg\sup_{t^{\prime}\in t+[a,b]}\min\left(\rho(\varphi_{2},\mathbf{x},t^{\prime}),\;\inf_{t^{\prime\prime}\in[t,t^{\prime}]}\rho(\varphi_{1},\mathbf{x},t^{\prime\prime})\right)
+Similar to the earlier temporal operators, the critical time point of one of the inner subformulas is returned.
+5.
+Evaluation
+In this section, we evaluate the proposed
+LLM-Falsifier
+on standard benchmarks and conduct ablation studies to assess the effect of augmenting the prompt with additional CPS-specific information.
+5.1.
+Evaluation Setup
+Benchmarks
+We use benchmarks from the 2025
+Applied Verification for Continuous and Hybrid Systems
+competition (ARCH-COMP) falsification category, which is the most recent edition available at the time of writing
+(
+Khandait et al., 2025
+)
+.
+ARCH-COMP defines two falsification benchmark instances:
+Instance 1
+and
+Instance 2
+. Instance 1 allows flexible parameterization of input signals with participant-defined interpolation schemes, while Instance 2 restricts inputs to piecewise-constant signals with uniformly spaced control points and no interpolation.
+For brevity of exposition, we focus on Instance 1 for our evaluation in this paper.
+The ARCH-COMP benchmarks include:
+Automatic Transmission
+(AT)
+(
+Hoxha et al., 2015
+)
+,
+Neural Network Controller
+(NN)
+(
+Donzé, 2010
+)
+,
+Chasing Cars
+(CC)
+(
+Hu et al., 2000
+)
+,
+Aircraft Ground Collision Avoidance System
+(F16)
+(
+Heidlauf et al., 2018
+)
+, and the
+Steam Condenser with Recurrent Neural Network Controller
+(SC)
+(
+Yaghoubi and Fainekos, 2019
+)
+.
+The only benchmark from the competition we do not include is Pacemaker (PM), as its code is not included in the public Ψ-TaLiRo repeatability repository for ARCH-COMP.
+In total, we evaluate our approach on 21 specifications across these five benchmarks, which represents a comprehensive evaluation of standard falsification tasks.
+The AT benchmark is the running example of Sections
+2
+and
+4
+: its specification
+φ
+AT1
+\varphi_{\mathrm{AT1}}
+appears as row AT1 in Tables
+1
+–
+3
+, and the remaining AT rows are further specifications over the same model, constraining the engine speed (AT2), gear changes (AT51–AT54), and the vehicle speed under an engine-speed assumption (AT6a–AT6
+abc
+).
+Implementation Details
+We implement
+LLM-Falsifier
+on top of the open-source Ψ-TaLiRo
+(
+Thibeault et al., 2021
+)
+toolbox, which is distributed under the BSD 3-Clause License, embedding our approach as a new optimization engine. Ψ-TaLiRo, the Python counterpart of S-TaLiRo
+(
+Annpureddy et al., 2011
+)
+, is a robustness-guided falsification framework that uses RTAMT
+(
+Ničković and Yamaguchi, 2020
+)
+for quantitative robustness computation (the STL Monitor block in Figure
+1
+).
+We implement a recursive procedure to compute the critical time from an STL formula and trace as described in Eqs. (
+9
+)–(
+15
+).
+Following Ψ-TaLiRo, we use the same signal parameterization for ARCH-COMP Instance 1 benchmarks: evenly spaced control points for all input signals and Piecewise Cubic Hermite Interpolating Polynomial (
+pchip
+) signal interpolation, which performs shape-preserving cubic interpolation between control points.
+Beyond the choice of signal parameterization,
+LLM-Falsifier
+has no other benchmark-specific hyperparameters.
+For extracting input/output signal names to embed in the prompt (the Static Model Summarization block in Figure
+1
+), we develop a parser that identifies and extracts the input signals from the system files (i.e., Simulink models with extensions
+.mdl
+or
+.slx
+), when available. Among all benchmarks, only for
+F16
+do we specify the input names manually, as this benchmark is implemented in Python.
+All experiments were run on a Linux machine with an 11th Gen Intel Core i9-11900KF CPU at 3.50 GHz.
+Models
+For our main falsification comparison in Section
+5.2
+, we use OpenAI
+gpt-5-mini
+with
+high
+reasoning effort as the LLM for the experiments.
+For our ablation studies in Section
+5.3
+, in order to save on monetary costs associated with LLM API usage, we use
+gpt-5-nano
+with
+low
+reasoning effort.
+The effect of model choice is discussed in Section
+5.4
+.
+OpenAI models are accessed through the OpenAI API, while the 20B open-source
+gpt-oss-20b
+model is run through the Hugging Face Inference Provider.
+Since OpenAI does not allow users to manually adjust the
+temperature
+in its API when using reasoning models, we use the default temperature (1.0) setting for all experiments.
+For our evaluation, costs at current API rates are on the order of $100.
+Baselines and Evaluation Protocol
+In ARCH-COMP, due to inherent randomness in the methods, each falsification tool is evaluated on 10 independent runs per specification, with a simulation budget of up to 1500 evaluations.
+Each participant reports the
+Falsification Rate
+(FR), defined as the number of runs out of 10 that find a counterexample, as well as the
+mean number of simulations
+S
+¯
+\overline{S}
+when falsification succeeds.
+The protocol is thus built around sample efficiency: because each simulation of a CPS model is expensive, tools are compared by how many simulations they need to find a counterexample, and the competition reports the falsification rate together with the mean and median number of simulations rather than wall-clock time. Wall-clock time is deliberately not compared, since the participants run their tools on their own machines with varying computational resources and different MATLAB/Simulink versions
+(
+Khandait et al., 2025
+)
+. We follow the same convention and report FR and
+S
+¯
+\overline{S}
+; runtime considerations for our approach are discussed in Section
+6
+.
+To limit API costs, we cap our simulation budget at 100 evaluations rather than 1500, which means that the falsification rate of our approach may be underestimated in the tables compared with the other tools.
+We compare against a uniform random (UR) baseline and the best-performing ARCH-COMP 2025 tools from several optimization paradigms, which we describe next.
+ARCH-COMP 2025 Baselines
+Among the eight tools reported in ARCH-COMP 2025
+(
+Khandait et al., 2025
+)
+(including the uniform random baseline), several representative algorithmic families appear. ARIsTEO
+(
+Menghi et al., 2020
+)
+uses an approximation-refinement loop, where an ARX surrogate of the CPS is learned and then iteratively refined through falsification and system identification. ATheNA
+(
+Formica et al., 2024
+)
+is a search-based testing framework built around simulated annealing, guided by a combination of manually designed and automatically constructed fitness functions. FalCAuN
+(
+Waga, 2020
+)
+takes a black-box checking view: it discretizes system inputs and outputs in time and value, learns a Mealy-machine abstraction of the system through active automata learning, and then uses automata-based model checking to generate counterexamples. FlexiFal
+(
+Kundu et al., 2026
+)
+is a surrogate-based falsifier with two variants, NNFal and DTFal, which respectively use neural-network and decision-tree surrogates; its ARCH-COMP 2025 results were obtained with DTFal. ForeSee
+(
+Zhang et al., 2021
+)
+targets the scale problem that arises when a specification combines signals of different magnitudes: its QB-robustness evaluates a selected sequence of sub-formulas quantitatively and the remaining sub-formulas by Boolean satisfaction, and Monte Carlo Tree Search (MCTS) over the syntax tree of the specification chooses that sequence, with numerical optimization applied at the leaves. FReaK
+(
+Bak et al., 2024a
+;
+Bak et al., 2024b
+)
+learns a Koopman-operator surrogate, computes reachable sets of the resulting linear model, and then uses MILP solving to identify least-robust trajectories. Finally, the Ψ-TaLiRo competition entry uses Conjunctive Bayesian Optimization (ConBO-LS)
+(
+Chotaliya et al., 2026
+)
+, a Bayesian optimization method that falsifies the conjunction of all requirements of a benchmark model at once, exploiting the dependencies between requirements, and that reduces to standard Bayesian optimization when a model has a single requirement.
+5.2.
+Comparison with Existing Tools
+To rank tools, we prioritize higher falsification rate (FR) values and break ties based on lower average number of simulations
+S
+¯
+\overline{S}
+. Using this ranking scheme, we compare our
+LLM-Falsifier
+against the best-performing ARCH-COMP 2025 baselines and a uniform random baseline (UR).
+The detailed results are in Table
+1
+.
+Our
+LLM-Falsifier
+achieves the highest rank in 14 out of 21 specifications
+.
+For six of the specifications, the reasoning capabilities of the LLM allowed our tool to falsify the system in
+a single simulation
+in every run.
+For any method based on pure numerical optimization, this result would be nearly impossible as there is no information available
+at the time of the first sample.
+Even the high-performance FReaK approach
+(
+Bak et al., 2024a
+)
+, which builds a surrogate model of the CPS and reasons within it to decide on the next sample, requires an initial single random simulation to construct a surrogate model.
+Table 1.
+Falsification results on the ARCH-COMP falsification benchmarks (Instance 1). For each specification,
+ARCH-COMP Best
+is the best-performing ARCH-COMP 2025 tool,
+Rank
+is the position of
+LLM-Falsifier
+when inserted into the ARCH-COMP 2025 ranking, and
+UR
+is uniform random sampling. Green cells mark the best result per row, an asterisk (*) indicates a tie, and a dash indicates that no run found a counterexample.
+ARCH-COMP Best
+Ours
+UR
+Spec
+Tool
+FR
+S
+¯
+\overline{S}
+Rank
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+AT1
+FReaK
+10
+4.8
+1st
+10
+1.0
+0
+-
+AT2
+FReaK
+10
+2.1
+1st
+10
+1.0
+10
+7.6
+AT51
+FReaK
+10
+8.7
+-
+0
+-
+1
+923.0
+AT52
+FReaK
+10
+1.3
+1st*
+10
+1.3
+10
+4.1
+AT53
+FReaK
+10
+1.1
+2nd
+10
+2.3
+10
+18.6
+AT54
+FReaK
+10
+2.4
+-
+0
+-
+3
+932.0
+AT6a
+FReaK
+10
+7.4
+1st
+10
+3.3
+10
+74.4
+AT6b
+FReaK
+10
+6.2
+1st
+10
+4.7
+10
+251.3
+AT6c
+FReaK
+10
+5.9
+1st
+10
+4.8
+10
+185.2
+AT6
+abc
+FReaK
+10
+6.4
+1st
+10
+3.1
+10
+58.8
+NN
+FReaK
+10
+2.0
+6th
+1
+97.0
+10
+38.6
+NN
+β
+\beta
+FReaK
+10
+30.9
+-
+0
+-
+0
+-
+NNx
+FReaK
+10
+192.3
+1st
+10
+1.0
+0
+-
+CC1
+FReaK
+10
+3.6
+1st
+10
+1.0
+10
+10.4
+CC2
+FReaK
+10
+3.0
+1st
+10
+1.0
+10
+15.4
+CC3
+FReaK
+10
+5.7
+1st
+10
+1.7
+10
+77.9
+CC4
+FReaK
+10
+176.7
+3rd
+5
+58.6
+0
+-
+CC5
+ARIsTEO
+10
+31.4
+1st
+10
+17.1
+10
+28.5
+CCx
+FReaK
+10
+110.5
+1st
+10
+9.0
+7
+338.1
+F16
+FReaK
+10
+1.0
+1st*
+10
+1.0
+0
+-
+SC
+FReaK
+10
+45.1
+-
+0
+-
+0
+-
+5.3.
+Ablation Studies
+To justify the choice of our prompt design decisions, we performed an ablation study comparing the four progressive meta-prompt variants defined in Section
+4.2
+, namely MP1 through MP4.
+Table
+2
+summarizes the ablation study results. The same ranking criterion described before in Section
+5.2
+was used to assess performance.
+Across most benchmarks, adding more context tends to improve performance, with MP4 achieving the best results.
+Providing semantically meaningful model-specific context, particularly critical-time information, helps the LLM focus its search and identify counterexamples more efficiently.
+The largest performance gains were observed for the Automatic Transmission (AT) benchmarks.
+We believe this improvement stems from the fact that the input signal names closely correspond to their physical meaning. Specifically, in the AT case, the inputs are
+throttle
+and
+brake
+, while the outputs include
+speed
+,
+rpm
+, and
+gear
+, which are directly referenced in the specifications. This clear semantic alignment allows the LLM to reason more effectively about cause-and-effect relationships, making falsification easier.
+The running example illustrates this: with the baseline prompt MP1, which lists the ten input dimensions only by index and reports only the scalar robustness,
+gpt-5-nano
+needed
+25.2
+25.2
+simulations on average to falsify AT1 and failed in one of ten runs.
+Once the prompt names the inputs
+throttle
+and
+brake
+and the output
+speed
+and states the specification
+𝐆
+[
+0
+,
+20
+]
+​
+(
+speed
+≤
+120
+)
+\mathbf{G}_{[0,20]}(\texttt{speed}\leq 120)
+(MP2), the same model succeeds in every run after
+1.4
+1.4
+simulations on average, since it can infer that high throttle and no braking maximize the speed instead of discovering this relation by trial and error (see the reasoning trace in Section
+5.5
+).
+The failure cases in AT correspond to specifications AT51 and AT54. Together with the related specifications AT52 and AT53, they are defined over the
+gear
+signal, which takes discrete values. This discreteness causes the robustness measure to plateau at fixed levels (e.g., 0.5), making these specifications inherently more difficult to falsify compared to the other AT cases.
+A possible future improvement could extract more graybox model information in the Static Model Summarization block from Figure
+1
+, for example, explaining how RPM determines gear to improve the falsification search.
+Table 2.
+Ablation study with
+gpt-5-nano
+(low reasoning) measuring the impact of each contextual element in the meta-prompt (MP1–MP4, Section
+4.2
+). Green cells mark the best result per row.
+MP1
+MP2
+MP3
+MP4
+Spec
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+AT1
+9
+25.2
+10
+1.4
+10
+1.4
+10
+1.2
+AT2
+10
+1.5
+10
+1.0
+10
+1.0
+10
+1.0
+AT51
+0
+-
+0
+-
+0
+-
+0
+-
+AT52
+10
+7.3
+10
+8.7
+10
+4.6
+10
+6.5
+AT53
+10
+7.1
+10
+6.7
+10
+7.7
+10
+6.8
+AT54
+0
+-
+0
+-
+0
+-
+0
+-
+AT6a
+7
+42.6
+9
+33.9
+10
+15.3
+10
+9.7
+AT6b
+5
+60.2
+9
+50.7
+10
+14.2
+10
+9.3
+AT6c
+7
+61.1
+10
+13.3
+10
+7.8
+10
+6.6
+AT6
+abc
+9
+43.8
+10
+18.0
+10
+12.3
+10
+11.3
+NN
+0
+-
+0
+-
+0
+-
+0
+-
+NN
+β
+\beta
+0
+-
+0
+-
+0
+-
+0
+-
+NNx
+10
+1.0
+10
+1.0
+10
+1.0
+10
+1.0
+CC1
+10
+11.4
+10
+1.0
+10
+1.1
+10
+1.0
+CC2
+10
+2.6
+10
+1.0
+10
+1.1
+10
+1.0
+CC3
+10
+14.7
+10
+1.0
+10
+1.0
+10
+1.0
+CC4
+0
+-
+3
+32.0
+3
+50.0
+0
+-
+CC5
+10
+12.0
+5
+59.0
+4
+49.5
+7
+29.0
+CCx
+1
+43.0
+1
+49.0
+1
+76.0
+1
+20.0
+F16
+10
+3.3
+10
+4.1
+10
+1.9
+10
+3.2
+SC
+0
+-
+0
+-
+0
+-
+0
+-
+5.4.
+Effect of Model Choice
+In addition to meta-prompt configurations, we study the impact of the underlying model choice across all evaluated specifications. Table
+3
+provides the complete falsification rate (FR) and mean number of simulations (
+S
+¯
+\overline{S}
+) for three models:
+gpt-oss-20b
+,
+gpt-5-nano
+, and
+gpt-5-mini
+. To visually compare their search efficiency, Figure
+5
+plots the mean simulations and standard deviation across all successful falsification runs for each specification.
+Table 3.
+Effect of model choice with the full prompt MP4. Larger models with more reasoning effort perform better, although the open-source option is competitive. Green cells mark the best result per row.
+gpt-oss-20b
+gpt-5-nano
+gpt-5-mini
+(low reas.)
+(low reas.)
+(high reas.)
+Spec
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+FR
+S
+¯
+\overline{S}
+AT1
+10
+1.1
+10
+1.2
+10
+1.0
+AT2
+10
+1.0
+10
+1.0
+10
+1.0
+AT51
+0
+-
+0
+-
+0
+-
+AT52
+10
+3.8
+10
+6.5
+10
+1.3
+AT53
+9
+19.0
+10
+6.8
+10
+2.3
+AT54
+1
+4.0
+0
+-
+0
+-
+AT6a
+10
+12.0
+10
+9.7
+10
+3.3
+AT6b
+10
+15.5
+10
+9.3
+10
+4.7
+AT6c
+10
+6.4
+10
+6.6
+10
+4.8
+AT6
+abc
+10
+12.7
+10
+11.3
+10
+3.1
+NN
+0
+-
+0
+-
+1
+97.0
+NN
+β
+\beta
+0
+-
+0
+-
+0
+-
+NNx
+10
+1.0
+10
+1.0
+10
+1.0
+CC1
+10
+1.0
+10
+1.0
+10
+1.0
+CC2
+10
+1.0
+10
+1.0
+10
+1.0
+CC3
+10
+1.0
+10
+1.0
+10
+1.7
+CC4
+0
+-
+0
+-
+5
+58.6
+CC5
+10
+8.9
+7
+29.0
+10
+17.1
+CCx
+0
+-
+1
+20.0
+10
+9.0
+F16
+9
+12.4
+10
+3.2
+10
+1.0
+SC
+0
+-
+0
+-
+0
+-
+Grouped bar chart over all benchmark specifications except SC, comparing the mean number of simulations for gpt-oss-20b, GPT-5-nano, and GPT-5-mini. GPT-5-mini generally achieves the lowest means and is the only model with bars on the hardest specifications such as NN, CC4, and CCx.
+Figure 5.
+Mean number of simulations required to find a falsifying input for the three LLMs on all specifications except SC, which no model falsified. Bars show the mean
+±
+\pm
+standard deviation over successful falsification runs; the NN panel uses a logarithmic scale. The more capable the model, the lower the mean and standard deviation on almost all specifications. Missing bars indicate that the model found no counterexample within the budget.
+Grouped bar chart over all benchmark specifications except SC, comparing the mean number of simulations for gpt-oss-20b, GPT-5-nano, and GPT-5-mini. GPT-5-mini generally achieves the lowest means and is the only model with bars on the hardest specifications such as NN, CC4, and CCx.
+Across most benchmarks, larger models with higher reasoning effort consistently yield higher falsification rates and require fewer simulations. On the Automatic Transmission (AT) benchmarks,
+gpt-5-mini
+with high reasoning consistently requires the lowest mean number of simulations to discover counterexamples, while the open-source
+gpt-oss-20b
+remains highly competitive, often achieving falsification in a comparable number of simulations to
+gpt-5-nano
+. On simpler or highly semantic tracking benchmarks like CC3 and CC5,
+gpt-oss-20b
+is very efficient, sometimes finding counterexamples in fewer average simulations than
+gpt-5-mini
+. The advantage of larger models is particularly evident in difficult specifications:
+•
+Neural Network Controller (NN)
+: Only
+gpt-5-mini
+(high reasoning) was able to falsify the NN specification, and only in 1 of 10 runs within the 100-simulation budget.
+•
+Chasing Cars (CC4, CCx)
+: On CC4, only
+gpt-5-mini
+achieved a non-zero falsification rate (FR = 5). Similarly, on CCx,
+gpt-5-mini
+succeeded in all 10 runs with a mean of only 9.0 simulations, whereas
+gpt-5-nano
+succeeded in a single run and
+gpt-oss-20b
+found no counterexample.
+These results suggest that complex temporal specifications require advanced logical and negation reasoning, which is stronger in larger models with dedicated reasoning steps.
+At the same time, the open-source
+gpt-oss-20b
+model exhibits competitive performance on several benchmarks. This indicates that
+LLM-Falsifier
+generalizes across different models and stands to benefit further as language models continue to improve.
+5.5.
+Explainability
+To understand how the LLM constructs samples that frequently falsify the specifications, we inspected its explicit reasoning output (using the open-source
+gpt-oss-20b
+(
+Agarwal et al., 2025
+)
+model, since full reasoning traces of the GPT-5 models are not exposed through the API). We return to the running example: the prompt in Figure
+3
+with specification
+φ
+AT1
+=
+𝐆
+[
+0
+,
+20
+]
+​
+(
+speed
+≤
+120
+)
+\varphi_{\mathrm{AT1}}=\mathbf{G}_{[0,20]}(\texttt{speed}\leq 120)
+. In this case the model immediately produced a falsifying sample on the first attempt, that is, from the meta-prompt alone, with an empty history section. We observed the following reasoning output:
+"Need high throttle and low brake to exceed 120 speed. Use high throttle 100, low brake 0."
+The output sample had
+100
+100
+throttle and
+0
+0
+brake at all time points, i.e., the point
+(
+100
+,
+…
+,
+100
+,
+0
+,
+0
+,
+0
+)
+(100,\dots,100,\,0,0,0)
+in the ten-dimensional input space of Section
+2
+.
+This closes the loop of Figure
+1
+for the running example: the Static Model Summarization step supplied the input names
+throttle
+and
+brake
+from the Simulink model and the output name
+speed
+from the specification; the LLM negated the specification (the speed must exceed
+120
+120
+at some time in
+[
+0
+,
+20
+]
+[0,20]
+) and used the physical meaning of the names to conclude that full throttle and no braking maximize the speed; the simulator produced a trajectory whose speed exceeds
+120
+120
+within the window (the counterexample trace of Figure
+2
+); and the STL Monitor returned a negative robustness, so the search terminated after a single simulation.
+This is the behavior behind the AT1 rows of Tables
+1
+–
+3
+, and it is unattainable for a purely numerical optimizer, which has no information before its first sample.
+Based on our observations, the LLM’s falsification reasoning generally follows three stages: (1) negate the STL formula to identify a violation strategy, (2) propose control actions that drive the system toward violation, and (3) refine action magnitudes based on previous examples or feedback.
+This behavior is not limited to simple predicates and extends to more complex temporal logic structures.
+For example, consider specification AT6a:
+(
+𝐆
+[
+0
+,
+30
+]
+​
+(
+rpm
+≤
+3000
+)
+)
+→
+(
+𝐆
+[
+0
+,
+4
+]
+​
+(
+speed
+≤
+35
+)
+)
+(\mathbf{G}_{[0,30]}(\texttt{rpm}\leq 3000))\rightarrow(\mathbf{G}_{[0,4]}(\texttt{speed}\leq 35))
+.
+For this STL specification, the model generated the following text as part of its reasoning process:
+"To violate, need antecedent true but consequent false. So need rpm always <=3000 for t 0-30, but speed >35 at some t <=4. So we need high speed early while keeping rpm low. From samples, ..."
+Such reasoning chains demonstrate effective logical reasoning capabilities of the LLM.
+The model correctly negates the STL implication operator and formulates a valid falsification strategy. It also shows that the LLM can interpret STL specifications directly in symbolic form, without requiring translation into natural language.
+6.
+Limitations
+Our approach has several limitations. First, it inherits the computational cost and latency of modern reasoning-enabled LLMs. Following the ARCH-COMP reporting convention, our evaluation tables report
+Falsification Rate
+(FR) and the mean number of simulations
+S
+¯
+\overline{S}
+rather than wall-clock execution time. This convention exists because wall-clock time is not comparable across the participating tools: their results are collected on different machines, and the tools span very different computational paradigms, from surrogate-model training that benefits from GPU acceleration to CPU-bound MILP solving, automata learning, and simulated annealing. Sample efficiency therefore does not necessarily translate into lower runtime for any tool, including ours. Wall-clock time depends on several external factors, including the machine or server used to run the LLM, the machine used to execute the remaining falsification pipeline and simulations, and the particular benchmark and specification. To provide a sense of runtime, the mean time per iteration for the AT benchmark in our experiments was 4.4 s for
+gpt-oss-20b
+(low reasoning), 10.9 s for
+gpt-5-nano
+(low reasoning), and 81.8 s for
+gpt-5-mini
+(high reasoning). Most specifications falsified by our approach required fewer than 10 iterations. Nevertheless, API usage was materially more expensive than classical falsification heuristics, and LLM inference can add noticeable delay to each iteration. Although LLM-based search can substantially reduce the number of simulator calls, this reduction does not automatically imply lower wall-clock time or lower monetary cost. As a result, our method is currently most attractive in settings where simulator evaluations are expensive and sample efficiency matters more than raw inference cost.
+Second, the method appears to benefit most when the prompt exposes semantically meaningful structure that an LLM can exploit. In benchmarks such as Automatic Transmission, input and output names like
+throttle
+,
+brake
+,
+speed
+, and
+rpm
+provide strong causal cues. In contrast, performance is weaker on benchmarks where this semantic connection is indirect, missing, or less informative, and on cases with discrete or plateaued robustness landscapes such as some gear-based specifications. This suggests that the effectiveness of LLM-guided falsification may depend on how naturally the CPS and specification can be rendered into a semantically informative prompt.
+Finally, our explainability evidence is preliminary. Because we did not have access to full reasoning traces for the proprietary model used in the main experiments, the qualitative analysis of intermediate reasoning relied on a different open-source model. These examples are useful for illustrating plausible reasoning patterns, but they should not be interpreted as direct evidence of the internal reasoning process of the main model used for the strongest quantitative results.
+7.
+Conclusion and Discussion
+This paper introduced and evaluated
+LLM-Falsifier
+, which is, to our knowledge, the first robustness-guided falsification framework that uses a large language model as the optimizer.
+Our results show that LLMs can directly optimize STL robustness values and become substantially more effective when the search loop exposes semantically meaningful context, including natural-language variable names, output trajectories, and critical-time witnesses.
+On the ARCH-COMP falsification benchmarks,
+LLM-Falsifier
+outperforms established falsification tools based on diverse optimization strategies, from surrogate-based and Bayesian optimization to search-based testing, on 14 of 21 specifications.
+These results suggest that LLMs are not only generic prompt optimizers, but can also serve as competitive search procedures for formal reasoning tasks when the optimization loop is expressed in a semantically rich form.
+On six specifications, the LLM found a falsifying sample on the
+first
+try in every run, highlighting the potential value of language-mediated reasoning in sample-efficient search.
+Several directions could extend this work. The prompt-based formulation naturally leaves room for additional graybox model information (e.g., dynamic values of internal signals) in the Static Model Summarization step, which could further improve search efficiency. Another promising avenue is a hybrid approach that combines LLM-based exploration with classical numeric optimization for fine-grained exploitation.
+By combining formal robustness targets with structured semantic prompts, our framework suggests a general recipe for optimization problems requiring both scalar feedback and semantic context.
+Acknowledgements.
+This material is based upon work supported by the National Science Foundation
+under Award No. 2237229 and 2448869.
+References
+Agarwal et al
+.
+(2025)
+Sandhini Agarwal, Lama
+Ahmad, Jason Ai, Sam Altman,
+Andy Applebaum, Edwin Arbus,
+Rahul K Arora, Yu Bai,
+Bowen Baker, Haiming Bao,
+et al
+.
+2025.
+gpt-oss-120b & gpt-oss-20b model card.
+arXiv preprint arXiv:2508.10925
+(2025).
+Annpureddy et al
+.
+(2011)
+Yashwanth Annpureddy, Che
+Liu, Georgios Fainekos, and Sriram
+Sankaranarayanan. 2011.
+S-taliro: A tool for temporal logic falsification
+for hybrid systems. In
+International Conference on
+Tools and Algorithms for the Construction and Analysis of Systems
+.
+Springer, 254–257.
+Asmita et al
+.
+(2024)
+Asmita, Yaroslav
+Oliinyk, Michael Scott, Ryan Tsang,
+Chongzhou Fang, and Houman Homayoun.
+2024.
+Fuzzing BusyBox: Leveraging LLM and Crash Reuse
+for Embedded Bug Unearthing. In
+33rd USENIX
+Security Symposium (USENIX Security 24)
+. USENIX
+Association, Philadelphia, PA, 883–900.
+https://www.usenix.org/conference/usenixsecurity24/presentation/asmita
+Bak et al
+.
+(2024a)
+Stanley Bak, Sergiy
+Bogomolov, Abdelrahman Hekal, Niklas
+Kochdumper, Ethan Lew, Andrew Mata,
+and Amir Rahmati. 2024a.
+Falsification using Reachability of Surrogate
+Koopman Models. In
+Proceedings of the 27th ACM
+International Conference on Hybrid Systems: Computation and Control
+.
+1–13.
+Bak et al
+.
+(2024b)
+Stanley Bak, Abdelrahman
+Hekal, Niklas Kochdumper, Ethan Lew,
+Andrew Mata, and Amir Rahmati.
+2024b.
+Fast Koopman Surrogate Falsification Using Linear
+Relaxations and Weights. In
+International
+Symposium on Automated Technology for Verification and Analysis
+. Springer,
+234–255.
+Bartocci et al
+.
+(2018a)
+Ezio Bartocci, Jyotirmoy
+Deshmukh, Alexandre Donzé, Georgios
+Fainekos, Oded Maler, Dejan
+Ničković, and Sriram Sankaranarayanan.
+2018a.
+Specification-based monitoring of cyber-physical
+systems: a survey on theory, tools and applications.
+In
+Lectures on Runtime Verification:
+Introductory and Advanced Topics
+. Springer,
+135–175.
+Bartocci et al
+.
+(2018b)
+Ezio Bartocci, Thomas
+Ferrère, Niveditha Manjunath, and
+Dejan Ničković.
+2018b.
+Localizing faults in Simulink/Stateflow models with
+STL. In
+Proceedings of the 21st international
+conference on hybrid systems: computation and control (part of cps week)
+.
+197–206.
+Belta and Sadraddini (2019)
+Calin Belta and Sadra
+Sadraddini. 2019.
+Formal methods for control synthesis: An
+optimization perspective.
+Annual Review of Control, Robotics, and
+Autonomous Systems
+2, 1
+(2019), 115–140.
+Brown et al
+.
+(2020)
+Tom Brown, Benjamin Mann,
+Nick Ryder, Melanie Subbiah,
+Jared D Kaplan, Prafulla Dhariwal,
+Arvind Neelakantan, Pranav Shyam,
+Girish Sastry, Amanda Askell,
+et al
+.
+2020.
+Language models are few-shot learners.
+Advances in neural information processing
+systems
+33 (2020),
+1877–1901.
+Chotaliya et al
+.
+(2026)
+Surdeep Chotaliya, Tanmay
+Khandait, and Giulia Pedrielli.
+2026.
+Conjunctive Bayesian Optimization (conBO): An
+Application to Cyber-Physical Systems Verification with Conjunctive
+Requirements.
+ACM Transactions on Cyber-Physical Systems
+10, 3 (2026),
+1–26.
+doi:
+10.1145/3799710
+Clarke et al
+.
+(1994)
+Edmund M Clarke, Orna
+Grumberg, and David E Long.
+1994.
+Model checking and abstraction.
+ACM transactions on Programming Languages and
+Systems (TOPLAS)
+16, 5
+(1994), 1512–1542.
+Deshmukh et al
+.
+(2017)
+Jyotirmoy V Deshmukh,
+Alexandre Donzé, Shromona Ghosh,
+Xiaoqing Jin, Garvit Juniwal, and
+Sanjit A Seshia. 2017.
+Robust online monitoring of signal temporal logic.
+Formal Methods in System Design
+51, 1 (2017),
+5–30.
+Diwakaran et al
+.
+(2017)
+Ram Das Diwakaran, Sriram
+Sankaranarayanan, and Ashutosh Trivedi.
+2017.
+Analyzing neighborhoods of falsifying traces in
+cyber-physical systems. In
+Proceedings of the 8th
+International Conference on Cyber-Physical Systems
+.
+109–119.
+Donzé (2010)
+Alexandre Donzé.
+2010.
+Breach, a toolbox for verification and parameter
+synthesis of hybrid systems. In
+International
+Conference on Computer Aided Verification
+. Springer,
+167–170.
+Donzé et al
+.
+(2013)
+Alexandre Donzé,
+Thomas Ferrere, and Oded Maler.
+2013.
+Efficient robust monitoring for STL. In
+International conference on computer aided
+verification
+. Springer, 264–279.
+Donzé and Maler (2010)
+Alexandre Donzé and
+Oded Maler. 2010.
+Robust satisfaction of temporal logic over
+real-valued signals. In
+International conference
+on formal modeling and analysis of timed systems
+. Springer,
+92–106.
+Fainekos and Pappas (2009)
+Georgios E Fainekos and
+George J Pappas. 2009.
+Robustness of temporal logic specifications for
+continuous-time signals.
+Theoretical Computer Science
+410, 42 (2009),
+4262–4291.
+Fainekos et al
+.
+(2012)
+Georgios E Fainekos,
+Sriram Sankaranarayanan, Koichi Ueda,
+and Hakan Yazarel. 2012.
+Verification of automotive control applications
+using s-taliro. In
+2012 American Control
+Conference (ACC)
+. IEEE, 3567–3572.
+Ferrère et al
+.
+(2015)
+Thomas Ferrère, Oded
+Maler, and Dejan Ničković.
+2015.
+Trace diagnostics using temporal implicants. In
+International Symposium on Automated Technology for
+Verification and Analysis
+. Springer, 241–258.
+Ferrère et al
+.
+(2019)
+Thomas Ferrère, Dejan
+Nickovic, Alexandre Donzé, Hisahiro
+Ito, and James Kapinski.
+2019.
+Interface-aware signal temporal logic. In
+Proceedings of the 22nd ACM International
+Conference on Hybrid Systems: Computation and Control
+.
+57–66.
+Formica et al
+.
+(2024)
+Federico Formica, Tony
+Fan, and Claudio Menghi.
+2024.
+Search-Based Software Testing Driven by
+Automatically Generated and Manually Defined Fitness Functions.
+ACM Transactions on Software Engineering and
+Methodology
+33, 2
+(2024), 1–37.
+doi:
+10.1145/3624745
+Fulton et al
+.
+(2015)
+Nathan Fulton, Stefan
+Mitsch, Jan-David Quesel, Marcus
+Völp, and André Platzer.
+2015.
+KeYmaera X: An axiomatic tactical theorem prover
+for hybrid systems. In
+International Conference on
+Automated Deduction
+. Springer, 527–538.
+Haghighi et al
+.
+(2019)
+Iman Haghighi, Noushin
+Mehdipour, Ezio Bartocci, and Calin
+Belta. 2019.
+Control from signal temporal logic specifications
+with smooth cumulative quantitative semantics. In
+2019 IEEE 58th Conference on Decision and Control
+(CDC)
+. IEEE, 4361–4366.
+Heidlauf et al
+.
+(2018)
+Peter Heidlauf, Alexander
+Collins, Michael Bolender, and Stanley
+Bak. 2018.
+Verification Challenges in F-16 Ground Collision
+Avoidance and Other Automated Maneuvers. In
+ARCH18. 5th International Workshop on Applied
+Verification of Continuous and Hybrid Systems
+(EPiC
+Series in Computing, Vol. 54)
+,
+Goran Frehse (Ed.).
+EasyChair, 208–217.
+doi:
+10.29007/91x9
+Henzinger et al
+.
+(1995)
+Thomas A Henzinger,
+Peter W Kopke, Anuj Puri, and
+Pravin Varaiya. 1995.
+What’s decidable about hybrid automata?. In
+Proceedings of the twenty-seventh annual ACM
+symposium on Theory of computing
+. 373–382.
+Hoxha et al
+.
+(2015)
+Bardh Hoxha, Houssam
+Abbas, and Georgios Fainekos.
+2015.
+Benchmarks for Temporal Logic Requirements for
+Automotive Systems. In
+ARCH14-15. 1st and 2nd
+International Workshop on Applied veRification for Continuous and Hybrid
+Systems
+(EPiC Series in Computing,
+Vol. 34)
+, Goran Frehse
+and Matthias Althoff (Eds.).
+EasyChair, 25–30.
+doi:
+10.29007/xwrs
+Hu et al
+.
+(2000)
+Jianghai Hu, John
+Lygeros, and Shankar Sastry.
+2000.
+Towards a theory of stochastic hybrid systems. In
+International Workshop on Hybrid Systems:
+Computation and Control
+. Springer, 160–173.
+Jin et al
+.
+(2013)
+Xiaoqing Jin, Alexandre
+Donzé, Jyotirmoy V Deshmukh, and
+Sanjit A Seshia. 2013.
+Mining requirements from closed-loop control
+models. In
+Proceedings of the 16th international
+conference on Hybrid systems: computation and control
+.
+43–52.
+Kapinski et al
+.
+(2016)
+James Kapinski,
+Jyotirmoy V Deshmukh, Xiaoqing Jin,
+Hisahiro Ito, and Ken Butts.
+2016.
+Simulation-based approaches for verification of
+embedded control systems: An overview of traditional and advanced modeling,
+testing, and verification techniques.
+IEEE Control Systems Magazine
+36, 6 (2016),
+45–64.
+Khandait et al
+.
+(2025)
+Tanmay Khandait, Deyun
+Lyu, Paolo Arcaini, Georgios Fainekos,
+Federico Formica, Sauvik Gon,
+Abdelrahman Hekal, Atanu Kundu,
+Claudio Menghi, Giulia Pedrielli,
+Rajarshi Ray, Quinn Thibeault,
+Masaki Waga, and Zhenya Zhang.
+2025.
+ARCH-COMP25 Category Report: Falsification. In
+Proceedings of 12th Int. Workshop on Applied
+Verification for Continuous and Hybrid Systems
+(EPiC
+Series in Computing, Vol. 108)
+,
+Goran Frehse and
+Matthias Althoff (Eds.). EasyChair,
+169–189.
+doi:
+10.29007/dgnn
+Kundu et al
+.
+(2026)
+Atanu Kundu, Sauvik Gon,
+and Rajarshi Ray. 2026.
+Data-Driven Falsification of Cyber-Physical
+Systems.
+IEEE Transactions on Computer-Aided Design of
+Integrated Circuits and Systems
+45, 4
+(2026), 1989–2002.
+doi:
+10.1109/TCAD.2025.3608632
+Laskin et al
+.
+(2022)
+Michael Laskin, Luyu
+Wang, Junhyuk Oh, Emilio Parisotto,
+Stephen Spencer, Richie Steigerwald,
+DJ Strouse, Steven Hansen,
+Angelos Filos, Ethan Brooks,
+et al
+.
+2022.
+In-context reinforcement learning with algorithm
+distillation.
+arXiv preprint arXiv:2210.14215
+(2022).
+Maler and Nickovic (2004)
+Oded Maler and Dejan
+Nickovic. 2004.
+Monitoring temporal properties of continuous
+signals. In
+International symposium on formal
+techniques in real-time and fault-tolerant systems
+. Springer,
+152–166.
+Mehdipour et al
+.
+(2019)
+Noushin Mehdipour,
+Cristian-Ioan Vasile, and Calin Belta.
+2019.
+Arithmetic-geometric mean robustness for control
+from signal temporal logic specifications. In
+2019
+American Control Conference (ACC)
+. IEEE, 1690–1695.
+Menghi et al
+.
+(2020)
+Claudio Menghi, Shiva
+Nejati, Lionel Briand, and Yago Isasi
+Parache. 2020.
+Approximation-Refinement Testing of
+Compute-Intensive Cyber-Physical Models: An Approach Based on System
+Identification. In
+Proceedings of the ACM/IEEE
+42nd International Conference on Software Engineering (ICSE)
+.
+ACM, 372–384.
+doi:
+10.1145/3377811.3380370
+Monea et al
+.
+(2024)
+Giovanni Monea, Antoine
+Bosselut, Kianté Brantley, and Yoav
+Artzi. 2024.
+Llms are in-context bandit reinforcement learners.
+arXiv preprint arXiv:2410.05362
+(2024).
+Ničković and Yamaguchi (2020)
+Dejan Ničković and
+Tomoya Yamaguchi. 2020.
+RTAMT: Online robustness monitors from STL. In
+International Symposium on Automated Technology for
+Verification and Analysis
+. Springer, 564–571.
+Owre et al
+.
+(1996)
+Sam Owre, Sreeranga
+Rajan, John M Rushby, Natarajan Shankar,
+and Mandayam Srivas. 1996.
+PVS: Combining specification, proof checking, and
+model checking. In
+International Conference on
+Computer Aided Verification
+. Springer, 411–414.
+Pant et al
+.
+(2018)
+Yash Vardhan Pant, Houssam
+Abbas, Rhudii A Quaye, and Rahul
+Mangharam. 2018.
+Fly-by-logic: Control of multi-drone fleets with
+temporal logic objectives. In
+2018 ACM/IEEE 9th
+International Conference on Cyber-Physical Systems (ICCPS)
+. IEEE,
+186–197.
+Rizk et al
+.
+(2009)
+Aurélien Rizk,
+Grégory Batt, François Fages,
+and Sylvain Soliman. 2009.
+A general computational method for robustness
+analysis with applications to synthetic gene networks.
+Bioinformatics
+25,
+12 (2009), i169–i178.
+Sinha et al
+.
+(2025)
+Shiven Sinha, Shashwat
+Goel, Ponnurangam Kumaraguru, Jonas
+Geiping, Matthias Bethge, and Ameya
+Prabhu. 2025.
+Can language models falsify? evaluating algorithmic
+reasoning with counterexample creation.
+arXiv preprint arXiv:2502.19414
+(2025).
+Thibeault et al
+.
+(2021)
+Quinn Thibeault, Jacob
+Anderson, Aniruddh Chandratre, Giulia
+Pedrielli, and Georgios Fainekos.
+2021.
+Psy-taliro: A python toolbox for search-based test
+generation for cyber-physical systems. In
+International Conference on Formal Methods for
+Industrial Critical Systems
+. Springer, 223–231.
+Waga (2020)
+Masaki Waga.
+2020.
+Falsification of Cyber-Physical Systems with
+Robustness-Guided Black-Box Checking. In
+Proceedings of the 23rd International Conference on
+Hybrid Systems: Computation and Control (HSCC)
+. ACM,
+1–13.
+doi:
+10.1145/3365365.3382193
+Xia et al
+.
+(2024)
+Chunqiu Steven Xia, Matteo
+Paltenghi, Jia Le Tian, Michael Pradel,
+and Lingming Zhang. 2024.
+Fuzz4all: Universal fuzzing with large language
+models. In
+Proceedings of the IEEE/ACM 46th
+International Conference on Software Engineering
+. 1–13.
+Yaghoubi and Fainekos (2019)
+Shakiba Yaghoubi and
+Georgios Fainekos. 2019.
+Gray-box adversarial testing for control systems
+with machine learning components. In
+Proceedings
+of the 22nd ACM International Conference on Hybrid Systems: Computation and
+Control
+. 179–184.
+Yang et al
+.
+(2024)
+Chengrun Yang, Xuezhi
+Wang, Yifeng Lu, Hanxiao Liu,
+Quoc V Le, Denny Zhou, and
+Xinyun Chen. 2024.
+Large language models as optimizers. In
+International Conference on Learning
+Representations
+, Vol. 2024.
+12028–12068.
+Yüksel et al
+.
+(2023)
+Nurullah Yüksel,
+Hüseyin Rıza Börklü,
+Hüseyin Kürşad Sezer, and
+Olcay Ersel Canyurt. 2023.
+Review of artificial intelligence applications in
+engineering design perspective.
+Engineering Applications of Artificial
+Intelligence
+118 (2023),
+105697.
+Zhang et al
+.
+(2021)
+Zhenya Zhang, Deyun Lyu,
+Paolo Arcaini, Lei Ma,
+Ichiro Hasuo, and Jianjun Zhao.
+2021.
+Effective Hybrid System Falsification Using Monte
+Carlo Tree Search Guided by QB-Robustness. In
+Computer Aided Verification (CAV)
+.
+Springer, 595–618.
+doi:
+10.1007/978-3-030-81685-8_29
+Zhao et al
+.
+(2026)
+Yongqi Zhao, Ji Zhou,
+Dong Bi, Tomislav Mihalj,
+Jia Hu, and Arno Eichberger.
+2026.
+A survey on the application of large language
+models in scenario-based testing of automated driving systems.
+IEEE Transactions on Intelligent
+Transportation Systems
+(2026).
+Zheng et al
+.
+(2024)
+Xi Zheng, Aloysius K Mok,
+Ruzica Piskac, Yong Jae Lee,
+Bhaskar Krishnamachari, Dakai Zhu,
+Oleg Sokolsky, and Insup Lee.
+2024.
+Testing learning-enabled cyber-physical systems
+with large-language models: A formal approach. In
+Companion Proceedings of the 32nd ACM International
+Conference on the Foundations of Software Engineering
+.
+467–471.
+Experimental support, please
+view the build logs
+for errors. Generated by
+L
+A
+T
+E
+xml
+.
+Instructions for reporting errors
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below:
+Click the "Report Issue"
+(
+)
+button, located in the page header.
+Tip:
+You can select the relevant text first, to include it in your report.
+Our team has already identified
+the following issues
+. We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all.
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a
+list of packages that need conversion
+, and welcome
+developer contributions
+.
+We gratefully acknowledge support from our
+major funders
+,
+member institutions
+,
+,
+        and all contributors.
+About
+·
+Help
+·
+Contact
+·
+Subscribe
+·
+Copyright
+·
+Privacy
+·
+Accessibility
+·
+Operational Status
+(opens in new tab)

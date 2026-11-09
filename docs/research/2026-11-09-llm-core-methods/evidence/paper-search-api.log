@@ -1,0 +1,85 @@
+[arxiv] Error on query 'large language model cyber physical falsification': HTTPSConnectionPool(host='export.arxiv.org', port=443): Read timed out. (read timeout=35.0)
+[arxiv] HTTP 429; retrying in 3s (attempt 2/2)
+[arxiv] Error on query 'large language model time series anomaly diagnosis': HTTPSConnectionPool(host='export.arxiv.org', port=443): Read timed out. (read timeout=35.0)
+[arxiv] HTTP 429; retrying in 3s (attempt 2/2)
+[arxiv] Error on query 'large language model active fault diagnosis': 429 Client Error: Too Many Requests for url: https://export.arxiv.org/api/query?search_query=%28all%3Alarge+language+model+active+fault+diagnosis%29+AND+submittedDate%3A%5B202301010000+TO+202612312359%5D&sortBy=relevance&sortOrder=descending&max_results=6
+[dblp] Error on query 'large language model cyber physical falsification': Expecting value: line 1 column 1 (char 0)
+[dblp] Error on query 'large language model time series anomaly diagnosis': Expecting value: line 1 column 1 (char 0)
+[dblp] Error on query 'large language model active fault diagnosis': Expecting value: line 1 column 1 (char 0)
+[open_alex] HTTP 429; retrying in 35s (attempt 2/2)
+[open_alex] Error on query 'large language model cyber physical falsification': 429 Client Error: Too Many Requests for url: https://api.openalex.org/works?search.semantic=large+language+model+cyber+physical+falsification&filter=publication_year%3A2023-2026&sort=relevance_score%3Adesc&page=1&per-page=6
+[open_alex] HTTP 429; retrying in 1s (attempt 2/2)
+[open_alex] Error on query 'large language model time series anomaly diagnosis': 429 Client Error: Too Many Requests for url: https://api.openalex.org/works?search.semantic=large+language+model+time+series+anomaly+diagnosis&filter=publication_year%3A2023-2026&sort=relevance_score%3Adesc&page=1&per-page=6
+[open_alex] HTTP 429; retrying in 1s (attempt 2/2)
+[open_alex] Error on query 'large language model active fault diagnosis': 429 Client Error: Too Many Requests for url: https://api.openalex.org/works?search.semantic=large+language+model+active+fault+diagnosis&filter=publication_year%3A2023-2026&sort=relevance_score%3Adesc&page=1&per-page=6
+
+Getting V1 Notes:   0%|          | 0/3792 [00:00<?, ?it/s]
+Getting V1 Notes:  26%|██▋       | 1000/3792 [00:01<00:04, 685.10it/s]
+Getting V1 Notes:  53%|█████▎    | 1999/3792 [00:02<00:02, 709.30it/s]
+Getting V1 Notes:  79%|███████▉  | 2998/3792 [00:04<00:01, 690.82it/s]
+Getting V1 Notes: 100%|█████████▉| 3788/3792 [00:04<00:00, 810.38it/s]
+
+Getting V2 Notes:   0%|          | 0/2260 [00:00<?, ?it/s]
+Getting V2 Notes:  44%|████▍     | 1000/2260 [00:01<00:01, 694.86it/s]
+Getting V2 Notes:  88%|████████▊ | 1999/2260 [00:02<00:00, 919.18it/s]
+Getting V2 Notes: 100%|█████████▉| 2257/2260 [00:02<00:00, 866.03it/s]
+
+Getting V2 Notes:   0%|          | 0/3703 [00:00<?, ?it/s]
+Getting V2 Notes:  27%|██▋       | 1000/3703 [00:01<00:03, 754.24it/s]
+Getting V2 Notes:  54%|█████▍    | 1999/3703 [00:02<00:01, 868.20it/s]
+Getting V2 Notes:  81%|████████  | 2998/3703 [00:03<00:00, 824.52it/s]
+Getting V2 Notes: 100%|█████████▉| 3699/3703 [00:04<00:00, 918.14it/s]
+
+Getting V2 Notes:   0%|          | 0/5351 [00:00<?, ?it/s]
+Getting V2 Notes:  19%|█▊        | 1000/5351 [00:00<00:02, 1514.21it/s]
+Getting V2 Notes:  37%|███▋      | 1999/5351 [00:01<00:02, 1140.27it/s]
+Getting V2 Notes:  56%|█████▌    | 2998/5351 [00:02<00:02, 937.66it/s] 
+Getting V2 Notes:  75%|███████▍  | 3997/5351 [00:04<00:01, 839.46it/s]
+Getting V2 Notes:  93%|█████████▎| 4996/5351 [00:05<00:00, 881.53it/s]
+Getting V2 Notes: 100%|█████████▉| 5345/5351 [00:05<00:00, 926.61it/s]
+
+Getting V2 Notes:   0%|          | 0/3218 [00:00<?, ?it/s]
+Getting V2 Notes:  31%|███       | 1000/3218 [00:01<00:02, 751.31it/s]
+Getting V2 Notes:  62%|██████▏   | 1999/3218 [00:02<00:01, 1061.29it/s]
+Getting V2 Notes:  93%|█████████▎| 2998/3218 [00:02<00:00, 1145.61it/s]
+Getting V2 Notes: 100%|█████████▉| 3214/3218 [00:03<00:00, 1033.16it/s]
+
+Getting V2 Notes:   0%|          | 0/4035 [00:00<?, ?it/s]
+Getting V2 Notes:  25%|██▍       | 1000/4035 [00:01<00:04, 697.48it/s]
+Getting V2 Notes:  50%|████▉     | 1999/4035 [00:02<00:02, 696.76it/s]
+Getting V2 Notes:  74%|███████▍  | 2998/4035 [00:03<00:01, 948.09it/s]
+Getting V2 Notes:  99%|█████████▉| 3997/4035 [00:03<00:00, 1260.02it/s]
+Getting V2 Notes: 100%|█████████▉| 4030/4035 [00:04<00:00, 917.25it/s] 
+
+Getting V2 Notes:   0%|          | 0/5286 [00:00<?, ?it/s]
+Getting V2 Notes:  19%|█▉        | 1000/5286 [00:01<00:05, 786.11it/s]
+Getting V2 Notes:  38%|███▊      | 1999/5286 [00:02<00:03, 943.19it/s]
+Getting V2 Notes:  57%|█████▋    | 2998/5286 [00:02<00:02, 1087.78it/s]
+Getting V2 Notes:  76%|███████▌  | 3997/5286 [00:03<00:01, 1193.30it/s]
+Getting V2 Notes:  95%|█████████▍| 4996/5286 [00:04<00:00, 1176.88it/s]
+Getting V2 Notes: 100%|█████████▉| 5280/5286 [00:04<00:00, 1091.93it/s]
+
+Getting V2 Notes:   0%|          | 0/1828 [00:00<?, ?it/s]
+Getting V2 Notes:  55%|█████▍    | 1000/1828 [00:00<00:00, 1845.05it/s]
+Getting V2 Notes: 100%|█████████▉| 1826/1828 [00:00<00:00, 2049.21it/s]
+
+Getting V2 Notes:   0%|          | 0/2610 [00:00<?, ?it/s]
+Getting V2 Notes:  38%|███▊      | 1000/2610 [00:00<00:00, 1714.94it/s]
+Getting V2 Notes:  77%|███████▋  | 1999/2610 [00:01<00:00, 1352.75it/s]
+Getting V2 Notes: 100%|█████████▉| 2607/2610 [00:01<00:00, 1482.29it/s]
+
+Getting V2 Notes:   0%|          | 0/3257 [00:00<?, ?it/s]
+Getting V2 Notes:  31%|███       | 1000/3257 [00:00<00:01, 1153.17it/s]
+Getting V2 Notes:  61%|██████▏   | 1999/3257 [00:01<00:00, 1279.02it/s]
+Getting V2 Notes:  92%|█████████▏| 2998/3257 [00:02<00:00, 1188.55it/s]
+Getting V2 Notes: 100%|█████████▉| 3253/3257 [00:02<00:00, 1148.56it/s]
+[openreview] Error on query 'large language model time series anomaly diagnosis': {'name': 'RateLimitError', 'message': 'Too many requests: You have made 5 requests, surpassing the limit of 3 requests. Please try again in 8 seconds (2026-11-09-2610569)', 'status': 429, 'details': {'limit': 3, 'remaining': 0, 'resetTime': '2026-11-09T03:36:16.064Z', 'used': 5, 'current': 5, 'reqId': '2026-11-09-2610569'}}
+[openreview] Error on query 'large language model active fault diagnosis': {'name': 'RateLimitError', 'message': 'Too many requests: You have made 7 requests, surpassing the limit of 3 requests. Please try again in 7 seconds (2026-11-09-2610725)', 'status': 429, 'details': {'limit': 3, 'remaining': 0, 'resetTime': '2026-11-09T03:36:16.063Z', 'used': 7, 'current': 7, 'reqId': '2026-11-09-2610725'}}
+[semantic_scholar] HTTP 429; retrying in 3s (attempt 2/2)
+[semantic_scholar] Error on query 'large language model cyber physical falsification': 429 Client Error:  for url: https://api.semanticscholar.org/graph/v1/paper/search?query=large+language+model+cyber+physical+falsification&offset=0&limit=6&fields=title%2Cauthors%2Cyear%2Cabstract%2CcitationCount%2Curl%2Cvenue%2CpublicationDate%2CexternalIds&year=2023-2026
+[semantic_scholar] HTTP 429; retrying in 3s (attempt 2/2)
+[semantic_scholar] Error on query 'large language model time series anomaly diagnosis': 429 Client Error:  for url: https://api.semanticscholar.org/graph/v1/paper/search?query=large+language+model+time+series+anomaly+diagnosis&offset=0&limit=6&fields=title%2Cauthors%2Cyear%2Cabstract%2CcitationCount%2Curl%2Cvenue%2CpublicationDate%2CexternalIds&year=2023-2026
+[semantic_scholar] HTTP 429; retrying in 3s (attempt 2/2)
+[semantic_scholar] Error on query 'large language model active fault diagnosis': 429 Client Error:  for url: https://api.semanticscholar.org/graph/v1/paper/search?query=large+language+model+active+fault+diagnosis&offset=0&limit=6&fields=title%2Cauthors%2Cyear%2Cabstract%2CcitationCount%2Curl%2Cvenue%2CpublicationDate%2CexternalIds&year=2023-2026
+{'arxiv': 0, 'dblp': 0, 'open_alex': 0, 'openreview': 0, 'semantic_scholar': 0, 'crossref': 18}
+17 unique papers; saved D:\Typhoon\lab-workflow\docs\research\2026-11-09-llm-core-methods\evidence\paper-search-results.json

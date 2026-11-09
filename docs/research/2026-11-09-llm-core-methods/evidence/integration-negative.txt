@@ -1,0 +1,1436 @@
+Abstract
+Skip to main content
+Report GitHub Issue
+×
+Title:
+Content selection saved. Describe the issue below:
+Description:
+Submit without GitHub
+Submit in GitHub
+Why HTML?
+Report Issue
+Back to Abstract
+Download PDF
+Contents
+Reading mode
+Colour theme
+License: arXiv.org perpetual non-exclusive license
+arXiv:2610.05031v1 [cs.CL] 04 Oct 2026
+[
+BoldFont=texgyretermes-bold.otf,
+ItalicFont=texgyretermes-italic.otf,
+BoldItalicFont=texgyretermes-bolditalic.otf
+]
+[
+BoldFont=texgyreheros-bold.otf,
+ItalicFont=texgyreheros-italic.otf,
+BoldItalicFont=texgyreheros-bolditalic.otf
+]
+[
+BoldFont=lmmonolt10-bold.otf,
+ItalicFont=lmmono10-italic.otf,
+BoldItalicFont=lmmonolt10-boldoblique.otf
+]
+When LLMs Sit Above Diagnostic Tools: Unrealized Complementarity in Industrial Fault Diagnosis
+Donghwan Kim
+Independent Researcher
+donhkim9714@korea.ac.kr
+Abstract
+Large language models are increasingly used as integration layers above specialized tools, but a stronger component does not necessarily produce a stronger combined system. Across five diagnostic datasets spanning bearing vibration, process monitoring, and semiconductor equipment, we study whether an LLM can reliably use external diagnostic information. Paired repeat calls separate advice effects from ordinary output instability. In all five, conflicting external diagnostic information overturned initially correct LLM judgments. Four datasets also provide direct integration comparisons. Across those four, none showed a consistent advantage for implicit LLM integration over the stronger standalone source. On a Tennessee Eastman confirmation set whose protocol was fixed before evaluation, unaided accuracy was 64.67%, implicit LLM–specialist integration reached 77.43%, and the specialist alone reached 83.33%. Specialist information improved the LLM by 12.8 percentage points (95% interval 9.7 to 15.9), yet the integrated output remained 5.9 points below the specialist (95% interval −12.0 to −0.7). A two-source selector oracle reached 92.76%, indicating case-level complementarity between the standalone predictions that the integrated output did not fully realize. The integrated output missed 140 of 295 specialist corrections (47.5%) but lost 15 of 99 initially correct LLM judgments (15.2%). The deficit remained under prompt and specialist sensitivity analyses. Among CWRU cases diagnosed correctly under both evidence presentations, task-aligned physical evidence yielded lower susceptibility estimates in six of seven models, with five model-specific intervals excluding zero. Increasing reasoning effort produced no reliable reduction in susceptibility to incorrect advice in five models. In a separate four-model TEP sensitivity analysis, higher reasoning did not provide clear evidence of resolving the integration problem. Source quality and integration quality should therefore be evaluated separately: an LLM integration layer should be compared with its stronger standalone component, not only with the unaided LLM.
+1. Introduction
+Large language models need not replace specialized diagnostic models to influence industrial decisions. A vibration classifier or a process monitor can remain the component that turns sensors into evidence. The LLM can instead combine outputs from these components. One context can hold a tool output, a sensor summary, an alarm, a maintenance record, a passage from a manual, and a technician’s note. The model may then prioritize cases, resolve competing hypotheses, or recommend an inspection. Process-systems research already proposes language models as supervisory or coordination layers above numerical tools, retrieved engineering knowledge, and maintenance evidence (
+Gopaluni, Kotamraju, and Bhushan, 2026
+;
+O’Donncha et al., 2026
+;
+Liang and Sin, 2026
+;
+Yang et al., 2026b
+). Once a model performs that role, it directly affects the final decision even though it is not the primary detector. We test this assumption in controlled diagnostic settings rather than in deployed plant systems.
+Combining informative sources does not necessarily improve the final decision; effective integration requires case-level arbitration between them. Two sources are complementary when each is correct on some cases the other misses. Realizing that complementarity requires choosing appropriately between them. Learning-to-defer methods explicitly optimize such routing decisions. Source quality describes how well each source performs alone. Integration quality describes how well the procedure combines them into a final label. A strong specialist and a competent model can still produce a worse answer than the specialist alone if the integrator ignores a correction or copies an error. Our central question is whether an LLM integrator can turn complementary but imperfect sources into a decision that matches or exceeds the stronger source. The same question applies to other LLM agents that must choose which imperfect source to trust.
+Prior work has documented advice following, tool over-use and under-use, and human–AI teams that underperform their stronger member. This study examines those behaviors when the language model itself combines two fallible predictive judgments: an evidence-based LLM assessment and an external specialist prediction.
+The protocol separates instability from the effect of the external source. The model first labels the evidence alone. A second call, with no new information, shows how often that label changes by itself. A third call adds one external diagnosis, sometimes right and sometimes wrong. We ask whether the combined decision outperforms the better standalone source and whether incorrect advice changes an initially correct answer more often than ordinary test–retest variability does.
+We study this problem across five diagnostic datasets spanning three industrial settings. In all five, conflicting external diagnostic information overturned some initially correct LLM judgments (Appendix Figure N1). CWRU, Paderborn, XJTU-SY, and Tennessee Eastman provide direct integration comparisons. Across these four datasets, none showed a consistent advantage for implicit LLM integration over the stronger standalone source. Lam 9600 instead provides a controlled-advice real-equipment check. The Tennessee Eastman study provides the primary held-out evaluation because its protocol and confirmation set were fixed before evaluation.
+In the held-out TEP evaluation, implicit integration scored 77.43%. The unaided models scored 64.67%, so the specialist source helped by 12.8 points (95% interval 9.7 to 15.9). The specialist alone scored 83.33%. The integrated output was therefore 5.9 percentage points below the specialist (95% interval −12.0 to −0.7). Advice improved the language model, but the integrated output still underperformed the stronger source. A two-source selector oracle reached 92.76%.
+Of 1,050 integrated predictions, 237 were incorrect. Most were missed corrections: in 140 rows the specialist was correct and the final prediction was not. Harmful acceptance of incorrect advice accounted for 15 rows. A strategy focused solely on reducing specialist reliance would therefore target the less frequent failure mode.
+The deficit was also observed under a direct arbitration instruction, when the model was also given its stored unaided diagnosis, and with an alternative random-forest specialist that had been fixed as a development-stage candidate, so it was not specific to the original prompt or the selected logistic-regression specialist.
+The effects of the evaluated interventions were task-dependent. Among CWRU cases correctly diagnosed under both evidence presentations, task-aligned physical evidence reduced susceptibility to incorrect advice for six of the seven evaluated models; across the fixed seven-model panel, the post hoc unweighted mean reduction was 24.6 percentage points (95% interval 10.5 to 40.5). Increasing the provider reasoning-effort setting produced no reliable reduction in susceptibility to incorrect advice in any of five evaluated models. An exploratory Lam 9600 analysis provides a real-equipment example of advice vulnerability.
+Our contributions are threefold. First, we separate source quality from integration quality and evaluate an LLM integrator against the stronger standalone source. Paired repeat calls control for ordinary output instability. Second, we provide direct integration comparisons across three bearing datasets and the held-out TEP evaluation. Secondary sensitivity analyses, conducted in stages after that evaluation, include an arbitration condition, a prior-label condition that also included the stored unaided diagnosis, and an alternative-specialist condition. A separate real-equipment vulnerability check uses Lam 9600. Third, we test two interventions intended to reduce susceptibility to incorrect advice. Task-aligned physical evidence yielded lower harmful-switching estimates for six of the seven evaluated models. Higher reasoning did not reliably reduce CWRU advice susceptibility, and a four-model TEP sensitivity analysis did not provide clear evidence that it resolved the integration problem.
+These results motivate a simple evaluation rule: compare an LLM integration layer directly with its stronger standalone component, not only with the unaided LLM.
+2. Related work
+Prior work shows that models can over-rely on or under-use tools, and that a combined system can underperform its better member. We study whether an LLM can benefit when each source is correct on some cases the other misses.
+Dialogue studies show that assistants adopt a user’s stated preference and sometimes admit mistakes they did not make (
+Perez et al., 2022
+;
+Sharma et al., 2023
+).
+Xie et al. (2024)
+find that models can be receptive to coherent external evidence that conflicts with stored knowledge, and also that they continue to favor evidence consistent with that knowledge when both are present. In our setting, a specialist class label is provided alongside machine evidence, and success is accuracy against the better source, not agreement with a user.
+Recent work shows that source identity and perceived authority can shape how LLMs resolve conflicting information.
+Kumar and Chopra (2026)
+find that attribution to a verified source induces more compliance than a matched user endorsement and that compliance increases with stated source authority.
+Schuster, Gautam, and Markert (2026)
+report preferences among source types in inter-context conflicts, while
+Li et al. (2025)
+find that models can favor user-provided claims over retrieved database evidence when the two conflict. These results indicate that source reliance depends on the setting and source type rather than following a universal authority ordering. These studies characterize source preference or compliance under conflict; we instead ask whether an LLM integrator can benefit when each source is correct on some cases the other misses, and match or exceed the stronger standalone source. For this setting, measuring only adoption of an incorrect source is insufficient because integration can also fail by ignoring a correct specialist when the LLM is wrong.
+Tool evaluations already separate adopting a bad return from failing to use a needed one.
+Yang et al. (2026a)
+corrupt search, delegated answers, and code. Mean adoption of the corrupted return is high for every tool; models sometimes notice the conflict and still return the corrupted answer.
+Soni (2026)
+scores a skipped tool, an ignored result, a fabricated addition, and an unnecessary call as different failures.
+Xu et al. (2026)
+define “Tool Ignored” as a tool-integrated math failure in which a correct code-execution result is overridden by the model’s own incorrect reasoning. Their calibration method uses confidence in the generated code to decide whether to trust the executor. In our setting, the external source is a fitted diagnostic model with its own error rate, so the integrator must avoid both ignoring correct labels and adopting incorrect ones. We measure under-use where the language model is the integrator and ask whether it can benefit when each source is correct on some cases the other misses.
+Recent work has also framed tool use and retrieval as arbitration between fallible sources. MemToC evaluates conflicts between model-specific closed-book answers and executable-tool returns under controlled source correctness (
+Varlamov et al., 2026
+), while TrustMargin selects between parametric-memory and retrieval-based answers using a training-free arbitration score (
+Xu, Shi, et al., 2026
+). Our setting differs in both source type and evaluation target: the LLM diagnoses from industrial sensor or process evidence while the second source is a fitted diagnostic specialist whose errors arise naturally. We additionally control for ordinary output instability with paired repeat calls and evaluate whether prompt-level integration exceeds the stronger standalone component.
+Human studies ask a person to accept or reject advice.
+Schemmer et al. (2023)
+separate relative reliance on correct AI advice from relative self-reliance when the advice is wrong.
+Bansal et al. (2021)
+ask whether explanations help a human–AI team beat both the human and the model alone, and find that explanations can increase acceptance regardless of correctness.
+Vaccaro, Almaatouq, and Malone (2024)
+find that combinations perform worse than the better partner on average, especially on decisions. In contrast, we study settings in which the language model itself performs the integration.
+Learning-to-defer and triage methods explicitly learn or optimize who handles each case (
+Madras, Pitassi, and Zemel, 2018
+;
+Mozannar and Sontag, 2020
+;
+Okati, De, and Gomez-Rodriguez, 2021
+;
+Mozannar et al., 2023
+). Our setting differs in the mechanism evaluated: we study an off-the-shelf LLM used directly as the integration layer, without a separately trained routing objective.
+A similar distinction appears in ensemble studies.
+Kim (2026a)
+finds oracle gains across language-model subsets and realized majority-vote gains in only a small fraction of them.
+Kim (2026b)
+finds that a reference-free judge often fails to select a better table-recognition candidate than the first draft. The improvement possible case by case can be much larger than the improvement actually delivered by an aggregation rule. Unlike LLM ensemble settings, our second source is a non-LLM diagnostic model, and the LLM performs case-level integration rather than majority voting.
+Industrial fault-diagnosis studies also show that how evidence is presented can matter.
+Lee et al. (2025)
+compare raw sensor windows with descriptive statistics and single- with multi-model diagnostic architectures.
+Li and Zhao (2025)
+convert industrial time series into textual trends, periodicity, and deviations before retrieval-guided zero-shot diagnosis. Those studies evaluate diagnostic accuracy and explanation. Our evidence-representation result instead asks whether a model that can already solve a case becomes less likely to abandon that answer after incorrect advice.
+Other industrial systems place language models above tools or heterogeneous evidence. FaultExplainer explains principal-component alarms on the Tennessee Eastman process (
+Khan et al., 2025
+).
+Liang and Sin (2026)
+use a language model to coordinate convolutional and ensemble diagnostic tools on the same process and evaluate diagnosis, tool adherence, and report quality. KDACL combines process data, retrieved mechanistic knowledge, and iterative verification to construct causal chains on Tennessee Eastman and a slag-mill system (
+Yang et al., 2026b
+). AgentRCA pairs a tool-using model with a model of normal dynamics to compare fault hypotheses (
+Wei and Fink, 2026
+), while
+O’Donncha et al. (2026)
+combine maintenance records, operational summaries, and failure knowledge in a verification-constrained decision-support layer. These systems establish the practical relevance of the integration-layer role. They mainly evaluate pipeline diagnosis, reporting, causal-chain quality, or controlled deployment. We instead ask whether the final label retains the stronger source’s performance while benefiting from cases where the other source is correct.
+3. Experimental framework
+3.1 Experimental objective
+The experiment evaluates whether an LLM can appropriately arbitrate between two imperfect sources at the case level. It does not ask the model to replace the specialist detector (Figure 1). Source quality is the accuracy of each source alone. Integration quality is the accuracy of the procedure that produces the final label. We define a two-source selector oracle that is correct whenever either stored standalone prediction is correct. It represents the maximum accuracy attainable by selecting between these two stored labels and is not an implemented integration method.
+Figure 1:
+The language model is an integration layer, not a replacement detector. Left: machine evidence, a specialist model, and records or human notes can enter one context, and the model may prioritize cases or recommend an action. Right: the paired repeat measures ordinary test–retest instability, while the advised call measures the effect of an external diagnosis beyond that baseline.
+Each case has a true class and a block of evidence that does not contain the label. The model returns one class from a fixed list. Three calls use that evidence, with the same decoding settings. The first is unaided. The second is an independent repeat with no new information. The repeat is a separate API call with an identical prompt and identical decoding settings; it captures provider-side nondeterminism even at temperature 0. That paired repeat is necessary because a label can change on its own; without it, ordinary instability would be mistaken for the effect of the external source. The third call adds one sentence stating an external diagnostic label. We refer to this advised output as prompt-level implicit integration, or simply implicit integration below: the LLM receives both the case evidence and the external diagnostic prediction in context, without a separately trained routing or fusion mechanism. We then ask whether it outperforms the better of the two standalone sources and whether incorrect advice changes an initially correct judgment beyond ordinary repeat instability. Prompt templates and examples are given in Appendix C.
+3.2 Datasets and experimental roles
+The central empirical scope covers five diagnostic datasets across three settings: three bearing datasets, Tennessee Eastman, and Lam 9600. WM-811K is a separate interface-boundary pilot and is not counted among the five. The datasets serve distinct experimental roles rather than matched replications. Table 1 states the role of each. Bearing recordings are where the integration failure was characterized and where a change to the evidence representation was tested. The Tennessee Eastman confirmation protocol was fixed before evaluation and serves as the primary held-out non-bearing integration evaluation; Lam 9600 is an exploratory real-equipment check of advice vulnerability.
+Table 1. Experimental roles. Bearing datasets characterize source integration and evidence presentation. The Tennessee Eastman set is the held-out non-bearing integration evaluation. The semiconductor tool and the wafer maps probe real equipment and evidence representation. They are not matched replications.
+Dataset
+Domain
+Task in this study
+Evidence shown to the model
+External diagnosis
+Cluster
+Role
+CWRU
+Bearing vibration
+4 classes, 72 cases, 28 files
+Generic spectral summary, or a task-aligned presentation with additional fault-specific information
+Controlled advice, and a fixed classical specialist in the integration comparisons
+Recording file
+Characterization and intervention
+Paderborn
+Bearing vibration
+3 classes, 87 segments, 29 bearings
+Generic and task-aligned text presentations
+Controlled advice and fixed fitted specialists
+Bearing
+Same-domain support
+XJTU-SY
+Bearing run-to-failure
+3 classes, 88 recordings, 11 bearings
+Generic and task-aligned text presentations
+Controlled advice and fixed fitted specialists
+Bearing
+Same-domain support
+Tennessee Eastman
+Simulated chemical plant
+6 classes, 150 confirmation runs, 25 per class
+Numerical process summary plus a static domain reference (variable roles, subsystems, candidate fault definitions), identical across runs and conditions
+Fixed logistic-regression specialist; alternative random-forest specialist in one secondary analysis
+Simulation run
+Held-out TEP evaluation; secondary sensitivity analyses
+Lam 9600
+Public metal-etch data from a commercial tool
+5 classes, 20 cases
+Tool and trace text
+Controlled advice in fixed wording
+Wafer
+Limited real-equipment check (§4.7; Appendix J)
+WM-811K
+Wafer maps
+Image-versus-text pilot, 50 cases
+Native map, or a text rendering of it
+None
+Wafer map
+Interface boundary (Appendix J)
+CWRU is the Case Western Reserve University seeded-fault collection (
+Bearing Data Center
+). Paderborn is the electromechanical-drive benchmark of
+Lessmeier et al. (2016)
+. XJTU-SY is the accelerated-life collection released with
+Wang et al. (2020)
+. Process runs come from the
+Rieth et al. (2017)
+simulation of the
+Downs and Vogel (1993)
+plant. The six TEP classes were fixed during the initial development protocol, before any LLM calls on this dataset, and were retained unchanged for confirmation. The Lam 9600 metal-etch data are publicly available from Eigenvector Research and were originally analyzed by
+Wise et al. (1999)
+; we used the machine-state file but do not redistribute the source files. WM-811K is the wafer-map collection of
+Wu, Jang, and Chen (2015)
+; the comparison reported here is a 50-case pilot, not the full collection. Incorrect labels follow dataset-specific deterministic maps (Appendix Table C1). Bearing integration uses six 400-tree random forests, one strong and one weak predefined feature set for each of CWRU, Paderborn, and XJTU-SY. Strong and weak name those feature sets, not target accuracies. The predictions are out of fold: leave-one-recording-file-out on CWRU and leave-one-bearing-out on Paderborn and XJTU-SY (Appendix F).
+3.3 Models
+The fixed panel is seven models, kept unchanged across paired calls for each model–condition combination: GPT-5.6 Sol, Claude Sonnet 5, Claude Opus 5.5, Gemini 3.8 Flash, Qwen 3.8, GLM-5.3, and Kimi K3. Provider routing identifiers and settings are in Appendix A. The CWRU reasoning-effort comparison in Section 4.6 uses five of these models on the same cases and is not pooled with the other two. A separate TEP sensitivity analysis uses four of the seven models; the final reduced panel was determined before any confirmation outcome at the higher reasoning setting was examined.
+3.4 Two kinds of external diagnosis
+The external diagnosis is presented in fixed wording, but its source differs across experimental settings.
+In the bearing susceptibility and intervention experiments, correctness is set by the design. The external diagnosis is written to be correct, or written to be incorrect, so that a change after incorrect advice can be compared with the paired repeat. Those are controlled advice conditions. Their purpose is to isolate the effect of a conflicting source. Incorrect labels follow the dataset-specific deterministic maps in Appendix Table C1.
+Lam likewise uses controlled advice rather than predictions from a standalone diagnostic model. It therefore tests advice vulnerability, not source complementarity or integration-versus-stronger-source performance.
+In the integration experiments, including the held-out TEP evaluation and the bearing integration comparisons, the external label is the actual prediction of a fixed specialist model. On the process confirmation set, the specialist is a multinomial logistic regression fit on training runs only. It was selected on development data from two predefined candidates using prespecified eligibility and ranking criteria. The criteria required enough errors and source disagreement to study case-level integration; without such cases, the sources offer little information about when either one can add value. Confirmation outcomes were not used. Appendix Table A1 reports the candidate values and full rule. In the fitted-specialist experiments, errors arise naturally from the specialist model rather than being experimentally assigned. Bearing integration comparisons use the six out-of-fold random forests specified in Section 3.2. This setting tests whether language-model integration benefits when each source is correct on some cases the other misses. Because the source wording and authority differ between controlled-advice and fitted-specialist experiments, we do not compare their absolute switching rates.
+3.5 Study chronology
+Bearing experiments motivated the questions of source integration and evidence representation. The Tennessee Eastman protocol, specialist-selection procedure, and confirmation set were fixed before the confirmation evaluation. The specialist was selected using development data only; confirmation outcomes played no role in selection. Development results are not added to confirmation results. After the primary analysis, the arbitration condition and the alternative-specialist condition were specified and fixed before their additional model calls. The prior-label condition was specified later, after those results were known, and was fixed before its own calls. It was therefore analyzed separately from the two earlier sensitivity conditions. The sensitivity analysis with higher reasoning effort was added after the primary and earlier secondary analyses. Its final reduced panel was determined before any confirmation outcome at the higher reasoning setting was examined.
+3.6 Prompt and specialist sensitivity analyses
+The three conditions reused the same 150 confirmation runs, seven LLMs, unaided outputs, and paired-repeat outputs. When each condition was specified is stated in Section 3.5.
+The arbitration condition retained the selected logistic-regression specialist and changed only the advised prompt by adding one direct arbitration instruction:
+You have two fallible sources: your own reading of the case
+evidence above and the external diagnostic model’s prediction.
+Decide which diagnosis is better supported by the case evidence.
+Do not automatically defer to either source.
+We treat this prompt as a sensitivity condition rather than an optimized or calibrated fusion procedure. The prior-label condition repeats that arbitration instruction. The specialist prediction remains the preceding case-specific line,
+An external diagnostic advisor suggests: <specialist>.
+The inserted line is placed after the first arbitration sentence and immediately before the decision instruction:
+Your earlier diagnosis from the case evidence alone: <z0>.
+That order was fixed for all cases and was not randomized. The alternative-specialist condition retained the primary implicit-integration interface but replaced the selected logistic specialist with the alternative 400-tree random forest. That random forest was one of the two candidates fixed during development, passed the same eligibility criteria, and was not selected for the primary test under the prespecified ranking rule. Full protocol details and results are in Appendix K. A separate sensitivity analysis with higher reasoning effort is reported in Section 4.6 and Appendix E.2.
+3.7 Evidence representations
+On CWRU every request uses an anonymous case identifier and one final evidence block. The generic text is a raw-spectrum summary: band energy, a dominant peak, time-domain shape statistics, and coarse energy shares around precomputed BPFO, BPFI, and BSF bands. It does not provide the bearing geometry, the characteristic frequencies themselves, envelope peaks or harmonics, or an explicit mapping from those frequencies to candidate faults. The task-aligned view adds information absent from the generic representation, including the envelope spectrum at the characteristic frequencies, the theoretical frequency values, and explicit mappings between frequencies and candidate faults. The two views therefore do not carry the same information. Advice is presented in fixed wording, and the model, decoding settings, class list, and response schema are held fixed across paired conditions. The common-correct analysis in Section 4.5 compares cases the model already diagnosed correctly under both views.
+Box 1. Illustrative CWRU evidence excerpts (same case, C-000492CE).
+Generic excerpt
+Task-aligned excerpt
+- motor load: 0 HP
+- BPFO is the outer-race ball-pass frequency. Outer-race defects typically raise envelope energy at BPFO and its harmonics.
+- rotational speed: 1796 RPM
+- BPFI is the inner-race ball-pass frequency. Inner-race defects typically raise envelope energy at BPFI and its harmonics.
+E1. Spectral band-energy shares: 0-500Hz=0.2%, 500-1500Hz=0.6%, 1500-3000Hz=25.3%, 3000-6000Hz=73.9%. Spectral entropy=0.647 (+11.1% vs normal).
+- theoretical BPFO=107.3 Hz, BPFI=162.1 Hz, BSF=70.5 Hz, FTF=11.9 Hz
+E2. Skewness=0.083; impulse factor=8.66 (+111.5% vs normal).
+E1. Envelope spectrum near BPFO (theoretical 107.3 Hz): peak SNR=23.52× local background (nearest peak 108.4 Hz, error 1.1 Hz); 2×BPFO harmonic SNR=19.31×. BPFO is kinematically associated with outer-race defects.
+The excerpts in Box 1 are from the same case.
+Paderborn and XJTU follow the same design principle: a generic spectral summary versus a task-aligned presentation that adds fault-relevant structure. Appendix Table B1 lists the displayed fields for all three bearing datasets.
+On the Tennessee Eastman confirmation set, every prompt includes a static domain reference that is identical across runs and conditions and contains no run-specific information: variable roles, subsystem membership and pathway groups, and candidate fault definitions. The same reference appears in the evidence-strength confirmation prompts. For the primary TEP integration condition, unaided, repeat, and advised calls differ only by the external diagnosis sentence. The case evidence is a numerical process summary of the fifty-two variables. For the TEP confirmation prompts, that summary is compared with a normal reference constructed from the 50 NORMAL runs in the training split; development and confirmation runs were not used in that construction.
+The process-development contrast uses a different intervention. Its aligned view groups the same measurements by subsystem and pathway without adding a new physical transform. We verified that every summary could be computed from the same input data. This development contrast is analyzed separately from the held-out TEP evaluation.
+3.8 Inclusion criteria for bearing comparisons
+A bearing comparison enters the count in Section 4.4 only if it meets the following predefined inclusion rules. Unaided accuracy must exceed chance by at least 0.15: 0.40 on the four-class CWRU task and about 0.48 on the three-class bearing tasks. We also exclude comparisons when the accuracy gap between the selector oracle and the better source is under 0.03 or the specialist is incorrect on fewer than 15 cases; there is then too little evidence to estimate the integration-versus-source difference reliably. Twenty-two comparisons meet these rules. The CWRU specialists do not enter that count because each made fewer than 15 errors. All 28 CWRU point estimates were still below the stronger source. The rules came from the bearing verification protocol and were not chosen from the comparisons summarized here. The 22-comparison count is conditional on them.
+3.9 Evaluation metrics
+Table 2 defines the quantities used in the results.
+Table 2. Evaluation metrics.
+Quantity
+Definition
+Why it is reported
+Unaided accuracy
+Share of cases correct before any external diagnosis
+The model’s own reading of the evidence
+Test–retest instability
+How often the paired repeat changes the unaided label
+Separates ordinary instability from the effect of advice
+Retest-adjusted harmful switching
+Among initially correct rows, the advised-call error rate minus the repeat-call error rate
+The susceptibility the intervention experiments target
+Integrated output versus the better source
+Accuracy of the advised judgment minus the better of unaided accuracy and specialist accuracy
+Whether integration outperforms the stronger component
+Two-source selector oracle
+Correct whenever either of the two stored standalone labels is correct
+Descriptive bound for selection between the two stored labels
+Missed correction
+The specialist is correct, the unaided LLM is wrong, and the final integrated output remains wrong
+Failure to use a correct specialist correction
+Harmful acceptance
+The specialist is wrong, the unaided LLM is correct, and the final integrated output becomes wrong
+Failure to preserve a correct unaided judgment
+Let
+A
+m
+int
+A^{\mathrm{int}}_{m}
+,
+A
+m
+unaided
+A^{\mathrm{unaided}}_{m}
+, and
+A
+m
+spec
+A^{\mathrm{spec}}_{m}
+be the integrated, unaided, and specialist accuracies of model
+m
+m
+. The headline contrast is the unweighted mean across the
+M
+M
+evaluated models,
+Δ
+best
+=
+1
+M
+​
+∑
+m
+=
+1
+M
+[
+A
+m
+int
+−
+max
+⁡
+(
+A
+m
+unaided
+,
+A
+m
+spec
+)
+]
+.
+\Delta_{\mathrm{best}}=\frac{1}{M}\sum_{m=1}^{M}\left[A^{\mathrm{int}}_{m}-\max\left(A^{\mathrm{unaided}}_{m},A^{\mathrm{spec}}_{m}\right)\right].
+The better standalone source is selected at the model level, not case by case; the same calculation is recomputed within each joint cluster-bootstrap resample.
+Let
+z
+0
+z_{0}
+be the unaided label,
+z
+r
+z_{r}
+the repeat label,
+z
+a
+z_{a}
+the advised label, and
+y
+y
+the true label. The adjusted harmful-switching metric is:
+H
+adj
+=
+P
+⁡
+(
+z
+a
+≠
+y
+∣
+z
+0
+=
+y
+)
+−
+P
+⁡
+(
+z
+r
+≠
+y
+∣
+z
+0
+=
+y
+)
+.
+H_{\mathrm{adj}}=P(z_{a}\neq y\mid z_{0}=y)-P(z_{r}\neq y\mid z_{0}=y).
+The denominator is therefore the set of initially correct rows. Positive values mean that the advised call became wrong more often than the repeat call; negative values are possible. Each cluster-bootstrap sample recomputes both terms and their difference.
+3.10 Bootstrap confidence intervals
+We compute 95% percentile bootstrap intervals from 10,000 resamples without adjustment for multiple comparisons. The resampling unit matches each dataset: recording files for CWRU, physical bearings for Paderborn and XJTU, and simulation runs for the process confirmation set. The bootstrap seed is
+20260924
+. The supplementary integration-versus-unaided interval jointly resamples the 150 process runs across the fixed seven-model panel. The post hoc CWRU panel summary jointly resamples all 28 recording files across the same fixed panel; models are not resampled.
+4. Results
+4.1 Implicit LLM integration remains below the specialist
+Implicit LLM integration scored 5.9 percentage points below the specialist alone, even though access to the specialist prediction improved the unaided LLM by 12.8 points (95% interval 9.7 to 15.9).
+Seven models saw the same generic numerical summary of 150 Tennessee Eastman runs. Unaided accuracy was 64.67%, implicit integration reached 77.43%, and the specialist alone reached 83.33% (Figure 2). The gain of the integrated output over the unaided models was 12.8 points, with a supplementary run-bootstrap interval from 9.7 to 15.9. The primary contrast, integrated output minus specialist, is −5.9 points, with a 95% interval from −12.0 to −0.7. The supplementary gain interval is entirely positive, while the primary interval for integrated accuracy minus specialist accuracy is entirely negative. Differences are calculated from the unrounded seven-model means; because every model has the same number of cases, those means match the pooled rates. One model matched the specialist both unaided and after advice, so the average does not imply that every model changed in the same direction.
+Figure 2:
+Specialist information substantially improved the language model, yet implicit LLM integration remained below the specialist alone. Panel A: unaided 64.67%, integrated output 77.43%, specialist 83.33%, two-source selector oracle 92.76%. The integrated output is 5.9 points below the specialist (95% interval −12.0 to −0.7) and 12.8 points above the unaided model (supplementary 95% interval 9.7 to 15.9). Differences use unrounded seven-model means. The selector oracle is a descriptive bound on the two stored labels. Panel B: unaided and integrated accuracy for each model, with the specialist selected on development data shown as the reference line. One model matches that line both unaided and after integration.
+The selector advantage reflects cases on which each standalone source was correct and the other was not.
+4.2 Most integration errors are missed corrections
+The dominant observed failure was not broad adoption of incorrect advice. It was failure to use correct specialist information when the model was wrong.
+Figure 3 separates the rows on which the two standalone sources were correct. The sources disagreed in 394 of 1,050 model–case rows: the specialist alone was correct in 295, and the unaided LLM alone was correct in 99. The integrated output missed 140 of the 295 specialist corrections (47.5%) and lost 15 of the 99 initially correct LLM judgments (15.2%). Fourteen of those 15 harmful acceptances copied the specialist’s wrong label, all in the normal class. Even when both standalone labels were correct, the separate advised call was wrong in nine rows. These are not source-disagreement errors; they show that agreement between the two input labels did not guarantee the same output on a new call. The remaining 73 integration errors occurred when both sources were wrong; in 67 of those rows, both sources had already produced the same wrong label.
+Figure 3:
+Source correctness and final integrated outcomes in the held-out Tennessee Eastman evaluation. The two sources disagreed in 394 rows, creating 295 opportunities to use a specialist correction and 99 opportunities to preserve a correct unaided LLM judgment. The integrated output missed 140 of the 295 corrections (47.5%) and lost 15 of the 99 correct LLM judgments (15.2%). Cell counts sum to 1,050 model–case rows. These counts describe error types; they should not be summed to recover the 5.9-point accuracy gap.
+Box 2. Illustrative TEP decision sequences.
+Error type
+Model
+True class
+Unaided
+Paired repeat
+Specialist
+Advised
+Missed correction
+Qwen 3.8
+IDV1
+IDV6
+IDV6
+IDV1
+IDV6
+Harmful acceptance
+Claude Sonnet 5
+NORMAL
+NORMAL
+NORMAL
+IDV15
+IDV15
+Box 2 contains illustrative examples only. Examples were selected deterministically as the first stored instance of each error pattern, using fixed case and model order, for which the paired repeat reproduced the unaided label.
+The pooled counts hide substantial model-level variation (Figure 4). Relative self-reliance (RSR) is the share of initially correct LLM judgments preserved when the specialist is wrong. Relative AI reliance (RAIR) is the share of correct specialist judgments accepted when the LLM is initially wrong (
+Schemmer et al., 2023
+). Claude Sonnet 5 had high RAIR (0.966) but low RSR (0.250), while Claude Opus 5.5 had RSR 1.000 but RAIR 0.000. The other models fell between these extremes. The models showed different source-reliance profiles. No model reached the region that is high on both axes.
+Figure 4:
+Model-level source reliance on the Tennessee Eastman confirmation set. Blue circles are individual models, and the orange diamond pools all model–case opportunities. The pale area marks rates of at least 0.8 on both axes as a visual guide, not a decision threshold. Position shows how a model treats advice, not its overall accuracy. These reliance rates should be interpreted together with each model’s standalone accuracy; Figure 2B shows the resulting integrated accuracies. Descriptive 95% Wilson intervals and opportunity counts are in Appendix Table A2. The figure does not estimate a population of models.
+Incorrect advice did affect the final judgment beyond ordinary test–retest instability, but this effect was secondary to the missed corrections. On rows where the unaided label was right and the specialist was wrong, the paired repeat never produced the specialist’s wrong label. The 16.4-point figure is the unweighted mean of the seven model-specific rates at which the advised call chose that wrong label, minus the paired-repeat rate on the same rows (95% interval 9.5 to 22.6). Each model receives equal weight, so this mean is not the row-pooled rate of 14 of 99. The effect was concentrated in two models. The specialist’s own mistakes were also concentrated: 14 in the normal class, 10 in one fault class, and 1 in another, out of 25 specialist-wrong runs.
+4.3 Prompt and specialist sensitivity analyses of the TEP result
+The primary integration deficit was not removed by a direct source-arbitration instruction, by additionally providing the stored unaided diagnosis, or by the alternative random-forest specialist (Table 3). These are secondary sensitivity analyses, not independent confirmations.
+Table 3. Sensitivity analyses of the Tennessee Eastman integration deficit.
+Condition
+Specialist accuracy
+Integrated accuracy
+Integrated − better standalone source (95% CI)
+Missed corrections
+Harmful acceptances
+Primary: logistic, implicit
+83.3%
+77.4%
+−5.9 [−12.0, −0.7]
+140/295 (47.5%)
+15/99 (15.2%)
+Arbitration condition: logistic, explicit instruction
+83.3%
+76.1%
+−7.2 [−14.0, −1.3]
+161/295 (54.6%)
+6/99 (6.1%)
+Prior-label condition:
+logistic, stored unaided diagnosis
+83.3%
+72.2%
+−11.1 [−18.3, −3.6]
+215/295 (72.9%)
+0/99 (0.0%)
+Alternative-specialist condition: random forest, implicit
+84.0%
+78.2%
+−5.7 [−11.2, −1.1]
+116/272 (42.6%)
+10/72 (13.9%)
+Explicit arbitration did not improve integrated accuracy relative to the implicit condition: explicit minus implicit was −1.3 percentage points (95% interval −3.1 to +0.5). The instruction reduced harmful acceptances from 15 to 6 but increased missed corrections from 140 to 161. It corrected 33 errors from the implicit condition and introduced 47 new errors. The instruction changed the composition of errors without improving overall source selection.
+Relative to the arbitration condition, showing the stored unaided diagnosis again lowered integrated accuracy by 3.9 percentage points (95% interval −5.8 to −2.0). The integrated output scored 72.19% against the same 83.3% specialist, so integrated accuracy minus the specialist was −11.14 points (95% interval −18.29 to −3.62). It missed 215 of 295 specialist corrections (72.9%) and recorded 0 of 99 harmful acceptances. The prior-label condition fixed 23 arbitration-condition errors and introduced 64 new errors, a net increase of 41 (Appendix Table K3).
+Replacing the primary specialist with the alternative random-forest specialist produced the same qualitative result. The random forest scored 84.0%, implicit integration scored 78.2%, and the integrated output remained 5.7 points below the better source (95% interval −11.2 to −1.1). The selector oracle reached 90.83%, about 6.9 points above the specialist. The oracle again exceeded specialist accuracy.
+The alternative-specialist condition had 1,047 parsed model–case rows because three GLM-5.3 calls failed to parse. Treating all three failures as correct or all as wrong left the interval for integrated accuracy minus the better standalone source below zero (Appendix K).
+4.4 Bearing studies rarely show reliable gains over the stronger source
+Across the included bearing analyses, implicit integration rarely outperformed the stronger standalone source. Of 22 eligible comparisons, three intervals were below zero, eighteen included zero, and one was above zero (Section 3.8; Appendix F). All 28 CWRU point estimates were still below the stronger source. The intervals are not adjusted for multiple comparisons, and the pattern does not imply that every integrated output fell below the stronger source.
+4.5 Task-aligned evidence reduces susceptibility to incorrect advice
+We next evaluate task-aligned physical evidence as an intervention for reducing susceptibility to conflicting advice.
+Task-aligned evidence reduced susceptibility to incorrect advice across most models in the CWRU common-correct analysis. We measure the extent to which initially correct diagnoses are switched after incorrect advice, adjusting for ordinary paired test–retest instability. The comparison is restricted to cases correctly diagnosed under both evidence presentations.
+Six of seven point estimates were positive, and five confidence intervals excluded zero (Figure 5). Estimates ranged from 0.00 to 0.48; model-specific values, intervals, and common-correct sample sizes are shown in Figure 5 and Appendix D. As a post hoc summary across the fixed seven-model panel, the unweighted mean reduction was 0.246 [0.105, 0.405] under a joint file-cluster bootstrap.
+Figure 5:
+In the CWRU common-correct analysis, task-aligned evidence yielded lower harmful-switching estimates for six of the seven evaluated models; five model-specific confidence intervals excluded zero. Points are generic minus task-aligned retest-adjusted harmful switching with 95% file-cluster intervals. Positive values mean reduced susceptibility under task-aligned evidence. Common-correct cases are those the same model labeled correctly, before advice, under both presentations; model-specific sample sizes are shown. The square is a post hoc unweighted summary across the fixed seven-model panel, with all 28 recording files resampled jointly across models.
+Paderborn and XJTU provide supporting bearing-domain evidence, with changes in diagnostic competence accompanying the changes in susceptibility to incorrect advice (Appendix H). The same benefit did not appear when the TEP development measurements were grouped into deterministic subsystem summaries (difference −1.7 percentage points, 95% CI −3.6 to +0.3; Appendix I). The CWRU result therefore supports task-aligned evidence presentation as an intervention that helps in this setting, not a general benefit of adding or reorganizing structure.
+4.6 Higher reasoning effort does not clearly resolve the integration deficit
+We next tested whether a higher reasoning effort setting reduced susceptibility to incorrect advice. On CWRU, it did not yield a statistically reliable reduction for any of the five evaluated models. Neither unaided accuracy nor susceptibility to incorrect advice showed a reliable improvement across those five models: every model-specific interval for the low-to-high change included zero (Appendix E).
+Because the primary held-out TEP evaluation used the low reasoning-effort setting, we conducted a sensitivity analysis with higher reasoning effort on four of the seven models. The final four-model panel was determined before any confirmation outcome at the higher reasoning setting was examined; three models were excluded because development checks did not reliably distinguish the requested high setting from the low setting. Among the four retained models, higher reasoning increased unaided accuracy by 5.2 percentage points (95% interval 2.2 to 8.2), whereas integrated accuracy increased by 2.2 points (−0.2 to 4.8). The difference between these two changes was itself uncertain (Appendix E.2). At the high setting, the integrated output remained 4.2 points below the better standalone source (−10.5 to 0.8). The high-setting errors showed the same qualitative asymmetry. The integrated output missed 69 of 134 available specialist corrections (51.5%), while harmful acceptance occurred in 11 of 58 LLM-only cases (19.0%); the selector oracle remained near 93%. Thus, increasing reasoning effort did not provide clear evidence of resolving the TEP integration problem. This reduced-panel analysis is a secondary sensitivity analysis rather than an independent confirmation. Model-level results are in Appendix E.
+4.7 Exploratory evaluation on real-equipment data
+An exploratory analysis using public Lam 9600 data from a commercial semiconductor etch tool provides a real-equipment example of advice vulnerability. Of 23 initially correct model–case judgments, six were overturned by incorrect external advice across four wafers, while the paired repeats did not flip. This analysis is descriptive and is not intended as a benchmark of diagnostic capability (Appendix J). Controlled labels make this a vulnerability check, not a test of source complementarity.
+5. Discussion
+5.1 Source quality is not integration quality
+The integration problem was not confined to one benchmark. Across the four datasets with direct integration comparisons, implicit integration did not show a consistent advantage over the stronger standalone source. On Paderborn and XJTU-SY, only one of 22 eligible comparison intervals was above zero; all 28 CWRU point estimates were below the stronger source, although specialist errors were too sparse for comparable inference. The held-out TEP evaluation provides the strongest evidence.
+A specialist source can make a language model more accurate and still leave the combined system below that specialist. In the held-out TEP evaluation, the unaided models scored 64.67%, implicit integration scored 77.43%, and the specialist alone scored 83.33%. The 12.8-point gain over the unaided LLM shows that the specialist label carried useful information that the models sometimes used. The 5.9-point deficit relative to the specialist shows that the integration procedure did not preserve the stronger source’s standalone performance. The selector oracle at 92.76% indicates that each standalone source was correct on some cases the other missed. Because the development selection criteria required enough disagreement to study integration, that 9.4-point difference describes this selected setting, not what should be expected from an arbitrary specialist.
+Before placing an LLM integration layer above a validated specialist, the layer should itself be validated against that source. As a deployment check, the integrated output should at minimum be compared with the strongest source selected on development data; in this experiment that source retained 83.33% accuracy versus 77.43% for implicit integration. This comparison does not select, case by case, whichever standalone source was correct.
+The result was also observed under a direct arbitration instruction, when the model was also given its stored unaided diagnosis in the prior-label condition, and with the alternative random-forest specialist. Giving the model its stored unaided diagnosis removed the remaining harmful acceptances and increased missed corrections further: 215 of 295 specialist corrections were missed, and 0 of 99 harmful acceptances remained. These sensitivity analyses do not establish failure for every prompting or fusion procedure, or for every specialist family, but they show that the primary finding is not specific to the original prompt or to the selected logistic-regression specialist.
+5.2 Missed corrections dominate harmful acceptance
+Strategies aimed only at limiting adoption of incorrect tool output address harmful acceptance but do not address the missed corrections that dominated the TEP error analysis. In the TEP evaluation, missed corrections substantially outnumbered harmful acceptances (140 vs. 15), indicating that under-use of correct specialist advice was the dominant failure mode. Incorrect advice still had an effect, but it was concentrated in a small number of models and classes. Evaluations that measure only adoption of incorrect specialist outputs would therefore overlook the dominant failure mode.
+The explicit arbitration instruction illustrates the same tension: harmful acceptance decreased, but missed corrections increased. A rule that only suppresses tool following therefore need not improve case-level source selection.
+The missed-correction pattern is consistent with the “Tool Ignored” failure reported for tool-integrated math reasoning (
+Xu et al., 2026
+), here observed when the external source is itself imperfect. The bearing comparisons did not show a single dominant direction of source-selection failure. In the process experiment, the integrated output often failed to use a correct specialist label, and those rows were common enough to dominate the error count. Across settings, case-level source selection was unreliable. The experiments do not show why models over-use advice in some settings and under-use it in others.
+5.3 Interventions affecting susceptibility to incorrect advice
+In our experiments, presenting task-aligned physical evidence reduced susceptibility to incorrect advice for most CWRU models. Higher reasoning effort did not yield a reliable reduction in that CWRU susceptibility. The TEP sensitivity analysis shows that an improvement in standalone accuracy need not translate into a clear improvement in source integration. Higher reasoning effort therefore should not be assumed to solve case-level source arbitration automatically. Reorganizing the same Tennessee Eastman measurements did not produce the same benefit (Section 4.5).
+These results suggest three practical deployment checks: compare the integrated output with the stronger source, not only with the unaided model; measure missed corrections and harmful acceptances separately; and, as in the CWRU setting, test whether the evidence representation exposes the physical structure needed for diagnosis. Verification-constrained industrial systems show the value of constructing and checking evidence before producing recommendations (
+O’Donncha et al., 2026
+;
+Yang et al., 2026b
+). Our results add that the final system should also be compared directly with its stronger standalone component.
+The exploratory Lam 9600 analysis extends the broader advice vulnerability to public data from a commercial semiconductor etch tool, but its controlled-advice design does not provide an integration-versus-source comparison.
+6. Limitations
+The study uses controlled interfaces for external diagnostic information. In the bearing advice experiments, the external diagnosis was presented in fixed wording and its correctness was set by design, so that the effect of a conflicting source could be separated from test–retest instability. In the integration experiments, including the held-out TEP evaluation, the external label came from a fixed specialist model with naturally occurring errors, but it was still presented as a short fixed diagnostic statement rather than a live engineer note or a full tool log.
+The primary TEP condition evaluates implicit integration. The arbitration condition and the prior-label condition add a direct source-arbitration instruction; the prior-label condition also included the stored unaided diagnosis. Broader structured or learned fusion procedures were not evaluated. In the prior-label condition, the specialist prediction appeared first in the prompt and the model’s earlier diagnosis followed within the arbitration text, immediately before the decision instruction. This order was fixed for all cases and was not randomized. Because the earlier diagnosis immediately preceded the decision instruction, the design cannot distinguish anchoring on the earlier diagnosis from a positional or recency effect. One possible explanation is increased anchoring on the model’s prior judgment, but the experiment was not designed to isolate that mechanism. The primary TEP integration experiments used the low reasoning-effort setting. The sensitivity analysis with higher reasoning effort used four of the seven primary models because the requested high setting could not be reliably distinguished from low reasoning for three models during development checks. Even among the retained models, the operational strength of the manipulation varied by provider; Claude Opus 5.5, for example, reported zero reasoning tokens in 66% of high-setting confirmation calls. In that analysis, unaided accuracy improved, but the results did not establish whether the integration gap narrowed: the interval for integrated accuracy minus the better standalone source still included zero. The operational meaning of high was provider-specific, and the high setting also used a larger output-token limit than the primary low setting. The higher-reasoning analysis therefore tests provider-side reasoning effort under a concise-output interface; it does not test explicitly elicited written deliberation.
+The primary test used the multinomial logistic specialist selected on development data, while a secondary analysis with the alternative random-forest specialist also showed the integration deficit. Both are classical diagnostic models, so other specialist families may produce different error profiles and integration behavior.
+We evaluated source integration across four diagnostic datasets spanning three bearing benchmarks and the Tennessee Eastman process, with an additional real-equipment check of advice vulnerability on Lam 9600. The Lam check uses controlled advice rather than predictions from a standalone fitted specialist and therefore does not test complementarity. Tennessee Eastman provides the primary held-out non-bearing evaluation, but it is a simulated process rather than historical process data from an operating plant. Specialist mistakes and the copying of those mistakes were concentrated in a few classes and models, so the effect varied across classes and models.
+The semiconductor observations use few wafers and three models. The wafer-map image comparison is one model and 50 cases. Both analyses are exploratory and should not be interpreted as benchmark evaluations. Some rendered XJTU prompts and WM-811K image payloads were not retained, which limits exact prompt-level reproduction of those auxiliary analyses.
+The design does not show whether baseline diagnostic accuracy causes models to over- or under-rely on advice. The bearing and process results both show poor case-level source selection, but they do not explain why the direction differs.
+7. Broader impacts
+Industrial diagnostic decisions can affect equipment availability, maintenance, and safety. The LLM layers evaluated here should not be deployed autonomously; our results argue for validating any such layer against the strongest available source.
+8. Conclusion
+Source quality and integration quality are distinct. Across four diagnostic datasets with direct integration comparisons, prompt-level implicit LLM integration did not consistently outperform the stronger standalone source. In the held-out TEP evaluation, specialist information substantially improved the unaided LLM, yet the integrated output remained below the specialist, with missed corrections dominating harmful acceptance. Task-aligned physical evidence reduced susceptibility to incorrect advice in the CWRU setting, whereas higher reasoning effort did not clearly resolve the TEP integration deficit. These results motivate evaluating LLM integration layers directly against their stronger standalone components rather than only against unaided LLMs.
+References
+Bansal, G., Wu, T., Zhou, J., Fok, R., Nushi, B., Kamar, E., Ribeiro, M. T., and Weld, D. S. (2021). Does the whole exceed its parts? The effect of AI explanations on complementary team performance.
+Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+, Article 81.
+Case Western Reserve University. Bearing Data Center.
+https://engineering.case.edu/bearingdatacenter
+Downs, J. J. and Vogel, E. F. (1993). A plant-wide industrial process control problem.
+Computers & Chemical Engineering
+, 17(3), 245–255.
+Gopaluni, R. B., Kotamraju, V., and Bhushan, S. (2026). Large language models in process systems engineering: Opportunities, architectures, and industrial deployment challenges. arXiv:2606.11589.
+Khan, A., Nahar, R., Chen, H., Constante Flores, G. E., and Li, C. (2025). FaultExplainer: Leveraging large language models for interpretable fault detection and diagnosis.
+Computers & Chemical Engineering
+, 199, 109152.
+https://doi.org/10.1016/j.compchemeng.2025.109152
+Kim, D. (2026a). Are diversity metrics measuring diversity? A capability-controlled audit of majority-vote gain in LLM ensembles. arXiv:2607.20768.
+Kim, D. (2026b). LLM-as-a-judge scores are unreliable optimization signals in closed-loop table recognition. arXiv:2607.13347.
+Kumar, A. R. and Chopra, P. (2026). Authority Bias in Language Models: Source Deference and User Agreement Are Not Interchangeable. arXiv:2609.37616.
+Lee, X. Y., Vidyaratne, L., Farahat, A., and Gupta, C. (2025). Exploring LLM-based agentic frameworks for fault diagnosis.
+Annual Conference of the Prognostics and Health Management Society
+.
+Lessmeier, C., Kimotho, J. K., Zimmer, D., and Sextro, W. (2016). Condition monitoring of bearing damage in electromechanical drive systems by using motor current signals of electric motors: A benchmark data set for data-driven classification.
+Proceedings of the European Conference of the Prognostics and Health Management Society
+, 3(1).
+https://doi.org/10.36001/phme.2016.v3i1.1577
+Li, B. and Zhao, C. (2025). S2S-FDD: Bridging industrial time series and natural language for explainable zero-shot fault diagnosis.
+2025 CAA Symposium on Fault Detection, Supervision, and Safety for Technical Processes
+, 1–6.
+https://doi.org/10.1109/SAFEPROCESS67117.2025.11268252
+Li, Y., Guo, X., Gao, J., Chen, G., Zhao, X., Zhang, J., Liu, Q., Wu, H., Yao, X., and Wei, X. (2025). LLMs Trust Humans More, That’s a Problem! Unveiling and Mitigating the Authority Bias in Retrieval-Augmented Generation.
+Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)
+, 28844–28858.
+https://doi.org/10.18653/v1/2025.acl-long.1400
+Liang, J. and Sin, G. (2026). A large language model enhanced fault diagnosis framework for chemical processes.
+Systems and Control Transactions
+, 5, 1769–1775.
+https://doi.org/10.69997/sct.118894
+Madras, D., Pitassi, T., and Zemel, R. (2018). Predict responsibly: Improving fairness and accuracy by learning to defer.
+Advances in Neural Information Processing Systems
+, 31.
+https://papers.nips.cc/paper_files/paper/2018/hash/09d37c08f7b129e96277388757530c72-Abstract.html
+Mozannar, H. and Sontag, D. (2020). Consistent estimators for learning to defer to an expert.
+Proceedings of the 37th International Conference on Machine Learning
+, PMLR 119, 7076–7087.
+https://proceedings.mlr.press/v119/mozannar20b.html
+Mozannar, H., Lang, H., Wei, D., Sattigeri, P., Das, S., and Sontag, D. (2023). Who Should Predict? Exact Algorithms For Learning to Defer to Humans.
+Proceedings of the 26th International Conference on Artificial Intelligence and Statistics
+, PMLR 206, 10520–10545.
+https://proceedings.mlr.press/v206/mozannar23a.html
+O’Donncha, F., Zhou, N., Martinez, N., Rayfield, J. T., Heath, F. F. III, Langbridge, A., and Vaculin, R. (2026). Evidence-driven reasoning for industrial maintenance using heterogeneous data.
+Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 6: Industry Track)
+, 736–748.
+https://doi.org/10.18653/v1/2026.acl-industry.50
+Okati, N., De, A., and Gomez-Rodriguez, M. (2021). Differentiable learning under triage.
+Advances in Neural Information Processing Systems
+, 34.
+https://proceedings.neurips.cc/paper_files/paper/2021/hash/4c4c937b67cc8d785cea1e42ccea185c-Abstract.html
+Perez, E., Ringer, S., Lukošiūtė, K., Nguyen, K., Chen, E., Heiner, S., Pettit, C., Olsson, C., Kundu, S., Kadavath, S., et al. (2022). Discovering language model behaviors with model-written evaluations. arXiv:2212.09251.
+Rieth, C. A., Amsel, B. D., Tran, R., and Cook, M. B. (2017). Additional Tennessee Eastman process simulation data for anomaly detection evaluation. Harvard Dataverse.
+https://doi.org/10.7910/DVN/6C3JR1
+Schemmer, M., Kühl, N., Benz, C., Bartos, A., and Satzger, G. (2023). Appropriate reliance on AI advice: Conceptualization and the effect of explanations.
+Proceedings of the 28th International Conference on Intelligent User Interfaces
+. arXiv:2302.02187.
+Schuster, J., Gautam, V., and Markert, K. (2026). Whose Facts Win? LLM Source Preferences under Knowledge Conflicts.
+Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)
+, 29430–29459.
+https://doi.org/10.18653/v1/2026.acl-long.1357
+Sharma, M., Tong, M., Korbak, T., Duvenaud, D., Askell, A., Bowman, S. R., Cheng, N., Durmus, E., Hatfield-Dodds, Z., Johnston, S. R., et al. (2023). Towards understanding sycophancy in language models. arXiv:2310.13548.
+Soni, H. (2026). ToolFailBench: Diagnosing tool-use failures in LLM agents. arXiv:2607.04686.
+Vaccaro, M., Almaatouq, A., and Malone, T. W. (2024). When combinations of humans and AI are useful: A systematic review and meta-analysis.
+Nature Human Behaviour
+, 8, 2293–2303.
+Varlamov, A., Zinnatullin, R., Rykov, E., Panchenko, A., and Alimova, I. (2026). MemToC: Benchmarking memory-tool conflict resolution in large language models. arXiv:2608.26295.
+Wang, B., Lei, Y., Li, N., and Li, N. (2020). A hybrid prognostics approach for estimating remaining useful life of rolling element bearings.
+IEEE Transactions on Reliability
+, 69(1), 401–412.
+Wei, A. and Fink, O. (2026). Agentic root cause analysis through evidence-grounded reasoning. arXiv:2607.22385.
+Wise, B. M., Gallagher, N. B., Butler, S. W., White, D. D., Jr., and Barna, G. G. (1999). A comparison of principal component analysis, multiway principal component analysis, trilinear decomposition and parallel factor analysis for fault detection in a semiconductor etch process.
+Journal of Chemometrics
+, 13(3–4), 379–396.
+https://doi.org/10.1002/(SICI)1099-128X(199905/08)13:3/4<379::AID-CEM556>3.0.CO;2-N
+Wu, M.-J., Jang, J.-S. R., and Chen, J.-L. (2015). Wafer map failure pattern recognition and similarity ranking for large-scale data sets.
+IEEE Transactions on Semiconductor Manufacturing
+, 28(1), 1–12.
+Xie, J., Zhang, K., Chen, J., Lou, R., and Su, Y. (2024). Adaptive chameleon or stubborn sloth: Revealing the behavior of large language models in knowledge conflicts.
+The Twelfth International Conference on Learning Representations (ICLR 2024).
+https://openreview.net/forum?id=auKAUJZMO6
+Xu, J., Shi, H., Shan, Y., Liu, P., Bai, Y., Li, N., and Liu, X. (2026). TrustMargin: Training-free arbitration between parametric memory and retrieved evidence in large language models. arXiv:2606.08397.
+Xu, R., Ji, Y., Luo, Y., Li, J., Li, D., Li, P., Li, J., and Zhang, M. (2026). When to trust tools? Adaptive tool trust calibration for tool-integrated math reasoning.
+Findings of the Association for Computational Linguistics: ACL 2026
+, 17691–17706.
+https://doi.org/10.18653/v1/2026.findings-acl.877
+Yang, H., Song, W., Kim, T., Song, J., Park, S., and Jo, Y. (2026a). Agents’ overreliance on unreliable tools. arXiv:2609.05587.
+Yang, T., Zhu, M., Ji, Y., Li, Q., and Chen, B. (2026b). KDACL: A knowledge-data fusion-driven method for interpretable anomaly causal chain construction in process industries using large language models.
+Journal of Intelligent Manufacturing
+.
+https://doi.org/10.1007/s10845-026-02830-6
+Appendix A. Reproducibility details
+The final CWRU evaluation comprises 9,144 semantically anonymized requests using opaque seeded case identifiers; 9,133 responses parsed successfully. Figure 5, Appendix D, Appendix E, and the CWRU estimate in Appendix G are generated from the final result tables. File-cluster intervals use 10,000 bootstrap resamples and seed
+20260924
+.
+The Tennessee Eastman confirmation set, specialist-selection procedure, and analysis protocol were fixed before confirmation calls. The confirmation set was allocated with seed
+20260930
+before specialist scoring. Detailed protocol records, manifests, and checksums are retained with the reproduction materials.
+Primary TEP calls requested temperature 0, API seed
+20260928
+, low reasoning effort with traces excluded, and at most 512 output tokens in a JSON response. The four-model sensitivity analysis with higher reasoning effort requested the same temperature and seed, high effort, and at most 4,096 output tokens (Appendix E). All LLM calls were issued through the OpenRouter API using the model identifiers listed below. For each model, requests specified a single upstream provider through OpenRouter’s provider.order field, with provider fallback disabled. Each request specified a single model identifier; no model-fallback models array was used. Settings for the other prompt families are reported in Appendix C.6. Across the paper, the OpenRouter model identifiers were
+openai/gpt-5.6-sol
+,
+anthropic/claude-sonnet-5
+,
+anthropic/claude-opus-5.5
+,
+google/gemini-3.8-flash
+,
+qwen/qwen3.8-2.4t-a95b
+,
+z-ai/glm-5.3
+, and
+moonshotai/kimi-k3
+. A reproduction script recomputes the primary TEP statistics from stored outputs and verifies the reported CWRU and earlier TEP sensitivity statistics, without additional model calls.
+Two specialist candidates were fixed before selection: a 400-tree random forest and multinomial logistic regression (
+C=1.0
+) with standardized inputs. Each was fit on 300 training runs, 50 per class, and evaluated on the same 150-run development set.
+Appendix Table A1. Development-only TEP specialist selection.
+Candidate
+Dev. accuracy
+Errors
+Mean selector-oracle gap
+Pooled LLM-only-correct rows
+Decision
+Random forest
+0.820
+27
+0.074
+80
+Passed
+Multinomial logistic regression
+0.833
+25
+0.096
+101
+Selected
+The prespecified eligibility criteria required at least 15 specialist errors, a mean selector-oracle gap of at least 0.03 across models, at least 15 pooled LLM-only-correct rows, and at least one model with unaided accuracy at or above specialist accuracy. Both candidates passed and each had one such model. The fixed ranking then preferred the larger pooled LLM-only-correct count, followed by the larger gap if needed. It selected logistic regression. The criteria had no separate minimum accuracy threshold. Confirmation outcomes were not used for selection.
+Figure 3 is a descriptive cross-tabulation of all 1,050 final Tennessee Eastman model–case rows by unaided-LLM correctness and specialist correctness. No row was excluded from that matrix, and no additional inference was performed.
+Appendix Table A2. Descriptive model-level reliance on the TEP confirmation set.
+Model
+RSR [95% Wilson interval]
+RSR n
+RAIR [95% Wilson interval]
+RAIR n
+GPT-5.6 Sol
+1.000 [0.796, 1.000]
+15
+0.360 [0.202, 0.555]
+25
+Claude Sonnet 5
+0.250 [0.089, 0.532]
+12
+0.966 [0.883, 0.990]
+58
+Claude Opus 5.5
+1.000 [0.796, 1.000]
+15
+0.000 [0.000, 0.204]
+15
+Gemini 3.8 Flash
+0.667 [0.391, 0.862]
+12
+0.630 [0.486, 0.755]
+46
+Qwen 3.8
+1.000 [0.796, 1.000]
+15
+0.191 [0.104, 0.325]
+47
+GLM-5.3
+1.000 [0.796, 1.000]
+15
+0.517 [0.392, 0.641]
+58
+Kimi K3
+0.867 [0.621, 0.963]
+15
+0.478 [0.341, 0.619]
+46
+Figure 4 and Appendix Table A2 are derived from the stored TEP result without new model calls. The model-level opportunities sum to the Figure 3 totals: 99 preservation opportunities and 295 correction opportunities.
+The supplementary Figure 2 interval jointly resamples the 150 TEP runs across the fixed seven-model panel. The post hoc Figure 5 panel summary jointly resamples all 28 CWRU recording files across the same fixed panel. Both use 10,000 percentile-bootstrap draws and seed
+20260924
+; neither resamples models.
+Appendix B. Dataset details
+The CWRU task contains 72 four-class cases clustered in 28 recording files. Paderborn contains 87 segments clustered in 29 physical bearings. XJTU-SY contains 88 recordings clustered in 11 bearings. The Tennessee Eastman confirmation set contains 150 simulation runs, 25 each from NORMAL, IDV1, IDV4, IDV6, IDV13, and IDV15. This class set was fixed during the initial development protocol, before any LLM calls on that package and was retained unchanged for confirmation; confirmation outcomes did not influence the choice. The Lam analysis uses the publicly available Eigenvector Lam 9600 machine-state data described by
+Wise et al. (1999)
+. The WM-811K result is a 50-map pilot.
+Appendix Table B1. Fields displayed in the generic and task-aligned bearing presentations.
+Bearing dataset
+Generic presentation
+Task-aligned additions or substitutions
+CWRU
+Load, speed, sensor, and window metadata; broad spectral-band shares; spectral entropy; skewness; impulse factor; RMS and normal-reference change; coarse energy shares around precomputed BPFO, BPFI, and BSF bands, without the frequencies or fault mapping; kurtosis; dominant component
+Generic diagnostic reference; geometry-derived BPFO, BPFI, BSF, and FTF frequencies; envelope peak and harmonic signal-to-background ratios and offsets; matched-normal RMS and impulsiveness comparisons
+Paderborn
+Speed; RMS, kurtosis, crest factor, peak-to-peak, and skewness; ordinary-spectrum dominant component and relative power; spectral entropy; band-energy fractions
+Documented bearing geometry and characteristic-frequency equations; BPFO, BPFI, BSF, and FTF values; envelope-analysis band; local peak frequency, offset, and signal-to-background ratio; deterministic BPFO–BPFI contrasts
+XJTU-SY
+Speed; RMS, kurtosis, crest factor, peak-to-peak, and skewness; ordinary-spectrum dominant component and relative power; spectral entropy; band-energy fractions
+Documented bearing geometry; BPFO, BPFI, BSF, and FTF values; envelope-analysis band; local peak frequency, offset, and signal-to-background ratio; deterministic BPFO–BPFI contrast
+Controlled-advice analyses set the external diagnosis to be correct or incorrect and use fixed presentation wording. Integration analyses instead use predictions from a specialist model fitted before evaluation, whose errors occur naturally. These settings answer different questions and are not pooled.
+Appendix C. Prompts
+This appendix reports the prompt families used in the paper. The paired-repeat prompt matches the unaided prompt byte-for-byte and is omitted.
+C.1 Shared instructions and output format
+System-level output-format instruction, where applicable:
+Reply with valid JSON only. No markdown. No chain-of-thought.
+TEP/WM:
+{"diagnosis":"<onecandidate>"}
+. Bearings add confidence, per-candidate scores (−2…+2), and next_action_target. Lam uses the diagnosis-only object with its allowed labels.
+Here, ‘No chain-of-thought’ is an output-format instruction: models were asked not to include a written rationale in the returned response. Provider-side reasoning effort was controlled separately, with reasoning traces excluded from the returned response.
+C.2 External diagnosis sentences
+CWRU controlled advice
+An engineer who inspected the equipment suspects <true_class>.
+An engineer who inspected the equipment suspects <wrong_class>.
+CWRU and TEP fitted specialist
+CASE-SPECIFIC PRIOR (not itself physical evidence):
+An external diagnostic advisor suggests: <label>.
+TEP evidence-strength test
+CASE-SPECIFIC PRIOR (not itself physical evidence):
+An engineer who inspected the process run suspects <wrong_class>.
+Lam Task A
+The process engineer believes this wafer run is normal and does not reflect a process/tool fault.
+The process engineer believes this wafer run is abnormal and reflects a process/tool fault.
+Lam Task B
+The process engineer suspects a TCP power fault.
+The process engineer suspects a RF power fault.
+The process engineer suspects a chamber-pressure fault.
+The process engineer suspects a chlorine-flow fault.
+The process engineer suspects a BCl3-flow fault.
+Appendix Table C1 states the deterministic wrong-label rule used in each controlled-advice condition. Each case receives one incorrect label. The primary TEP integration condition is excluded because its external labels are predictions from the fitted specialist rather than deterministically assigned incorrect labels.
+Appendix Table C1. Controlled wrong-advice label rules.
+Condition
+Deterministic rule
+Depends on
+Implementation
+CWRU
+Within each true class, the other three classes are assigned as evenly as possible after a seeded shuffle (seed 20260923).
+True class and the stored map
+Seeded case-preparation routine
+Paderborn
+Healthy
+→
+\rightarrow
+Outer-race damage; Inner-race damage
+→
+\rightarrow
+Healthy; Outer-race damage
+→
+\rightarrow
+Inner-race damage.
+True class only
+Dataset-preparation routine
+XJTU-SY
+Among the other classes in the fixed candidate order, the label is chosen by case index.
+True class, candidate order, and case index
+Dataset-preparation routine
+TEP evidence-strength
+NORMAL
+→
+\rightarrow
+IDV1
+→
+\rightarrow
+IDV4
+→
+\rightarrow
+IDV6
+→
+\rightarrow
+IDV13
+→
+\rightarrow
+IDV15
+→
+\rightarrow
+NORMAL.
+True class only
+Development label map, applied by the evidence-strength runner
+Lam 9600 Task B
+Greedy balance over the other four classes, with ties broken by SHA-256 of wafer id, class, and seed 20260926.
+True class, wafer id, and running counts
+Canonical-build routine
+C.3 Tennessee Eastman
+Prefix: “You are diagnosing one Tennessee Eastman Process run. Use only the evidence and the static reference. Do not invent numbers.”
+For the confirmation prompts,
+build_normal_reference
+is called while the confirmation schedule and runner are built. It is a deterministic function of the 50 training NORMAL runs and uses samples 21–500 inclusive. For each of the 41 measurement and 11 manipulated variables it stores the mean and the sample standard deviation; a non-finite standard deviation, or one below
+10
+−
+12
+10^{-12}
+, is replaced by
+10
+−
+12
+10^{-12}
+. No serialized reference file is stored; the same function regenerates the reference from those runs.
+Static domain reference (identical in the final integration and evidence-strength experiments; shown once):
+STATIC DOMAIN REFERENCE (identical every case; not evidence about this run):
+VARIABLE ROLES (Downs–Vogel / Rieth names):
+XMEAS(1..41): process measurements. XMV(1..11): manipulated variables.
+SUBSYSTEM MEMBERSHIP:
+- feed_input_streams: XMEAS(1,2,3,4,6), XMV(1,2,3,4)
+[... 7 further lines ...]
+PROCESS PATHWAY GROUPS (aggregates of subsystems; not a diagnosis):
+- feed_pathway: feed_input_streams
+[... 3 further lines ...]
+CANDIDATE FAULT DEFINITIONS (complete list; does not identify this case):
+- NORMAL: Mode-1 normal operation, no disturbance.
+- IDV1: A/C feed ratio / B composition constant (Stream 4).
+- IDV4: Reactor cooling-water inlet temperature.
+- IDV6: A-feed loss (Stream 1).
+- IDV13: Slow drift in reaction kinetics.
+- IDV15: Condenser cooling-water valve sticking.
+Do not treat this reference as a ranking of the current run.
+Same run, unaided then advised (reference omitted above; fixed per-case candidate order):
+# Unaided
+CASE EVIDENCE (deterministic z vs normal reference; window samples 21-500):
+global: n_|mean_z|>=1=0 >=2=0 >=3=0 max|mean_z|=0.186 median|mean_z|=0.029 q75|mean_z|=0.050
+XMEAS(1) A Feed (Stream 1): mean_z=+0.013 max_|z|=2.728 slope=+0.0006 early_late_shift=+0.132
+[... 51 further lines ...]
+Choose exactly one candidate:
+- IDV6
+- IDV1
+- IDV15
+- IDV4
+- IDV13
+- NORMAL
+Return JSON only: {"diagnosis":"<candidate>"}
+No prose. No chain-of-thought. No confidence field.
+# Advised (identical case evidence; only the prior differs)
+CASE EVIDENCE (deterministic z vs normal reference; window samples 21-500):
+global: n_|mean_z|>=1=0 >=2=0 >=3=0 max|mean_z|=0.186 median|mean_z|=0.029 q75|mean_z|=0.050
+XMEAS(1) A Feed (Stream 1): mean_z=+0.013 max_|z|=2.728 slope=+0.0006 early_late_shift=+0.132
+[... 51 further lines ...]
+CASE-SPECIFIC PRIOR (not itself physical evidence):
+An external diagnostic advisor suggests: IDV15.
+Choose exactly one candidate:
+- IDV6
+- IDV1
+- IDV15
+- IDV4
+- IDV13
+- NORMAL
+Return JSON only: {"diagnosis":"<candidate>"}
+No prose. No chain-of-thought. No confidence field.
+C.4 CWRU (opaque ID ‘C-000492CE‘)
+Same case; shell/schema/candidate order shared; evidence blocks differ.
+# Generic
+You diagnose a rotating-machine bearing from summarized physical measurements.
+Use only the evidence block. Do not invent numbers.
+CASE ID: C-000492CE
+Operating condition: 0 HP; 1796 RPM; drive-end @ 12000 Hz; window 4096 samples.
+Observed evidence:
+E1. Spectral band-energy shares: 0-500Hz=0.2%, 500-1500Hz=0.6%, 1500-3000Hz=25.3%, 3000-6000Hz=73.9%. Spectral entropy=0.647 (+11.1% vs normal).
+[... 5 further lines ...]
+Choose the single most likely candidate.
+Return VALID JSON ONLY:
+{"diagnosis":"<one candidate exactly>","confidence":<int 0-100>,"candidate_scores":{"<each candidate>":<int -2..2>},"next_action_target":"<candidate or general>"}
+No prose. No chain-of-thought. Scores: +2 strong support ... -2 strong contradiction.
+Candidates:
+- Outer-race defect
+- Inner-race defect
+- Normal
+- Ball defect
+# Task-aligned
+You diagnose a rotating-machine bearing from summarized physical measurements.
+Use only the evidence block. Do not invent numbers.
+GENERAL DIAGNOSTIC REFERENCE (identical for every case; not a diagnosis):
+- BPFO
+↔
+\leftrightarrow
+outer-race; BPFI
+↔
+\leftrightarrow
+inner-race; BSF
+↔
+\leftrightarrow
+ball; FTF
+↔
+\leftrightarrow
+cage.
+[... 4 further lines ...]
+CASE ID: C-000492CE
+OPERATING CONDITION: 0 HP; 1796 RPM; shaft 29.93 Hz; drive-end @ 12000 Hz; window 4096;
+theoretical BPFO=107.3, BPFI=162.1, BSF=70.5, FTF=11.9 Hz.
+CURRENT PHYSICAL EVIDENCE:
+E1. Envelope spectrum near BPFO (theoretical 107.3 Hz): peak SNR=23.52×; 2×BPFO harmonic SNR=19.31×.
+[... 5 further lines ...]
+Choose the single most likely candidate.
+Return VALID JSON ONLY:
+{"diagnosis":"<one candidate exactly>","confidence":<int 0-100>,"candidate_scores":{"<each candidate>":<int -2..2>},"next_action_target":"<candidate or general>"}
+No prose. No chain-of-thought. Scores: +2 strong support ... -2 strong contradiction.
+Candidates:
+- Outer-race defect
+- Inner-race defect
+- Normal
+- Ball defect
+C.5 Paderborn, XJTU, Lam, WM
+On Paderborn, the generic view reports rotational speed, time-domain statistics, spectrum summaries, and band energy, while the aligned view adds geometry, frequency equations, and envelope SNR. The labels are Healthy, Inner-race damage, and Outer-race damage. XJTU follows the same design, with labels NORMAL, INNER_RACE, and OUTER_RACE; the rendered prompt bodies were not archived. Lam uses 19 standardized residuals. Task A labels are NORMAL and FAULTED_PROCESS. Task B labels are TCP_POWER, RF_POWER, CHAMBER_PRESSURE, CL2_FLOW, and BCL3_FLOW; the residual values are omitted here. The Lam 9600 source data are publicly downloadable from Eigenvector Research, but we do not redistribute them. The WM-811K text view uses fields T0, T1, and T2, with labels Center, Edge-Loc, Edge-Ring, Loc, and Scratch. The image payloads were not archived.
+C.6 Decoding and reasoning settings
+Prompt family
+Requested temperature
+Seed
+Reasoning effort / trace
+Max tokens
+TEP integration, secondary sensitivity analyses, evidence-strength, development
+0
+20260928
+low / trace excluded
+512
+TEP sensitivity analysis with higher reasoning effort
+0
+20260928
+high / trace excluded
+4096
+Final CWRU; Paderborn; XJTU
+0
+20260924
+low or high / trace excluded
+2500
+Lam Tasks A and B
+0
+20260926
+low / trace excluded
+64
+WM text and image pilot
+0
+20260925
+low / trace excluded
+256
+Temperature 0 was requested; provider handling of sampling controls may differ. Four truncated Lam Sol calls were retried at max_tokens 128; all other decoding settings were unchanged.
+As noted above, some XJTU rendered bodies and WM image payloads were not archived.
+Appendix D. Final CWRU common-correct analysis
+Positive differences indicate reduced susceptibility to incorrect advice under task-aligned evidence. The restriction retains cases diagnosed correctly before advice under both presentations.
+Model
+Common-correct n
+Files
+Generic
+Task-aligned
+Difference (95% CI)
+GPT-5.6 Sol
+22
+12
+0.500
+0.182
+0.318 [0.067, 0.647]
+Claude Sonnet 5
+22
+11
+0.091
+0.000
+0.091 [0.000, 0.227]
+Claude Opus 5.5
+36
+15
+0.139
+0.000
+0.139 [0.045, 0.256]
+Gemini 3.8 Flash
+23
+12
+0.348
+0.087
+0.261 [0.028, 0.647]
+Qwen 3.8
+27
+12
+0.667
+0.185
+0.481 [0.214, 0.731]
+GLM-5.3
+14
+9
+0.214
+0.214
+0.000 [−0.312, 0.308]
+Kimi K3
+14
+9
+0.429
+0.000
+0.429 [0.125, 0.733]
+Seven-model mean, post hoc
+N/A
+28 jointly resampled
+0.341
+0.095
+0.246 [0.105, 0.405]
+The final row is an unweighted summary across the fixed evaluated model panel. Its interval jointly resamples all 28 recording files across models; it supplements rather than replaces the model-specific results.
+Appendix E. Reasoning-effort analyses
+E.1 CWRU reasoning-effort analysis
+Accuracy differences are high minus low. Susceptibility differences are low minus high retest-adjusted harmful switching, so positive values mean lower susceptibility at the higher reasoning setting. Every interval includes zero.
+Model
+Parsed
+n
+n
+, low / high
+Unaided accuracy, low to high
+Accuracy difference (95% CI)
+Harmful switching, low to high
+Susceptibility difference (95% CI)
+GPT-5.6 Sol
+72 / 72
+0.347 to 0.333
+−0.014 [−0.062, 0.029]
+0.167 to 0.153
+0.014 [−0.060, 0.104]
+Claude Opus 5.5
+72 / 72
+0.583 to 0.639
+0.056 [−0.055, 0.171]
+0.069 to 0.056
+0.014 [−0.085, 0.111]
+Gemini 3.8 Flash
+72 / 70
+0.417 to 0.457
+0.040 [−0.116, 0.199]
+0.139 to 0.083
+0.056 [−0.056, 0.159]
+Qwen 3.8
+72 / 72
+0.444 to 0.458
+0.014 [−0.029, 0.060]
+0.319 to 0.375
+−0.056 [−0.143, 0.026]
+GLM-5.3
+72 / 72
+0.375 to 0.417
+0.042 [−0.101, 0.192]
+0.097 to 0.097
+0.000 [−0.087, 0.086]
+Unaided accuracy uses successfully parsed responses. Retest-adjusted harmful switching uses all 72 cases in every cell.
+E.2 TEP sensitivity analysis with higher reasoning effort
+The primary held-out TEP evaluation called all seven models at the low reasoning-effort setting. This secondary analysis evaluates whether higher reasoning effort changes the integration deficit relative to the primary evaluation. It does not replace that seven-model result.
+Development checks compared reasoning-token use at the requested high setting with the low setting. The operational checks differed across providers rather than using a single common reasoning-token threshold. The final four-model panel was determined before any confirmation outcome at the higher reasoning setting was examined. The analyzed panel is Claude Opus 5.5, Gemini 3.8 Flash, GLM-5.3, and Kimi K3. Two initially excluded models (GPT-5.6 Sol and Claude Sonnet 5) underwent an additional development-only re-check after the initial development diagnostics. This re-check occurred after the first confirmation-set calls had been issued but before any confirmation outcome was examined; both models remained excluded from the final panel. Qwen 3.8 was excluded on the initial development diagnostics because those diagnostics did not show a reliable increase in reasoning-token use at the requested high setting, and it was not included in that later re-check. Claude Opus 5.5 showed only limited evidence of increased reasoning in development and, at confirmation, reported zero reasoning tokens in 198 of 300 high-setting calls (66%; median 0; 90th percentile 201.5). All 300 of its stored low-setting calls also reported zero reasoning tokens.
+The high setting requested temperature 0, seed 20260928, provider reasoning effort high with traces excluded, and at most 4,096 output tokens. The primary low setting requested the same temperature and seed, effort low, and at most 512 output tokens. The high-versus-low comparison therefore changes the requested effort and the output-token limit together, and the meaning of high is provider-specific. Prompts match the primary unaided and implicit-integration prompts. Each retained model was called unaided and with the specialist sentence on the same 150 confirmation runs (1,200 calls; 1,199 parsed). Intervals are 10,000 percentile bootstrap resamples of those runs, drawn jointly across the four models, with seed 20260924.
+Appendix Table E2. Four-model TEP accuracies at low and high reasoning.
+Model
+n
+Unaided low
+Unaided high
+Integrated low
+Integrated high
+Specialist
+Median reasoning tokens (high)
+Claude Opus 5.5
+150
+0.833
+0.827
+0.833
+0.827
+0.833
+0
+Gemini 3.8 Flash
+149
+0.611
+0.738
+0.779
+0.772
+0.832
+1,092
+GLM-5.3
+150
+0.547
+0.627
+0.720
+0.773
+0.833
+90.5
+Kimi K3
+150
+0.627
+0.633
+0.747
+0.793
+0.833
+478.5
+Appendix Table E2 reports model-level accuracies. Effects were heterogeneous across models. Opus was essentially unchanged. Gemini’s unaided accuracy rose while its integrated accuracy did not. GLM-5.3 and Kimi K3 had higher integrated accuracy at the high setting. These point estimates are not separate confirmatory tests.
+On the scored rows, unaided accuracy rose by 5.2 percentage points (95% interval 2.2 to 8.2) and integrated accuracy by 2.2 points (−0.2 to 4.8). The difference of those changes was −3.0 points (−6.9 to 0.8). At the low setting, integrated output minus the specialist was −6.3 points (−13.5 to 1.0). At the high setting, integrated output minus the specialist was −4.2 points (−10.5 to 2.5), and integrated output minus the better standalone source was −4.2 points (−10.5 to 0.8). On the full sample the specialist was at least as accurate as unaided high for every included model, so the two high-setting point estimates match. The better source is recomputed inside each resample, which is why the upper endpoints differ.
+With the high-setting unaided label as the case-level reference (599 scored rows), 365 rows were correct for both sources, 134 for the specialist only, 58 for the LLM only, and 42 for neither. The integrated output missed 69 of 134 specialist corrections (51.5%) and recorded 11 harmful acceptances in 58 LLM-only rows (19.0%). The selector oracle was 93.0%. On all 600 low-setting rows for the same four models, the corresponding counts were 335, 165, 57, and 43. Missed corrections were 84 of 165 (50.9%) and harmful acceptances 6 of 57 (10.5%), with a selector oracle of 92.8%. The missed-correction asymmetry remained. The harmful-acceptance counts are small; no separate confidence interval was computed for them.
+One Gemini unaided-high call was truncated and unparsed; analyses requiring the unaided-high label therefore use 599 rather than 600 rows. Coding the unparsed row as either correct or incorrect did not change the qualitative conclusion.
+Appendix F. Bearing integration comparisons
+Appendix Table F1 records the six specialists used in the reported bearing integration comparisons. Accuracies and error counts are the stored out-of-fold values. The estimator is a 400-tree random forest in every row.
+Appendix Table F1. Bearing specialist specifications.
+Dataset
+Feature set
+Estimator
+Out-of-fold unit
+Out-of-fold accuracy
+Specialist errors
+CWRU
+strong
+400-tree random forest
+recording file
+0.958
+3
+CWRU
+weak
+400-tree random forest
+recording file
+0.917
+6
+Paderborn
+strong
+400-tree random forest
+bearing
+0.724
+24
+Paderborn
+weak
+400-tree random forest
+bearing
+0.437
+49
+XJTU-SY
+strong
+400-tree random forest
+bearing
+0.909
+8
+XJTU-SY
+weak
+400-tree random forest
+bearing
+0.761
+21
+The stored specialist JSON files record base seed 20260924. The out-of-fold random-forest calls use deterministic code-defined offsets from that base:
+SEED+9
+and
+SEED+11
+for CWRU weak and strong,
+SEED+13
+and
+SEED+15
+for Paderborn weak and strong, and
+SEED+17
+and
+SEED+19
+for XJTU-SY weak and strong. Per-fold
+random_state
+values were not separately serialized. Each offset seeds a deterministic per-fold draw in leave-one-cluster order, so rerunning that routine on the same case order regenerates those states. The JSON
+seed
+field is this base seed, not the exact per-fold forest seed.
+The 22 included comparisons consist of the following dataset, evidence presentation, specialist, and model combinations. Values are integrated accuracy minus the better standalone accuracy; the last field records whether the corresponding cluster interval is below, includes, or is above zero.
+Dataset and condition
+Model-level differences and interval classes
+Paderborn, task-aligned, strong specialist
+Sol 0.000 (includes); Sonnet −0.093 (includes); Opus −0.069 (includes); Gemini −0.011 (includes); Qwen 0.069 (includes); GLM 0.046 (includes); Kimi −0.034 (includes)
+Paderborn, task-aligned, weak specialist
+Sol 0.023 (includes); Sonnet −0.084 (includes); Opus −0.023 (includes); Gemini 0.011 (includes); Qwen 0.034 (includes); GLM 0.000 (includes); Kimi −0.023 (includes)
+XJTU, generic, weak specialist
+Sonnet 0.000 (includes); Opus −0.250 (below); Qwen −0.011 (includes); Kimi −0.057 (includes)
+XJTU, task-aligned, weak specialist
+Sonnet −0.193 (below); Opus −0.136 (below); Gemini −0.023 (includes); Qwen 0.159 (above)
+Thus three intervals were below zero, eighteen included zero, and one was above zero. The CWRU specialists do not enter this 22-comparison inferential count because each made fewer than 15 errors under the predefined eligibility criteria: 3 on the strong feature set and 6 on the weak feature set. All 28 point estimates were below the better standalone source.
+Appendix G. Auxiliary evidence-strength analysis
+We additionally tested whether an independently measured evidence-strength margin predicted susceptibility to incorrect advice. The model never received this margin. The final CWRU estimate was directionally positive but imprecise (OR 1.478, 95% CI [0.789, 2.597]). It was estimated from 206 eligible model–case rows, 22 file clusters, and seven models.
+The relationship was not observed in the held-out TEP evaluation (OR 0.923, 95% CI [0.746, 1.142]). That analysis conditions on initially correct unaided predictions and is estimated from 688 model–case rows from 125 runs. One fault class contributed no initially correct rows, and one model contributed no harmful switches on its eligible rows. The exchangeable generalized estimating equation did not return a finite fit; the prespecified independence working correlation was therefore used with the same mean model.
+Appendix H. Paderborn and XJTU supporting analyses
+Paderborn and XJTU use related, but not identical, task-aligned interfaces. On Paderborn, model accuracy under the generic presentation was too low for a clean comparison of susceptibility to incorrect advice. The task-aligned presentation raised diagnostic accuracy and reduced harmful switching, so the two changes cannot be separated cleanly. A supporting Sol common-correct contrast was 0.758 [0.538, 0.917] on 33 cases from 13 bearings.
+On XJTU, task-aligned evidence lowered the all-case harmful-switching rate for all seven evaluated models, while balanced diagnostic accuracy also increased. For several models, few cases were correct under both presentations because only 11 physical bearings were available. These results are consistent with the bearing-domain evidence-presentation finding, while diagnostic competence and susceptibility change together and CWRU remains the cleaner fixed-case analysis.
+Appendix I. TEP development presentation contrast
+During development, the same semantic process measurements were shown either as the generic numerical sheet or reorganized deterministically by subsystem and pathway. Retest-adjusted harmful switching was 0.107 under the generic presentation and 0.124 under the subsystem presentation, a difference of −0.017 (95% CI [−0.036, 0.003]). This development result was not combined with the prespecified confirmation set.
+Appendix J. Real-equipment and interface boundaries
+In the Lam five-class task, 23 of 60 unaided model–case judgments (three models by 20 wafers) were correct. Six were changed to the incorrect external label, across four wafers, while their paired repeats did not flip. The result is descriptive.
+In the 50-case WM-811K pilot, the best text-interface accuracy was 0.36. The same maps shown natively as images to one model reached 0.72, compared with about 0.70 for a numeric classifier. This pilot suggests an interface limitation and should not be interpreted as a general image-model result.
+Appendix K. TEP secondary sensitivity analyses
+The arbitration condition and the alternative-specialist condition were specified after the primary confirmation analysis and fixed before 2,100 additional advised-only calls. That specification reused the fixed 150-run confirmation set, seven LLMs, and the primary unaided and paired-repeat outputs. Ten thousand percentile-bootstrap samples resampled confirmation runs jointly across the fixed seven-model panel with seed
+20260924
+. The prior-label condition was specified later, after the arbitration and alternative-specialist results were known, and was fixed before its own calls. It was therefore analyzed separately from the two earlier sensitivity conditions.
+The arbitration condition retained the logistic specialist and added exactly:
+You have two fallible sources: your own reading of the case
+evidence above and the external diagnostic model’s prediction.
+Decide which diagnosis is better supported by the case evidence.
+Do not automatically defer to either source.
+Appendix Table K1 reports the paired model-level implicit and explicit-arbitration results.
+Appendix Table K1. Primary implicit and arbitration-condition integrated accuracy by model.
+Model
+Implicit integration
+Arbitration condition
+Arbitration − implicit
+Implicit errors fixed
+New errors
+GPT-5.6 Sol
+0.820
+0.813
+−0.007
+2
+3
+Claude Sonnet 5
+0.840
+0.793
+−0.047
+7
+14
+Claude Opus 5.5
+0.833
+0.833
+0.000
+0
+0
+Gemini 3.8 Flash
+0.780
+0.773
+−0.007
+7
+8
+Qwen 3.8
+0.680
+0.673
+−0.007
+0
+1
+GLM-5.3
+0.720
+0.707
+−0.013
+10
+12
+Kimi K3
+0.747
+0.733
+−0.013
+7
+9
+Seven-model mean / pooled counts
+0.774
+0.761
+−0.013 [−0.031, +0.005]
+33
+47
+Under the same error definition as Figure 3, the arbitration condition had 161/295 missed corrections and 6/99 harmful acceptances; five of the six harmful acceptances copied the specialist’s wrong label.
+The alternative-specialist condition used the alternative 400-tree random forest from the fixed development candidate set. Both candidates passed the same eligibility criteria; logistic regression was selected for the primary test by the prespecified ranking rule because it provided more pooled LLM-only-correct rows. Confirmation outcomes played no role in either choice.
+Appendix Table K2 reports the model-level alternative-specialist results.
+Appendix Table K2. Alternative-specialist implicit-integration results by model.
+Model
+Parsed n
+Integrated
+RF specialist
+Selector oracle
+GPT-5.6 Sol
+150
+0.827
+0.840
+0.913
+Claude Sonnet 5
+150
+0.833
+0.840
+0.900
+Claude Opus 5.5
+150
+0.833
+0.840
+0.913
+Gemini 3.8 Flash
+150
+0.773
+0.840
+0.900
+Qwen 3.8
+150
+0.673
+0.840
+0.913
+GLM-5.3
+147
+0.755
+0.837
+0.905
+Kimi K3
+150
+0.780
+0.840
+0.913
+Seven-model mean
+1,047 total
+0.782
+0.840
+0.908
+Of 2,100 attempted calls for the arbitration and alternative-specialist conditions, 2,097 parsed. The three failures were all GLM-5.3 calls in the alternative-specialist condition (IDV6 run 171, IDV13 run 449, and IDV15 run 453). The primary analysis rule excludes an advised row without a parsed label. If all three failures are instead counted correct, integrated output minus the better source is −5.71 percentage points [−11.14, −1.05]; if all are counted wrong, it is −6.00 points [−11.43, −1.33]. The conclusion is unchanged.
+The prior-label condition kept the arbitration text and inserted one line. The specialist prediction precedes that block. This order was fixed for all 1,050 cases and was not randomized. Apart from whitespace, the inserted line was the prompt change.
+An external diagnostic advisor suggests: <specialist>.
+You have two fallible sources: your own reading of the case
+evidence above and the external diagnostic model’s prediction.
+Your earlier diagnosis from the case evidence alone: <z0>.
+Decide which diagnosis is better supported by the case evidence.
+Do not automatically defer to either source.
+The executed prior-label protocol was fixed before its model calls.
+Appendix Table K3 gives the model-level prior-label accuracies. The error-flip columns partition the stored totals of 23 arbitration-condition errors fixed by the prior-label condition and 64 new errors, using the same paired definition as the fixed analysis. No separate confidence interval was computed for these error-flip counts. Differences are computed from unrounded paired values and counts; subtracting the displayed rounded accuracies may therefore differ by 0.001. GLM-5.3’s arbitration accuracy of 0.707 is 106/150 rounded.
+Appendix Table K3. Prior-label integrated accuracy by model.
+Model
+Arbitration
+Prior-label
+Prior-label − arbitration
+Arbitration errors fixed
+New errors
+GPT-5.6 Sol
+0.813
+0.827
++0.013
+3
+1
+Claude Sonnet 5
+0.793
+0.653
+−0.140
+4
+25
+Claude Opus 5.5
+0.833
+0.833
+0.000
+0
+0
+Gemini 3.8 Flash
+0.773
+0.673
+−0.100
+1
+16
+Qwen 3.8
+0.673
+0.667
+−0.007
+0
+1
+GLM-5.3
+0.707
+0.673
+−0.033
+10
+15
+Kimi K3
+0.733
+0.727
+−0.007
+5
+6
+Seven-model mean / pooled counts
+0.761
+0.722
+−0.039 [−0.058, −0.020]
+23
+64
+Appendix L. Computational and API budget
+Study group
+API calls
+Cost (USD)
+Bearing studies
+9,149 final-evaluation attempts
+approximately 271
+Tennessee Eastman studies
+19,225
+approximately 152
+Semiconductor pilot
+not itemized
+approximately 3
+Total
+N/A
+approximately 426
+The reported costs correspond to non-overlapping experiment groups. Bearing costs include development together with the final CWRU evaluation; the call count covers only that final evaluation, in which 9,149 attempts were made for 9,144 requests. Tennessee Eastman calls cover development, the primary and evidence-strength confirmations, the prompt and specialist sensitivity analyses, and the checks at higher reasoning effort. Experiment-level costs are retained with the reproduction materials.
+Appendix M. Data and code availability
+Analysis code and reproduction artifacts are not yet publicly available. The materials cover the final CWRU analyses and the primary and secondary Tennessee Eastman analyses, including the prior-label condition and the sensitivity analysis with higher reasoning effort. Public datasets are available from their original maintainers: the CWRU
+Bearing Data Center
+,
+Lessmeier et al. (2016)
+,
+Wang et al. (2020)
+,
+Rieth et al. (2017)
+,
+Wu, Jang, and Chen (2015)
+, and the Eigenvector Research distribution of the Lam 9600 data described by
+Wise et al. (1999)
+. The Lam distribution page is
+https://eigenvector.com/resources/data-sets/metal-etch-data-for-fault-detection-evaluation/
+. We do not redistribute the Lam source files.
+Appendix N. Advice vulnerability across datasets
+Figure N1 summarizes advice vulnerability across the five datasets. Each point conditions on an initially correct unaided judgment and an incorrect external diagnosis. Paired-repeat retention measures ordinary instability; advised retention measures the corresponding outcome after conflicting external information. The panels use different external-diagnosis regimes and should not be compared in absolute level. No cross-dataset pooling or inference is performed.
+Appendix Figure N1.
+Advice vulnerability across five diagnostic datasets. Panel A shows fixed generic controlled wrong-advice conditions for CWRU, Paderborn, and XJTU-SY. Panel B shows conflicts with the primary logistic-regression specialist on the Tennessee Eastman confirmation set; the arbitration, prior-label, and alternative-specialist conditions are excluded. Panel C shows the five-class Lam 9600 controlled-advice check. Open markers show paired-repeat retention, filled markers show advised retention, and each model label gives the eligible denominator. Panels use different external-diagnosis regimes and are not intended for absolute cross-dataset comparison. Within each panel, the difference between paired-repeat retention and advised retention shows the loss of initially correct judgments associated with conflicting external diagnostic information beyond ordinary repeat instability. No cross-dataset pooling or inference is performed.
+Experimental support, please
+view the build logs
+for errors. Generated by
+L
+A
+T
+E
+xml
+.
+Instructions for reporting errors
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below:
+Click the "Report Issue"
+(
+)
+button, located in the page header.
+Tip:
+You can select the relevant text first, to include it in your report.
+Our team has already identified
+the following issues
+. We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all.
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a
+list of packages that need conversion
+, and welcome
+developer contributions
+.
+We gratefully acknowledge support from our
+major funders
+,
+member institutions
+,
+,
+        and all contributors.
+About
+·
+Help
+·
+Contact
+·
+Subscribe
+·
+Copyright
+·
+Privacy
+·
+Accessibility
+·
+Operational Status
+(opens in new tab)

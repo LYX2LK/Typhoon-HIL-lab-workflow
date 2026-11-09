@@ -1,0 +1,2243 @@
+
+PAGE 1
+Large Language Models can Deliver Accurate and Interpretable
+Time Series Anomaly Detection
+Jun Liu∗
+University of Chinese Academy of
+Sciences
+China
+Chaoyun Zhang
+Microsoft
+China
+Jiaxu Qian∗
+Zhejiang University of Technology
+China
+Minghua Ma
+Microsoft
+USA
+Si Qin
+Microsoft
+China
+Chetan Bansal
+Microsoft
+USA
+Qingwei Lin
+Microsoft
+China
+Saravan Rajmohan
+Microsoft
+USA
+Dongmei Zhang
+Microsoft
+China
+ABSTRACT
+Time series anomaly detection (TSAD) plays a crucial role in var-
+ious industries by identifying atypical patterns that deviate from
+standard trends, thereby maintaining system integrity and enabling
+prompt response measures. Traditional TSAD models, which often
+rely on deep learning, require extensive training data and operate as
+black boxes, lacking interpretability for detected anomalies. To ad-
+dress these challenges, we propose LLMAD, a novel TSAD method
+that employs Large Language Models (LLMs) to deliver accurate
+and interpretable TSAD results. LLMAD innovatively applies LLMs
+for few-shot anomaly detection by retrieving and leveraging both
+positive and negative similar time series segments, significantly
+enhancing LLMs’ effectiveness. Furthermore, LLMAD employs the
+Anomaly Detection Chain-of-Thought (AnoCoT) approach to mimic
+expert logic for its decision-making process. This method further
+enhances its performance and enables LLMAD to provide expla-
+nations for their detections through versatile, customized perspec-
+tives, which are particularly important for user decision-making.
+Experiments on three datasets indicate that our LLMAD achieves
+detection performance comparable to state-of-the-art deep learning
+methods while offering remarkable interpretability for detections.
+To the best of our knowledge, this is the first work that directly
+employs LLMs for TSAD.
+KEYWORDS
+Time Series Anomaly Detection, LLM, Interprebility
+1
+INTRODUCTION
+In the data-driven landscape of contemporary industries, time series
+data holds a pivotal role across various sectors, including financial
+market fluctuations [2], manufacturing production line monitor-
+ing [16], and internet traffic analysis [9]. The examination and
+understanding of time series data are invaluable for maintaining
+operational stability, mitigating potential financial risks, and en-
+suring cybersecurity. Time Series Anomaly Detection (TSAD) is a
+critical task within these applications, aimed at identifying atypical
+∗This work was completed during their internship at Microsoft.
+Data
+(a) Traditional TSAD Method
+Retrieve
+Database
+Analyze
+History Table
+Look up
+Engineers
+Explanation
+Alarm Level
+Anomaly Type
+Anomaly Points
+Anomaly Points
+DL Model
+Domain Knowledge
+LLM
+Time Series
+Training
+Handbook
+(b) TSAD by LLMAD 
+Figure 1: Time series anomaly detection for traditional deep
+learning methods and LLMs.
+points or patterns in the data stream that may lead to system mal-
+functions, market disruptions, or security threats, [4, 8, 23, 36] etc..
+By providing alerting signals, TSAD contributes to maintaining
+operational efficiency and minimizing disruptions [18, 36]. This pro-
+cess is particularly facilitated when the interpretation of anomaly
+information is readily available [33, 39].
+Deep learning-based anomaly detectors have recently gained
+prominence in the TSAD domain, primarily due to their high de-
+tection accuracy, which ensures reliability [4, 30, 49, 52]. However,
+achieving this level of performance necessitates massive training
+data for learning, requiring significant data collection efforts. More-
+over, such detectors typically only provide detected anomalous
+points, functioning as black boxes and failing to offer additional
+interpretation, such as anomaly type, emergency level, and textual
+anomaly reports in natural language. Such information is however
+particularly crucial for understanding the underlying reasons be-
+hind detected anomalies and for gaining the trust of domain experts
+who rely on these models for decision-making [3, 17]. Generating
+these human-readable reports often demands substantial manual
+analysis, involving consultation of historical data and handbooks,
+which is both time-consuming and requires specialized knowledge,
+1
+arXiv:2405.15370v1  [cs.CL]  24 May 2024
+
+
+PAGE 2
+Liu et al.
+as illustrated in Figure 1 (a). Consequently, the usability of deep
+learning anomaly detectors in practical applications is limited.
+The remarkable achievements of Large Language Models
+(LLMs) [1] in various domains [11, 50, 51] have led to their appli-
+cation in time series tasks, garnering significant attention [14, 56].
+LLMs are pretrained with diverse textual data, including numerical
+time series [22], and excel in in-context learning (ICL) with only
+a few-shot examples [7, 23, 32]. They are also adept at providing
+more interpretable, human-readable explanations for their predic-
+tions and can be customized for specific domains. These attributes
+make LLMs particularly suitable for the TSAD domain, where high
+interpretability is highly desirable. As illustrated in Figure1, deep
+learning-based detectors (as shown in Figure1 (a)) necessitate con-
+siderable human effort to obtain interpretable anomaly reports,
+whereas LLMs (as shown in Figure1 (b)) can directly output the
+required information alongside their predictions without human
+intervention. LLMs can provide anomaly points, anomaly types,
+alarm levels, and explanations by integrating relevant knowledge
+directly into the prompts, such as data background information
+and anomaly detection rules. This integration allows predictions to
+align more closely with domain-specific requirements for TSAD.
+Applying LLMs directly to TSAD poses several challenges. Anom-
+aly detection requires an in-depth understanding and background
+knowledge of the data in order to distinguish between normal
+fluctuations and genuine anomalies. Achieving this distinction be-
+comes difficult if decision boundaries are not properly provided
+or if domain knowledge is insufficient. Moreover, the quality of
+interpretability is intimately connected to the method’s compre-
+hension of the data, as a more profound understanding of the data
+results in more accurate explanations that are consistent with the
+data’s background and patterns. This calls for the integration of
+domain knowledge from human expertise into LLMs to augment
+their understanding of the data.
+To harness the power of LLMs while addressing these challenges,
+we introduce LLMAD, an LLM-based anomaly detection frame-
+work specifically tailored for TSAD, offering high accuracy and
+interpretability. LLMAD builds upon existing pretrained LLMs to
+generate anomaly predictions and explanations without the need
+for fine-tuning with time series data. To enable LLMAD to acquire
+better knowledge of the data, it retrieves both normal and abnormal
+patterns from history as input to activate the In-Context Learning
+(ICL) [5], thereby enabling accurate anomaly prediction with few
+shots. Furthermore, LLMAD employs Anomaly Detection Chain of
+Thoughts (AnoCoT) prompting [43] to incorporate domain knowl-
+edge tailored to TSAD, which improves its prediction performance
+while providing more logical and human-readable interpretations.
+With these techniques, LLMAD can not only accurately detect
+anomaly points but also offer explanations for its reasoning process
+and classifications of key components, such as anomaly type and
+alarm level, providing valuable insights for decision-making.
+We conduct experiments on three mainstream public datasets for
+the task of TSAD [27, 28, 54]. The results suggest that our LLMAD
+achieves comparable accuracy performance with state-of-the-art
+(SOTA) deep learning-based detectors. Importantly, LLMAD can
+further deliver useful and readable interpretable results, including
+anomaly type, alarm level classification, and explanation, at a low
+cost, as evaluated by domain experts. These outcomes cannot be
+achieved by traditional methods. Overall, this paper makes the
+following contributions:
+(1) We introduce LLMAD, a novel framework based on LLMs,
+which accurately conducts point-wise TSAD while providing
+comprehensive interpretation of its predictions to facilitate
+decision-making.
+(2) We inject data background and domain knowledge into LL-
+MAD via time-series In-Context Learning (ICL) and AnoCoT
+to enhance TSAD performance and interpretation quality.
+(3) We conduct extensive experiments on three public datasets.
+Both quantitative and human evaluations suggest that LLMAD
+delivers highly accurate TSAD while providing useful and read-
+able interpretative results at a low cost.
+To the best of our knowledge, we are the first to employ LLMs to
+directly perform TSAD without fine-tuning, delivering interpretable
+results.
+2
+PRELIMINARY
+In this section, we provide an overview of TSAD and its inter-
+pretability.
+2.1
+Time Series Anomaly Detection
+Anomaly detection, also referred to as outlier detection, is an ana-
+lytical process aimed at identifying a single point or a sequence of
+points that exhibit significant deviations from the typical patterns
+or norms [10]. A univariate time series is defined as:
+𝑇= {𝑥𝑖| 𝑖∈[1,𝑛]}
+(1)
+where 𝑥𝑖denotes the data value at time 𝑖, within the interval [1,𝑛].
+The objective of anomaly detection is to identify instances of ab-
+normal behavior (either normal or anomalous) at each time step.
+The result of an anomaly detection algorithm is represented as:
+𝑌= {𝑦𝑖| 𝑖∈[1,𝑛]}
+(2)
+where 𝑦𝑖∈{0, 1} serves as a binary indicator, with 0 indicating
+normality and 1 signifying abnormality.
+2.2
+Interpretability for Time Series Anomaly
+Detection
+Interpretability in TSAD is crucial for transforming raw data in-
+sights into actionable intelligence [17]. An interpretable TSAD
+system not only identifies anomalies but also provides explanations
+that can be understood by humans, facilitating informed decision-
+making and root cause analysis [7, 41]. In this paper, we employ
+three key aspects of interpretability for TSAD, which are discussed
+below: text explanations [47], anomaly types and alarm levels [17].
+(1) Text Explanations: Text explanations involve providing human-
+readable descriptions that clarify why a particular data point or
+sequence is considered anomalous. These explanations are essential
+for users who may not have deep technical expertise but need to
+understand the nature of an anomaly to respond appropriately.
+(2) Anomaly Types: Classifying anomalies into different types (e.g.,
+spike, shift up) enhances the interpretability of TSAD by categoriz-
+ing unusual patterns based on their characteristics and potential
+implications. This classification helps in prioritizing responses and
+2
+
+
+PAGE 3
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+Normal
+LLM
+Input time series
+3.2 Time series ICL
+Retrieval
+Preprocessing
+Database
+Normal
+Anomaly
+3.4 Interpretable TSAD
+Index Value
+1
+432
+2
+343
+…        …
+230      490
+Raw
+Rescaling
+Indexing
+…
+Alarm Level
+Warning
+Urgent
+Anomaly Type
+…
+Single Spike
+Transient Level 
+Shift Up
+Judgment Rules
+1. A data point is considered 
+an anomaly if it is …
+Domain 
+Knowledge
+3.3 AnoCoT
+Step-wise
+Inference
+AnoCoT
+Prompt
+ICL 
+examples
+Prompt 
+Construction
+Figure 2: The overview of LLMAD.
+understanding the anomaly’s context within the broader system
+behavior.
+(3) Alarm Levels: Alarm levels indicate the severity of detected
+anomalies, guiding immediate attention and resources to the most
+critical issues. By assigning a severity level to each detected anom-
+aly, organizations can triage responses, allocate resources, and pri-
+oritize more effectively.
+Leveraging the above information beyond anomaly prediction
+enables users to make better-informed decisions, take appropriate
+actions, and make reasonable judgments. This can be achieved
+automatically with LLMAD, whereas it is challenging for traditional
+black-box methods.
+3
+THE DESIGN OF LLMAD
+We provide an overview of our proposed LLMAD in Section 3.1
+and elaborate on its components in the subsequent subsections.
+3.1
+LLMAD in a Nutshell
+We present an overview of LLMAD in Figure 2. LLMAD builds upon
+a time series database to retrieve similar examples for the model and
+employs AnoCoT prompting to inject domain knowledge into LLMs,
+helping it grasp the background of the time series data without
+the need for fine-tuning. The model then uses this information to
+predict anomaly points and provide interpretations.
+Upon receiving the input time series, the data undergoes nor-
+malization and preprocessing to convert it into a tabular format
+suitable for LLM processing. LLMAD then retrieves similar data
+samples, including both normal and abnormal data, from the time
+series databases into its inputs to help differentiate between the
+two data types (Section 3.3). Then, it employs the AnoCoT to in-
+ject domain knowledge of anomaly rules, types, and alarm levels
+tailored to the specific dataset and constructs the prompts fed into
+the LLM (Section 3.4). With this information, LLMAD predicts the
+anomaly points, along with their types, alarm levels, and textual
+explanations to provide comprehensive interpretations (Section 3.5).
+We detail each component in the following subsections.
+3.2
+Time Series Data Preprocessing
+Since LLMs are not primarily designed for numerical data, we
+conduct several data preprocessing steps on the time series to make
+them suitable for LLM input and improve the performance for
+TSAD. These steps include rescaling and indexing.
+Rescaling: To reduce tokens in LLM when the inputs are very
+large or high decimal places, we scale fractional values in inte-
+gers with a certain number of significant digits [14]. We apply the
+following affine transformation to each element 𝑥𝑡in a time series:
+𝑥′𝑡=
+
+1000 × (𝑥𝑡−𝑏)
+𝑎
+
+(3)
+Here, ⌊·⌉is the rounding to integral operator, and 𝑎is the 95th
+upper percentile of the data subset.
+𝑏= min𝑥𝑡−𝛽(max
+𝑥𝑡−min
+𝑥𝑡),
+(4)
+where min𝑥𝑡and max𝑥𝑡are the 1st and 99th percentiles, respectively,
+and 𝛽is a scaling parameter. This scaling ensures that the values
+are integral and robust to outliers, making the input more suitable
+for LLMs in terms of understanding and token saving.
+Value Indexing: The primary goal of TSAD is to identify the
+exact data index of anomalous points. Therefore, we reformat the
+data values with numerical indices in a tabular format as follows:
+Index Value
+1
+𝑣𝑎𝑙𝑢𝑒1
+2
+𝑣𝑎𝑙𝑢𝑒2
+· · ·
+· · ·
+This correspondence assigns unique indices to each data value in the
+time series, thus facilitating LLMs to output point-wise anomalies
+3
+
+
+PAGE 4
+Liu et al.
+with their indices as identifiers, meeting the primary requirements
+of TSAD.
+3.3
+Time Series In-Context Learning
+The objective of an anomaly detection system is to delineate a
+distinct boundary between normal and abnormal data. Neverthe-
+less, establishing such criteria poses a challenge due to the varying
+anomaly patterns across different datasets, necessitating substantial
+background and domain-specific knowledge. Deep learning-based
+detectors attempt to uncover this boundary by utilizing extensive
+training data, which results in a highly inefficient process. In con-
+trast, LLMs have already undergone training with massive datasets,
+encompassing numerical time series, thereby requiring only a lim-
+ited number of demonstrations to activate and apply their domain
+knowledge in the realm of TSAD. This methodology, referred to as
+In-Context Learning (ICL), has demonstrated its efficacy in numer-
+ous applications.
+We apply the similar ICL in LLMAD to address the challenges in
+TSAD, where we build a time series database that store both normal
+and abnormal data for retrieval. When receiving an input time
+series, we find both top-𝑘similar normal and abnormal samples in
+the database, to establish a boundary between normal and abnormal
+data with them. We illustrate this process in Figure 3.
+Construction and Retrieval of Databases. We first collect
+both normal and abnormal time series data and retrieve examples
+from them individually. The normal time series database, denoted
+as ˜S, comprises normal time series derived from the same dataset.
+In contrast, the anomaly database, denoted as ˆS, is assembled from
+all abnormal time series sources across different subsets within the
+dataset to expand the variety and quantity of anomaly types, due
+to the rareness of abnormal data.
+Finding Similar Time Series. Identifying similar time series
+differs from the methods employed for textual data, where fixed-
+length vectors are embedded and cosine similarity is utilized as a
+measurement [48]. For time series analysis, methods like embed-
+ding combined with cosine similarity are less favorable because
+they often require training data to generate meaningful embed-
+dings and might not robustly account for temporal shifts and distor-
+tions between sequences [42]. In contrast, Dynamic Time Warping
+(DTW) [24] and its optimized version FastDTW [35], directly ad-
+dress these issues by explicitly aligning sequences by matching
+temporal variations and patterns, even if the sequences vary in
+speed or are out of phase.
+The DTW algorithm [24] utilizes a dynamic programming ap-
+proach to determine the optimal alignment between sequences,
+which minimizes the overall distance. This method results in a
+time complexity of 𝑂(𝑛2), where 𝑛represents the number of data
+points. For lengthy sequences and large databases, this complexity
+becomes computationally prohibitive and inefficient for retrieval
+purposes. To address this issue, we employ the FastDTW algo-
+rithm [35], which reduces the time complexity to approximately
+𝑂(𝑛) by implementing a multi-level approach. The algorithm ini-
+tiates by calculating DTW at a coarser resolution to establish a
+preliminary alignment. Subsequently, it refines this alignment at
+progressively finer resolutions, significantly decreasing the number
+of required calculations. The mathematical foundation of FastDTW
+Normal Database
+Anomaly Database
+Minimum 
+FastDTW Distance
+Current 
+TS Source  
+Other 
+TS Sources
+Prompt with
+- Anomaly TS
+- Normal TS
+- Input TS
+- Retrieved TS
+Input
+Input and 
+Retrieved TS
+Figure 3: Construction of Time Series Retrieval Databases
+and Time Series Retrieval.
+is illustrated in the following recursive formula:
+𝐷FastDTW(𝑇1,𝑇2) = 𝐷(𝐿1, 𝐿2)
+(5)
+𝐷(𝑖, 𝑗) ≈min {𝐷(𝑖−1, 𝑗−1), 𝐷(𝑖−1, 𝑗), 𝐷(𝑖, 𝑗−1)} + 𝑑(𝑖, 𝑗) (6)
+Here, 𝐷FastDTW(𝑇1,𝑇2) denotes the FastDTW distance between
+time series 𝑇1, with length 𝐿1, and time series 𝑇2, with length 𝐿2.
+𝐷(𝑖, 𝑗) represents the approximate cumulative distance between
+two sequences up to the 𝑖th and 𝑗th elements, respectively, while
+𝑑(𝑖, 𝑗) signifies the distance between the 𝑖th element of the first
+sequence and the 𝑗th element of the second sequence. This ap-
+proximation approach maximizes the matching accuracy while
+significantly reducing the complexity, making it more suitable for
+time series retrieval in large databases.
+In-Context Learning. With the time series database constructed,
+LLMAD retrieves the most similar 𝐾1 normal time series and the 𝐾2
+anomalous time series from ˜S and ˆS to a target time series data 𝑇
+by leveraging the FastDTW algorithm for similarity computation:
+˜K = { ˜𝑆𝑖: 𝑖∈argmin𝐾1
+𝑖
+{𝐷FastDTW(𝑇, ˜𝑆𝑖)}}
+(7)
+ˆK = { ˆ𝑆𝑖: 𝑖∈argmin𝐾2
+𝑖
+{𝐷FastDTW(𝑇, ˆ𝑆𝑖)}}
+(8)
+Here, ˜K and ˆK are the actual sets of 𝐾1 most similar normal and 𝐾2
+most similar anomalous time series to 𝑇, respectively. Incorporat-
+ing the retrieved similar normal and abnormal data from historical
+records into the prompt of the LLMs enhances the ICL capability
+(see Figure 4). This provides a comprehensive representation of the
+data background, anomaly patterns, and distinctions tailored to
+a specific time series dataset. Consequently, the detection perfor-
+mance of the proposed method, denoted as LLMAD, is improved
+without the necessity for fine-tuning, as demonstrated in many
+applications [12, 19, 51].
+3.4
+Anomaly Detection Chain of Thoughts
+The CoT prompting technique guides LLMs to perform step-by-step
+reasoning, thereby enhancing the quality and consistency of the
+inference process [43]. We adapt this approach to the domain of
+TSAD by introducing the Anomaly Detection Chain of Thoughts
+(AnoCoT), which is specifically designed to address the context
+and logical thinking requirements for both anomaly detection and
+4
+
+
+PAGE 5
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+The Structure of Prompt
+Task Description:
+Determine if there are any anomalies in the provided AIOPS flow data sequence.
+Domain Knowledge:
+Jugdment Rules:
+1. A data point is considered an anomaly if it is part of a sequence of at least one consecutive anomalous points or continues to plummet or surge abruptly. 
+2. Anomalies are exceedingly rare and should only be identified with absolute certainty…….
+Anomaly Types Definition:
+- **LevelShiftUp** The data shifts to a higher value and maintains that level consistently, do not return to the original baseline. like `1 2 1 2 1 2 *500* *480* `
+- **LevelShiftDown** The data shifts to a lower value and maintains that level consistently, do not return to the original baseline. like `1 2 1 2 *-100* *-102* `
+Alarm Levels Definition:
+**Urgent/Error**: This category is for values that represent a severe risk, potentially causing immediate damage. **Important**: …, **Warning**:… 
+Chain of Thought Prompting:
+- Step 1: Assess the overall trend to ascertain if it aligns with expected patterns, thereby identifying any overarching anomalies.
+- Step 2: Examine the local data segments to detect any specific deviations or anomalies.
+- Step 3: Reassess the identified points to confirm their anomalous nature, given the rarity of true anomalies. This step ensures that the detected points are not 
+merely normal fluctuations or seasonal variations.
+In-context Prompting:
+Please analyze the latest data with the highest level of diligence and caution: Historical normal data sequence: `{normal_data}`. Historical anomaly data 
+sequence(*XXX* is anomaly point): `{anomaly_data}`. The latest `{data_len}` data points for evaluation: `{data}`
+Figure 4: The overall structure of the prompt.
+interpretation. This adaptation encompasses two key components:
+Domain Knowledge Injection and Expert Step-Wise Inference. We
+show the overall prompt structure that encloses AnoCoT in Figure 4.
+Domain Knowledge Injection Domain knowledge comprises the
+specialized insights and expertise pertinent to a specific domain or
+dataset in the context of TSAD. This knowledge encompasses three
+main aspects: (i) judgment rules, (ii) anomaly type definitions, and
+(iii) criteria for alarm levels. Judgment rules assist in establishing
+criteria that distinguish normal from abnormal patterns, tailored
+to a particular data background. This helps clarify the boundary
+between normal and abnormal data [13, 29]. Anomaly type defini-
+tions and criteria for alarm levels serve as background knowledge
+of the anomalies, which not only improve the model’s judgment
+but also contribute to the interpretability for subsequent use. The
+injected domain knowledge varies based on the context of the data,
+allowing users to tailor it to their specific needs and enhancing the
+flexibility of the approach.
+By incorporating comprehensive domain knowledge, LLMs are
+better equipped to enhance their TSAD capabilities and adapt to
+specific data sets. This integration of expert knowledge allows
+the LLMs to generate more accurate and contextually relevant
+results, improving the overall performance and interpretability of
+the anomaly detection process.
+Expert Step-Wise Inference With the domain knowledge, the
+AnoCoT method unfolds the inference in three distinct steps tai-
+lored to the TSAD. The first step involves a global trend assessment,
+which analyzes the overall trend within the time series, identifying
+potential indicators of gradual deterioration, such as level shifts.
+The second step conducts local anomaly assessment, is specifically
+designed to detect abrupt anomalies occurring on a smaller scale,
+such as spikes, which may signal sudden incidents. The third step
+takes reassessment, entails a re-evaluation of the anomalies identi-
+fied in the preceding steps. Given the inherent infrequency of true
+anomalies and the high occurrence of false positives in extensive
+models, this step is indispensable.
+The step-wise inference design emulates the logical reasoning
+of expert engineers, which substantially enhances the accuracy of
+TSAD and the quality of interpretability. This approach allows the
+model to better mimic human decision-making processes, result-
+ing in more reliable and easily understandable anomaly detection
+outcomes.
+3.5
+Interpretable TSAD
+Interpretability plays a crucial role in TSAD since it provides valu-
+able information for decision-making. The proposed method LL-
+MAD, generates a comprehensive anomaly report in natural lan-
+guage to assist users in this regard. The report encompasses three
+key aspects: (i) anomaly explanation, (ii) anomaly type classifica-
+tion, and (iii) alarm level classification.
+Anomaly Explanation In the anomaly explanation component,
+LLMAD utilizes the AnoCoT to generate a step-wise explanation for
+its inference. This explanation synthesizes insights from an initial
+global trend assessment, which contextualizes anomalies within
+the broader data landscape, and detailed local anomaly assessments
+that identify specific irregularities, such as sudden spikes and re-
+evaluation results. This approach emulates the logical thinking
+flow of a human expert, which not only captures the most pertinent
+points for decision-making but also produces a human-readable
+report in natural language using LLMs. Such interpretability is not
+achievable with traditional TSAD methods.
+Anomaly Type Classification The identification of specific
+anomaly types can furnish engineers with additional information
+for pinpointing the root cause of issues [4]. For example, abrupt
+anomalies, such as spikes, signify sudden incidents, while trend
+anomalies, like level shifts up, indicate deterioration. Although
+existing time series anomaly detection research focuses on identi-
+fying statistical anomalies, it often overlooks the classification of
+anomaly types.
+In our study, we have recognized eight distinct and common
+anomaly types [44], as illustrated in Figure 5, by conducting a
+5
+
+
+PAGE 6
+Liu et al.
+Single Spike
+One brief, sharp rise in data value 
+followed by an immediate return 
+to the baseline.
+Single Dip
+One brief, sharp drop in data 
+value followed by an immediate 
+return to the baseline.
+Multiple Spikes
+Several brief, sharp rises in data 
+value, each followed by a return 
+to the baseline.
+Multiple Dips
+Persistent Level 
+Shift Up
+Persistent Level
+Shift Down
+Transient Level 
+Shift Up
+Transient Level 
+Shift Down
+Several brief, sharp drops in data 
+value, each followed by a return 
+to the baseline.
+The data shifts to a higher value
+ and maintains that level 
+consistently, do not return to the 
+original baseline.
+The data shi:s to a lower value 
+and maintains that level 
+consistently, do not return to the 
+original baseline.
+The data temporarily shifts to a 
+higher value and then returns to
+the original baseline,  anomaly 
+maintains for at least 5 data points.
+The data temporarily shifts to a
+lower value and then returns to the 
+original baseline,  anomaly
+maintains for at least 5 data points.
+Anomaly Type
+Description
+Example
+Figure 5: Selected anomaly types and definition employed in
+this study.
+pre-examination of the dataset. We incorporate their textual de-
+scriptions and examples within the prompt, as demonstrated in
+Figure4. These types include Single Spike, Single Dip, Multiple
+Spike, Multiple Dip, Transient Level Shift Up, Transient Level Shift
+Down, Persistent Level Shift Up, and Persistent Level Shift Down,
+which encompass the majority of patterns observed in the utilized
+dataset.
+Alarm Level Classification Alarm levels represent the severity
+or urgency of detected anomalies, typically characterized by their
+potential impact on the system or process. Three distinct degrees
+of alarm levels have been established: Warning, Important and
+Urgent/Error. The “Warning” level signifies minor deviations that
+do not necessitate immediate action, while the “Important” level
+indicates conditions that could potentially escalate into future prob-
+lems or cause system stress but are not immediately hazardous. In
+contrast, the “Urgent/Error” levels emphasize critical issues that de-
+mand immediate attention. These levels are defined in conjunction
+with the data context, and their prediction proves highly beneficial
+for subsequent decision-making and prioritization [52].
+4
+ANOMALY DETECTION PERFORMANCE
+In this section, we first evaluate the TSAD performance of LLMAD
+by examining the TSAD accuracy.
+Table 1: The statistics of time series anomaly detection
+dataset employed in the experiments.
+Dataset
+All Points
+Test Points
+Anomalies
+Real∗
+Synthetic∗
+KPI
+6,198,513
+309,925
+2.35%
+✓
+✗
+Yahoo
+738,866
+369,433
+0.71%
+✓
+✓
+WSD
+7,898,005
+394,900
+1.56%
+✓
+✗
+4.1
+Experiment Setup
+Dataset. We utilized three univariate time series datasets com-
+monly employed in TSAD, to evaluate the performance. These
+include:
+• KPI [28]: This dataset primarily consists of Key Performance
+Indicators (KPIs) from internet company business monitoring,
+such as website traffic and server CPU usage rates. These data
+are crucial for real-time monitoring of system health.
+• Yahoo [27]: Released by Yahoo Labs, this dataset includes both
+real-world and synthetic time series data suitable for anomaly
+detection and predictive model assessment. It encompasses a
+variety of anomaly types, such as point anomalies and contextual
+anomalies, providing a rich testing ground for algorithms.
+• WSD [54]: This dataset focuses on anomaly detection in Web
+service performance indicators, such as response times and error
+rates. The data aids in monitoring the quality of Web services,
+quickly identifying issues like service delays and functional fail-
+ures.
+The details of each dataset are presented in Table 1 1. To assess the
+performance of TSAD, we selected the final 50% of data from the
+Yahoo dataset and 5% of data from both the KPI and WSD datasets
+as the test set. For the baseline models, we use the first 50% of the
+data in each datasets for training and model selection.
+Baseline Models. We compare our proposed LLMAD against a
+diverse set of state-of-the-art TSAD methods, categorized by their
+detection mechanisms and typical applications. These include:
+• SPOT [37]: A statistical method grounded in extreme value the-
+ory, ideal for outlier detection in univariate data streams.
+• SRCNN [34]: A supervised learning approach that uses convo-
+lutional neural networks to leverage spatial dependencies.
+• DONUT [45]: An unsupervised anomaly method utilizing varia-
+tional autoencoder to denoise the anomalies and further learn
+the robust representation of normal patterns.
+• VQRAE [25]: An unsupervised anomaly method that uses de-
+tection variational quasi-recurrent autoencoders.
+• AnoTransfer [54]: An approach that enhances the VAE frame-
+work with transfer learning to adapt quickly to different settings
+in an unsupervised manner.
+• Informer [55]: A predictive model that utilizes advanced atten-
+tion mechanisms and transformer architectures to forecast and
+detect deviations from normal sequences.
+• TFAD [53]: A method that integrates traditional feature engineer-
+ing with anomaly detection strategies in a supervised learning
+framework.
+1“Real” indicates datasets derived from real-world data sources. “Synthetic” denotes
+datasets that have been artificially created to include specific anomalies.
+6
+
+
+PAGE 7
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+0
+0
+1
+1
+1
+0
+1
+1
+1
+0
+1
+0
+0
+1
+1
+0
+0
+0
+1
+0
+Truth
+Predict
+1
+0
+1
+1
+1
+0
+1
+1
+1
+0
+1
+0
+1
+1
+1
+0
+0
+0
+0
+0
+Adjusted
+Delay adjusted
+Figure 6: An illustration of the delay F1.
+• Anomaly-Transformer [46]: An unsupervised method that
+leverages the transformer architecture with an anomaly-attention
+mechanism to compute the association discrepancy.
+• LLMTime [14]: A zero-shot LLM-based method to forecast time
+series, and we use the prediction error as anomaly signals.
+This comprehensive comparison spans from traditional statistical
+approaches to cutting-edge deep learning models, ensuring a thor-
+ough analysis of their efficacy in anomaly detection within time-
+series data. We evaluated the performance of the baseline models
+by adhering to their original code repository and configuration
+settings. In the case of our LLMAD, we chose GPT-4-1106-preview
+as the primary language modeling model.
+Evaluation Metrics. In practical applications, operators priori-
+tize the detection of continuous anomalous segments in time-series
+data over point-wise anomaly detection, which involves classify-
+ing each individual data point as an anomaly. This shift in focus
+is attributed to the significant impact that anomalous segments
+can potentially have. To address these specific needs, our research
+employs two metrics: Best F1 and Delayed F1, drawing inspiration
+from DONUT [45] and SRCNN [34], respectively.
+The Best F1 is designed to measure the peak F1 score that a
+model can achieve across different thresholds, incorporating a point
+adjustment strategy. This provides a benchmark for the optimal
+performance capability of the model under ideal conditions. In
+LLMAD, we adjust the threshold by considering the number of
+detected anomaly points as a variable. Delayed F1 score caters to
+the practical necessity of prompt anomaly detection by introducing
+a delay threshold, denoted as 𝐾. If an anomaly segment is identified
+after surpassing this threshold 𝐾, it is deemed as undetected. This
+metric modifies predictions by considering a specific delay. The
+example shown in Figure 6, where the delay 𝐾= 1, the second
+anomaly segment is prolonged to encompass three points due to the
+delay adjustment, whereas the third segment is overlooked because
+its detection calls for two-time intervals, exceeding the maximum
+delay threshold of 1. This approach balances the importance of
+swift detection against the imperative of maintaining detection
+accuracy, a balance that is especially crucial in scenarios where
+prompt detection can significantly reduce potential risks or losses.
+For the WSD and KPI, the delay is configured at 7, and for Yahoo
+datasets, it is set to 3.
+4.2
+Performance Comparison
+In Table 2, we report the results for Best F1 and Delayed F1 on
+different datasets and methods. Observe that LLMAD on average
+achieves the best performance on Best F1 and second-best perfor-
+mance on Delayed F1 across the three datasets, underscoring its
+superior performance in accuracy and timeliness. These results
+suggest that the LLM based approach can deliver reliable TSAD
+compared to traditional methods, opening a new methodology for
+the TSAD domain.
+Examining the breakdown performance, LLMAD ranks in the
+top three for both F1 and Delayed F1 for all datasets, demonstrating
+its robust performance. The performance of various baseline meth-
+ods on datasets exhibits variance. For instance, SPOT generally
+underperforms across most datasets due to its erroneous treatment
+of outliers as anomalies, which do not always manifest in such a
+manner. Anomaly Transformer achieves commendable results in
+terms of the highest Best F1 on most datasets but demonstrates
+a low Delayed F1. It detects anomalies based on their relation to
+nearby points, effectively capturing correlations only when the
+anomalous points are relatively central within a window. On the
+other hand, LLMTIME, which also employs LLM for prediction and
+uses the error as an anomaly indicator, has very low performance.
+This observation suggests the superior pipeline of LLMAD. By in-
+troducing ICL and AnoCoT, LLMAD utilizes LLM more effectively,
+making it more suitable for the TSAD task.
+It has been observed that LLMAD does not always achieve the
+best results in certain datasets. For instance, in the KPI dataset, this
+is due to the presence of long-duration anomalies that may extend
+across multiple windows. As a result, LLMAD may struggle in these
+cases due to the limitation of window size, while other methods are
+trained on the entire dataset and have incorporated such long-term
+knowledge. In the case of the Yahoo dataset, TFAD performs better.
+We have noticed that the dataset annotations sometimes only mark
+critical anomaly points, such as the point of a level shift, without
+indicating subsequent sustained anomalies. Consequently, LLMAD
+may identify the sustained values post-shift as anomalies, leading
+to slightly lower precision. Nevertheless, LLMAD still ranks among
+the top three baselines in these two datasets and the best on average,
+making it a reliable method.
+4.3
+Ablation Analysis
+To delve into the effect of individual components in LLMAD, we
+explore the impact of three distinct factors: (i) in-context learn-
+ing, (ii) chain-of-thoughts prompting, (iii) the injection of domain
+knowledge, and (iv) the foundation LLM inference engine.
+4.3.1
+In-Context Learning. First, we evaluate the effectiveness of
+ICL in LLMAD along two dimensions: (i) whether to retrieve sam-
+ples dynamically, use fixed ones, or not use ICL at all (zero-shot
+[26]), and (ii) the number of positive (anomaly) and negative (nor-
+mal) samples used for ICL.
+Table 3 presents the performance comparison of different ICL
+settings in LLMAD using GPT-4. Observe that using few-shot ICL
+can significantly boost the performance of TSAD, regardless of
+whether the samples are fixed or dynamic. This demonstrates the
+superiority of ICL. By providing demonstrations via examples, LL-
+MAD establishes a clearer boundary between normal and abnormal
+patterns, boosting its performance. On the other hand, it appears
+that using samples retrieved dynamically achieves better perfor-
+mance than fixed ones. This suggests that using similar samples
+can better help LLMs distinguish ambiguous cases.
+7
+
+
+PAGE 8
+Liu et al.
+Table 2: The overall experimental results across three TSAD datasets. Bold numbers denote the best performance among all
+models, underlined signify the second-best performance.
+KPI
+WSD
+Yahoo
+Average
+Method
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+SPOT
+0.269
+0.269
+0.273
+0.273
+0.417
+0.417
+0.320
+0.320
+SRCNN
+0.617
+0.488
+0.286
+0.231
+0.251
+0.198
+0.385
+0.306
+DONUT
+0.382
+0.294
+0.224
+0.141
+0.215
+0.215
+0.274
+0.217
+VQRAE
+0.272
+0.137
+0.179
+0.189
+0.510
+0.492
+0.320
+0.273
+Anotransfer
+0.685
+0.461
+0.674
+0.379
+0.567
+0.496
+0.642
+0.445
+Informer
+0.859
+0.715
+0.534
+0.370
+0.707
+0.671
+0.700
+0.585
+TFAD
+0.751
+0.631
+0.644
+0.396
+0.779
+0.775
+0.725
+0.601
+Anomaly Transformer
+0.918
+0.336
+0.670
+0.092
+0.274
+0.029
+0.621
+0.152
+LLMTIME
+0.333
+0.194
+0.029
+0.022
+0.023
+0.023
+0.128
+0.080
+LLMAD
+0.843
+0.667
+0.711
+0.401
+0.724
+0.695
+0.759
+0.588
+Table 3: Performance comparison of different settings of ICL.
+Sample
+Number
+WSD
+KPI
+Yahoo
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Dynamic
+1 pos
+0.548
+0.304
+0.756
+0.305
+0.602
+0.602
+1 neg
+0.595
+0.327
+0.768
+0.431
+0.622
+0.622
+1 pos/1 neg
+0.653
+0.335
+0.816
+0.641
+0.679
+0.655
+2 pos/1 neg
+0.711
+0.401
+0.843
+0.667
+0.724
+0.695
+4 pos/1 neg
+0.716
+0.409
+0.812
+0.697
+0.691
+0.669
+Fixed
+4 pos/1 neg
+0.547
+0.351
+0.733
+0.283
+0.638
+0.602
+Zero-shot
+-
+0.512
+0.270
+0.711
+0.277
+0.574
+0.563
+WSD
+KPI
+Yahoo
+Dataset
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+F1 Score
+0.535
+0.654
+0.621
+0.670
+0.781
+0.645
+0.716
+0.843
+0.724
+No CoT
+CoT
+AnoCoT
+Figure 7: Performance comparison of different prompting
+schemes.
+Taking a closer look at the effect of the number of samples
+retrieved, it appears that the performance of LLMAD increases with
+the number of samples, but this increase becomes flattened if more
+than 2 positive/1 negative samples are provided. This observation
+makes sense, as more samples can, to some extent, provide rich
+patterns and information for LLMAD, but continually increasing
+the number of samples may lead to repetitive information. Using
+the setting of 2 positive/1 negative samples can be a good trade-off
+between complexity and performance.
+4.3.2
+Chain-of-Thoughts Prompting. Now we move to evaluate
+the effectiveness of our AnoCoT by comparing its performance
+with LLMAD without CoT and standard CoT (asking LLM to think
+Table 4: Comparison of LLMAD on using different LLMs.
+Model
+WSD
+KPI
+Yahoo
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Llama-3-70B
+0.360
+0.264
+0.701
+0.289
+0.490
+0.471
+GPT-3.5
+0.233
+0.069
+0.409
+0.134
+0.204
+0.194
+GPT-4
+0.716
+0.409
+0.843
+0.667
+0.724
+0.695
+step-by-step), as shown in Figure 7. As expected, CoT can signifi-
+cantly improve the performance of TSAD in terms of Best F1 on all
+datasets, while our AnoCoT, which incorporates domain knowledge
+and follows the logical thinking of experts, can further boost the
+performance to a greater level. On average, CoT improves the Best
+F1 by 9.5%, and using AnoCoT can further improve CoT by 6.2%,
+which is a substantial boost. This improvement can be attributed
+to the fact that as LLMs infer like humans, using step-wise think-
+ing combined with injecting domain expertise leads to improved
+performance in TSAD.
+4.3.3
+Domain Knowledge Injection. We also delve into the effec-
+tiveness of domain knowledge to see how its injection can help with
+TSAD. Table 5 shows the impact of removing one of the domain
+knowledge components defined in Section 3.4. Observe that remov-
+ing any domain knowledge component will lead to a performance
+drop, as expected. The drop is most significant in the absence of spe-
+cific judgment rules. This underscores the importance of defining
+textual rules for LLM’s understanding of the definition of anomalies.
+Although type and alarm level do not directly provide guidance for
+TSAD, they are also important, as they act as side information to
+deliver the context of the task. This enhances the ability of LLMAD,
+making it more sophisticated in the task.
+4.3.4
+Foundation LLM. Finally, we evaluated the performance of
+LLMAD using different LLM engines to compare their divergence.
+Table 4 shows the results for GPT-3.5 [6], GPT-4 [1], and Llama-
+3-70B-Instruct [31]. It can be observed that GPT-4 outperforms
+the other two models significantly in all datasets, while Llama-
+3-70B-Instruct demonstrates superior performance compared to
+GPT-3.5. Considering that the TSAD task is heavily dependent on
+domain-specific knowledge and the ability to follow instructions
+8
+
+
+PAGE 9
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+Table 5: Ablation studies for domain knowledge injection.
+Method
+WSD
+KPI
+Yahoo
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+Best F1
+Delayed F1
+LLMAD
+0.716
+0.409
+0.843
+0.667
+0.724
+0.695
+-w/o rule
+0.423
+0.228
+0.652
+0.383
+0.555
+0.550
+-w/o type
+0.565
+0.378
+0.775
+0.449
+0.643
+0.631
+-w/o level
+0.696
+0.353
+0.810
+0.628
+0.700
+0.688
+and comprehend content, only GPT-4 fulfills the necessary crite-
+ria. This underscores the vital role of advanced LLM models in
+accomplishing such tasks.
+5
+INTERPRETABILITY EVALUATION
+We proceed to analyze the quality of anomaly interpretations gen-
+erated by LLMAD from three distinct perspectives: anomaly ex-
+planation, anomaly type classification, and the incorporation of
+urgency level into the anomaly explanation for joint analysis.
+5.1
+Experiment Setup
+The original dataset is solely labeled with anomaly points and lacks
+ground truth information for interpretability evaluation. To address
+this limitation, we employ LLMAD to generate output for each type
+of interpretation and enlist the expertise of 5 DevOps engineers
+to manually assess the quality of interpretation in each case. With
+an average of 3 years of TSAD experience, these engineers offer a
+well-rounded perspective on the evaluation process.
+5.1.1
+Explanation Evaluation Setup. We combine the evaluation of
+anomaly explanation and urgency level, as assessing the urgency
+level independently, without the context and accompanying inter-
+pretation, proves to be challenging. To thoroughly assess these
+aspects of LLMAD’s performance, we adopt two primary criteria:
+usefulness and readability [29]. Usefulness refers to the effective-
+ness and relevance of an explanation in practical applications, with
+a score range between 1 and 5. Readability focuses on the clarity
+and ease of understanding of the explanation, scored between 1 and
+3. More details on each score can be found in Appendix C. These
+criteria are crucial for determining how effectively the explanations
+generated by LLMAD contribute to an improved understanding of
+detected anomalies and provide actionable insights.
+We randomly selected 100 anomaly cases in total from the three
+datasets for human evaluation and compared the performance of the
+GPT-4 version of LLMAD using standard CoT and AnoCoT meth-
+ods. In addition to the mean and standard deviation (std) scores
+from each rater, we also provide the evaluation of High Incidence
+Proportion (HIP) [29], which calculates the percentage of evalua-
+tions surpassing a satisfying performance threshold. The threshold
+is set at a score of 4 for usefulness and 2 for readability.
+5.1.2
+Anomaly Type Classification Setup. We also randomly se-
+lected 100 anomalous samples in total to manually evaluate the
+performance of anomaly type classification. Each sample was asked
+to be labeled with one or multiple types of anomalies. To evaluate
+the classification performance, we employ two metrics: Acc (any-
+hit) [57] and Micro F1 [15]. Acc (any-hit) calculates the ratio of
+correctly predicted anomaly types to the total number of samples.
+A type prediction is considered a “hit” if it matches any human
+Table 6: Results of human evaluation for explanation gener-
+ated by LLMAD.
+Raters
+AnoCoT
+Standard CoT
+Usefulness
+Readability
+Usefulness
+Readability
+Mean
+Std
+HIP
+Mean
+Std
+HIP
+Mean
+Std
+HIP
+Mean
+Std
+HIP
+Rater1
+4.45
+0.95
+78.35%
+2.98
+0.14
+100.00%
+3.85
+1.56
+62.89%
+2.93
+0.30
+98.97%
+Rater2
+4.22
+0.93
+76.29%
+2.37
+0.63
+91.75%
+3.79
+1.03
+63.92%
+2.05
+0.55
+87.63%
+Rater3
+4.09
+0.98
+79.38%
+2.94
+0.24
+100.00%
+3.57
+0.86
+56.70%
+2.94
+0.24
+100.00%
+Rater4
+3.80
+1.04
+64.95%
+2.31
+0.47
+98.97%
+3.29
+1.43
+49.48%
+2.30
+0.66
+88.66%
+Rater5
+3.75
+1.23
+62.89%
+2.70
+0.62
+94.85%
+3.41
+1.19
+47.42%
+2.65
+0.52
+97.81%
+Average
+4.06
+1.03
+72.37%
+2.66
+0.42
+97.11%
+3.58
+1.21
+56.08%
+2.57
+0.45
+94.61%
+label. Micro F1 is a metric that aggregates the contributions of all
+classes to compute the average metric. This makes it robust to class
+imbalance and emphasizes the importance of correctly classifying
+each instance. . By using these metrics, we can effectively assess
+the performance of LLMAD in classifying anomaly types.
+5.2
+Evaluation Results
+5.2.1
+Explanation Evaluation. Table 6 presents a comparison of
+AnoCoT and standard CoT based on human evaluation of anomaly
+explanations generated by LLMAD. It can be observed that AnoCoT
+outperforms standard CoT in terms of both usefulness and readabil-
+ity across all raters, with an average increase of 13.4% in usefulness
+and 3.5% in readability. This result suggests that AnoCoT, which
+incorporates domain knowledge for TSAD and follows expert rea-
+soning flow, consistently provides better quality explanations for
+anomaly prediction, delivering more insightful, detailed, useful,
+and user-friendly information for engineers in decision-making
+processes.
+Furthermore, AnoCoT achieves 72.37% and 97.11% HIP for use-
+fulness and readability, respectively, indicating that LLMAD can
+deliver satisfactory explanations for a majority of samples, making
+it practical for real industry scenarios. Overall, these findings sug-
+gest that AnoCoT not only enhances the performance of TSAD but
+also improves the transparency and interpretability of the anomaly
+detection process, making it a highly valuable addition to the task.
+5.2.2
+Anomaly Classification Evaluation. In Table 7, we present
+the performance comparison of anomaly classification across three
+datasets for different LLM models2. It can be observed that GPT-4
+consistently outperforms other baselines as the most reliable model
+for anomaly classification across all datasets. It achieves over 90%
+accuracy on WSD and Yahoo datasets, and 79% on the KPI dataset,
+while also obtaining high Micro F1 scores for all datasets. This
+performance is remarkable, given that the samples are not labeled
+with anomaly type labels. GPT-4 can accurately classify anomalies
+based solely on the textual description of types, which demonstrates
+its remarkable interaction-following ability. This high performance
+suggests that LLMAD can deliver excellent anomaly classification
+quality to assist interpretable TSAD and decision-making processes.
+However, this advantage is limited to GPT-4. The task poses high
+requirements on the LLM model, as confirmed in Section 4.3.4.
+9
+
+
+PAGE 10
+Liu et al.
+Anomaly Prediction
+Explanation
+Anomaly Type: TransientLevelShiftUp
+Alarm Level: Urgent/Error
+Explanation text:
+Step 1 global: Data up to point 116 falls within the typical range when compared to historical 
+normal data. Starts to increase substantially from point 117, reaching an extreme high at 154.
+Step 2 local: Sustained high values from point 117 to 158 with peaks well above the historical 
+norm, indicating an anomaly. Post-point 158, values return to normal levels.
+Step 3 recheck: Reassessment confirms the anomaly between points 117 and 158, as the values 
+deviate significantly from the norm and follow the defined rules for anomalies.
+Anomaly Type: SingleSpike
+Alarm Level: Warning
+Explanation text:
+Step 1 global: Global analysis of the recent 400 data points shows expected variability within normal 
+ranges.
+Step 2 local: Identified data point 63 as a high spike (706) compared to surrounding values of 462 and 
+329, point 111 as a high spike (724) compared to 478 and 368, point 146 as a high spike (645) 
+compared to 403 and 284, point 192 as a deep dip (66) compared to 341 and 321, and point 251 as a 
+high spike (670) compared to 320 and 393.
+Step 3 recheck: Upon reassessing, data point 63, 111, 146, 192, and 251 are determined as anomalies 
+because they significantly deviate from the trend and neighboring points. No other points exhibit this 
+extreme behavior and the high spikes align with historical anomaly examples provided.
+Figure 8: Two case study of anomaly interpretation delivered by LLMAD.
+Table 7: Results of the evaluation for anomaly type classifi-
+cation.
+Model
+WSD
+KPI
+Yahoo
+Acc∗
+Micro F1
+Acc∗
+Micro F1
+Acc∗
+Micro F1
+Llama-3-70B
+0.379
+0.400
+0.286
+0.250
+0.600
+0.552
+GPT-3.5
+0.310
+0.321
+0.143
+0.163
+0.375
+0.380
+GPT-4
+0.900
+0.776
+0.790
+0.647
+0.930
+0.804
+5.3
+Case Study
+We present two case studies in Figure 8 to demonstrate how LLMAD
+successfully identifies and delivers interpretable TSAD results.
+Case 1: Transient Level Shift Detection In the first case study,
+we observe that the data exhibits a sudden and significant increase
+in data values, starting at point 117 and peaking at point 154. LL-
+MAD successfully identifies this pattern as a "Transient Level Shift
+Up" anomaly and captures the event range. This classification was
+enhanced by a comprehensive analysis that included: (i) A global as-
+sessment confirming that the shift was well above historical norms.
+(ii) A local trend analysis showing deviation from normal behaviors.
+(iii) A recheck validating the anomaly by demonstrating that the
+peak values deviated substantially from typical data trends. Such
+interpretations are helpful and clear for engineers to localize the
+event and take further actions, highlighting the practical value of
+LLMAD in providing interpretable TSAD results.
+Case 2: Singular Data Spike Detection The second case study
+presents a time series with regular fluctuations, where some peak
+values exceed normal ranges. LLMAD successfully detects these
+2“Acc” indicates the Acc (any-hit) metric
+Table 8: Cost and latency analysis for LLMAD.
+Cost Items
+AnoCoT
+CoT
+Mean
+Std
+Mean
+Std
+Input Tokens
+4,208
+646
+4,115
+652
+Output Tokens
+281
+122
+189
+90
+API Calling Time (s)
+14.91
+7.59
+10.52
+5.07
+Total Time (s)
+17.03
+7.71
+13.34
+11.26
+Daily Cost (USD)
+0.18
+0.04
+0.17
+0.03
+spikes, which could indicate critical transient events. In its expla-
+nation, LLMAD Pinpoints the specific anomalous points, Delivers
+reasoning steps by comparing them with normal patterns, and
+Generates a useful and human-readable report. This enhances the
+system’s usability for operators without specialized data science
+knowledge. Since the deviation is not significant, LLMAD assigns
+this case a “Warning” level. This classification not only identifies
+issues but also aids in prioritizing system responses, ensuring that
+resources are allocated effectively and that operators can act on the
+most critical anomalies first.
+Overall, these two practical demonstrations show LLMAD’s
+value in providing interpretable TSAD results and facilitating in-
+formed decision-making.
+6
+COST AND LATENCY ANALYSIS
+It is well-known that LLMs have a considerable number of parame-
+ters, which may result in high inference latency. In this section, we
+evaluate these aspects to provide essential information regarding
+the overhead of employing the proposed method, LLMAD. We uti-
+lize the GPT-4-turbo-1106 model as the base and its variants under
+10
+
+
+PAGE 11
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+two methodologies: standard CoT and AnoCoT. Both methodologies
+were tested with a window length of 400, collecting data at a rate of
+one point per minute, consistent with the highest sampling rate
+in the WSD dataset among the three. In contrast, the sampling rates
+for the Yahoo and KPI datasets are one hour and 1 to 5 minutes,
+respectively.
+We present the evaluation results in Table 8. The mean and
+standard deviation (Std) values are computed across all samples
+from three datasets. We first compare the token usage between
+AnoCoT and CoT. It can be observed that AnoCoT introduces a
+minor increase in input and output tokens (< 100) compared to
+CoT. A higher output token count implies a more comprehensive
+interpretation. Considering the improvements in both TSAD perfor-
+mance and interpretability, this additional token usage is justifiable.
+The proposed AnoCoT method requires, on average, 14.91 seconds
+for calling the GPT-4 API and 17.03 seconds for the total time per
+request. Given that each request handles 400 data points, corre-
+sponding to over a 6-hour time window, such latency is negligible.
+Financial Cost Estimation: Daily costs were calculated based
+on the number of API calls needed to sample one data point per
+minute over 24 hours. In the non-overlapping setting, we computed
+the average token usage per day and determined the cost using
+the price of GPT-4-turbo-1106 3. The daily operational costs were
+approximately $0.18 for AnoCoT and $0.17 for standard CoT. Ex-
+trapolating these figures to an annual perspective, the cost amounts
+to approximately $65.70 for AnoCoT and $62.05 for standard CoT
+annually. AnoCoT offers more detailed outputs, it does so at the
+cost of higher token usage and longer processing times. Despite
+these variances, the annual costs for both methodologies remain
+moderate, reinforcing the viability of LLMAD for long-term deploy-
+ment in TSAD tasks, particularly when interpretability is a crucial
+requirement.
+7
+RELATED WORK
+In this section, we review relevant research practices in TSAD and
+the use of LLMs for time series analysis.
+7.1
+Time Series Anomaly Detection
+Time series anomaly detection utilizes a broad range of methodolo-
+gies. Among these, SPOT [37] applies extreme value theory to detect
+anomalies in data streams by examining the statistical tails where
+extreme values are more likely to occur. As a representative super-
+vised learning approach, SRCNN [34] combines spectral residuals
+with a CNN architecture to create an effective classifier for TSAD.
+TFAD [53] incorporates time-frequency analysis within a decompo-
+sition framework to improve detection capabilities. Unsupervised
+methods are also popular in this area. For example, Donut [45] uses
+a variational autoencoder to detect anomalies in seasonal KPIs. Imd-
+iffusion [8] leverages diffusion models to reconstruct time series
+and uses imputation error as the anomaly identifier.
+While these approaches may perform well in specific scenarios,
+they usually require massive amounts of data for training and
+lack interpretability, which is particularly important in the TSAD
+domain.
+3OpenAI. (2024). Pricing. Retrieved from https://openai.com/pricing. Specifically,
+the cost is $0.01 per 1,000 tokens for input and $0.03 per 1,000 tokens for output.
+7.2
+Large Language Models for Time Series
+LLMs have increasingly demonstrated their potential in the field
+of time series analysis [21, 38]. Time-LLM [20] has activated LLM
+capabilities in time series through a novel embedding method that
+aligns data tokenization and encoding, as well as creating prompts
+to guide LLMs in time series analysis. LLMTime [14] has shown
+that LLMs can effectively conduct zero-shot time series forecasting
+with appropriate pre-processing. Several research studies leverage
+LLMs to provide interpretable time series analysis. For example, the
+study [47] experiments with zero-shot/few-shot inference using
+GPT-4 and instruction-based fine-tuning with Llama [40] to gener-
+ate explainable forecasts. Research in [22] suggests using LLMs to
+provide accountability and transparency for time series analysis.
+Although this area is becoming more robust, using LLMs for
+TSAD remains unexplored. We are pioneers in this direction, aiming
+to deliver accurate and interpretable TSAD using LLMs.
+8
+LIMITATIONS
+Although LLMAD excels in both accuracy and interpretability, it
+exhibits several limitations. In general, LLMAD has higher inference
+latency and cost compared to traditional methods due to its reliance
+on LLMs. In scenarios that require real-time inference, LLMAD
+may not be the most suitable choice. However, considering the
+cost analysis provided in Section 6, the latency and cost are highly
+acceptable if the data sample size is not too large. Furthermore,
+LLMAD offers the remarkable additional benefit of interpretability,
+which cannot be provided by traditional methods
+In addition, while our experiments demonstrate the effective-
+ness of LLMAD across multiple TSAD datasets, they rely on well-
+crafted prompts. Creating these prompts benefits from accurate
+domain knowledge, which ideally should be provided by expe-
+rienced engineers. This knowledge is necessary to ensure good
+TSAD performance and interpretability. However, this requirement
+is a one-time effort, as LLMAD can automatically generate output
+anomalies and explanations without further human involvement
+once the domain knowledge has been incorporated. This charac-
+teristic makes LLMAD a practical and valuable method for a wide
+range of applications, balancing the need for expert input with the
+advantages of automated analysis and interpretation.
+9
+CONCLUSION
+In this paper, we introduced LLMAD, a novel approach leveraging
+LLMs to deliver accurate and interpretable time series anomaly
+detection with low cost. LLMAD retrieves similar samples from
+historical data to enable ICL to contextualize the dataset and the
+task of TSAD. It also uses AnoCoT to inject domain knowledge
+tailored to a specific dataset and instructs LLMAD to think like a
+human expert for TSAD. These techniques significantly improve
+the performance and quality of interpretability of TSAD, making
+the task more effective. Our experimental results on public datasets
+demonstrate that LLMAD not only achieves competitive perfor-
+mance compared to state-of-the-art methods in terms of Best F1
+but also excels in providing comprehensive interpretable insights
+for further decision-making through human evaluation. This level
+of interpretability is not achievable by traditional approaches. To
+11
+
+
+PAGE 12
+Liu et al.
+the best of our knowledge, we are the pioneers in directly using
+LLMs for the task of TSAD.
+REFERENCES
+[1] Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Floren-
+cia Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal
+Anadkat, et al. 2023. Gpt-4 technical report. arXiv preprint arXiv:2303.08774
+(2023).
+[2] Mohiuddin Ahmed, Nazim Choudhury, and Shahadat Uddin. 2017. Anomaly
+detection on big data in financial markets. In Proceedings of the 2017 IEEE/ACM
+International Conference on Advances in Social Networks Analysis and Mining
+2017. 998–1001.
+[3] Kasun Amarasinghe, Kevin Kenney, and Milos Manic. 2018. Toward explain-
+able deep neural network based anomaly detection. In 2018 11th international
+conference on human system interaction (HSI). IEEE, 311–317.
+[4] Ane Blázquez-García, Angel Conde, Usue Mori, and Jose A Lozano. 2021. A
+review on outlier/anomaly detection in time series data. ACM Computing Surveys
+(CSUR) 54, 3 (2021), 1–33.
+[5] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan,
+Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda
+Askell, et al. 2020. Language models are few-shot learners. Advances in neural
+information processing systems 33 (2020), 1877–1901.
+[6] Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan,
+Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda
+Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan,
+Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter,
+Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin
+Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya
+Sutskever, and Dario Amodei. 2020. Language Models are Few-Shot Learners.
+arXiv:2005.14165 [cs.CL]
+[7] Yinfang Chen, Huaibing Xie, Minghua Ma, Yu Kang, Xin Gao, Liu Shi, Yunjie Cao,
+Xuedong Gao, Hao Fan, Ming Wen, et al. 2024. Automatic root cause analysis
+via large language models for cloud incidents. In Proceedings of the Nineteenth
+European Conference on Computer Systems. 674–688.
+[8] Yuhang Chen, Chaoyun Zhang, Minghua Ma, Yudong Liu, Ruomeng Ding, Bowen
+Li, Shilin He, Saravan Rajmohan, Qingwei Lin, and Dongmei Zhang. 2023. ImD-
+iffusion: Imputed Diffusion Models for Multivariate Time Series Anomaly Detec-
+tion. Proceedings of the VLDB Endowment 17, 3 (2023), 359–372.
+[9] Andrew A Cook, Göksel Mısırlı, and Zhong Fan. 2019. Anomaly detection for IoT
+time-series data: A survey. IEEE Internet of Things Journal 7, 7 (2019), 6481–6494.
+[10] Weixia Dang, Biyu Zhou, Weigang Zhang, and Songlin Hu. 2020. Time Series
+Anomaly Detection Based on Language Model. In Proceedings of the Eleventh
+ACM International Conference on Future Energy Systems. 544–547.
+[11] Ruomeng Ding, Chaoyun Zhang, Lu Wang, Yong Xu, Minghua Ma, Wei Zhang,
+Si Qin, Saravan Rajmohan, Qingwei Lin, and Dongmei Zhang. 2023. Everything
+of thoughts: Defying the law of penrose triangle for thought generation. arXiv
+preprint arXiv:2311.04254 (2023).
+[12] Qingxiu Dong, Lei Li, Damai Dai, Ce Zheng, Zhiyong Wu, Baobao Chang, Xu
+Sun, Jingjing Xu, and Zhifang Sui. 2022. A survey on in-context learning. arXiv
+preprint arXiv:2301.00234 (2022).
+[13] Jinglong Gao, Xiao Ding, Bing Qin, and Ting Liu. 2023. Is chatgpt a good causal
+reasoner? a comprehensive evaluation. arXiv preprint arXiv:2305.07375 (2023).
+[14] Nate Gruver, Marc Finzi, Shikai Qiu, and Andrew G Wilson. 2024. Large language
+models are zero-shot time series forecasters. Advances in Neural Information
+Processing Systems 36 (2024).
+[15] Trevor Hastie, Robert Tibshirani, Jerome H Friedman, and Jerome H Friedman.
+2009. The elements of statistical learning: data mining, inference, and prediction.
+Vol. 2. Springer.
+[16] Ruei-Jie Hsieh, Jerry Chou, and Chih-Hsiang Ho. 2019. Unsupervised online
+anomaly detection on multivariate sensing time series data for smart manufac-
+turing. In 2019 IEEE 12th conference on service-oriented computing and applications
+(SOCA). IEEE, 90–97.
+[17] Vincent Jacob, Fei Song, Arnaud Stiegler, Bijan Rad, Yanlei Diao, and Nesime
+Tatbul. 2020. Exathlon: A benchmark for explainable anomaly detection over
+time series. arXiv preprint arXiv:2010.05073 (2020).
+[18] Vincent Jacob, Fei Song, Arnaud Stiegler, Bijan Rad, Yanlei Diao, and Nesime
+Tatbul. 2021. Exathlon: a benchmark for explainable anomaly detection over
+time series. Proceedings of the VLDB Endowment 14, 11 (2021), 2613–2626.
+[19] Yuxuan Jiang, Chaoyun Zhang, Shilin He, Zhihao Yang, Minghua Ma, Si Qin,
+Yu Kang, Yingnong Dang, Saravan Rajmohan, Qingwei Lin, et al. 2024. Xpert:
+Empowering incident management with query recommendations via large lan-
+guage models. In Proceedings of the IEEE/ACM 46th International Conference on
+Software Engineering. 1–13.
+[20] Ming Jin, Shiyu Wang, Lintao Ma, Zhixuan Chu, James Y Zhang, Xiaoming Shi,
+Pin-Yu Chen, Yuxuan Liang, Yuan-Fang Li, Shirui Pan, et al. 2023. Time-llm:
+Time series forecasting by reprogramming large language models. arXiv preprint
+arXiv:2310.01728 (2023).
+[21] Ming Jin, Qingsong Wen, Yuxuan Liang, Chaoli Zhang, Siqiao Xue, Xue Wang,
+James Zhang, Yi Wang, Haifeng Chen, Xiaoli Li, et al. 2023. Large models for
+time series and spatio-temporal data: A survey and outlook. arXiv preprint
+arXiv:2310.10196 (2023).
+[22] Ming Jin, Yifan Zhang, Wei Chen, Kexin Zhang, Yuxuan Liang, Bin Yang, Jindong
+Wang, Shirui Pan, and Qingsong Wen. 2024. Position Paper: What Can Large Lan-
+guage Models Tell Us about Time Series Analysis. arXiv preprint arXiv:2402.02713
+(2024).
+[23] Pengxiang Jin, Shenglin Zhang, Minghua Ma, Haozhe Li, Yu Kang, Liqun Li,
+Yudong Liu, Bo Qiao, Chaoyun Zhang, Pu Zhao, et al. 2023. Assess and Summa-
+rize: Improve Outage Understanding with Large Language Models. In Proceedings
+of the Joint European Software Engineering Conference and Symposium on the
+Foundations of Software Engineering (ESEC/FSE).
+[24] Eamonn Keogh and Chotirat Ann Ratanamahatana. 2005. Exact indexing of
+dynamic time warping. Knowledge and information systems 7 (2005), 358–386.
+[25] Tung Kieu, Bin Yang, Chenjuan Guo, Razvan-Gabriel Cirstea, Yan Zhao, Yale
+Song, and Christian S Jensen. 2022. Anomaly detection in time series with
+robust variational quasi-recurrent autoencoders. In 2022 IEEE 38th International
+Conference on Data Engineering (ICDE). IEEE, 1342–1354.
+[26] Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke
+Iwasawa. 2022. Large language models are zero-shot reasoners. Advances in
+neural information processing systems 35 (2022), 22199–22213.
+[27] Nikolay Laptev, Saeed Amizadeh, and Youssef Billawala. 2015. A benchmark
+dataset for time series anomaly detection. von Yahoo Research (2015).
+[28] Zeyan Li, Nengwen Zhao, Shenglin Zhang, Yongqian Sun, Pengfei Chen, Xidao
+Wen, Minghua Ma, and Dan Pei. 2022. Constructing large-scale real-world
+benchmark datasets for aiops. arXiv preprint arXiv:2208.03938 (2022).
+[29] Yilun Liu, Shimin Tao, Weibin Meng, Jingyu Wang, Wenbing Ma, Yanqing Zhao,
+Yuhang Chen, Hao Yang, Yanfei Jiang, and Xun Chen. 2023. Logprompt: Prompt
+engineering towards zero-shot and interpretable log analysis. arXiv preprint
+arXiv:2308.07610 (2023).
+[30] Minghua Ma, Shenglin Zhang, Dan Pei, Xin Huang, and Hongwei Dai. 2018.
+Robust and rapid adaption for concept drift in software system anomaly detection.
+In 2018 IEEE 29th International Symposium on Software Reliability Engineering
+(ISSRE). IEEE, 13–24.
+[31] Meta. 2024. Introducing Meta Llama 3: The Most Capable Openly Available LLM
+to Date. https://ai.meta.com/blog/meta-llama-3/
+[32] Sewon Min, Xinxi Lyu, Ari Holtzman, Mikel Artetxe, Mike Lewis, Hannaneh
+Hajishirzi, and Luke Zettlemoyer. 2022. Rethinking the role of demonstrations:
+What makes in-context learning work? arXiv preprint arXiv:2202.12837 (2022).
+[33] Bijan Rad, Fei Song, Vincent Jacob, and Yanlei Diao. 2021. Explainable anomaly
+detection on high-dimensional time series data. In Proceedings of the 15th ACM
+International Conference on Distributed and Event-based Systems. 2–14.
+[34] Hansheng Ren, Bixiong Xu, Yujing Wang, Chao Yi, Congrui Huang, Xiaoyu Kou,
+Tony Xing, Mao Yang, Jie Tong, and Qi Zhang. 2019. Time-series anomaly detec-
+tion service at microsoft. In Proceedings of the 25th ACM SIGKDD international
+conference on knowledge discovery & data mining. 3009–3017.
+[35] Stan Salvador and Philip Chan. 2004. FastDTW: Toward accurate dynamic time
+warping in linear time and space. In KDD workshop on mining temporal and
+sequential data, Vol. 6. Seattle, Washington, 70–80.
+[36] Sebastian Schmidl, Phillip Wenig, and Thorsten Papenbrock. 2022. Anomaly
+detection in time series: a comprehensive evaluation. Proceedings of the VLDB
+Endowment 15, 9 (2022), 1779–1797.
+[37] Alban Siffer, Pierre-Alain Fouque, Alexandre Termier, and Christine Largouet.
+2017. Anomaly detection in streams with extreme value theory. In Proceedings of
+the 23rd ACM SIGKDD international conference on knowledge discovery and data
+mining. 1067–1075.
+[38] Jing Su, Chufeng Jiang, Xin Jin, Yuxin Qiao, Tingsong Xiao, Hongda Ma, Rong
+Wei, Zhi Jing, Jiajun Xu, and Junhong Lin. 2024. Large Language Models for
+Forecasting and Anomaly Detection: A Systematic Literature Review. arXiv
+preprint arXiv:2402.10350 (2024).
+[39] Chaofan Tang, Lijuan Xu, Bo Yang, Yongwei Tang, and Dawei Zhao. 2023. GRU-
+based interpretable multivariate time series anomaly detection in industrial
+control system. Computers & Security 127 (2023), 103094.
+[40] Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yas-
+mine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhos-
+ale, et al. 2023. Llama 2: Open foundation and fine-tuned chat models. arXiv
+preprint arXiv:2307.09288 (2023).
+[41] Lu Wang, Chaoyun Zhang, Ruomeng Ding, Yong Xu, Qihang Chen, Wentao Zou,
+Qingjun Chen, Meng Zhang, Xuedong Gao, Hao Fan, et al. 2023. Root Cause
+Analysis for Microservice Systems via Hierarchical Reinforcement Learning
+from Human Feedback. In Proceedings of the 29th ACM SIGKDD Conference on
+Knowledge Discovery and Data Mining. 5116–5125.
+[42] Xiaoyue Wang, Abdullah Mueen, Hui Ding, Goce Trajcevski, Peter Scheuermann,
+and Eamonn Keogh. 2013. Experimental comparison of representation methods
+and distance measures for time series data. Data Mining and Knowledge Discovery
+26 (2013), 275–309.
+12
+
+
+PAGE 13
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+[43] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi,
+Quoc V Le, Denny Zhou, et al. 2022. Chain-of-thought prompting elicits reason-
+ing in large language models. Advances in neural information processing systems
+35 (2022), 24824–24837.
+[44] Canhua Wu, Nengwen Zhao, Lixin Wang, Xiaoqin Yang, Shining Li, Ming Zhang,
+Xing Jin, Xidao Wen, Xiaohui Nie, Wenchi Zhang, et al. 2021. Identifying root-
+cause metrics for incident diagnosis in online service systems. In 2021 IEEE
+32nd International Symposium on Software Reliability Engineering (ISSRE). IEEE,
+91–102.
+[45] Haowen Xu, Wenxiao Chen, Nengwen Zhao, Zeyan Li, Jiahao Bu, Zhihan Li,
+Ying Liu, Youjian Zhao, Dan Pei, Yang Feng, et al. 2018. Unsupervised anomaly
+detection via variational auto-encoder for seasonal kpis in web applications. In
+Proceedings of the 2018 world wide web conference. 187–196.
+[46] Jiehui Xu, Haixu Wu, Jianmin Wang, and Mingsheng Long. 2021. Anomaly
+transformer: Time series anomaly detection with association discrepancy. arXiv
+preprint arXiv:2110.02642 (2021).
+[47] Xinli Yu, Zheng Chen, Yuan Ling, Shujing Dong, Zongyi Liu, and Yanbin Lu.
+2023. Temporal Data Meets LLM–Explainable Financial Time Series Forecasting.
+arXiv preprint arXiv:2306.11025 (2023).
+[48] Hamed Zamani and W Bruce Croft. 2016. Embedding-based query language
+models. In Proceedings of the 2016 ACM international conference on the theory of
+information retrieval. 147–156.
+[49] Zhengran Zeng, Yuqun Zhang, Yong Xu, Minghua Ma, Bo Qiao, Wentao Zou,
+Qingjun Chen, Meng Zhang, Xu Zhang, Hongyu Zhang, et al. 2023. TraceArk:
+Towards Actionable Performance Anomaly Alerting for Online Service Systems.
+In 2023 IEEE/ACM 45th International Conference on Software Engineering: Software
+Engineering in Practice (ICSE-SEIP). IEEE, 258–269.
+[50] Chaoyun Zhang, Liqun Li, Shilin He, Xu Zhang, Bo Qiao, Si Qin, Minghua Ma,
+Yu Kang, Qingwei Lin, Saravan Rajmohan, et al. 2024. UFO: A UI-Focused Agent
+for Windows OS Interaction. arXiv preprint arXiv:2402.07939 (2024).
+[51] Chaoyun Zhang, Zicheng Ma, Yuhao Wu, Shilin He, Si Qin, Minghua Ma, Xiaoting
+Qin, Yu Kang, Yuyi Liang, Xiaoyu Gou, et al. 2024. AllHands: Ask Me Anything
+on Large-scale Verbatim Feedback via Large Language Models. arXiv preprint
+arXiv:2403.15157 (2024).
+[52] Chuxu Zhang, Dongjin Song, Yuncong Chen, Xinyang Feng, Cristian Lumezanu,
+Wei Cheng, Jingchao Ni, Bo Zong, Haifeng Chen, and Nitesh V Chawla. 2019.
+A deep neural network for unsupervised anomaly detection and diagnosis in
+multivariate time series data. In Proceedings of the AAAI conference on artificial
+intelligence, Vol. 33. 1409–1416.
+[53] Chaoli Zhang, Tian Zhou, Qingsong Wen, and Liang Sun. 2022. TFAD: A de-
+composition time series anomaly detection architecture with time-frequency
+analysis. In Proceedings of the 31st ACM International Conference on Information
+& Knowledge Management. 2497–2507.
+[54] Shenglin Zhang, Zhenyu Zhong, Dongwen Li, Qiliang Fan, Yongqian Sun, Man
+Zhu, Yuzhi Zhang, Dan Pei, Jiyan Sun, Yinlong Liu, et al. 2022. Efficient kpi
+anomaly detection through transfer learning for large-scale web services. IEEE
+Journal on Selected Areas in Communications 40, 8 (2022), 2440–2455.
+[55] Haoyi Zhou, Shanghang Zhang, Jieqi Peng, Shuai Zhang, Jianxin Li, Hui Xiong,
+and Wancai Zhang. 2021. Informer: Beyond efficient transformer for long se-
+quence time-series forecasting. In Proceedings of the AAAI conference on artificial
+intelligence, Vol. 35. 11106–11115.
+[56] Tian Zhou, Peisong Niu, Liang Sun, Rong Jin, et al. 2024. One fits all: Power
+general time series analysis by pretrained lm. Advances in neural information
+processing systems 36 (2024).
+[57] Zhi-Hua Zhou, Min-Ling Zhang, Sheng-Jun Huang, and Yu-Feng Li. 2012. Multi-
+instance multi-label learning. Artificial Intelligence 176, 1 (2012), 2291–2320.
+13
+
+
+PAGE 14
+Liu et al.
+A
+IMPLEMENTATION DETAILS
+A.1
+Hyperparameters
+GPT-4: We use GPT-4-1106-preview as our baseline model for the
+main and ablation experiments. A grid search is performed over
+𝛼∈[0.8, 0.95, 0.99], 𝛽∈[0, 0.05, 0.15], with a temperature of 0.7.
+GPT-3.5: We use GPT-3.5-turbo and perform a grid search over
+𝛼∈[0.8, 0.95, 0.99], 𝛽∈[0, 0.05, 0.15], with a temperature of 0.7.
+Llama: We select the Llama-3-70B-instruct version as the com-
+parison model and perform a grid search over 𝛼∈[0.8, 0.95, 0.99],
+𝛽∈[0, 0.05, 0.15], with a temperature of 1.0.
+B
+VISUALIZATION RESULTS
+Figure 9 presents visualizations of LLMAD’s predictions (a GPT-
+4-based model) and retrieval results on the Yahoo datasets for a
+subset of each time series set.
+C
+INTERPRETABILITY EVALUATION
+CRITERIA
+To comprehensively evaluate the explanation text generating by
+LLMAD, we adopt usefulness and readability as the primary criteria.
+These criteria are instrumental in assessing how the explanations
+generated by LLMAD facilitate a better understanding and action-
+able insights into detected anomalies. Specifically,
+(1) Usefulness: This criterion evaluates the extent to which the
+model’s explanations contribute to the accurate and efficient
+resolution of anomalies. Explanations are scored on a scale
+from 1 (incorrect and irrelevant) to 5 (correct, detailed, and
+clear), with higher scores indicating that the explanation effec-
+tively assists in diagnosing and resolving anomalies, as well as
+accurately determining the urgency level.
+(2) Readability: This criterion assesses the ease with which users
+can comprehend the explanations, focusing on their human-
+readability. This factor is essential for ensuring that the insights
+are both accessible and actionable. It is measured on a scale
+from 1 (difficult to understand) to 3 (high quality), with higher
+scores signifying enhanced clarity and ease of comprehension.
+The aforementioned criteria, usefulness and readability, are widely
+employed for LLM evaluation due to their significance in assessing
+the practicality and accessibility of generated explanations. A high
+usefulness score suggests that the explanations are accurate and
+beneficial for decision-making processes. Likewise, a high readabil-
+ity score indicates that the information is user-friendly, thereby
+improving operational efficiency by facilitating a better compre-
+hension of the explanations and underlying reasoning.
+D
+DETAILED PROMPT
+Different datasets have varying definitions of anomalies. Based on
+the feature of each dataset, we made specific adjustments to the
+base prompt in Figure 4.
+D.1
+WSD datasets
+The TSAD prompt for the WSD dataset is shown in Table 11.
+Table 9: The criteria for the evaluation of usefulness scores.
+Score type
+Description of usefulness
+1 Irrelevant
+Explanations don’t match data or contain logical
+inconsistencies. Inaccurate alarm level.
+2 No Useful Explanation
+Merely restates rules without specifying alarm level.
+3 Basic Support
+Supports anomaly detection with partial explanations;
+broadly categorized alarm level.
+4 Accurate and Relevant
+Offers precise explanations aiding analysis and false
+positive reduction. Detects all anomalies, yet lacks
+detailed clarity; alarm level accurately set.
+5 Detailed and Clear
+Comprehensive aid in root cause identification.
+Detects all anomalies, guiding root cause localization;
+alarm level precisely calibrated.
+Table 10: The criteria for the evaluation of readability scores.
+Score type
+Description of readability
+1 Hard to Understand
+Confusing text with unclear transitions.
+2 Moderately Readable
+Generally clear, but awkward phrasing or
+complex structures may hinder flow.
+3 High Quality
+Clear, concise, and technically well-expressed;
+suitable for professional contexts.
+D.2
+KPI datasets
+The TSAD prompt for the KPI dataset is shown in Table 12.
+D.3
+Yahoo datasets
+Given that the Yahoo dataset comprises multiple sub-datasets, we
+developed two prompts. The first prompt is tailored for the Yahoo
+real dataset and is analogous to the prompts used for KPI and
+WSD, as detailed in Table 13. The second prompt is designed for
+the A3Benchmark, A4Benchmark, and synthetic sub-datasets. In
+these sub-datasets, most anomalies are local; therefore, we focus
+exclusively on detecting single spikes and single dips, omitting the
+global step from AnoCoT, as illustrated in Table 14.
+14
+
+
+PAGE 15
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+Detection Result
+Retrieved Normal Data
+Retrieved Anomaly Data
+Real
+Real
+synthetic
+synthetic
+A3Benchmark
+A3Benchmark
+A4Benchmark
+A4Benchmark
+Figure 9: Visualization of anomaly detection results and retrieved ICL data for the Yahoo datase.
+15
+
+
+PAGE 16
+Liu et al.
+Table 11: The prompt for WSD dataset.
+##Instructions
+Determine if there are any anomalies in the provided AIOPS flow data sequence.
+##Following Rules:
+1. A data point is considered an anomaly if it is part of a sequence of at least one consecutive anomalous points or continues to
+plummet or surge abruptly.
+2. A data point is considered an anomaly if it is identified as a continuous low/high value anomaly if it remains below/above a
+predefined normal threshold for a prolonged duration, deviating from the anticipated norm.
+3. Given that the vast majority of data points are expected to be no anomaly, Anomalies are exceedingly rare and should only be
+identified with absolute certainty.
+4. Normal data may exhibit volatility, which should not be mistaken for anomalies.
+5. Mislabeling normal data as an anomaly can lead to catastrophic failures. Exercise extreme caution. False positives are unacceptable.
+6. If do not have 100 percent confidence that data is an anomaly, do not flag it as an anomaly.
+7. The output of anomaly intervals needs to be accurately located and should not be excessively long.
+8. The number of abnormal intervals within a detection range can not exceed 3.
+9. anomaly_type should be one of the following:
+- PersistentLevelShiftUp: The data shifts to a higher value and maintains that level consistently, do not return to the original baseline.
+like 1 2 1 2 1 2 *500* *480* *510* *500* *500*
+- PersistentLevelShiftDown: The data shifts to a lower value and maintains that level consistently, do not return to the original
+baseline. like 1 2 1 2 *-100* *-102* *-104* *-110* *-110*
+- TransientLevelShiftUp: The data temporarily shifts to a higher value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points. like 1 2 1 2 1 2 *500* *500* *499* *510* *500* 1 2 1 2
+- TransientLevelShiftDown: The data temporarily shifts to a lower value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points. like 1 2 1 2 *-100* *-102* *-104* *-110* *-100* 1 2 1 2
+- SingleSpike: A brief, sharp rise in data value followed by an immediate return to the baseline. like 1 2 1 2 1 2 *200* *500* 1 2
+- SingleDip: A brief, sharp drop in data value followed by an immediate return to the baseline. like 1 2 1 2 *-500* *-200* 1 2 1 2
+- MultipleSpikes: Several brief, sharp rises in data value, each followed by a return to the baseline. like 1 2 *500* 3 2 *510* *200*
+1 2 *480* 1 2
+- MultipleDips: Several brief, sharp drops in data value, each followed by a return to the baseline. like 1 2 *-100* 3 2 *-110*
+*-200* 1 2 *-120* 1 2
+10. alarm_level should be one of the following:
+- Urgent/Error: This category is for values that represent a severe risk, potentially causing immediate damage or harm across all
+event types whether increases, decreases, spikes, dips, or multiple occurrences.
+- Important: Allocated for moderate value changes (both increases and decreases) that could escalate to future problems or system
+stress but are not immediately hazardous. This also covers upward transient level shifts that concern system longevity and potential
+failure indications from downward shifts.
+- Warning: Used for noticeable deviations from the norm that are not yet critical but merit close monitoring. This includes single
+spikes and dips that are moderate in nature, as well as multiple non-critical spikes and level shifts that are significant but not yet
+dangerous.
+11. The briefExplanation must comprise a explicit three-step analysis results utilizing precise data (do not only repeat the rule):
+- Step 1: Assess the overall trend to ascertain if it aligns with expected patterns, thereby identifying any overarching anomalies.
+- Step 2: Determine if there is any local data segment with any continuous low or high values compared to the normal data sequence.
+- Step 3: Reassess the identified points to confirm their anomalous nature, given the rarity of true anomalies.
+12. Provide responses in a strict JSON format suitable for direct parsing, without any additional textual commentary.
+##Response Format
+{ "briefExplanation": {"step1_global": analysis reason, "step2_local": analysis reason, "step3_reassess":
+analysis
+reason},
+"is_anomaly":
+false/true,
+"anomalies":
+[]/[index1,
+index2,
+index3,
+...],
+"reason_for_anomaly_type":
+"no"/"reason
+for
+anomaly
+type",
+"anomaly_type":
+"no"/"classification
+of
+main
+anomaly",(only
+one)
+"reason_for_alarm_level":
+"no"/"reason
+for
+alarm
+level",
+"alarm_level":
+"no"/"Urgent/Error"/"Important"/"Warning",(only one) }
+##Data
+Please analyze the latest data with the highest level of diligence and caution:
+- Historical normal data sequence: {normal_data}
+- Historical anomaly data sequence(*XXX* is anomaly point), {anomaly_data}
+- The latest {data_len} data points for evaluation: {data}
+16
+
+
+PAGE 17
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+Table 12: The prompt for KPI dataset.
+##Instructions
+Determine if there are any anomalies in the provided AIOPS flow data sequence.
+##Following Rules:
+1. A data point is considered an anomaly if it is part of a sequence of at least one consecutive anomalous points or continues to
+plummet or surge abruptly.
+2. Given that the vast majority of data points are expected to be no anomaly, Anomalies are exceedingly rare and should only be
+identified with absolute certainty.
+3. Normal data may exhibit volatility, which should not be mistaken for anomalies.
+4. Mislabeling normal data as an anomaly can lead to catastrophic failures. Exercise extreme caution. False positives are unacceptable.
+5. If do not have 100 percent confidence that data is an anomaly, do not flag it as an anomaly.
+6. The output of anomaly intervals needs to be accurately located and should not be excessively long.
+7. anomaly_type should be one of the following:
+- PersistentLevelShiftUp: The data shifts to a higher value and maintains that level consistently, do not return to the original baseline.
+like 1 2 1 2 1 2 *500* *480* *510* *500* *500*
+- PersistentLevelShiftDown: The data shifts to a lower value and maintains that level consistently, do not return to the original
+baseline. like 1 2 1 2 *-100* *-102* *-104* *-110* *-110*
+- TransientLevelShiftUp: The data temporarily shifts to a higher value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points and return to baseline like 1 2 1 2 1 2 *500* *500* *499* *510* *500* 1 2 1 2
+- TransientLevelShiftDown: The data temporarily shifts to a lower value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points return to baseline like 1 2 1 2 *-100* *-102* *-104* *-110* *-100* 1 2 1 2
+- SingleSpike: A brief, sharp rise in data value followed by an immediate return to the baseline. like 1 2 1 2 1 2 *200* *500* 1 2
+- SingleDip: A brief, sharp drop in data value followed by an immediate return to the baseline. like 1 2 1 2 *-500* *-200* 1 2 1 2
+- MultipleSpikes: Several brief, sharp rises in data value, each followed by a return to the baseline. like 1 2 *500* 3 2 *510* *200*
+1 2 *480* 1 2
+- MultipleDips: Several brief, sharp drops in data value, each followed by a return to the baseline. like 1 2 *-100* 3 2 *-110*
+*-200* 1 2 *-120* 1 2
+8. alarm_level should be one of the following:
+- Urgent/Error: This category is for values that represent a severe risk, potentially causing immediate damage or harm across all
+event types whether increases, decreases, spikes, dips, or multiple occurrences.
+- Important: Allocated for moderate value changes (both increases and decreases) that could escalate to future problems or system
+stress but are not immediately hazardous. This also covers upward transient level shifts that concern system longevity and potential
+failure indications from downward shifts.
+- Warning: Used for noticeable deviations from the norm that are not yet critical but merit close monitoring. This includes single
+spikes and dips that are moderate in nature, as well as multiple non-critical spikes and level shifts that are significant but not yet
+dangerous.
+9. The briefExplanation must comprise a explicit three-step analysis utilizing precise data (do not only repeat the rule):
+- Step 1: Assess the overall trend to ascertain if it aligns with expected patterns, thereby identifying any overarching anomalies.
+- Step 2: Examine the local data segments to detect any specific deviations or anomalies.
+- Step 3: Reassess the identified points to confirm their anomalous nature, given the rarity of true anomalies. This step ensures that
+the detected points are not merely normal fluctuations or seasonal variations.
+10. Provide responses in a strict JSON format suitable for direct parsing, without any additional textual commentary.
+##Response Format
+{ "briefExplanation": {"step1_global": analysis reason, "step2_local": analysis reason, "step3_reassess":
+analysis
+reason},
+"is_anomaly":
+false/true,
+"anomalies":
+[]/[index1,
+index2,
+index3,
+...],
+"reason_for_anomaly_type":
+"no"/"reason
+for
+anomaly
+type",
+"anomaly_type":
+"no"/"classification
+of
+main
+anomaly",(only
+one)
+"reason_for_alarm_level":
+"no"/"reason
+for
+alarm
+level",
+"alarm_level":
+"no"/"Urgent/Error"/"Important"/"Warning",(only one) }
+##Data
+Please analyze the latest data with the highest level of diligence and caution:
+- Historical normal data sequence: {normal_data}
+- Historical anomaly data sequence(*XXX* is anomaly point), {anomaly_data}
+- The latest {data_len} data points for evaluation: {data}
+17
+
+
+PAGE 18
+Liu et al.
+Table 13: The prompt for Yahoo A3Benchmark, A4Benchmark, and Synthetic sub-datasets.
+##Instructions
+Determine if there are any anomalies in the provided AIOPS flow data sequence.
+##Following Rules:
+1. A data point is considered an anomaly if it is part of a sequence of at least one consecutive anomalous points or continues to
+plummet or surge abruptly.
+2. Typically, anomalies are outliers such as spikes and dips, which are often isolated points. Be aware that there may be multiple
+anomalies present; you should identify all possible anomalous data points.
+3. Given that the vast majority of data points are expected to be no anomaly, Anomalies are exceedingly rare and should only be
+identified with absolute certainty.
+4. Mislabeling normal data as an anomaly can lead to catastrophic failures. Exercise extreme caution. False positives are unacceptable.
+5. If do not have 100 percent confidence that data is an anomaly, do not flag it as an anomaly.
+6. The output of anomaly intervals needs to be accurately located and should not be excessively long.
+7. anomaly_type should be one of the following:
+- SingleSpike: A brief, sharp rise in data value followed by an immediate return to the baseline. like 1 2 1 2 1 2 *200* *500* 1 2
+- SingleDip: A brief, sharp drop in data value followed by an immediate return to the baseline. like 1 2 1 2 *-500* *-200* 1 2 1 2
+8. alarm_level should be one of the following:
+- Urgent/Error: This category is for values that represent a severe risk, potentially causing immediate damage or harm across all
+event types whether increases, decreases, spikes, dips, or multiple occurrences.
+- Important: Allocated for moderate value changes (both increases and decreases) that could escalate to future problems or system
+stress but are not immediately hazardous. This also covers upward transient level shifts that concern system longevity and potential
+failure indications from downward shifts.
+- Warning: Used for noticeable deviations from the norm that are not yet critical but merit close monitoring. This includes single
+spikes and dips that are moderate in nature, as well as multiple non-critical spikes and level shifts that are significant but not yet
+dangerous.
+9. The briefExplanation must comprise a explicit two-step analysis results utilizing precise data (do not only repeat the rule):
+- Step 1: Examine the local data point to detect any specific deviations or anomalies. You should identify all possible anomalous data
+points.
+- Step 2: Reassess the identified points to confirm their anomalous nature, given the rarity of true anomalies.
+10. Provide responses in a strict JSON format suitable for direct parsing, without any additional textual commentary.
+##Response Format
+{ "briefExplanation": {"step1_local": analysis reason, "step2_reasses": analysis reason}, "is_anomaly":
+false/true, "anomalies": []/[index1, index2, index3, ...], "reason_for_anomaly_type": "no"/"reason for
+anomaly type", "anomaly_type": "no"/"classification of main anomaly", "reason_for_alarm_level":
+"no"/"reason for alarm level", "alarm_level": "no"/"Urgent/Error"/"Important"/"Warning" }
+##Data
+Please analyze the latest data with the highest level of diligence and caution:
+- Historical normal data sequence: {normal_data}
+- Historical anomaly data sequence(*XXX* is anomaly point), {anomaly_data}
+- The latest {data_len} data points for evaluation: {data}
+18
+
+
+PAGE 19
+Large Language Models can Deliver Accurate and Interpretable Time Series Anomaly Detection
+Table 14: The prompt for Yahoo real subset
+##Instructions:
+Determine if there are any anomalies in the provided AIOPS flow data sequence.
+##Following Rules:
+1. A data point is considered an anomaly if it is part of a sequence of at least one consecutive anomalous points or continues to
+plummet or surge abruptly.
+2. A data point is considered an anomaly if it is identified as a continuous low/high value anomaly if it remains below/above a
+predefined normal threshold for a prolonged duration, deviating from the anticipated norm.
+3. Given that the vast majority of data points are expected to be no anomaly, Anomalies are exceedingly rare and should only be
+identified with absolute certainty.
+4. Normal data may exhibit volatility, which should not be mistaken for anomalies.
+5. Mislabeling normal data as an anomaly can lead to catastrophic failures. Exercise extreme caution. False positives are unacceptable.
+6. If do not have high percent confidence that data is an anomaly, do not flag it as an anomaly.
+7. The output of anomaly intervals needs to be accurately located and should not be excessively long.
+8. The number of abnormal intervals within a detection range can not exceed 3.
+9. anomaly_type should be one of the following:
+- PersistentLevelShiftUp The data shifts to a higher value and maintains that level consistently, do not return to the original baseline.
+like 1 2 1 2 1 2 *500* *480* *510* *500* *500*
+- PersistentLevelShiftDown The data shifts to a lower value and maintains that level consistently, do not return to the original
+baseline. like 1 2 1 2 *-100* *-102* *-104* *-110* *-110*
+- TransientLevelShiftUp The data temporarily shifts to a higher value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points. like 1 2 1 2 1 2 *500* *500* *499* *510* *500* 1 2 1 2
+- TransientLevelShiftDown The data temporarily shifts to a lower value and then returning to the original baseline, the anomaly
+maintains for at least 5 data points. like 1 2 1 2 *-100* *-102* *-104* *-110* *-100* 1 2 1 2
+SingleSpike A brief, sharp rise in data value followed by an immediate return to the baseline. like 1 2 1 2 1 2 *200* *500* 1 2
+SingleDip A brief, sharp drop in data value followed by an immediate return to the baseline. like 1 2 1 2 *-500* *-200* 1 2 1 2
+MultipleSpikes Several brief, sharp rises in data value, each followed by a return to the baseline. like 1 2 *500* 3 2 *510* *200* 1
+2 *480* 1 2
+- MultipleDips Several brief, sharp drops in data value, each followed by a return to the baseline. like 1 2 *-100* 3 2 *-110*
+*-200* 1 2 *-120* 1 2
+10. alarm_level should be one of the following:
+- Urgent/Error This category is for values that represent a severe risk, potentially causing immediate damage or harm across all event
+types whether increases, decreases, spikes, dips, or multiple occurrences.
+- Important Allocated for moderate value changes (both increases and decreases) that could escalate to future problems or system
+stress but are not immediately hazardous. This also covers upward transient level shifts that concern system longevity and potential
+failure indications from downward shifts.
+- Warning Used for noticeable deviations from the norm that are not yet critical but merit close monitoring. This includes single spikes
+and dips that are moderate in nature, as well as multiple non-critical spikes and level shifts that are significant but not yet dangerous.
+11. The briefExplanation must comprise a explicit three-step analysis results utilizing precise data (do not only repeat the rule):
+- Step 1: Assess the overall trend to ascertain if it aligns with expected patterns, thereby identifying any overarching anomalies.
+- Step 2: Determine if there is any local data segment with any continuous low or high values compared to the normal data sequence.
+- Step 3: Reassess the identified points to confirm their anomalous nature, given the rarity of true anomalies.
+12. Provide responses in a strict JSON format suitable for direct parsing, without any additional textual commentary.
+##Response Format:
+{ "briefExplanation": {"step1_global": analysis reason, "step2_local": analysis reason, "step3_reassess":
+analysis reason}, "is_anomaly": false/true, "anomalies": []/[index1, index2, index3, ...],
+"reason_for_anomaly_type": "no"/"reason for anomaly type", "anomaly_type": "no"/"classification of main
+anomaly",(only one) "reason_for_alarm_level": "no"/"reason for alarm level", "alarm_level":
+"no"/"Urgent/Error"/"Important"/"Warning",(only one) }
+##Data:
+Please analyze the latest data with the highest level of diligence and caution:
+- Historical normal data sequence: {normal_data}
+- Historical anomaly data sequence(*XXX* is anomaly point), {anomaly_data}
+- The latest {data_len} data points for evaluation: {data}
+19
+
+
+PAGE 20
+Liu et al.
+20

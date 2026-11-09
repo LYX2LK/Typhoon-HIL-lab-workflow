@@ -1,0 +1,76 @@
+[
+  {
+    "id": "llm-falsifier",
+    "url": "https://arxiv.org/html/2609.20752v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2609.20752v1",
+    "sha256": "9a95a8b9cc2ba65f004bbd964871cff00c275b7ba7c7ed1bc05936a84c05173b",
+    "characters": 84928
+  },
+  {
+    "id": "tracebench",
+    "url": "https://arxiv.org/html/2608.27182v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2608.27182v1",
+    "sha256": "a3d4b68068e99ab9384ba1e01487a79357b5a0907a5273c50ab20d6fa366a8a0",
+    "characters": 113663
+  },
+  {
+    "id": "llmad",
+    "url": "https://arxiv.org/pdf/2405.15370",
+    "status": 200,
+    "final_url": "https://arxiv.org/pdf/2405.15370",
+    "pages": 20,
+    "sha256": "37719a10cbf2d83f38d9e933fa4611b9f0cd311c4f5bb61b38c767dcacaa5254",
+    "characters": 96782
+  },
+  {
+    "id": "guarded-falsification",
+    "url": "https://research.abo.fi/files/80166889/3832139.pdf",
+    "status": 403,
+    "final_url": "https://research.abo.fi/files/80166889/3832139.pdf",
+    "error": "403 Client Error: Forbidden for url: https://research.abo.fi/files/80166889/3832139.pdf"
+  },
+  {
+    "id": "llm-tsad",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/file/950a34c7b107111570077078e1b5b8ef-Paper-Conference.pdf",
+    "error": "HTTPSConnectionPool(host='proceedings.neurips.cc', port=443): Max retries exceeded with url: /paper_files/paper/2025/file/950a34c7b107111570077078e1b5b8ef-Paper-Conference.pdf (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)')))"
+  },
+  {
+    "id": "anomllm",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/05774fb74e863308c4b460c9f49f6918-Paper-Conference.pdf",
+    "error": "HTTPSConnectionPool(host='proceedings.iclr.cc', port=443): Max retries exceeded with url: /paper_files/paper/2025/file/05774fb74e863308c4b460c9f49f6918-Paper-Conference.pdf (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)')))"
+  },
+  {
+    "id": "integration-negative",
+    "url": "https://arxiv.org/html/2610.05031v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2610.05031v1",
+    "sha256": "8aa54b9a5f0ba23007b2f59561327666007f37eaa106dc398a156354b66660f8",
+    "characters": 105032
+  },
+  {
+    "id": "appliance-diagnosis",
+    "url": "https://arxiv.org/html/2610.19291v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2610.19291v1",
+    "sha256": "b5dcd3d880dad7c6e9b5aa65d5f91da3949346d4e5d6d305a0585f2ecc73bbc7",
+    "characters": 121054
+  },
+  {
+    "id": "batteryagent",
+    "url": "https://arxiv.org/html/2512.24686v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2512.24686v1",
+    "sha256": "ddc3544592a8e8af8c9dc2bf07e844c42627f1b56cd4aceaf5017ec1bcfa333e",
+    "characters": 35141
+  },
+  {
+    "id": "fd-llm",
+    "url": "https://arxiv.org/html/2412.01218v1",
+    "status": 200,
+    "final_url": "https://arxiv.org/html/2412.01218v1",
+    "sha256": "ea8f59b18f0a1a9a482a346ed94a446f5b556621d1972f4571bfb312f96a2735",
+    "characters": 82330
+  }
+]

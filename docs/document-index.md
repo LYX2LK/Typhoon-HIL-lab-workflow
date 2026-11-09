@@ -33,6 +33,7 @@
 | 验证 | [验证状态](validation.md) | 查当前能力、实测结论与待验范围 |
 | 验证 | [验证记录索引](validation-history.md) | 按日期查实际证据 |
 | 规划 | [路线图](roadmap.md) | 查建设方向、优先级和扩展条件 |
-| 选型 | [HIL 智能测试生成与数据分析技术选型](research/2026-11-08-hil-ai-selection/technical-selection.md) | 按电机测试问题选择生成、异常检测、故障识别与定位方法，查对照实验、采用门槛和实施任务 |
+| 选型 | [电机 HIL 智能测试生成与数据分析技术选型](research/2026-11-09-hil-ai-selection/technical-selection.md) | 独立阅读研究目标、LLM 与数值/时序/物理方法选型、对照实验、采用条件和实施顺序 |
+| 讨论 | [电机 HIL 技术选型讨论稿](research/2026-11-09-hil-ai-selection/discussion-brief.md) | 与师兄、导师快速讨论两项任务的具体问题、核心方法、验证方式及推进重点 |
 
 项目长期约束见 [AGENTS](../AGENTS.md)；执行器、记录和文档维护约定见 [PROJECT_SPEC](../PROJECT_SPEC.md)。

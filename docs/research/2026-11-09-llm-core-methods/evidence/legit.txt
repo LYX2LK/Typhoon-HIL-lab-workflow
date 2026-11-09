@@ -1,0 +1,3917 @@
+Can Large Language Models Help Experimental Design for Causal Discovery?
+Skip to main content
+Report GitHub Issue
+×
+Title:
+Content selection saved. Describe the issue below:
+Description:
+Submit without GitHub
+Submit in GitHub
+Why HTML?
+Report Issue
+Back to Abstract
+Download PDF
+Contents
+Reading mode
+Colour theme
+Abstract
+1
+Introduction
+2
+Related Work
+Intervention/Experiment Design
+Causal Discovery With LLMs
+3
+Preliminaries
+3.1
+Causal Structure Discovery
+3.2
+Online Causal Discovery
+4
+Methodology
+4.1
+Challenges in Existing Intervention Targeting
+4.2
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting
+Warmup Stage
+Bootstrapped Stage
+Double Selection Stage
+Continual Intervention Stage
+4.3
+Theoretical Discussion
+4.4
+Practical Discussion
+5
+Experiments
+5.1
+Experimental Setup
+Datasets
+Baselines
+Implementation
+Metrics
+5.2
+Empirical Results
+5.3
+Low Data Experiment Analysis
+5.4
+Detailed comparisons and analyses
+6
+Conclusions
+References
+A
+More Details of Datasets
+B
+More Details of Experiments
+B.1
+ENCO Hyperparameters
+B.2
+Detailed Metrics
+B.3
+Final Causal Graph
+C
+Convergence of causal discovery with
+LeGIT
+C.1
+Preliminaries and Notation
+Structural Causal Models and Online Causal Discovery.
+LeGIT and the Warmup Stage.
+C.2
+Convergence Proof
+C.3
+Key Lemma: Warmup Rounds Provide Informative Interventions
+C.4
+Convergence Argument for the Combined Procedure
+D
+Examples of Prompts
+License: arXiv.org perpetual non-exclusive license
+arXiv:2503.01139v1 [cs.AI] 03 Mar 2025
+Can Large Language Models Help Experimental Design for Causal Discovery?
+Junyi Li
+Yongqiang Chen
+Chenxi Liu
+¶
+Qianyi Cai
+Tongliang Liu
+§⋄
+Bo Han
+¶
+Kun Zhang
+Hui Xiong
+†
+The Hong Kong University of Science and Technology (Guangzhou)
+⋄
+MBZUAI
+¶
+\lx@paragraphsign
+Hong Kong Baptist University
+§
+The University of Sydney
+‡
+Carnegie Mellon University
+https://causalcoat.github.io/legit
+Abstract
+Designing proper experiments and selecting optimal intervention targets is a longstanding problem in scientific or causal discovery.
+Identifying the underlying causal structure from observational data alone is inherently difficult.
+Obtaining interventional data, on the other hand, is crucial to causal discovery, yet it is usually expensive and time-consuming to gather sufficient interventional data to facilitate causal discovery.
+Previous approaches commonly utilize uncertainty or gradient signals to determine the intervention targets. However, numerical-based approaches may yield suboptimal results due to the inaccurate estimation of the guiding signals at the beginning when with limited interventional data.
+In this work, we investigate a different approach, whether we can leverage Large Language Models (LLMs) to assist with the intervention targeting in causal discovery by making use of the rich world knowledge about the experimental design in LLMs.
+Specifically, we present
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting (
+LeGIT
+) – a robust framework that effectively incorporates LLMs to augment existing numerical approaches for the intervention targeting in causal discovery.
+Across
+4
+4
+realistic benchmark scales,
+LeGIT
+demonstrates significant improvements and robustness over existing methods and even surpasses humans, which demonstrates the usefulness of LLMs in assisting with experimental design for scientific discovery.
+0
+0
+footnotetext:
+These authors contributed equally.
+1
+Introduction
+Science originates along with discovering new causal knowledge with
+interventional experiments inspired by observations
+(
+Kuhn & Hawkins, 1963
+)
+. The art of finding causal relations from different interventions is then summarized and improved with statistical methods
+(
+Pearl & Mackenzie, 2018
+;
+Spirtes et al., 2010
+;
+Glymour et al., 2019
+)
+. Identifying and utilizing causal relations is fundamental to numerous applications, including biology
+(
+Vowels et al., 2022
+)
+and financial systems
+(
+Dong et al., 2023
+)
+. Despite the wide deployment of causal discovery methods, uncovering the underlying causal connections merely based on observational data alone is typically challenging due to limitations in identifiability. Mitigating this limitation usually requires additional interventional data obtained by perturbing part of the causal system to overcome the limited identifiability issue
+(
+Spirtes et al., 2000
+)
+.
+However, collecting interventional data is expensive and time-consuming, as it usually involves a physical process of a real-world system
+(
+Cherry & Daley, 2012
+)
+. Consequently,
+both the number of samples and the intervention targets are significantly limited in the experimental design in the real world
+(
+Tong & Koller, 2001
+)
+. Previous approaches usually rely on uncertainty
+(
+Lindley, 1956
+)
+or information theoretic metric to maximize the utility of an experiment
+(
+Tigas et al., 2022
+)
+.
+Recently, leveraging gradient signals for intervention targeting has gained significant success
+(
+Olko et al., 2023
+)
+, as it naturally fits into various gradient-based causal discovery methods.
+Despite some success, both uncertainty-based and gradient-based approaches may still suffer from suboptimality, as the estimation of the signals is usually noisy. Especially when with limited interventional data, the inaccurate estimation of the scores can easily mislead the intervention targeting and the subsequent causal discovery.
+The emergence of large language models (LLMs)
+(
+OpenAI, 2023
+)
+, provides an opportunity to incorporate extensive world knowledge about experimental design into the intervention targeting process.
+It therefore raises an intriguing research question:
+Can we leverage LLMs for intervention targeting and do LLMs really help with it?
+Figure 1:
+Illustration of the
+LeGIT
+framework. The left side represents the loop of Online Causal Discovery, while the right side illustrates the experiment design process. In Step (a), Large Language Models (LLMs) warm up the causal discovery process by leveraging world knowledge and aligning it with the experiment’s meta-information. This enables the identification of clear causal structures, which, in Step (b), guide previous methods to pinpoint informative intervention targets effectively.
+Recent explorations into the use of LLMs for various causal learning and reasoning tasks suggest that these models may already encapsulate substantial domain knowledge
+(
+Kiciman et al., 2023
+;
+Lampinen et al., 2023
+;
+Abdulaal et al., 2024
+)
+.
+LLMs have demonstrated the ability to process the meta-information encoded in natural language and leverage the meta-information to reason for the causality, which was considered restricted to humans
+(
+Gopnik et al., 2004
+;
+Trott et al., 2022
+;
+Sahu et al., 2022
+)
+.
+Furthermore, LLMs have exhibited remarkable potential in advancing complex scientific discovery
+(
+AI4Science & Quantum, 2023
+)
+.
+Additionally, discussions about the limitations of LLMs in understanding causality were also raised in the community
+(
+Zečević et al., 2023
+;
+Jin et al., 2023
+;
+Zhang et al., 2023a
+)
+.
+This underscores the need for a robust approach that optimally extracts the world knowledge embedded in LLMs about experimental design while mitigating the risks of being misled by their hallucinations regarding causality
+(
+Zhang et al., 2023b
+)
+.
+To this end, we present a new framework called
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting (
+LeGIT
+), designed to maximize while robustly leveraging the knowledge in LLMs to assist with the intervention targeting.
+Shown as in Fig.
+1
+, at the beginning of the causal discovery, the numerical-based methods have limited numerical knowledge about the underlying causal system to use due to the limited data. Consequently, the estimated signals tend to be noisy and misleading. In contrast, LLMs can leverage the meta-information about the causal system and relate the learned world knowledge to identify high-potential intervening targets.
+After obtaining a relatively clearer causal graph, LLMs may not be able to provide sufficient guidance. Therefore, similar to humans,
+LeGIT
+leverages numerical methods to select the intervening targets.
+Our contributions can be summarized as follows:
+•
+To the best of our knowledge, we are the first to investigate the use of LLMs in the experimental design to select intervention targets for causal discovery.
+•
+We propose a novel framework called
+LeGIT
+that combines the advantages of both the previous numerical methods as well as the LLMs to facilitate the intervening targeting.
+•
+We conduct extensive experiments with
+4
+4
+real-world benchmarks and verify that
+LeGIT
+can empower numerical-based methods and even human baseline.
+•
+We highlight the promise of LLMs in causal and scientific discovery, that LLMs can effectively incorporate world knowledge, making them valuable cost-efficient complements to humans.
+2
+Related Work
+Intervention/Experiment Design
+Scientific progress in causal discovery is often driven by interventional experiments inspired by observational insights
+(
+Kuhn & Hawkins, 1963
+)
+. Traditional methods focused on designing effective experiments to establish causal links, while statistical approaches aimed to automate causal inference from observational data
+(
+Pearl & Mackenzie, 2018
+;
+Spirtes et al., 2000
+)
+. However, observational data alone is insufficient for identifying causal structures, and interventional data is costly to collect
+(
+Spirtes et al., 2000
+)
+. To address these challenges, several methods for optimal intervention design have been developed.
+Active Intervention Targeting (AIT) selects intervention targets using an
+F
+F
+-test inspired criterion, evaluating discrepancies in interventional sample distributions from a posterior distribution of graphs
+(
+Scherrer et al., 2021
+)
+.
+Causal Bayesian Experimental Design (CBED) uses Bayesian Optimal Experimental Design to select interventions that maximize mutual information (MI) between new data and existing graph beliefs, with MI estimated via a BALD-like method
+(
+Tigas et al., 2022
+;
+Houlsby et al., 2011
+)
+.
+Gradient-based Intervention Targeting (GIT)
+(
+Olko et al., 2023
+)
+leverages gradient information to determine interventions that maximize impact on causal parameter updates, which is particularly advantageous in low-data settings.
+In our work, we explore leveraging these advanced intervention strategies within the framework of LLMs to determine whether LLMs can effectively engage in experimental design for causal discovery, pushing the boundaries of what automated, data-driven causal inference can achieve.
+Causal Discovery With LLMs
+Recent advancements in large language models (LLMs) like ChatGPT have opened new opportunities in causal inference by incorporating domain knowledge, common sense, and contextual reasoning into the causal discovery process
+(
+Kiciman et al., 2023
+)
+. LLMs have demonstrated capabilities across Pearl’s ladder of causation—association, intervention, and counterfactuals—bridging gaps that traditional models have with high-level causal reasoning. They have shown promising results in pairwise causal discovery tasks by utilizing semantic information not accessible through numerical data alone
+(
+Jiralerspong et al., 2024
+)
+.
+Despite these advances, challenges remain. LLMs can sometimes behave like “causal parrots”, repeating learned associations without demonstrating true causal reasoning
+(
+Zečević et al., 2023
+)
+. Moreover, their performance varies significantly depending on task complexity, with limited success in advanced causal reasoning such as full graph discovery and counterfactual analysis
+(
+Zhang et al., 2023a
+;
+Jin et al., 2023
+;
+Long et al., 2023a
+)
+.
+Another promising line of work integrates LLMs with traditional causal discovery methods to leverage their complementary strengths
+(
+Long et al., 2023a
+;
+Abdulaal et al., 2024
+;
+Liu et al., 2024
+)
+. This hybrid approach has shown improved performance in constructing causal graphs, benefiting from LLMs’ understanding of language context and traditional methods’ data-driven precision.
+While prior studies emphasize the role of LLMs in causal analysis, the question of whether LLMs can meaningfully contribute to experimental design in causal discovery remains largely unaddressed. Experimental design encompasses proposing interventions, predicting outcomes, and assessing experimental strategies—tasks that extend beyond basic causal inference. This paper seeks to bridge this gap by investigating the potential of LLMs to support experimental design, exploring their unique value, and critically evaluating their strengths and limitations in guiding causal experiments.
+3
+Preliminaries
+We begin by briefly introducing the preliminaries and notations in the online causal discovery setting
+(
+Olko et al., 2023
+)
+.
+3.1
+Causal Structure Discovery
+The causal relations between different variables can be formulated using the structural causal models (SCM)
+(
+Pearl & Mackenzie, 2018
+;
+Spirtes et al., 2000
+;
+Glymour et al., 2019
+)
+. More specifically, in an SCM, we are given
+n
+n
+endogenous variables
+X
+=
+(
+X
+1
+,
+…
+,
+X
+n
+)
+X=(X_{1},...,X_{n})
+, where the generation process of each variable can be expressed as
+X
+i
+=
+f
+i
+​
+(
+P
+​
+A
+i
+,
+U
+i
+)
+X_{i}=f_{i}(PA_{i},U_{i})
+where
+P
+​
+A
+i
+PA_{i}
+is the set of variables that are the causal parents of
+X
+i
+X_{i}
+, and
+U
+i
+U_{i}
+is the external independent noise when generating
+X
+i
+X_{i}
+.
+The causal relations between
+n
+n
+variables can be further characterized via a direct acyclic graph (DAG),
+G
+=
+(
+V
+,
+E
+)
+G=(V,E)
+, where
+V
+=
+{
+1
+,
+…
+,
+n
+}
+V=\{1,...,n\}
+is the set nodes corresponding to the set of random variables
+{
+X
+1
+,
+…
+,
+X
+n
+}
+\{X_{1},...,X_{n}\}
+. Each edge
+(
+i
+,
+j
+)
+∈
+E
+(i,j)\in E
+in the edge set
+E
+E
+refers to the relation of direct cause
+X
+i
+∈
+P
+​
+A
+j
+X_{i}\in PA_{j}
+, i.e.,
+X
+i
+X_{i}
+is one of the causes of the variable
+X
+j
+X_{j}
+. The joint distribution of all the variables associated with the DAG can be expressed as
+P
+⁡
+(
+X
+1
+,
+…
+,
+X
+n
+)
+=
+Π
+i
+=
+1
+n
+​
+P
+​
+(
+X
+i
+|
+P
+​
+A
+i
+)
+P(X_{1},...,X_{n})=\Pi_{i=1}^{n}P(X_{i}|PA_{i})
+.
+Causal structure discovery aims to identify the underlying DAG
+G
+G
+. However, when given only the joint observed distribution
+P
+⁡
+(
+X
+1
+,
+…
+,
+X
+n
+)
+P(X_{1},...,X_{n})
+, it does not uniquely determine a DAG, as there might be different DAGs that can generate the same joint distribution. On the contrary, the observational data can merely determine a set of DAGs up to a Markov Equivalence Class (MEC)
+(
+Spirtes et al., 2000
+)
+.
+Algorithm 1
+Online Causal Discovery
+(
+Olko et al., 2023
+)
+0:
+causal discovery algorithm
+𝒜
+\mathcal{A}
+(e.g., ENCO,), intervention targeting method
+ℳ
+\mathcal{M}
+,
+number of data acquisition rounds
+T
+T
+, observational dataset
+𝒟
+o
+​
+b
+​
+s
+\mathcal{D}_{obs}
+0:
+final parameters of graph model:
+φ
+T
+\varphi_{T}
+and CausalDAG:
+ℙ
+⁡
+(
+G
+)
+\mathbb{P}{(G)}
+1:
+𝒟
+i
+​
+n
+​
+t
+←
+∅
+\mathcal{D}_{int}\leftarrow\varnothing
+2:
+Fit graph model
+φ
+0
+\varphi_{0}
+with algorithm
+𝒜
+\mathcal{A}
+on
+𝒟
+o
+​
+b
+​
+s
+\mathcal{D}_{obs}
+3:
+for
+round
+i
+=
+1
+,
+2
+,
+…
+,
+T
+i=1,2,\ldots,T
+do
+4:
+I
+←
+generate intervention targets using
+​
+ℳ
+I\leftarrow\text{ generate intervention targets using }{\mathcal{M}}
+5:
+𝒟
+i
+​
+n
+​
+t
+I
+←
+query for data from interventions
+​
+I
+\mathcal{D}_{int}^{I}\leftarrow\text{ query for data from interventions }I
+6:
+𝒟
+i
+​
+n
+​
+t
+←
+𝒟
+i
+​
+n
+​
+t
+∪
+𝒟
+i
+​
+n
+​
+t
+I
+\mathcal{D}_{int}\leftarrow\mathcal{D}_{int}\cup\mathcal{D}_{int}^{I}
+7:
+Fit
+φ
+i
+\varphi_{i}
+with algorithm
+𝒜
+\mathcal{A}
+on
+𝒟
+i
+​
+n
+​
+t
+​
+and
+​
+𝒟
+o
+​
+b
+​
+s
+\mathcal{D}_{int}\text{ and }\mathcal{D}_{obs}
+8:
+end
+for
+3.2
+Online Causal Discovery
+To identify the underlying ground truth DAG from the MEC, interventional data is widely incorporated into the causal discovery process
+(
+Tong & Koller, 2001
+;
+Hauser & Bühlmann, 2011
+;
+Ke et al., 2019
+)
+. Hence, online causal discovery is proposed to overcome the issue
+(
+Ke et al., 2019
+)
+.
+As given in Algorithm
+1
+, an online causal discovery procedure is built upon a causal discovery algorithm
+𝒜
+{\mathcal{A}}
+that is able to leverage both the observational data and interventional data to recover the underlying causal structure.
+More formally, the interventional data is usually obtained through single-node intervention on some causal variable
+X
+i
+X_{i}
+. The intervention will replace the generation process of
+X
+i
+X_{i}
+with a new distribution, for which we denote as
+P
+^
+​
+(
+X
+i
+|
+P
+​
+A
+i
+)
+\widehat{P}(X_{i}|PA_{i})
+(
+Pearl & Mackenzie, 2018
+)
+. Then, it yields an interventional distribution:
+P
+i
+​
+(
+X
+)
+=
+P
+^
+​
+(
+X
+i
+|
+P
+​
+A
+i
+)
+​
+Π
+j
+≠
+i
+​
+P
+​
+(
+X
+j
+|
+P
+​
+A
+j
+)
+,
+P_{i}(X)=\widehat{P}(X_{i}|PA_{i})\Pi_{j\neq i}P(X_{j}|PA_{j}),
+(1)
+We use hard interventions in this study for simplicity and consistency, enabling causal structure identification and effectiveness assessment. Soft interventions, which adjust variable dependencies without removing them, are beyond this study’s scope but may be explored in future research.
+The online discovery will proceed by
+T
+T
+rounds. At the beginning of the first round, an initial graph model
+ϕ
+0
+\phi_{0}
+is fitted based on the observational data. Then, in the follow-up
+T
+T
+rounds, an intervention target
+I
+I
+will be selected using some intervention targeting method.
+For each selected
+I
+I
+, a batch of samples will be obtained and be integrated into all interventional data to execute the causal discovery algorithm
+𝒜
+{\mathcal{A}}
+. After
+T
+T
+rounds, the fitted DAG will be the final output.
+Previous approaches may use different intervention targeting methods. For example,
+(
+Scherrer et al., 2021
+)
+proposes Active Intervention Targeting (AIT) to select the desired intervention targets based on the
+F
+F
+-test.
+(
+Tigas et al., 2022
+)
+approximate the posterior distribution on all possible DAGs and leverage Bayesian Optimal Experimental Design to select the most informative intervention targets.
+Figure 2:
+At the initial stage of the online causal discovery, the intervention targets from LLM-based selection and gradient-based selection.
+Different from the Bayesian approaches,
+(
+Olko et al., 2023
+)
+propose Gradient-based Intervention Targeting (GIT), which leverages the gradient signals from the gradient-based causal discovery methods to estimate the utility of each intervention target via hallucinated gradients
+(
+Ash et al., 2020
+)
+. Due to the natural combination of the gradient-based causal discovery methods such as ENCO
+(
+Lippe et al., 2022
+)
+and the GIT method, GIT achieves significant performance improvements over previous Bayesian-based approaches. Therefore, our follow-up discussion will center on the gradient-based approaches, i.e., the GIT method based on ENCO, as the state-of-the-art numerical method for online causal discovery.
+4
+Methodology
+4.1
+Challenges in Existing Intervention Targeting
+Despite the success of GIT method, similar to other estimation-based approaches, GIT is highly sensitive to the accuracy of the gradient estimation and estimated causal graphs which can be extremely noisy in the early rounds of an experiment. Therefore, we might mistakenly choose a variable that exerts minimal influence on the system, wasting valuable intervention budgets and misdirecting subsequent learning steps.
+Figure 3:
+Prompt template at warmup stage.
+To demonstrate the above issue and the challenges in the existing intervention targeting methods more concretely, we consider four realistic causal discovery benchmarks
+(
+Scutari, 2010
+)
+, i.e., Alarm, Insurance, Child, and Asia and plot the distribution of the intervention target at the initial stage.
+As given in Fig.
+2
+, it can be found that the success of GIT varies across different datasets. Intuitively, at the beginning of the intervention, intervening on variables that affect lots of other variables can bring more information about the system
+(
+Lindley, 1956
+)
+.
+In the Asia, Alarm dataset, the selected intervention targets are influential nodes. However, in insurance, the selected nodes only influence a few other nodes. Intervening on such targets with limited influence may lead to significant resource waste and further misdirect subsequent online causal discovery rounds.
+In contrast, we construct prompts to inquire LLMs about the root causes in this system, given only the meta-information such as simple variable descriptions. The specific prompts are given in Fig.
+3
+, and the suggested intervening targets are also highlighted in Fig.
+2
+. It can be found that given only the meta-information, LLMs are able to relate the rich world knowledge to locate the desired influential nodes.
+4.2
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting
+Motivated by the aforementioned experiments, we present our framework
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting (
+LeGIT
+) to combine the strengths of both numerical-based methods and LLMs to facilitate the intervention targeting. The description of the algorithm of
+LeGIT
+is given in Algorithm
+2
+.
+LeGIT
+consists of four stages.
+Algorithm 2
+LeGIT
+:
+L
+arge Languag
+e
+Model
+G
+uided
+I
+ntervention
+T
+argeting
+0:
+Causal discovery algorithm for Intervention Data
+𝒜
+\mathcal{A}
+(e.g., ENCO); Intervention Score targeting method
+ℳ
+0
+\mathcal{M_{0}}
+(e.g GIT); LLM for root cause proposal
+Ψ
+\Psi
+, number of data acquisition rounds
+T
+T
+; Observational dataset
+𝒟
+o
+​
+b
+​
+s
+\mathcal{D}_{obs}
+; Graph Node List
+V
+V
+; Warmup Epoch
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+T_{warmup}
+; Bootstrapped Search Epoch
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+T_{bootstrapped}
+0:
+Final parameters of graph model:
+φ
+T
+\varphi_{T}
+and CausalDAG:
+ℙ
+⁡
+(
+G
+)
+\mathbb{P}{(G)}
+1:
+//Get Warmup List from LLM
+𝒟
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+←
+Ψ
+⁡
+(
+V
+,
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+)
+\mathcal{D}_{warmup}\leftarrow\Psi(V,T_{warmup})
+2:
+for
+round
+i
+=
+1
+,
+2
+,
+…
+,
+T
+i=1,2,\ldots,T
+do
+3:
+if
+i
+<
+=
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+<=T_{warmup}
+then
+4:
+D
+i
+​
+n
+​
+t
+I
+←
+𝒟
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+​
+[
+i
+]
+D_{int}^{I}\leftarrow\mathcal{D}_{warmup}[i]
+5:
+else
+if
+i
+=
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
++
+1
+=T_{warmup}+1
+then
+6:
+// Get the Isolated Nodes List
+V
+i
+​
+s
+​
+o
+​
+l
+​
+a
+​
+t
+​
+e
+​
+d
+←
+V_{isolated}\leftarrow
+isolated node from
+ℙ
+⁡
+(
+G
+i
+)
+\mathbb{P}{(G_{i})}
+7:
+//Get Bootstrapped warmup Intervention Target from isolated Nodes
+𝒟
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+←
+Ψ
+⁡
+(
+V
+i
+​
+s
+​
+o
+​
+l
+​
+a
+​
+t
+​
+e
+​
+d
+,
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+)
+\mathcal{D}_{bootstrapped}\leftarrow\Psi(V_{isolated},T_{bootstrapped})
+8:
+D
+i
+​
+n
+​
+t
+I
+←
+𝒟
+i
+​
+s
+​
+o
+​
+l
+​
+a
+​
+t
+​
+e
+​
+d
+​
+[
+i
+−
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+]
+D_{int}^{I}\leftarrow\mathcal{D}_{isolated}[i-T_{bootstrapped}]
+9:
+else
+if
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+<
+i
+<=
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
++
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+T_{warmup}<i<=T_{warmup}+T_{bootstrapped}
+then
+10:
+D
+i
+​
+n
+​
+t
+I
+←
+𝒟
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+​
+[
+i
+−
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+]
+D_{int}^{I}\leftarrow\mathcal{D}_{bootstrapped}[i-T_{warmup}]
+11:
+else
+if
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
++
+T
+m
+​
+i
+​
+s
+​
+s
+​
+i
+​
+n
+​
+g
+<
+i
+<=
+2
+​
+(
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
++
+T
+m
+​
+i
+​
+s
+​
+s
+​
+i
+​
+n
+​
+g
+)
+T_{warmup}+T_{missing}<i<=2(T_{warmup}+T_{missing})
+then
+12:
+//Double Selection LLM’S List
+D
+i
+​
+n
+​
+t
+I
+←
+(
+D
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
++
+D
+m
+​
+i
+​
+s
+​
+s
+​
+i
+​
+n
+​
+g
+)
+​
+[
+i
+−
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+−
+T
+m
+​
+i
+​
+s
+​
+s
+​
+i
+​
+n
+​
+g
+]
+D_{int}^{I}\leftarrow\mathcal{(}{D}_{warmup}+D_{missing})[i-T_{warmup}-T_{missing}]
+13:
+else
+14:
+D
+i
+​
+n
+​
+t
+I
+←
+generate intervention targets using
+​
+ℳ
+0
+D_{int}^{I}\leftarrow\text{ generate intervention targets using }{\mathcal{M_{0}}}
+15:
+end
+if
+16:
+𝒟
+i
+​
+n
+​
+t
+←
+𝒟
+i
+​
+n
+​
+t
+∪
+𝒟
+i
+​
+n
+​
+t
+I
+\mathcal{D}_{int}\leftarrow\mathcal{D}_{int}\cup\mathcal{D}_{int}^{I}
+17:
+Fit
+φ
+i
+\varphi_{i}
+with algorithm
+𝒜
+\mathcal{A}
+on
+𝒟
+i
+​
+n
+​
+t
+​
+and
+​
+𝒟
+o
+​
+b
+​
+s
+\mathcal{D}_{int}\text{ and }\mathcal{D}_{obs}
+18:
+end
+for
+Warmup Stage
+Since at the very beginning of the online causal discovery, numerical-based estimations are noisy and easily mislead the online causal discovery, we begin by prompting LLMs to relate the pre-trained knowledge, analyze the variable description, and suggest influential candidates. The prompt template is given in Fig.
+3
+. The prompting will give the beginning list of intervention targets
+𝒟
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+{\mathcal{D}}_{warmup}
+. From
+𝒟
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+{\mathcal{D}}_{warmup}
+, we will select
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+T_{warmup}
+variables to obtain a basic map of the underlying causal system. For a robust performance, we perform self-consistency prompt skill
+(
+Wang et al., 2022
+)
+to get the final targets for a robust performance.
+Bootstrapped Stage
+Although the first warmup stage yields a basic structure of the underlying causal system, due to the intrinsic limitations of LLMs such as limited context length
+(
+Liu et al., 2023
+)
+and hallucination
+(
+Zhang et al., 2023b
+)
+, LLMs may only focus on a subset of the variables and find the influential nodes therein. Nevertheless, when the number of causal variables is large, LLMs tend to give an incomplete set of influential nodes.
+Therefore, we further incorporate a second warmup stage, to bootstrap the use of LLM’s world knowledge in early intervention targeting.
+More concretely, we leverage the intermediate causal discovery results
+ϕ
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+\phi_{T_{warmup}}
+after the
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+T_{warmup}
+rounds and examine the left variables that have not been involved in
+ϕ
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+\phi_{T_{warmup}}
+. Then, we further prompt LLMs to give more focus on the left set of variables and to find the influential variables that were missing in previous rounds.
+Double Selection Stage
+After getting the warmup and missing intervention targt, we perform a double selection to ensure the robustness of the discovered causal structure while minimizing unnecessary interventions
+(
+Lippe et al., 2022
+)
+.
+Continual Intervention Stage
+After the three warmup stages, we have already obtained relatively clearer yet complicated causal graphs. Even for humans, it is hard to determine the best experimental design. Therefore, we switch to using the numerical-based methods to continue to consume the remaining intervention budgets.
+4.3
+Theoretical Discussion
+After setting up the
+LeGIT
+algorithm, we discuss the convergence of
+LeGIT
+.
+Since
+LeGIT
+ends up with a numerical-based method for concluding online causal discovery, it follows intuitively that, like other numerical-based methods (e.g., GIT
+(
+Olko et al., 2023
+)
+), and an effective causal discovery algorithm, such as ENCO
+(
+Lippe et al., 2022
+)
+,
+LeGIT
+can converge, further details available in Appendix. Nevertheless, due to its enhanced strategy in
+LeGIT
+, we empirically observe that
+LeGIT
+can converge to a better solution when compared to the same numerical-based method without LLMs involved.
+4.4
+Practical Discussion
+Consistent with prior work, we mainly adopt GIT as the numerical-based method
+ℳ
+{\mathcal{M}}
+, and ENCO as the gradient-based causal discovery method. However, as also suggested in GIT
+(
+Olko et al., 2023
+)
+, ENCO can also be switched to other gradient-based methods. Additionally,
+LeGIT
+is also compatible with other numerical-based approaches.
+5
+Experiments
+In this section, we conduct extensive experiments to evaluate
+LeGIT
+on real-world datasets and compare
+LeGIT
+against various baselines in intervention selection and humans. We provide a brief overview of the experimental setups here, with further details available in Appendix.
+5.1
+Experimental Setup
+Datasets
+Specifically, we use four real-world benchmark datasets along with their corresponding ground truth causal graphs from the BN repository
+(
+Scutari, 2010
+)
+:
+Asia
+,
+Child
+,
+Insurance
+, and
+Alarm
+. It provides causal graphs derived from real-world applications that are widely recognized as benchmark datasets. These datasets encompass a diverse set of professional scenarios, ranging from car insurance to medical systems, which are crucial for enhancing the knowledge captured by large language models (LLMs).
+1.
+Asia
+(
+Lauritzen & Spiegelhalter, 2018
+)
+dataset consists of 8 variables related to a lung cancer diagnosis system, with 8 edges.
+2.
+Child
+(
+Dempster, 1993
+)
+dataset contains 20 nodes and 25 edges, modeling congenital heart disease in newborns.
+3.
+Insurance
+(
+Binder et al., 1997
+)
+dataset includes 27 nodes and 52 edges, representing a car insurance system.
+4.
+Alarm
+(
+Beinlich et al., 1989
+)
+dataset comprises 37 nodes and 46 edges, simulating an alarm message system for patient monitoring.
+Baselines
+We compare
+LeGIT
+against different online causal discovery algorithms
+GIT
+(
+Olko et al., 2023
+)
+,
+AIT
+(
+Scherrer et al., 2021
+)
+,
+CBED
+(
+Tigas et al., 2022
+)
+as selection strategies for online active learning interventions, as well as three random baselines and human baseline:
+1.
+Random Choice
+:
+A target node is selected uniformly at random from the set of all nodes at each step;
+2.
+Round Robin
+:
+A target node is chosen randomly from the unvisited nodes at each step. Once all nodes are selected, the visitation counts are reset.
+3.
+Degree Prob Sample
+:
+A target node is randomly chosen from all nodes, with selection probability normalized by each node’s out-degree.
+4.
+Human
+:
+We engaged five master’s/Ph.D.-level individuals, presenting them with the same information and process as provided to the LLMs.
+Among the baselines, Degree Prob Sample can be considered as an oracle to LLM that adopts the out-degree of each node in the ground truth DAG. And compare the human analysts to find the unique contributions of LLMs.
+Table 1:
+Average SHD, SID, and BSF with standard deviation (over 5 seeds) for real-world data (
+T
+=
+33
+T=33
+rounds,
+|
+D
+i
+​
+n
+​
+t
+I
+|
+=
+32
+,
+N
+=
+1056
+|D_{int}^{I}|=32,N=1056
+).
+Methods
+Alarm
+Insurance
+Child
+Asia
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+CBED
+28.20
+± 4.31
+213.80
+± 42.44
+0.8053
+± 0.06
+21.60
+± 4.63
+260.00
+± 31.83
+0.7529
+± 0.04
+5.40
+± 2.06
+44.40
+± 18.51
+0.9150
+± 0.05
+2.20
+± 1.47
+4.60
+± 3.38
+0.7833
+± 0.08
+AIT
+32.80
+± 8.42
+204.60
+± 52.09
+0.7214
+± 0.05
+24.20
+± 7.47
+312.40
+± 87.50
+0.6711
+± 0.11
+9.00
+± 3.29
+52.20
+± 21.03
+0.8752
+± 0.04
+1.80
+± 0.75
+6.60
+± 4.84
+0.7833
+± 0.08
+Random Choice
+38.80
+± 3.54
+204.40
+± 58.15
+0.7430
+± 0.08
+26.00
+± 3.63
+323.80
+± 14.96
+0.7137
+± 0.02
+5.40
+± 1.20
+51.00
+± 17.11
+0.9396
+± 0.04
+1.20
+± 0.40
+2.20
+± 2.40
+0.8708
+± 0.01
+Round Robin
+25.00
+± 1.26
+118.60
+± 21.78
+0.9301
+± 0.02
+17.40
+± 4.54
+232.20
+± 27.23
+0.8042
+± 0.02
+3.40
+± 2.50
+23.00
+± 14.39
+0.9824
+± 0.02
+1.40
+± 0.49
+2.20
+± 1.47
+0.8250
+± 0.06
+Degree Prob
+29.40
+± 4.67
+144.60
+± 49.77
+0.7798
+± 0.06
+25.80
+± 2.93
+305.20
+± 17.45
+0.7054
+± 0.03
+6.20
+± 2.48
+36.20
+± 16.35
+0.8842
+± 0.06
+1.00
+± 0.00
+1.00
+± 0.00
+0.8750
+± 0.00
+GIT
+19.60
+± 3.77
+131.40
+± 47.66
+0.9295
+± 0.02
+16.40
+± 3.14
+243.80
+± 28.72
+0.7960
+± 0.02
+2.80
+± 0.75
+20.40
+± 12.50
+0.9841
+± 0.01
+1.00
+± 0.00
+1.00
+± 0.00
+0.8750
+± 0.00
+Human
+22.60
+± 5.43
+133.20
+± 27.01
+0.8976
+± 0.02
+14.20
+± 3.43
+232.20
+± 40.74
+0.8065
+± 0.03
+2.00
+± 0.63
+18.80
+± 8.42
+0.9944
+± 0.00
+1.40
+± 0.49
+3.60
+± 3.20
+0.8667
+± 0.01
+LeGIT
+17.40
+± 3.61
+121.00
+± 38.27
+0.9362
+± 0.02
+12.60
+± 0.80
+200.60
+± 35.32
+0.8205
+± 0.01
+2.20
+± 0.98
+20.60
+± 5.61
+0.9858
+± 0.02
+0.80
+± 0.75
+0.80
+± 0.40
+0.9000
+± 0.05
+Implementation
+We employ the GPT-4O API
+1
+1
+1
+We used gpt-4o-2024-08-06 version.
+(
+OpenAI, 2024
+)
+for all LLM-based experiments. In all experiments presented in this section, we utilize
+ENCO
+(
+Lippe et al., 2022
+)
+as the backbone causal discovery algorithm, with detailed settings provided in the Appendix. The observational dataset consists of
+|
+𝒟
+​
+o
+​
+b
+​
+s
+|
+=
+5000
+|\mathcal{D}{obs}|=5000
+samples, and we conduct
+T
+=
+33
+T=33
+rounds of intervention sampling, with each round acquiring an interventional batch of
+|
+𝒟
+i
+​
+n
+​
+t
+I
+|
+=
+32
+|\mathcal{D}_{int}^{I}|=32
+samples, leading to a total of
+N
+=
+1056
+N=1056
+interventional samples. For both
+GIT
+and
+AIT
+, we use
+|
+𝒢
+|
+=
+50
+|\mathcal{G}|=50
+graphs, each with
+|
+𝒟
+G
+,
+i
+|
+=
+128
+|\mathcal{D}_{G,i}|=128
+data samples for the Monte Carlo approximation of the score.
+Considering the size of the real-world graph, we set
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+=
+3
+T_{warmup}=3
+and
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+=
+2
+T_{bootstrapped}=2
+in
+LeGIT
+, with the exception of the Asia dataset, which has a smaller size. For the Asia dataset, we set
+T
+w
+​
+a
+​
+r
+​
+m
+​
+u
+​
+p
+=
+3
+T_{warmup}=3
+and
+T
+b
+​
+o
+​
+o
+​
+t
+​
+s
+​
+t
+​
+r
+​
+a
+​
+p
+​
+p
+​
+e
+​
+d
+=
+1
+T_{bootstrapped}=1
+.
+Metrics
+We evaluate the performance of the online causal discovery algorithms using three metrics: the Structural Hamming Distance (SHD)
+(
+Tsamardinos et al., 2006
+)
+, the Structural Intervention Distance (SID)
+(
+Peters & Bühlmann, 2015
+)
+, and BSF
+(
+Constantinou, 2019
+)
+. SHD (lower is better) quantifies the number of edge insertions, deletions, or reversals needed to transform one graph into another. SID (lower is better) assesses causal inference by evaluating the correctness of the intervention distribution. BSF (higher is better) mitigates bias by balancing the evaluation of edges and independencies within Bayesian Network structures. A detailed description of these metrics can be found in the Appendix.
+5.2
+Empirical Results
+Figure 4:
+SHD metric for different methods (over 5 seeds) towards different intervention samples. (
+T
+=
+33
+T=33
+rounds,
+|
+D
+i
+​
+n
+​
+t
+I
+|
+=
+32
+,
+N
+=
+1056
+|D_{int}^{I}|=32,N=1056
+)
+The results of the experiments are presented in Table
+1
+.
+Our method consistently outperforms the baseline approaches across four distinct domains, as evidenced by SHD calculated from five seeds.
+Figure
+4
+illustrates the mean SHD of these methods in relation to the number of intervention samples.
+As shown in Table
+1
+, it can be found that
+LeGIT
+achieves state-of-the-art causal discovery performances, with consistent improvements against the adopted gradient-based methods and human baseline.
+The superior SHD scores demonstrate that
+LeGIT
+is highly effective in accurately reconstructing the underlying graph structures, minimizing the number of erroneous edge modifications required.
+In Fig.
+4
+, we further plot the performances of different methods along with the increase of the data samples obtained from the intervention.
+It can be found that, although at the beginning of the online causal discovery,
+LeGIT
+may not demonstrate outstanding SHD results. Along with more data samples combining,
+LeGIT
+converge to a better solution faster than any other methods. In contrast, despite a faster decrease speed of GIT, GIT finally converges to a suboptimal solution due to unsuitable initialization, which verifies our discussion.
+real-world
+Besides, SID results highlight
+LeGIT
+’s robustness in preserving causal relationships and ensuring accurate causal inferences, which is essential in real-world applications. For BSF metrics, higher values are indicative the learned graph is more accurate and closely matches the true graph in terms of structure and dependencies.
+The results clearly indicate that
+LeGIT
+outperforms existing baseline methods across all three evaluation metrics. The consistently low SHD and SID scores, coupled with high BSF values, underscore the efficacy of
+LeGIT
+in accurately learning network structures and providing tangible benefits. Compared to heuristic-based methods like Random Choice and Round Robin,
+LeGIT
+offers a more strategic and data-driven approach, leading to better performance metrics.
+Moreover, while Human interventions remain strong competitors,
+LeGIT
+bridges the gap between automated methods and expert-driven processes. This positions
+LeGIT
+as an effective tool for structure learning, capable of delivering expert-level performance without the need for manual interventions.
+For more details on the node variable descriptions and the out-degree distribution, please refer to the Appendix.
+5.3
+Low Data Experiment Analysis
+Table 2:
+Average SHD, SID, and BSF with standard deviation (over 5 seeds) for real-world data with a low data budget (
+T
+=
+33
+T=33
+rounds,
+|
+D
+i
+​
+n
+​
+t
+I
+|
+=
+16
+,
+N
+=
+528
+|D_{int}^{I}|=16,\ N=528
+).
+Methods
+Alarm
+Insurance
+Child
+Asia
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+SHD
+↓
+\downarrow
+SID
+↓
+\downarrow
+BSF
+↑
+\uparrow
+CBED
+32.40
+± 4.36
+214.20
+± 69.73
+0.8229
+± 0.05
+26.40
+± 3.56
+327.00
+± 38.46
+0.7042
+± 0.02
+9.20
+± 3.25
+46.60
+± 18.49
+0.8735
+± 0.06
+2.60
+± 2.73
+4.40
+± 2.94
+0.7500
+± 0.18
+AIT
+41.20
+± 5.49
+270.00
+± 29.61
+0.6728
+± 0.07
+37.00
+± 12.26
+421.40
+± 82.68
+0.5602
+± 0.12
+10.00
+± 3.29
+73.40
+± 45.64
+0.8175
+± 0.11
+1.40
+± 0.49
+3.60
+± 2.33
+0.8417
+± 0.05
+Random Choice
+40.80
+± 2.71
+236.40
+± 12.31
+0.7203
+± 0.07
+25.60
+± 2.24
+311.00
+± 22.17
+0.7211
+± 0.03
+8.20
+± 2.32
+51.60
+± 33.15
+0.8300
+± 0.07
+1.20
+± 0.40
+2.40
+± 2.80
+0.8458
+± 0.06
+Round Robin
+33.60
+± 7.34
+169.00
+± 35.69
+0.8975
+± 0.06
+22.60
+± 3.72
+269.20
+± 44.37
+0.7749
+± 0.04
+4.60
+± 2.42
+32.40
+± 24.25
+0.9327
+± 0.06
+1.20
+± 0.40
+2.40
+± 2.80
+0.8458
+± 0.06
+Degree Prob
+42.60
+± 6.34
+244.20
+± 35.06
+0.6762
+± 0.08
+31.80
+± 4.40
+351.00
+± 27.64
+0.6737
+± 0.05
+9.00
+± 2.90
+60.80
+± 23.01
+0.8512
+± 0.07
+1.40
+± 0.49
+3.60
+± 3.20
+0.8667
+± 0.01
+GIT
+27.20
+± 4.71
+177.80
+± 61.65
+0.9025
+± 0.04
+22.40
+± 3.72
+296.00
+± 44.23
+0.7463
+± 0.04
+6.00
+± 1.55
+33.80
+± 15.75
+0.9134
+± 0.05
+1.80
+± 0.75
+6.00
+± 4.56
+0.8333
+± 0.06
+LeGIT
+21.00
+± 2.37
+159.40
+± 26.81
+0.9158
+± 0.01
+18.20
+± 1.17
+259.00
+± 66.69
+0.7894
+± 0.02
+4.40
+± 2.15
+28.20
+± 15.03
+0.9499
+± 0.04
+1.40
+± 0.49
+3.80
+± 3.43
+0.8417
+± 0.06
+Furthermore, we conduct additional experiments in an extremely low-data setting, where only
+16
+16
+interventional data samples are sampled from each round, other settings are the same as above.
+This low-data setting is more practically relevant. Additionally, due to the insufficient intervention data, the performance of causal discovery algorithms in estimating effects is diminished
+(
+Lippe et al., 2022
+)
+, which further tests the effectiveness of the intervention strategy.
+The results presented in Table
+2
+, show that
+LeGIT
+achieves larger improvements under these conditions in 3 complex datasets. These findings highlight the effectiveness of
+LeGIT
+in real-world experimental design scenarios, where both the number of interventions and the sample size are limited.
+The result of the low-data experiment further verifies our discussion that numerical methods suffer from noise or insufficient data, leading to a suboptimal solution. The numerical-based method does not even outperform round-robin on 3 smaller datasets, underscoring its limitations in such scenarios.
+In contrast, the use of LLMs enables scalable and effective guidance that complements numerical methods, reducing the risk of suboptimal convergence, and having more stable performance in real-world applications.
+Figure 5:
+The selected Node Frequency obtained by different strategies on Epoch 0-4 from 5 different seeds under Table
+1
+setting.
+5.4
+Detailed comparisons and analyses
+Figs.
+5
+depict the distribution of selected nodes between epochs 0-5. Notably, the numerical methods (GIT, AIT) tend to get trapped in the initialization phase of the Insurance, alarm dataset, consistently selecting less central nodes in the graph, often peripheral or leaf nodes. In contrast, our model (
+LeGIT
+) that SocioEcon (socioeconomic status, No.1 nodes in graph), plays a crucial role in the insurance system, potentially influencing car choice, driving behavior, and the ability to afford certain safety features.
+Compared to the Human baseline,
+LeGIT
+demonstrates superior performance on two complex datasets: Alarm and Insurance. As the number of variables increases, determining the optimal interventions to reveal the structure of the causal graph becomes combinatorially explosive. For humans, this process can be extremely tedious or error-prone, as they may subjectively favor certain nodes, failing to synthesize different viewpoints due to simpler mental models. In contrast, refer to Figs.
+1
+, LLMs follow the instructions provided in Fig.3 step by step and align them with their background knowledge. With the self-consistency prompt technique, LLMs generate more robust results, providing a highly cost-effective alternative to hiring multiple human experts for advice.
+LLMs’ primary value lies in scalability and availability, providing immediate, cost-effective guidance in real-time, especially for online causal discovery where rapid interventions are required. They excel in large-scale systems with many variables, where it’s infeasible for experts to assess all nodes. LLMs complement human oversight by filling gaps in availability, consistency, and knowledge while helping avoid expert biases. Additionally, LLMs quickly process metadata, saving experts time and providing a solid starting point, as seen in other AI-assisted tasks.
+6
+Conclusions
+In this work, we investigated how to incorporate LLMs into the intervention targeting in experimental design for causal discovery.
+We introduced a novel framework called
+LeGIT
+, which combines the best of previous numerical-based approaches and the rich knowledge in LLMs.
+Specifically,
+LeGIT
+leverages LLMs to warm up the online causal discovery procedure by identifying the influential root cause variables to begin the intervention.
+After setting up a relatively clear picture of the underlying causal graph,
+LeGIT
+then integrates the numerical-based methods to continue to select the intervention targets. Empirically, we verified the effectiveness of
+LeGIT
+leveraging LLMs to warm up the online causal discovery can achieve the state-of-the-art performance across multiple realistic causal discovery benchmarks.
+Furthermore, we compared its performance against a human baseline, highlighting its unique value.
+LLMs offer a scalable and cost-effective approach to enhance experimental design, paving the way for new research directions of causal analysis and scientific discovery fields.
+References
+Abdulaal et al. (2024)
+Abdulaal, A., adamos hadjivasiliou, Montana-Brown, N., He, T., Ijishakin, A., Drobnjak, I., Castro, D. C., and Alexander, D. C.
+Causal modelling agents: Causal graph discovery through synergising metadata- and data-driven reasoning.
+In
+The Twelfth International Conference on Learning Representations
+, 2024.
+AI4Science & Quantum (2023)
+AI4Science, M. R. and Quantum, M. A.
+The impact of large language models on scientific discovery: a preliminary study using gpt-4.
+arXiv preprint arXiv:2311.07361
+, 2023.
+Ash et al. (2020)
+Ash, J. T., Zhang, C., Krishnamurthy, A., Langford, J., and Agarwal, A.
+Deep batch active learning by diverse, uncertain gradient lower bounds.
+In
+International Conference on Learning Representations
+, 2020.
+URL
+https://openreview.net/forum?id=ryghZJBKPS
+.
+Beinlich et al. (1989)
+Beinlich, I. A., Suermondt, H. J., Chavez, R. M., and Cooper, G. F.
+The alarm monitoring system: A case study with two probabilistic inference techniques for belief networks.
+In
+Conference on Artificial Intelligence in Medicine in Europe
+, 1989.
+URL
+https://api.semanticscholar.org/CorpusID:8044413
+.
+Binder et al. (1997)
+Binder, J., Koller, D., Russell, S., and Kanazawa, K.
+Adaptive probabilistic networks with hidden variables.
+Mach. Learn.
+, 29(2–3):213–244, November 1997.
+ISSN 0885-6125.
+doi:
+10.1023/A:1007421730016
+.
+URL
+https://doi.org/10.1023/A:1007421730016
+.
+Brouillard et al. (2020)
+Brouillard, P., Lachapelle, S., Lacoste, A., Lacoste-Julien, S., and Drouin, A.
+Differentiable causal discovery from interventional data.
+ArXiv
+, abs/2007.01754, 2020.
+URL
+https://api.semanticscholar.org/CorpusID:220347136
+.
+Cherry & Daley (2012)
+Cherry, A. B. C. and Daley, G. Q.
+Reprogramming cellular identity for regenerative medicine.
+Cell
+, 148:1110–1122, 2012.
+URL
+https://api.semanticscholar.org/CorpusID:9993432
+.
+Constantinou (2019)
+Constantinou, A. C.
+Evaluating structure learning algorithms with a balanced scoring function.
+arXiv preprint arXiv:1905.12666
+, 2019.
+Dempster (1993)
+Dempster, A. P.
+[bayesian analysis in expert systems]: Comment: Assessing the science behind graphical modelling techniques.
+Statistical Science
+, 8(3):247–250, 1993.
+ISSN 08834237.
+URL
+http://www.jstor.org/stable/2245960
+.
+Dong et al. (2023)
+Dong, X., Dai, H., Fan, Y., Jin, S., Rajendran, S., and Zhang, K.
+On the three demons in causality in finance: Time resolution, nonstationarity, and latent factors.
+ArXiv
+, abs/2401.05414, 2023.
+URL
+https://api.semanticscholar.org/CorpusID:266933380
+.
+Glymour et al. (2019)
+Glymour, C., Zhang, K., and Spirtes, P.
+Review of causal discovery methods based on graphical models.
+Frontiers in Genetics
+, 10, 2019.
+Gopnik et al. (2004)
+Gopnik, A., Glymour, C., Sobel, D. M., Schulz, L. E., Kushnir, T., and Danks, D.
+A theory of causal learning in children: causal maps and bayes nets.
+Psychological review
+, 111 1:3–32, 2004.
+Hauser & Bühlmann (2011)
+Hauser, A. and Bühlmann, P.
+Characterization and greedy learning of interventional markov equivalence classes of directed acyclic graphs.
+J. Mach. Learn. Res.
+, 13:2409–2464, 2011.
+URL
+https://api.semanticscholar.org/CorpusID:16393667
+.
+Houlsby et al. (2011)
+Houlsby, N., Huszar, F., Ghahramani, Z., and Lengyel, M.
+Bayesian active learning for classification and preference learning.
+CoRR
+, abs/1112.5745, 2011.
+URL
+http://arxiv.org/abs/1112.5745
+.
+Jin et al. (2023)
+Jin, Z., Liu, J., Lyu, Z., Poff, S., Sachan, M., Mihalcea, R., Diab, M. T., and Schölkopf, B.
+Can large language models infer causation from correlation?
+arXiv preprint
+, arXiv:2306.05836, 2023.
+Jiralerspong et al. (2024)
+Jiralerspong, T., Chen, X., More, Y., Shah, V., and Bengio, Y.
+Efficient causal graph discovery using large language models.
+arXiv preprint arXiv:2402.01207
+, 2024.
+Ke et al. (2019)
+Ke, N. R., Bilaniuk, O., Goyal, A., Bauer, S., Larochelle, H., Pal, C. J., and Bengio, Y.
+Learning neural causal models from unknown interventions.
+ArXiv
+, abs/1910.01075, 2019.
+URL
+https://api.semanticscholar.org/CorpusID:203626996
+.
+Kiciman et al. (2023)
+Kiciman, E., Ness, R., Sharma, A., and Tan, C.
+Causal reasoning and large language models: Opening a new frontier for causality.
+arXiv preprint
+, arXiv:2305.00050, 2023.
+Kuhn & Hawkins (1963)
+Kuhn, T. S. and Hawkins, D.
+The structure of scientific revolutions.
+American Journal of Physics
+, 31:554–555, 1963.
+Lampinen et al. (2023)
+Lampinen, A. K., Chan, S. C., Dasgupta, I., Nam, A. J. H., and Wang, J. X.
+Passive learning of active causal strategies in agents and language models.
+In
+Advances in Neural Information Processing Systems
+, 2023.
+Lauritzen & Spiegelhalter (2018)
+Lauritzen, S. L. and Spiegelhalter, D. J.
+Local Computations with Probabilities on Graphical Structures and Their Application to Expert Systems.
+Journal of the Royal Statistical Society: Series B (Methodological)
+, 50(2):157–194, 12 2018.
+ISSN 0035-9246.
+doi:
+10.1111/j.2517-6161.1988.tb01721.x
+.
+URL
+https://doi.org/10.1111/j.2517-6161.1988.tb01721.x
+.
+Lindley (1956)
+Lindley, D.
+On a measure of the information provided by an experiment.
+Annals of Mathematical Statistics
+, 27:986–1005, 1956.
+URL
+https://api.semanticscholar.org/CorpusID:123582195
+.
+Lippe et al. (2022)
+Lippe, P., Cohen, T., and Gavves, E.
+Efficient neural causal discovery without acyclicity constraints.
+In
+International Conference on Learning Representations
+, 2022.
+Liu et al. (2024)
+Liu, C., Chen, Y., Liu, T., Gong, M., Cheng, J., Han, B., and Zhang, K.
+Discovery of the hidden world with large language models.
+ArXiv
+, abs/2402.03941, 2024.
+URL
+https://api.semanticscholar.org/CorpusID:267499909
+.
+Liu et al. (2023)
+Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., and Liang, P.
+Lost in the middle: How language models use long contexts.
+arXiv preprint
+, arXiv:2307.03172, 2023.
+Long et al. (2023a)
+Long, S., Piché, A., Zantedeschi, V., Schuster, T., and Drouin, A.
+Causal discovery with language models as imperfect experts.
+arXiv preprint
+, arXiv:2307.02390, 2023a.
+Long et al. (2023b)
+Long, S., Schuster, T., and Piché, A.
+Can large language models build causal graphs?
+arXiv preprint
+, arXiv:2303.05279, 2023b.
+Olko et al. (2023)
+Olko, M., Zając, M., Nowak, A., Scherrer, N., Annadani, Y., Bauer, S., Kuciński, Ł., and Miłoś, P.
+Trust your $\nabla$: Gradient-based intervention targeting for causal discovery.
+In
+International Conference on Learning Representations
+, 2023.
+OpenAI (2023)
+OpenAI.
+Gpt-4 technical report, 2023.
+OpenAI (2024)
+OpenAI.
+Hello, gpt-4o!
+https://openai.com/index/hello-gpt-4o/
+, 2024.
+Accessed: 2024-05-20.
+Pearl & Mackenzie (2018)
+Pearl, J. and Mackenzie, D.
+The Book of Why: The New Science of Cause and Effect
+.
+Basic Books, Inc., USA, 1st edition, 2018.
+ISBN 046509760X.
+Peters & Bühlmann (2015)
+Peters, J. and Bühlmann, P.
+Structural intervention distance for evaluating causal graphs.
+Neural computation
+, 27(3):771–799, 2015.
+Sahu et al. (2022)
+Sahu, P., Cogswell, M., Gong, Y., and Divakaran, A.
+Unpacking large language models with conceptual consistency.
+ArXiv
+, abs/2209.15093, 2022.
+URL
+https://api.semanticscholar.org/CorpusID:252668345
+.
+Scherrer et al. (2021)
+Scherrer, N., Bilaniuk, O., Annadani, Y., Goyal, A., Schwab, P., Schölkopf, B., Mozer, M. C., Bengio, Y., Bauer, S., and Ke, N. R.
+Learning neural causal models with active interventions.
+arXiv preprint arXiv:2109.02429
+, 2021.
+Scutari (2010)
+Scutari, M.
+Learning bayesian networks with the bnlearn r package.
+Journal of Statistical Software
+, 35(3):1–22, 2010.
+Spirtes et al. (2000)
+Spirtes, P., Glymour, C., and Scheines, R.
+Causation, Prediction, and Search, Second Edition
+.
+Adaptive computation and machine learning. MIT Press, 2000.
+ISBN 978-0-262-19440-2.
+Spirtes et al. (2010)
+Spirtes, P., Glymour, C., Scheines, R., and Tillman, R.
+Automated Search for Causal Relations: Theory and Practice.
+2010.
+URL
+https://kilthub.cmu.edu/articles/journal_contribution/Automated_Search_for_Causal_Relations_Theory_and_Practice/6490961
+.
+Tigas et al. (2022)
+Tigas, P., Annadani, Y., Jesson, A., Schölkopf, B., Gal, Y., and Bauer, S.
+Interventions, where and how? experimental design for causal models at scale.
+Advances in neural information processing systems
+, 35:24130–24143, 2022.
+Tong & Koller (2001)
+Tong, S. and Koller, D.
+Active learning for structure in bayesian networks.
+In
+International Joint Conference on Artificial Intelligence
+, 2001.
+URL
+https://api.semanticscholar.org/CorpusID:8155128
+.
+Trott et al. (2022)
+Trott, S., Jones, C. J., Chang, T. A., Michaelov, J. A., and Bergen, B. K.
+Do large language models know what humans know?
+Cognitive science
+, 47 7:e13309, 2022.
+URL
+https://api.semanticscholar.org/CorpusID:252089182
+.
+Tsamardinos et al. (2006)
+Tsamardinos, I., Brown, L., and Aliferis, C.
+The max-min hill-climbing bayesian network structure learning algorithm.
+Machine Learning
+, 65:31–78, 10 2006.
+doi:
+10.1007/s10994-006-6889-7
+.
+Vowels et al. (2022)
+Vowels, M. J., Camgoz, N. C., and Bowden, R.
+D’ya like dags? a survey on structure learning and causal discovery.
+ACM Computing Survey
+, 55(4), 2022.
+ISSN 0360-0300.
+Wang et al. (2022)
+Wang, X., Wei, J., Schuurmans, D., Le, Q., Chi, E., Narang, S., Chowdhery, A., and Zhou, D.
+Self-consistency improves chain of thought reasoning in language models.
+arXiv preprint arXiv:2203.11171
+, 2022.
+Zečević et al. (2023)
+Zečević, M., Willig, M., Dhami, D. S., and Kersting, K.
+Causal parrots: Large language models may talk causality but are not causal.
+Transactions on Machine Learning Research
+, 2023.
+ISSN 2835-8856.
+Zhang et al. (2023a)
+Zhang, C., Bauer, S., Bennett, P., Gao, J., Gong, W., Hilmkil, A., Jennings, J., Ma, C., Minka, T., Pawlowski, N., and Vaughan, J.
+Understanding causality with large language models: Feasibility and opportunities.
+arXiv preprint
+, arXiv:2304.05524, 2023a.
+Zhang et al. (2023b)
+Zhang, Y., Li, Y., Cui, L., Cai, D., Liu, L., Fu, T., Huang, X., Zhao, E., Zhang, Y., Chen, Y., Wang, L., Luu, A. T., Bi, W., Shi, F., and Shi, S.
+Siren’s song in the AI ocean: A survey on hallucination in large language models.
+arXiv preprint
+, arXiv:2309.01219, 2023b.
+Appendix A
+More Details of Datasets
+In this part, we will further introduce the 4 different domain Causal graph discovery dataset from BNleaner Repository
+(
+Scutari, 2010
+)
+. For the description of each variable, we refer to
+(
+Long et al., 2023b
+)
+and make some changes on it. We show the ground truth and the out-degree nodes distributions as follows.
+Asia
+show as Fig.
+6
+aims to model a hypothetical medical scenario in which a person visits a clinic with shortness of breath. The network helps in diagnosing the likely causes (e.g., tuberculosis, lung cancer, bronchitis) by probabilistically combining the available evidence (e.g., history of travel, smoking status, X-ray results)
+Child
+show as Fig.
+7
+is used to model the diagnosis of pediatric health issues, particularly those that can occur in newborns or young children. It’s often employed in studies related to decision support systems, where probabilistic graphical models assist in medical diagnosis. The network is significantly larger than the Asia dataset, with 20 nodes (variables) and 25 edges.
+Insurance
+shown as Fig.
+8
+intended to simulate a situation in which an insurance company needs to assess various risks and make decisions regarding policies, claims, and customer behavior. It represents the interdependencies between multiple insurance factors. It has 27 nodes and 52 edges
+Alarm
+shown as Fig.
+9
+is known as the ALARM (A Logical Alarm Reduction Mechanism) network, and it was originally developed to model a patient monitoring system for anesthesia purposes. It helps in predicting physiological conditions of patients, detecting potential complications, and generating alerts when necessary, consists of 37 nodes and 46 edges.
+Figure 6:
+Ground truth Causal Graph for asia data.
+Figure 7:
+Ground truth Causal Graph for child data.
+Figure 8:
+Ground truth Causal Graph for insurance data.
+Figure 9:
+Ground truth Causal Graph for alarm data.
+(a)
+Out degree distribution of Asia data.
+(b)
+Out degree distribution of Child data.
+(c)
+Out degree distribution of Insurance data.
+(d)
+Out degree distribution of Alarm data.
+Figure 10:
+Out Degree of 4 Dataset.
+Appendix B
+More Details of Experiments
+B.1
+ENCO Hyperparameters
+For experiments using the ENCO framework, we used the exact parameters reported by
+(
+Lippe et al., 2022
+)
+. These parameters are provided in Table
+3
+to ensure the completeness of our report.
+Table 3:
+Hyperparameters used for the ENCO framework.
+parameter
+value
+Sparsity regularizer
+λ
+s
+​
+p
+​
+a
+​
+r
+​
+s
+​
+e
+\lambda_{sparse}
+4
+×
+10
+−
+3
+4\text{\times}{10}^{-3}
+Distribution model
+2 layers, hidden size 64, LeakyReLU(
+α
+=
+0.1
+\alpha=0.1
+)
+Batch size
+128
+Learning rate - model
+5
+×
+10
+−
+3
+5\text{\times}{10}^{-3}
+Weight decay - model
+1
+×
+10
+−
+4
+1\text{\times}{10}^{-4}
+Distribution fitting iterations F
+1000
+1000
+Graph fitting iterations G
+1
+​
+00
+$1$00
+Graph samples K
+100
+Epochs
+30
+Learning rate -
+γ
+\gamma
+2
+×
+10
+−
+2
+2\text{\times}{10}^{-2}
+Learning rate -
+θ
+\theta
+1
+×
+10
+−
+1
+1\text{\times}{10}^{-1}
+B.2
+Detailed Metrics
+In this section, we present the details of 3 different metrics mentioned in the experiment part.
+•
+The Structural Hamming Distance (SHD)
+(
+Tsamardinos et al., 2006
+)
+: SHD is a widely used metric for comparing graphs based on their adjacency matrices. It measures the number of discrepancies between two binary adjacency matrices, counting the minimum number of edges that need to be removed
+D
+D
+, added
+A
+A
+, or reversed
+R
+R
+in order to obtain the truth causal graph.
+S
+​
+H
+​
+D
+=
+A
++
+D
++
+R
+SHD=A+D+R
+•
+Structural Intervention Distance (SID)
+(
+Peters & Bühlmann, 2015
+)
+: SID evaluates the similarity between DAGs
+(
+𝒢
+,
+ℋ
+)
+(\mathcal{G},\mathcal{H})
+based on their ability to capture causal effects. Specifically, it quantifies the number of incorrectly inferred intervention distributions, highlighting how false edges in the generated graph can impact the derived causal effects.
+SID
+=
+#
+{
+(
+i
+,
+j
+)
+,
+i
+≠
+j
+∣
+the intervention distribution from
+\displaystyle=\#\{(i,j),i\neq j\mid\text{the intervention distribution from}
+i
+to
+j
+is falsely estimated by
+ℋ
+with respect to
+𝒢
+}
+.
+\displaystyle i\text{ to }j\ \text{is falsely estimated by }\mathcal{H}\text{ with respect to }\mathcal{G}\}.
+•
+Balanced scoring function(BSF)
+(
+Constantinou, 2019
+)
+: BSF eliminates bias in assessing structure learning algorithms by adjusting penalties and rewards based on the occurrence rates of dependencies and independencies in the ground truth graph.
+BSF
+=
+1
+2
+​
+(
+TP
+a
++
+TN
+i
+−
+FP
+i
+−
+FN
+a
+)
+,
+\text{BSF}=\frac{1}{2}\left(\frac{\text{TP}}{a}+\frac{\text{TN}}{i}-\frac{\text{FP}}{i}-\frac{\text{FN}}{a}\right),
+where
+T
+​
+P
+TP
+represents the true positives,
+T
+​
+N
+TN
+the true negatives,
+F
+​
+P
+FP
+the false positives, and
+F
+​
+N
+FN
+the false negatives. The variable
+a
+a
+denotes the number of arcs in the true graph, while
+i
+=
+|
+N
+|
+×
+(
+|
+N
+|
+−
+1
+)
+2
+−
+a
+i=\frac{|N|\times(|N|-1)}{2}-a
+represents the number of independencies in the true graph, where
+|
+N
+|
+|N|
+is the total number of nodes.
+B.3
+Final Causal Graph
+In this section, we present the final causal graph after
+T
+=
+33
+T=33
+, total sample
+N
+=
+1056
+N=1056
+results with GIT, Human, and
+LeGIT
+.
+Figure 11:
+LeGIT
+final causal graph for asia dataset
+Figure 12:
+GIT’s final causal graph for asia dataset
+Figure 13:
+Huamn’s final causal graph for asia dataset
+Figure 14:
+LeGIT
+final causal graph for child dataset
+Figure 15:
+Human’s final causal graph for child dataset
+Figure 16:
+GIT’s final causal graph for child dataset
+Figure 17:
+LeGIT
+final causal graph for insurance dataset
+Figure 18:
+Human’s final causal graph for insurance dataset
+Figure 19:
+GIT’s final causal graph for insurance dataset
+Figure 20:
+LeGIT
+final causal graph for alarm dataset
+Figure 21:
+Human’s final causal graph for alarm dataset
+Figure 22:
+GIT’s final causal graph for alarm dataset
+Appendix C
+Convergence of causal discovery with
+LeGIT
+In this section, we provide a convergence argument for
+LeGIT
+,
+which combines a Large Language Model (LLM) warmup phase with a numerical-based intervention targeting strategy (e.g., GIT
+(
+Olko et al., 2023
+)
+).
+C.1
+Preliminaries and Notation
+Structural Causal Models and Online Causal Discovery.
+We use the same definition of Structural Causal Models (SCMs), directed acyclic graphs (DAGs), and single-node interventions (hard interventions) described in, e.g.,
+(
+Lippe et al., 2022
+)
+. Suppose we have:
+G
+∗
+=
+(
+V
+,
+E
+∗
+)
+,
+G^{*}=(V,E^{*}),
+where
+V
+=
+{
+1
+,
+2
+,
+…
+,
+n
+}
+V=\{1,2,\dots,n\}
+indexes the causal variables
+(
+X
+1
+,
+…
+,
+X
+n
+)
+(X_{1},\dots,X_{n})
+, and we wish to recover
+G
+∗
+G^{*}
+. In an online setting, at each round
+t
+=
+1
+,
+2
+,
+…
+,
+T
+t=1,2,\dots,T
+, we choose an intervention target
+i
+t
+∈
+V
+i_{t}\in V
+and obtain a small batch of interventional samples from
+X
+X
+under that intervention. This new interventional data is then used to update our current belief about the causal structure and functional parameters.
+LeGIT and the Warmup Stage.
+LeGIT begins with a small number of
+warmup
+rounds,
+T
+warmup
+T_{\text{warmup}}
+, possibly augmented by an additional
+bootstrap
+stage
+T
+bootstrapped
+T_{\text{bootstrapped}}
+. Across these initial stages, an LLM proposes intervention targets based on domain-specific descriptions or meta-information about the variables. Once the warmup phases are finished, the algorithm reverts to a purely numerical-based strategy for intervention selection—for example, GIT
+(
+Olko et al., 2023
+)
+or a Bayesian method
+(
+Brouillard et al., 2020
+)
+. Let
+I
+t
+I_{t}
+be the random variable denoting the chosen intervention target at round
+t
+t
+; then
+I
+t
+=
+{
+LLM-based selection
+,
+t
+≤
+2
+∗
+(
+T
+warmup
++
+T
+bootstrapped
+)
+,
+numerical-based selection
+,
+2
+∗
+(
+T
+warmup
++
+T
+bootstrapped
+)
+<
+t
+≤
+T
+.
+I_{t}=\begin{cases}\text{LLM-based selection},\\
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ t\leq 2*(T_{\text{warmup}}+T_{\text{bootstrapped}}),\\
+\text{numerical-based selection},\\
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 2*(T_{\text{warmup}}+T_{\text{bootstrapped}})<t\leq T.\end{cases}
+C.2
+Convergence Proof
+Throughout this section, we make the following standard assumptions:
+•
+A1 (Faithfulness)
+. The true distribution is
+faithful
+to a unique causal DAG
+G
+∗
+G^{*}
+.
+•
+A2 (Sufficiency)
+. There are no hidden confounders, i.e., all relevant causal variables are observed.
+•
+A3 (Convergent Base-Algorithm)
+. After collecting a sufficient number of correct interventional data points, the base numerical method (e.g., GIT + ENCO) converges to
+G
+∗
+G^{*}
+; see
+(
+Olko et al., 2023
+;
+Lippe et al., 2022
+)
+for formal statements.
+Our main theorem shows that, under A1–A3, and given that the LLM-based warmup selects meaningful root-cause or high-influence variables in at least some fraction of the initial rounds, LeGIT converges to the correct graph
+G
+∗
+G^{*}
+in the limit of acquiring more interventional data.
+C.3
+Key Lemma: Warmup Rounds Provide Informative Interventions
+Let
+ϕ
+LLM
+\phi_{\text{LLM}}
+be the set of selected nodes from the LLM-based warmup. Although LLM selection can be imperfect, we show that with nonzero probability,
+ϕ
+LLM
+\phi_{\text{LLM}}
+contains enough influential/parent nodes to break symmetries or ambiguities in the MEC, thereby accelerating or guaranteeing eventual convergence.
+Lemma C.1
+(LLM Warmup is Sufficiently Informative)
+.
+Suppose that, during the warmup stage, the LLM selects a node
+v
+v
+which is a direct cause (or ancestor) of at least one child
+c
+c
+that is currently ambiguous or misoriented in the model. Intervening on
+v
+v
+yields significant new information about the structure among
+{
+v
+,
+c
+}
+\{v,c\}
+. If the warmup stage includes such interventions on enough distinct parents or high-degree nodes, the post-warmup structure has strictly fewer edges inconsistent with
+G
+∗
+G^{*}
+on average.
+Proof.
+When the LLM intervenes on
+v
+v
+, we obtain data from
+P
+⁡
+(
+X
+∣
+d
+​
+o
+​
+{
+v
+}
+)
+P(X\mid do\{v\})
+. Under A1–A2, the subsequent updates to the structural parameters will, with high probability, remove incorrect edges around
+v
+v
+or correct orientation errors. Repeating this for a sufficient set of
+v
+v
+nodes with nontrivial out-degrees ensures that many orientation and adjacency ambiguities in
+G
+G
+are resolved. A formal statement follows directly from standard identifiability arguments of single-node interventions.
+∎
+C.4
+Convergence Argument for the Combined Procedure
+After
+2
+​
+(
+T
+warmup
++
+T
+bootstrapped
+)
+2(T_{\text{warmup}}+T_{\text{bootstrapped}})
+rounds, the base method (e.g., GIT) takes over and selects all subsequent targets
+{
+I
+t
+}
+t
+>
+2
+​
+(
+T
+warmup
++
+T
+bootstrapped
+)
+\{I_{t}\}_{t>2(T_{\text{warmup}}+T_{\text{bootstrapped}})}
+. The following proposition states that if the base method itself converges when given sufficiently many informative interventions (as assumed by A3), then the combination of warmup + base method must also converge.
+Proposition C.2
+(Convergence of LeGIT)
+.
+Assume the LLM-based warmup stage provides a non-empty set of interventions that reduce critical ambiguities in the causal structure (Lemma
+C.1
+). Let the base method be any procedure that is guaranteed to converge to
+G
+∗
+G^{*}
+if it acquires sufficiently many samples from the relevant parts of the DAG (A3). Then, as
+T
+→
+∞
+T\to\infty
+,
+LeGIT
+converges to the correct causal DAG
+G
+∗
+G^{*}
+with probability 1.
+Proof.
+By Lemma
+C.1
+, after the LLM warmup stage, the posterior space of graphs is already closer to the true DAG. That is, the number of structural ambiguities or misoriented edges around key high-influence nodes is reduced or completely resolved.
+From round
+t
+=
+2
+​
+(
+T
+warmup
++
+T
+bootstrapped
+)
++
+1
+t=2(T_{\text{warmup}}+T_{\text{bootstrapped}})+1
+onward, the intervention targeting is dictated by the base method (e.g., GIT). Under assumption A3, we know that if GIT (plus the underlying gradient-based causal discovery algorithm like ENCO) is run on a system with sufficiently many informative interventions, it converges to
+G
+∗
+G^{*}
+. Because the warmup stage of LeGIT has by design intervened on crucial nodes to reduce ambiguities, the base method from that point sees a significantly less confounded or ambiguous search space and, with high probability, chooses further interventions that refine the partial solution until it converges to
+G
+∗
+G^{*}
+.
+Thus, by the properties of the base method’s convergence proof (see
+(
+Olko et al., 2023
+)
+), the entire procedure (LLM warmup + GIT) converges to
+G
+∗
+G^{*}
+given sufficient total rounds
+T
+T
+.
+∎
+Remark C.3
+(Extension to Other Methods)
+.
+Although we have discussed GIT and ENCO as an illustrative example, any gradient-based or Bayesian-based method that ensures correct discovery given a suitable variety of interventions can replace GIT in Step (b) of LeGIT. Under the same conditions (A1–A3), the combined procedure likewise converges to the true DAG
+G
+∗
+G^{*}
+.
+Appendix D
+Examples of Prompts
+For robust performance, we actually shuffle the order of variable descriptions following the self-consistency prompt skill. We provide the prompt templates and the description of the variables used in
+LeGIT
+below.
+Asia Warmup Prompt
+You are a helpful assistant and expert in lung disease research. Here are some tips that you can pay attention to:
+1. Assess whether there is a direct causal relationship, and consider potential confounding variables that might affect the relationship that could potentially not causal relationship.
+2. Distinguish between correlations and causation; verify that correlations are not mistaken for causal relationships.
+3. Ensure the correct temporal order of variables; confirm that the cause precedes the effect.
+Assuming we can do interventions to all the variables, your job is to assist in designing the best intervention experiments among the following variables to help discover their causal relations:
+<dysp>: whether or not the patient has dyspnoea, also known as shortness of breath
+<smoke>: whether or not the patient is a smoker
+<xray>: whether or not the patient has had a positive chest xray
+<lung>: whether or not the patient has lung cancer
+<tub>: whether or not the patient has tuberculosis
+<asia>: whether or not the patient has recently visited asia
+<either>: whether or not the patient has either tuberculosis or lung cancer
+<bronc>: whether or not the patient has bronchitis
+Assuming we can do interventions to all the variables, given the aforementioned variables and their descriptions, can you **echo your knowledge those variables**, **temporally analyze** their relations, and then **choose the best 4 intervention targets from all the variables** which hopefully are the root causes of the other variables to start our analysis of their causal relations?
+Let’s think and analyze step by step. Then, provide your final answer (variable names only) within the tags <Answer>…</Answer>, separated by ", ".
+Child Warmup Prompt
+You are a helpful assistant and expert in children’s disease research. Here are some tips that you can pay attention to:
+1. Assess whether there is a direct causal relationship, and consider potential confounding variables that might affect the relationship that could potentially not causal relationship.
+2. Distinguish between correlations and causation; verify that correlations are not mistaken for causal relationships.
+3. Ensure the correct temporal order of variables; confirm that the cause precedes the effect.
+Assuming we can do interventions to all the variables, your job is to assist in designing the best intervention experiments among the following variables to help discover their causal relations:
+<LungFlow>: low blood flow in the lungs
+<ChestXray>: having a chest x-ray
+<Disease>: infant methemoglobinemia
+<Grunting>: grunting in infants
+<Age>: age of infant at disease presentation
+<XrayReport>: lung excessively filled with blood
+<RUQO2>: level of oxygen in the right upper quadriceps muscle
+<DuctFlow>: blood flow across the ductus arteriosus
+<HypoxiaInO2>: hypoxia when breathing oxygen
+<Sick>: presence of an illness
+<CO2Report>: a document reporting high level of CO2 levels in blood
+<LungParench>: the state of the blood vessels in the lungs
+<LVH>: having left ventricular hypertrophy
+<LowerBodyO2>: level of oxygen in the lower body
+<BirthAsphyxia>: lack of oxygen to the blood during the infant’s birth
+<CO2>: level of CO2 in the body
+<LVHreport>: report of having left ventri
+<GruntingReport>: report of infant grunting
+<CardiacMixing>: mixing of oxygenated and deoxygenated blood
+<HypDistrib>: low oxygen areas equally distributed around the body
+Assuming we can do interventions to all the variables, given the aforementioned variables and their descriptions, can you **echo your knowledge those variables**, **temporally analyze** their relations, and then **choose the best 4 intervention targets from all the variables** which hopefully are the root causes of the other variables to start our analysis of their causal relations?
+Let’s think and analyze step by step. Then, provide your final answer (variable names only) within the tags <Answer>…</Answer>, separated by ", ".
+Insurance Warmup Prompt
+You are a helpful assistant and expert in car insurance risks research. Here are some tips that you can pay attention to:
+1. Assess whether there is a direct causal relationship, and consider potential confounding variables that might affect the relationship that could potentially not causal relationship.
+2. Distinguish between correlations and causation; verify that correlations are not mistaken for causal relationships.
+3. Ensure the correct temporal order of variables; confirm that the cause precedes the effect.
+Assuming we can do interventions to all the variables, your job is to assist in designing the best intervention experiments among the following variables to help discover their causal relations:
+<ThisCarDam>: damage to the car
+<MakeModel>: owning a sports car
+<OtherCarCost>: cost of the other cars
+<PropCost>: ratio of the cost for the two cars
+<AntiTheft>: car has anti-theft
+<DrivQuality>: driving quality
+<DrivHist>: driving history
+<MedCost>: cost of medical treatment
+<Mileage>: how much mileage is on the car
+<Antilock>: car has anti-lock
+<CarValue>: value of the car
+<Accident>: severity of the accident
+<OtherCar>: being involved with other cars in the accident
+<SeniorTrain>: received additional driving training
+<ILiCost>: inspection cost
+<SocioEcon>: socioeconomic status
+<ThisCar>: costs for the insured car
+<Theft>: theft occured in the car
+<Age>: age
+<RuggedAuto>: ruggedness of the car
+<GoodStudent>: being a good student driver
+<VehicleYear>: year of vehicle
+<HomeBase>: neighbourhood type
+<ThisCarCost>: costs for the insured car
+<Cushioning>: quality of cushinoning in car
+<RiskAversion>: being risk averse
+<DrivingSkill>: driving skill
+<Airbag>: car has an airbad
+Assuming we can do interventions to all the variables, given the aforementioned variables and their descriptions, can you **echo your knowledge those variables**, **temporally analyze** their relations, and then **choose the best 5 intervention targets from all the variables** which hopefully are the root causes of the other variables to start our analysis of their causal relations?
+Let’s think and analyze step by step. Then, provide your final answer (variable names only) within the tags <Answer>…</Answer>, separated by ", ".
+Alarm Warmup Prompt
+You are a helpful assistant and expert in alarm message system for patient monitoring system research. Here are some tips that you can pay attention to:
+1. Assess whether there is a direct causal relationship, and consider potential confounding variables that might affect the relationship that could potentially not causal relationship.
+2. Distinguish between correlations and causation; verify that correlations are not mistaken for causal relationships.
+3. Ensure the correct temporal order of variables; confirm that the cause precedes the effect.
+Assuming we can do interventions to all the variables, your job is to assist in designing the best intervention experiments among the following variables to help discover their causal relations:
+<CATECHOL>: hormone made by the adrenal glands
+<SAO2>: oxygen saturation of arterial blood
+<VENTALV>: exchange of gas between the alveoli and the external environment
+<ANAPHYLAXIS>: sever, life-threatening allergic reaction
+<INSUFFANESTH>: whether there is insufficient anesthesia or not
+<FIO2>: the concentration of oxygen in the gas mixture being inspired
+<BP>: pressure of circulating blood against the walls of blood vessels
+<PRESS>: breathing pressure
+<VENTTUBE>: whether there is a breathing tube or not
+<TPR>: amount of force exerted on circulating blood by vasculature of the body
+<CO>: amount of blood pumped by the heart per minute
+<PCWP>: pulmonary capillary wedge pressure
+<ERRCAUTER>: whether there was an error during cautery or not
+<KINKEDTUBE>: whether the chest tube is kinked or not
+<PVSAT>: amount of oxygen bound to hemoglobin in the pulmonary artery
+<INTUBATION>: process where a healthcare provider inserts a tube through a person’s mouth or nose, then down into their trachea
+<CVP>: measure of blood pressure in the vena cava
+<HYPOVOLEMIA>: condition that occurs when your body loses fluid, like blood or water
+<HRBP>: ratio of heart rate and blood pressure
+<HREKG>: heart rate displayed on EKG monitor
+<PAP>: blood pressure in the pulmonary artery
+<EXPCO2>: expelled CO2
+<ERRLOWOUTPUT>: error low output
+<HISTORY>: previous medical history
+<SHUNT>: hollow tube surgically placed in the brain (or occasionally in the spine) to help drain cerebrospinal fluid and redirect it to another location in the body where it can be reabsorbed
+<VENTMACH>: the intensity level of a breathing machine
+<VENTLUNG>: lung ventilation
+<HRSAT>: measure of how much hemoglobin is currently bound to oxygen compared to how much hemoglobin remains unbound
+<LVFAILURE>: occurs when there is dysfunction of the left ventricle causing insufficient delivery of blood to vital body organs
+<DISCONNECT>: disconnection
+<LVEDVOLUME>: amount of blood present in the left ventricle before contraction
+<HR>: heart rate
+<MINVOLSET>: the amount of time using a breathing machine
+<PULMEMBOLUS>: sudden blockage in the pulmonary arteries, the blood vessels that send blood to your lungs
+<STROKEVOLUME>: volume of blood pumped out of the left ventricle of the heart during each systolic cardiac contraction
+<MINVOL>: amount of gas inhaled or exhaled from a person’s lungs in one minute
+<ARTCO2>: arterial carbon dioxide
+Assuming we can do interventions to all the variables, given the aforementioned variables and their descriptions, can you **echo your knowledge those variables**, **temporally analyze** their relations, and then **choose the best 4 intervention targets from all the variables** which hopefully are the root causes of the other variables to start our analysis of their causal relations?
+Let’s think and analyze step by step. Then, provide your final answer (variable names only) within the tags <Answer>…</Answer>, separated by ", ".
+LeGIT response for Asia dataset
+To approach this systematically, let’s first echo the knowledge about these variables and their potential relationships, analyze their temporal and causal connections, and then determine the best intervention targets to uncover their causal relations.
+### Echoing Knowledge of Variables
+1. **<smoke>**: Smoking is a well-known risk factor for many respiratory conditions, including bronchitis and lung cancer.
+2. **<bronc>**: Bronchitis is an inflammation of the bronchi in the lungs and can be acute or chronic. It can be caused by smoking, among other factors.
+3. **<lung>**: Lung cancer is a serious condition that can be caused by factors like smoking and possibly influenced by environmental exposures.
+4. **<dysp>**: Dyspnoea, or shortness of breath, can be a symptom of many conditions, including lung cancer, bronchitis, and tuberculosis.
+5. **<asia>**: Visiting Asia is included likely due to the higher prevalence of certain diseases, such as tuberculosis, in certain parts of Asia compared to other regions.
+6. **<tub>**: Tuberculosis is an infectious disease that primarily affects the lungs but can also affect other parts of the body.
+7. **<xray>**: A positive chest x-ray can indicate several conditions, including tuberculosis, lung cancer, and possibly severe bronchitis.
+8. **<either>**: This variable indicates the presence of either tuberculosis or lung cancer, which are conditions that can both lead to a positive chest x-ray and symptoms like dyspnoea.
+### Temporal Analysis
+The temporal order of these variables is crucial to understanding their causal relationships. For instance:
+- **<smoke>** and **<asia>** are environmental/behavioral exposures that precede health outcomes like **<bronc>**, **<lung>**, and **<tub>**.
+- **<bronc>**, **<lung>**, and **<tub>** are health conditions that can lead to symptoms like **<dysp>** and diagnostic findings like **<xray>**.
+- **<either>** is a composite variable indicating the presence of **<lung>** or **<tub>**, which directly affects the likelihood of **<xray>** and **<dysp>**.
+Given these considerations, the best intervention targets to understand causal relationships would likely be those factors that are upstream in the causal chain and can influence multiple downstream outcomes.
+### Choosing Best Intervention Targets
+1. **<smoke>**: As a primary risk factor for both bronchitis and lung cancer, intervening here can reveal causal links to multiple respiratory conditions.
+2. **<asia>**: Given its association with increased risk for tuberculosis, intervening here can help understand the direct impact of geographical exposure on disease risk.
+3. **<bronc>**: By intervening on bronchitis, we can explore its direct and indirect effects on symptoms like dyspnoea and diagnostic outcomes like x-rays.
+4. **<lung>**: Intervening on lung cancer can clarify its causal links to symptoms and diagnostic findings.
+5. **<tub>**: Given tuberculosis’s role in respiratory health, interventions here can illuminate its effects on symptoms and diagnostic outcomes.
+In summary, focusing on **<smoke>**, **<asia>**, **<bronc>**, **<lung>**, and **<tub>** as intervention targets offers a strategic approach to uncovering the root causes and pathways of respiratory diseases and their symptoms.
+<Answer>smoke, asia, bronc, lung, tub</Answer>
+LeGIT response for Child dataset
+To address the problem effectively, we will follow a structured approach to understand the potential causal relationships among the variables. We will start by echoing the knowledge of each variable, analyze their temporal relationships, and then identify the best intervention targets.
+### Echoing Knowledge of Variables
+1. **RUQO2**: Level of oxygen in the right upper quadriceps muscle.
+2. **LVHreport**: Report of having left ventricular hypertrophy.
+3. **BirthAsphyxia**: Lack of oxygen to the blood during the infant’s birth.
+4. **DuctFlow**: Blood flow across the ductus arteriosus.
+5. **Disease**: Infant methemoglobinemia.
+6. **LungParench**: The state of the blood vessels in the lungs.
+7. **CO2Report**: A document reporting high levels of CO2 in blood.
+8. **LungFlow**: Low blood flow in the lungs.
+9. **GruntingReport**: Report of infant grunting.
+10. **Age**: Age of infant at disease presentation.
+11. **LowerBodyO2**: Level of oxygen in the lower body.
+12. **ChestXray**: Having a chest x-ray.
+13. **CO2**: Level of CO2 in the body.
+14. **HypDistrib**: Low oxygen areas equally distributed around the body.
+15. **Grunting**: Grunting in infants.
+16. **XrayReport**: Lung excessively filled with blood.
+17. **LVH**: Having left ventricular hypertrophy.
+18. **CardiacMixing**: Mixing of oxygenated and deoxygenated blood.
+19. **HypoxiaInO2**: Hypoxia when breathing oxygen.
+20. **Sick**: Presence of an illness.
+### Temporal Analysis
+1. **BirthAsphyxia** is an early event that can lead to multiple downstream effects, such as hypoxia and potential cardiac issues.
+2. **CardiacMixing** and **DuctFlow** are congenital or physiological conditions that can affect oxygenation and blood flow.
+3. **HypoxiaInO2**, **LungFlow**, and **LowerBodyO2** are likely influenced by earlier conditions like **BirthAsphyxia**, **CardiacMixing**, and **DuctFlow**.
+4. **CO2** and **CO2Report** are indicators of respiratory function and can be affected by lung and cardiac issues.
+5. **LungParench**, **XrayReport**, and **ChestXray** are diagnostic or descriptive of lung conditions.
+6. **Grunting** and **GruntingReport** are symptoms that may arise from respiratory distress.
+7. **LVH** and **LVHreport** are indicative of cardiac stress or abnormalities, potentially secondary to other physiological issues.
+8. **Disease** (infant methemoglobinemia) could be a result of hypoxic conditions and other metabolic issues.
+9. **Sick** is a general indicator of illness and can be influenced by multiple preceding factors.
+### Choosing Intervention Targets
+To identify root causes, we need to target variables that likely influence many others and are early in the causal chain:
+1. **BirthAsphyxia**: Early event potentially causing hypoxia, cardiac stress, and other downstream effects.
+2. **CardiacMixing**: Affects oxygenation and can lead to hypoxia and other cardiac issues.
+3. **DuctFlow**: Influences blood flow and oxygenation, impacting many other variables.
+4. **LungFlow**: Directly affects oxygenation and can lead to hypoxia and respiratory distress.
+These variables are likely to be root causes or early influencers in the causal network, making them ideal intervention targets to explore causal relationships.
+### Final Answer
+<Answer>BirthAsphyxia, CardiacMixing, DuctFlow, LungFlow</Answer>
+LeGIT response for Insurance dataset
+To analyze the causal relationships among these variables and select the best intervention targets, let’s first categorize and understand the potential causal structure among them.
+### Step 1: Echoing Knowledge of Variables
+1. **<ThisCar>**: Costs for the insured car
+2. **<Mileage>**: Mileage on the car
+3. **<DrivQuality>**: Driving quality
+4. **<RiskAversion>**: Being risk-averse
+5. **<CarValue>**: Value of the car
+6. **<MakeModel>**: Owning a sports car
+7. **<ThisCarDam>**: Damage to the car
+8. **<Theft>**: Theft occurred in the car
+9. **<ILiCost>**: Inspection cost
+10. **<Age>**: Age
+11. **<OtherCar>**: Involvement with other cars in an accident
+12. **<SeniorTrain>**: Received additional driving training
+13. **<SocioEcon>**: Socioeconomic status
+14. **<VehicleYear>**: Year of vehicle
+15. **<HomeBase>**: Neighborhood type
+16. **<DrivHist>**: Driving history
+17. **<Accident>**: Severity of the accident
+18. **<Airbag>**: Car has an airbag
+19. **<AntiTheft>**: Car has anti-theft
+20. **<ThisCarCost>**: Costs for the insured car
+21. **<MedCost>**: Cost of medical treatment
+22. **<Antilock>**: Car has anti-lock
+23. **<GoodStudent>**: Being a good student driver
+24. **<OtherCarCost>**: Cost of the other cars
+25. **<Cushioning>**: Quality of cushioning in the car
+26. **<RuggedAuto>**: Ruggedness of the car
+27. **<PropCost>**: Ratio of the cost for the two cars
+28. **<DrivingSkill>**: Driving skill
+### Step 2: Temporal Analysis of Relations
+- **Demographic and Personal Factors**:
+- **<Age>**, **<RiskAversion>**, **<SocioEcon>**, **<GoodStudent>**: These are inherent traits or long-term conditions that can influence driving behavior and decisions.
+- **Vehicle Characteristics**:
+- **<VehicleYear>**, **<MakeModel>**, **<CarValue>**, **<Airbag>**, **<AntiTheft>**, **<Antilock>**, **<Cushioning>**, **<RuggedAuto>**: These are intrinsic to the car and can influence safety and risk but are typically decided before other events.
+- **Driving Experience and Skills**:
+- **<DrivQuality>**, **<DrivingSkill>**, **<DrivHist>**, **<SeniorTrain>**: These can evolve over time and influence accident likelihood.
+- **Environmental Factors**:
+- **<HomeBase>**: Affects exposure to theft and accidents.
+- **Incident and Cost Factors**:
+- **<ThisCarDam>**, **<Theft>**, **<Accident>**, **<ILiCost>**, **<ThisCarCost>**, **<MedCost>**, **<OtherCarCost>**, **<PropCost>**: These are outcomes or costs associated with incidents.
+### Step 3: Choosing Intervention Targets
+To identify root causes, we should consider intervening on variables that are likely to influence many others and are not themselves primarily effects of other variables. The best interventions would be on variables that are upstream in the causal chain and can potentially change multiple downstream outcomes.
+1. **<RiskAversion>**: Can influence driving behavior, choice of car, and safety measures.
+2. **<SocioEcon>**: Affects car choice, home base, and potentially driving habits.
+3. **<MakeModel>**: Influences car value, safety features, and possibly driving style.
+4. **<DrivingSkill>**: Directly impacts driving quality, accident likelihood, and associated costs.
+These variables are chosen because they are fundamental characteristics or decisions that precede and potentially influence many other variables in the system.
+### Final Answer
+<Answer>RiskAversion, SocioEcon, MakeModel, DrivingSkill</Answer>
+LeGIT response for Insurance dataset
+To determine the best intervention targets, we need to consider the relationships and possible temporal orders among the variables. Here’s a step-by-step analysis:
+### Step 1: Understanding the Variables
+1. **Respiratory and Ventilation Variables:**
+- **<VENTMACH>**: Intensity level of a breathing machine.
+- **<MINVOLSET>**: Time using a breathing machine.
+- **<VENTLUNG>**: Lung ventilation.
+- **<PRESS>**: Breathing pressure.
+- **<MINVOL>**: Minute volume; gas inhaled/exhaled per minute.
+- **<VENTTUBE>**: Presence of a breathing tube.
+- **<VENTALV>**: Gas exchange in alveoli.
+- **<DISCONNECT>**: Disconnection.
+- **<EXPCO2>**: Expelled CO2.
+- **<ARTCO2>**: Arterial carbon dioxide.
+- **<FIO2>**: Oxygen concentration in inspired gas.
+2. **Cardiovascular Variables:**
+- **<HREKG>**: Heart rate on EKG.
+- **<PCWP>**: Pulmonary capillary wedge pressure.
+- **<HRBP>**: Ratio of heart rate and blood pressure.
+- **<BP>**: Blood pressure.
+- **<CO>**: Cardiac output.
+- **<HR>**: Heart rate.
+- **<TPR>**: Total peripheral resistance.
+- **<STROKEVOLUME>**: Blood volume per heart contraction.
+- **<LVEDVOLUME>**: Blood in left ventricle before contraction.
+- **<PAP>**: Pulmonary artery pressure.
+- **<CVP>**: Central venous pressure.
+- **<SAO2>**: Oxygen saturation of arterial blood.
+- **<PVSAT>**: Oxygen saturation in pulmonary artery.
+- **<HRSAT>**: Hemoglobin oxygen saturation.
+- **<CATECHOL>**: Adrenal hormones.
+3. **Medical Conditions and Procedures:**
+- **<ANAPHYLAXIS>**: Severe allergic reaction.
+- **<INTUBATION>**: Insertion of a breathing tube.
+- **<INSUFFANESTH>**: Insufficient anesthesia.
+- **<PULMEMBOLUS>**: Pulmonary embolism.
+- **<HYPOVOLEMIA>**: Fluid loss condition.
+- **<LVFAILURE>**: Left ventricle failure.
+- **<SHUNT>**: Drainage tube for cerebrospinal fluid.
+- **<KINKEDTUBE>**: Kinked chest tube.
+4. **Errors and Anomalies:**
+- **<ERRLOWOUTPUT>**: Low output error.
+- **<ERRCAUTER>**: Cautery error.
+5. **Other:**
+- **<HISTORY>**: Previous medical history.
+### Step 2: Temporal Analysis
+- **<INTUBATION>** and **<VENTMACH>** are likely initial interventions that can influence many respiratory and cardiovascular variables.
+- **<ANAPHYLAXIS>**, **<PULMEMBOLUS>**, and **<HYPOVOLEMIA>** are acute conditions that can cause significant changes in cardiovascular and respiratory variables.
+- **<INSUFFANESTH>** can affect heart rate and blood pressure due to inadequate sedation.
+- **<VENTLUNG>**, **<VENTALV>**, and **<MINVOL>** are outcomes of ventilation interventions.
+### Step 3: Choosing the Best Intervention Targets
+To determine causality effectively, we want to target variables that are likely root causes or significant influencers:
+1. **<INTUBATION>**: This is a direct intervention that can affect many respiratory variables.
+2. **<VENTMACH>**: Controls the intensity of mechanical ventilation, influencing respiratory and possibly cardiovascular variables.
+3. **<ANAPHYLAXIS>**: A condition that can have widespread effects on cardiovascular and respiratory systems.
+4. **<HYPOVOLEMIA>**: Can significantly impact cardiovascular variables like blood pressure and cardiac output.
+These interventions can provide insights into the causal relationships within the system.
+### Final Answer
+<Answer>INTUBATION, VENTMACH, ANAPHYLAXIS, HYPOVOLEMIA</Answer>
+Experimental support, please
+view the build logs
+for errors. Generated by
+L
+A
+T
+E
+xml
+.
+Instructions for reporting errors
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below:
+Click the "Report Issue"
+(
+)
+button, located in the page header.
+Tip:
+You can select the relevant text first, to include it in your report.
+Our team has already identified
+the following issues
+. We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all.
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a
+list of packages that need conversion
+, and welcome
+developer contributions
+.
+We gratefully acknowledge support from our
+major funders
+,
+member institutions
+,
+,
+        and all contributors.
+About
+·
+Help
+·
+Contact
+·
+Subscribe
+·
+Copyright
+·
+Privacy
+·
+Accessibility
+·
+Operational Status
+(opens in new tab)

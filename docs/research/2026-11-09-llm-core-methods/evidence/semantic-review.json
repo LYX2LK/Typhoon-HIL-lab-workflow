@@ -1,0 +1,121 @@
+[
+  {
+    "rank": 1,
+    "title": "Large Language Model Guided Knowledge Distillation for Time Series Anomaly Detection",
+    "abstract_available": true,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 2,
+    "title": "Multimodal Large Language Model-Based Fault Detection and Diagnosis in Context of Industry 4.0",
+    "abstract_available": true,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 3,
+    "title": "TriP-LLM: A Tri-Branch Patch-Wise Large Language Model Framework for Time-Series Anomaly Detection",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 4,
+    "title": "Large Language Model Driven Reinforcement Learning based Intelligent Control Method for Industrial Cyber-Physical Systems",
+    "abstract_available": true,
+    "decision": "irrelevant",
+    "reason": "摘要研究控制器优化，非测试生成、数据诊断或实验选择。"
+  },
+  {
+    "rank": 5,
+    "title": "LLM-YOLOMS: Large Language Model-based Semantic Interpretation and Fault Diagnosis for Wind Turbine Components",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 6,
+    "title": "Enhancing Information Sensing of Load Forecasting in Cyber-Physical-Social Systems: An Approach with Large Language Model",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 7,
+    "title": "The Large Language Model Pilot: Generative Artificial Intelligence for Cyber-Physical Flight Simulations",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 8,
+    "title": "Large-Model-Based Smart Agent for Time Series Anomaly Detection in Power Systems",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 9,
+    "title": "Semantic De-Duplication of Shared Cyber Threat Indicators using Large Language Model Embeddings",
+    "abstract_available": true,
+    "decision": "irrelevant",
+    "reason": "摘要研究网络威胁情报去重，非物理系统测试诊断。"
+  },
+  {
+    "rank": 10,
+    "title": "CP-LLM: Conformal Calibration for Time Series Interval Forecasting with Frozen Large Language Model",
+    "abstract_available": true,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 11,
+    "title": "Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis",
+    "abstract_available": true,
+    "decision": "irrelevant",
+    "reason": "摘要研究股票市场预测，未涉及本任务的方法选择。"
+  },
+  {
+    "rank": 12,
+    "title": "Intelligent Fault Diagnosis for Overhead Lines with Covered Conductors: Using Large Language Model",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 13,
+    "title": "Large Language Model-Augmented Machine Learning For Intelligent Fault Diagnosis in Process Systems",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 14,
+    "title": "A large language model-guided machinery fault diagnosis model based on multi-task prompt tuning and adaptive adversarial distillation",
+    "abstract_available": true,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 15,
+    "title": "Large language model-driven automated modelling paradigm for marine diesel engine fault diagnosis",
+    "abstract_available": true,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  },
+  {
+    "rank": 16,
+    "title": "Generative-Agent Modeling of Protest Mobilization and Preference Falsification with Large Language Models",
+    "abstract_available": true,
+    "decision": "irrelevant",
+    "reason": "摘要中的 falsification 指偏好伪装，非规格证伪。"
+  },
+  {
+    "rank": 17,
+    "title": "A Survey of Large Language Models for Time Series Anomaly Detection: Methods, Challenges, and Future Directions",
+    "abstract_available": false,
+    "decision": "relevant",
+    "reason": "主题相关或需补核；缺摘要者按保留原则列入待核验，未用作结论依据。"
+  }
+]

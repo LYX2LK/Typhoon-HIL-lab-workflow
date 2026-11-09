@@ -1,0 +1,1408 @@
+BatteryAgent: Synergizing Physics-Informed Interpretation with LLM Reasoning for Intelligent Battery Fault Diagnosis
+Skip to main content
+Report GitHub Issue
+×
+Title:
+Content selection saved. Describe the issue below:
+Description:
+Submit without GitHub
+Submit in GitHub
+Why HTML?
+Report Issue
+Back to Abstract
+Download PDF
+Contents
+Reading mode
+Colour theme
+Abstract
+I
+Introduction
+II
+Proposed Methodology
+II-A
+Framework Overview
+II-B
+Physics Perception Layer
+II-B
+1
+Usage History Features
+II-B
+2
+Voltage Characteristics
+II-B
+3
+Thermal Dynamics
+II-B
+4
+Numeric-to-Semantic Bridge
+II-C
+Detection & Attribution Layer
+II-D
+Reasoning & Diagnosis Layer
+II-D
+1
+LLM Agent Architecture
+II-D
+2
+Probability Calibration via Token Likelihood
+III
+Experimental Setup
+III-A
+Dataset
+III-B
+Experimental Design
+III-B
+1
+Data Partitioning Strategy
+III-B
+2
+Model Configuration
+III-C
+Evaluation Metrics
+III-C
+1
+Area Under ROC Curve (AUROC)
+III-C
+2
+Average Direct Cost
+IV
+Results and Analysis
+IV-A
+Comparison with State-of-the-Art Methods
+IV-B
+Ablation Study
+IV-C
+Fine-Grained Diagnostic Capability
+V
+Conclusion
+References
+License: arXiv.org perpetual non-exclusive license
+arXiv:2512.24686v1 [cs.AI] 31 Dec 2025
+BatteryAgent: Synergizing Physics-Informed Interpretation with LLM Reasoning for Intelligent Battery Fault Diagnosis
+Thanks:
+This work is supported by the National Key Research and Development Program of China (2025YFE0207400), the Tsinghua-Toyota Joint Research Fund, the National Natural Science Foundation of China (62273197 and 62403276), and the Beijing Natural Science Foundation (L233027).
+Corresponding author: Benben Jiang.
+Songqi Zhou
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+zhousongqi@mail.tsinghua.edu.cn
+Ruixue Liu
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+liuruixue@mail.tsinghua.edu.cn
+Boman Su
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+1030super@tsinghua.edu.cn
+Affiliation:
+Jiazhou Wang
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+wangjiazhou@mail.tsinghua.edu.cn
+Yixing Wang
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+yx-wang21@mails.tsinghua.edu.cn
+Benben Jiang*
+Affiliation:
+Department of Automation
+Tsinghua University
+Beijing, China
+bbjiang@tsinghua.edu.cn
+Abstract
+Fault diagnosis of lithium-ion batteries is critical for system safety. While existing deep learning methods exhibit superior detection accuracy, their “black-box” nature hinders interpretability. Furthermore, restricted by binary classification paradigms, they struggle to provide root cause analysis and maintenance recommendations. To address these limitations, this paper proposes
+BatteryAgent
+, a hierarchical framework that integrates physical knowledge features with the reasoning capabilities of Large Language Models (LLMs). The framework comprises three core modules: (1) A
+Physical Perception Layer
+that utilizes 10 mechanism-based features derived from electrochemical principles, balancing dimensionality reduction with physical fidelity; (2) A
+Detection and Attribution Layer
+that employs Gradient Boosting Decision Trees and SHAP to quantify feature contributions; and (3) A
+Reasoning and Diagnosis Layer
+that leverages an LLM as the agent core. This layer constructs a “numerical-semantic” bridge, combining SHAP attributions with a mechanism knowledge base to generate comprehensive reports containing fault types, root cause analysis, and maintenance suggestions. Experimental results demonstrate that BatteryAgent effectively corrects misclassifications on hard boundary samples, achieving an AUROC of 0.986, which significantly outperforms current state-of-the-art methods. Moreover, the framework extends traditional binary detection to multi-type interpretable diagnosis, offering a new paradigm shift from “passive detection” to “intelligent diagnosis” for battery safety management.
+Index Terms:
+Battery Fault Diagnosis, Large Language Models, Interpretability, AI Agent
+Fig. 1:
+The BatteryAgent framework architecture. The framework comprises three layers: (1) Physics Perception Layer for mechanism-driven feature extraction, (2) Detection & Attribution Layer using GBDT and SHAP for fault classification and feature contribution analysis, and (3) Reasoning & Diagnosis Layer where an LLM agent generates diagnostic reports with root cause analysis and maintenance recommendations via the Numeric-to-Semantic Bridge.
+I
+Introduction
+Lithium-ion batteries (LIBs) constitute the predominant energy storage technology for electric vehicles (EVs) owing to their superior energy density, extended cycle life, and broad operational temperature range
+[
+1
+]
+. The global EV market has experienced substantial growth, with sales surpassing 10 million units in 2022 and projected CO
+2
+reductions of approximately 700 million tons by 2030
+[
+2
+]
+. This expansion is propelled by stringent emission regulations and substantial investments in battery manufacturing infrastructure
+[
+3
+]
+. However, higher energy density introduces commensurate safety risks: thermal runaway propagates rapidly and proves difficult to suppress
+[
+2
+]
+. Localized faults—including overcharge, over-discharge, internal short circuits, and anomalous degradation—can precipitate catastrophic failures manifesting as fires or explosions
+[
+1
+]
+. Given that high-power applications necessitate coordinated operation of numerous cells, single-cell malfunctions may compromise entire pack integrity. Consequently, battery management systems must continuously monitor voltage, current, and temperature to provide early fault warnings, yet accurate diagnosis under stochastic operating conditions remains a formidable challenge
+[
+1
+]
+.
+Fault diagnosis methodologies bifurcate into physics-based and data-driven approaches
+[
+4
+,
+5
+]
+. Physics-based models, including electrochemical models and equivalent circuit models, offer mechanistic interpretability but impose substantial computational demands and parameterization requirements. Electrochemical models encounter convergence difficulties and often fail to capture complex real-world phenomena, while equivalent circuit models cannot represent internal electrochemical states such as side-reaction overpotentials
+[
+4
+]
+. Furthermore, model parameters exhibit dependencies on temperature and operating conditions, necessitating extensive experiments for online identification
+[
+6
+]
+. Data-driven methods provide scalable alternatives but require extensive high-quality data and function as opaque predictors
+[
+8
+]
+. The absence of physical constraints may yield predictions violating electrochemical principles or exhibiting poor generalization
+[
+9
+]
+. Moreover, existing approaches predominantly adopt binary classification paradigms, generating alarms without elucidating causative mechanisms or recommending maintenance actions
+[
+10
+,
+11
+]
+.
+Recent advances in large language models (LLMs) have demonstrated remarkable capabilities in natural language comprehension and complex reasoning
+[
+12
+]
+. Through prompt engineering and chain-of-thought techniques, LLMs exhibit emergent abilities in systematic diagnostic reasoning, particularly in knowledge-intensive domains requiring multi-step inference and causal analysis. These capabilities suggest potential for bridging quantitative analytical outputs and human-interpretable diagnostic reports. However, LLMs exhibit well-documented limitations when processing numerical time-series data: empirical studies reveal persistent difficulties in multi-step numerical reasoning, statistical computations within specified ranges, and temporal pattern recognition
+[
+13
+]
+. Direct ingestion of raw sensor sequences would incur prohibitive token costs while risking hallucinated or unreliable outputs. Consequently, establishing an effective interface between numerical measurements and semantic reasoning constitutes a critical prerequisite for leveraging LLMs in battery fault diagnostics.
+To address these challenges, we propose
+BatteryAgent
+, a hierarchical framework integrating mechanism-driven feature engineering, interpretable machine learning, and LLM reasoning. The
+Physics Perception Layer
+distills sensor streams into ten electrochemically-grounded features, reducing dimensionality while preserving physical fidelity. The
+Detection and Attribution Layer
+employs Gradient Boosting Decision Tree (GBDT) classification with SHapley Additive exPlanations (SHAP)-based attribution for transparent feature contribution analysis. The
+Reasoning and Diagnosis Layer
+utilizes an LLM agent that, via a numeric-to-semantic bridge, performs fault determination, causal analysis, and maintenance recommendation. An active refinement mechanism enables re-evaluation of low-confidence cases.
+Our contributions are threefold: (i) BatteryAgent pioneers closed-loop collaboration among mechanistic features, interpretable ML, and LLM reasoning, enabling a shift from passive detection to active diagnosis; (ii) Experiments demonstrate an AUROC of 0.986, surpassing state-of-the-art baselines; (iii) The numeric-to-semantic bridge extends binary detection to multi-fault diagnosis with root-cause analysis and maintenance recommendations.
+II
+Proposed Methodology
+II-A
+Framework Overview
+BatteryAgent is a hierarchical diagnostic framework that synergizes physics-informed feature engineering with LLM reasoning capabilities. As illustrated in Fig.
+1
+, the framework comprises three tightly coupled layers:
+Physics Perception Layer
+,
+Detection & Attribution Layer
+, and
+Reasoning & Diagnosis Layer
+. The core innovation lies in establishing a “Numeric-to-Semantic Bridge” that transforms quantitative sensor measurements into interpretable diagnostic knowledge, enabling the LLM agent to perform root cause analysis and generate actionable maintenance recommendations.
+Given a battery charging cycle characterized by time-series measurements
+𝐗
+=
+{
+V
+⁡
+(
+t
+)
+,
+I
+⁡
+(
+t
+)
+,
+T
+⁡
+(
+t
+)
+,
+S
+​
+O
+​
+C
+​
+(
+t
+)
+}
+\mathbf{X}=\{V(t),I(t),T(t),SOC(t)\}
+, where
+V
+⁡
+(
+t
+)
+V(t)
+,
+I
+⁡
+(
+t
+)
+I(t)
+,
+T
+⁡
+(
+t
+)
+T(t)
+, and
+S
+​
+O
+​
+C
+​
+(
+t
+)
+SOC(t)
+denote voltage, current, temperature, and state-of-charge signals respectively (sampled at 10s intervals), BatteryAgent produces a comprehensive diagnostic output
+𝒟
+=
+{
+y
+^
+,
+ℛ
+,
+ℳ
+}
+\mathcal{D}=\{\hat{y},\mathcal{R},\mathcal{M}\}
+comprising fault classification
+y
+^
+∈
+{
+Normal
+,
+Abnormal
+}
+\hat{y}\in\{\text{Normal},\text{Abnormal}\}
+, root cause explanation
+ℛ
+\mathcal{R}
+, and maintenance advice
+ℳ
+\mathcal{M}
+.
+The diagnostic pipeline is formally expressed as:
+𝒟
+=
+f
+LLM
+​
+(
+Φ
+SHAP
+​
+(
+f
+GBDT
+​
+(
+g
+phys
+​
+(
+𝐗
+)
+)
+)
+,
+𝒦
+)
+\mathcal{D}=f_{\text{LLM}}\left(\Phi_{\text{SHAP}}\left(f_{\text{GBDT}}\left(g_{\text{phys}}(\mathbf{X})\right)\right);\mathcal{K}\right)
+(1)
+where
+g
+phys
+​
+(
+⋅
+)
+g_{\text{phys}}(\cdot)
+extracts physics-informed features,
+f
+GBDT
+​
+(
+⋅
+)
+f_{\text{GBDT}}(\cdot)
+performs gradient boosting classification,
+Φ
+SHAP
+​
+(
+⋅
+)
+\Phi_{\text{SHAP}}(\cdot)
+computes attributions, and
+f
+LLM
+​
+(
+⋅
+,
+𝒦
+)
+f_{\text{LLM}}(\cdot;\mathcal{K})
+denotes LLM reasoning conditioned on knowledge base
+𝒦
+\mathcal{K}
+.
+II-B
+Physics Perception Layer
+Unlike end-to-end deep learning approaches that implicitly learn representations from raw data, this layer implements
+domain knowledge injection
+by encoding electrochemical principles into expert-defined features. This physics-informed design ensures physically meaningful and interpretable representations while reducing input dimensionality from high-frequency time-series to a compact feature vector.
+We construct mechanism-driven features based on electrochemical principles, selecting 10 representative features through domain expert evaluation and correlation analysis. The feature extractor
+g
+phys
+:
+𝐗
+→
+𝐅
+∈
+ℝ
+10
+g_{\text{phys}}:\mathbf{X}\rightarrow\mathbf{F}\in\mathbb{R}^{10}
+maps raw sensor data to a compact representation categorized into three domains (Table
+I
+).
+II-B
+1
+Usage History Features
+These features characterize battery aging and usage patterns. The
+cycle number
+f
+cyc
+f_{\text{cyc}}
+represents the cumulative charge-discharge cycles, directly correlating with capacity fade and increased internal resistance. The
+constant-current (CC) phase ratio
+f
+cc
+f_{\text{cc}}
+quantifies the proportion of charging time spent in CC mode versus constant-voltage (CV) mode
+[
+14
+]
+. During standard CC-CV charging, a healthy battery maintains a longer CC phase; as degradation progresses, the CV phase extends due to increased polarization:
+f
+cc
+=
+t
+CC
+t
+CC
++
+t
+CV
+f_{\text{cc}}=\frac{t_{\text{CC}}}{t_{\text{CC}}+t_{\text{CV}}}
+(2)
+where
+t
+CC
+t_{\text{CC}}
+and
+t
+CV
+t_{\text{CV}}
+denote the durations of CC and CV phases, respectively. A decreasing
+f
+cc
+f_{\text{cc}}
+indicates reduced charge acceptance capability. The
+maximum state-of-charge
+f
+soc
+f_{\text{soc}}
+captures charging depth; values approaching 100% increase stress on electrode materials and accelerate degradation.
+II-B
+2
+Voltage Characteristics
+These features evaluate voltage performance and consistency across the battery pack. The
+pack-to-cell voltage ratio
+f
+vr
+f_{\text{vr}}
+is defined as:
+f
+vr
+=
+1
+N
+​
+∑
+k
+=
+1
+N
+V
+pack
+​
+(
+k
+)
+n
+⋅
+V
+max
+,
+cell
+​
+(
+k
+)
+f_{\text{vr}}=\frac{1}{N}\sum_{k=1}^{N}\frac{V_{\text{pack}}(k)}{n\cdot V_{\max,\text{cell}}(k)}
+(3)
+where
+V
+pack
+​
+(
+k
+)
+V_{\text{pack}}(k)
+is the total pack voltage at sample
+k
+k
+,
+V
+max
+,
+cell
+​
+(
+k
+)
+V_{\max,\text{cell}}(k)
+is the maximum cell voltage,
+n
+n
+is the number of series-connected cells, and
+N
+N
+is the number of time samples. Values closer to unity indicate better cell voltage consistency, while smaller values imply larger dispersion across cells. The
+voltage correlation coefficient
+f
+corr
+f_{\text{corr}}
+measures the average Pearson correlation between individual cell voltage sequences and the pack mean voltage; lower values indicate asynchronous voltage evolution, which may be consistent with localized faults or cell inconsistency. The
+initial minimum voltage
+f
+v0
+f_{\text{v0}}
+records the lowest cell voltage at charging onset, reflecting the weakest cell’s pre-charge state. The
+voltage slope
+f
+β
+f_{\beta}
+is obtained from linear regression of voltage over time, capturing the overall charging rate trend.
+II-B
+3
+Thermal Dynamics
+These features assess heat generation and dissipation characteristics. The
+maximum temperature difference
+f
+Δ
+​
+T
+=
+max
+k
+⁡
+(
+T
+max
+​
+(
+k
+)
+−
+T
+min
+​
+(
+k
+)
+)
+f_{\Delta T}=\max_{k}(T_{\max}(k)-T_{\min}(k))
+captures spatial thermal gradients across the pack, where
+T
+max
+​
+(
+k
+)
+T_{\max}(k)
+and
+T
+min
+​
+(
+k
+)
+T_{\min}(k)
+denote the maximum and minimum measured temperatures at sample
+k
+k
+. Large gradients indicate uneven heat distribution or localized hotspots
+[
+15
+]
+. The
+maximum temperature rate
+f
+T
+˙
+=
+max
+k
+⁡
+(
+d
+​
+T
+/
+d
+​
+t
+|
+k
+)
+f_{\dot{T}}=\max_{k}(dT/dt|_{k})
+represents the peak heating rate during charging; elevated values suggest abnormal heat generation or insufficient dissipation. The
+terminal temperature
+f
+T
+end
+f_{T_{\text{end}}}
+records the temperature at charging completion; elevated values indicate excessive heat accumulation.
+TABLE I:
+Summary of Mechanism-Driven Features
+Category
+Symbol
+Physical Interpretation
+Usage History
+f
+cyc
+f_{\text{cyc}}
+Cumulative charge-discharge cycles
+f
+cc
+f_{\text{cc}}
+CC-phase ratio; degradation indicator
+f
+soc
+f_{\text{soc}}
+Maximum SOC; overcharge risk
+Voltage
+f
+vr
+f_{\text{vr}}
+Pack-to-cell voltage ratio
+f
+corr
+f_{\text{corr}}
+Inter-cell voltage correlation
+f
+v0
+f_{\text{v0}}
+Initial minimum cell voltage
+f
+β
+f_{\beta}
+Voltage slope over time
+Thermal
+f
+Δ
+​
+T
+f_{\Delta T}
+Maximum temperature difference
+f
+T
+˙
+f_{\dot{T}}
+Maximum temperature rate
+f
+T
+end
+f_{T_{\text{end}}}
+Terminal temperature
+II-B
+4
+Numeric-to-Semantic Bridge
+We construct a knowledge mapping
+κ
+i
+:
+f
+i
+↦
+𝒮
+i
+\kappa_{i}:f_{i}\mapsto\mathcal{S}_{i}
+associating each feature with fault mechanisms based on domain expertise (Table
+II
+), enabling the LLM to trace SHAP attributions to physical root causes.
+TABLE II:
+Feature-Fault Correlation Matrix
+Feature
+ISC
+TR
+CF
+CD
+TM
+BMS
+f
+cyc
+f_{\text{cyc}}
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+f
+cc
+f_{\text{cc}}
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+f
+soc
+f_{\text{soc}}
+∘
+\circ
+∙
+\bullet
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+f
+vr
+f_{\text{vr}}
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+∙
+\bullet
+f
+corr
+f_{\text{corr}}
+∙
+\bullet
+∘
+\circ
+∙
+\bullet
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+f
+v0
+f_{\text{v0}}
+∙
+\bullet
+∘
+\circ
+∙
+\bullet
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+f
+β
+f_{\beta}
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+f
+Δ
+​
+T
+f_{\Delta T}
+∙
+\bullet
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+f
+T
+˙
+f_{\dot{T}}
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+f
+T
+end
+f_{T_{\text{end}}}
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+∘
+\circ
+∙
+\bullet
+∘
+\circ
+•
+ISC: Internal Short Circuit; TR: Thermal Runaway; CF: Capacity Fade; CD: Consistency Degradation; TM: Thermal Management; BMS: BMS Fault.
+•
+∙
+\bullet
+: strong correlation;
+∘
+\circ
+: weak correlation. Matrix constructed based on domain expertise and prior mechanism studies.
+II-C
+Detection & Attribution Layer
+Given feature matrix
+𝐅
+∈
+ℝ
+10
+\mathbf{F}\in\mathbb{R}^{10}
+, we employ a GBDT classifier to obtain fault predictions. To enable interpretable diagnostics, SHAP is applied to quantify feature contributions. For each feature
+f
+j
+f_{j}
+, the SHAP value
+ϕ
+j
+\phi_{j}
+satisfies the local accuracy property
+f
+⁡
+(
+𝐅
+)
+=
+ϕ
+0
++
+∑
+j
+ϕ
+j
+f(\mathbf{F})=\phi_{0}+\sum_{j}\phi_{j}
+, ensuring attribution completeness. Features are ranked by normalized contributions
+w
+j
+=
+|
+ϕ
+j
+|
+/
+∑
+k
+|
+ϕ
+k
+|
+w_{j}=|\phi_{j}|/\sum_{k}|\phi_{k}|
+, and the top-
+k
+k
+contributors are selected for semantic interpretation in the subsequent reasoning layer.
+II-D
+Reasoning & Diagnosis Layer
+II-D
+1
+LLM Agent Architecture
+The LLM agent (DeepSeek-R1) operates on a structured prompt:
+𝒫
+=
+[
+Rules
+]
+⊕
+[
+SHAP
+]
+⊕
+[
+Template
+]
+\mathcal{P}=[\text{Rules}]\oplus[\text{SHAP}]\oplus[\text{Template}]
+(4)
+where [Rules] contains mechanism-driven knowledge base
+𝒦
+=
+{
+(
+f
+i
+,
+κ
+⁡
+(
+f
+i
+)
+)
+}
+i
+=
+1
+10
+\mathcal{K}=\{(f_{i},\kappa(f_{i}))\}_{i=1}^{10}
+with physical interpretations, [SHAP] provides the GBDT prediction
+y
+^
+\hat{y}
+and top-
+k
+k
+feature contributions
+{
+(
+f
+j
+,
+ϕ
+j
+,
+w
+j
+)
+}
+\{(f_{j},\phi_{j},w_{j})\}
+, and [Template] specifies the output format
+𝒟
+=
+{
+𝒟
+result
+,
+𝒟
+cause
+,
+𝒟
+advice
+}
+\mathcal{D}=\{\mathcal{D}_{\text{result}},\mathcal{D}_{\text{cause}},\mathcal{D}_{\text{advice}}\}
+.
+The semantic bridge ensures
+dual anchoring
+: (1)
+Quantitative Anchoring
+via SHAP prevents hallucination by grounding explanations in actual model behavior; (2)
+Semantic Anchoring
+via
+𝒦
+\mathcal{K}
+enables physically meaningful root cause analysis.
+II-D
+2
+Probability Calibration via Token Likelihood
+When probability estimation is required, we leverage the LLM’s token generation mechanism to calibrate GBDT predictions. Specifically, we compute the likelihood ratio of diagnostic tokens:
+P
+LLM
+​
+(
+Abnormal
+|
+𝒫
+)
+=
+P
+⁡
+(
+t
+abnormal
+|
+𝒫
+)
+P
+⁡
+(
+t
+abnormal
+|
+𝒫
+)
++
+P
+⁡
+(
+t
+normal
+|
+𝒫
+)
+P_{\text{LLM}}(\text{Abnormal}|\mathcal{P})=\frac{P(t_{\text{abnormal}}|\mathcal{P})}{P(t_{\text{abnormal}}|\mathcal{P})+P(t_{\text{normal}}|\mathcal{P})}
+(5)
+where
+P
+⁡
+(
+t
+abnormal
+|
+𝒫
+)
+P(t_{\text{abnormal}}|\mathcal{P})
+and
+P
+⁡
+(
+t
+normal
+|
+𝒫
+)
+P(t_{\text{normal}}|\mathcal{P})
+denote the generation probabilities of “Abnormal” and “Normal” tokens conditioned on prompt
+𝒫
+\mathcal{P}
+. This calibrated probability integrates both quantitative SHAP evidence and semantic reasoning, providing more reliable confidence estimates for boundary cases where GBDT exhibits uncertainty.
+For standard diagnostic tasks without explicit probability requirements, the LLM directly generates the diagnosis report based on the structured prompt, bypassing probability computation for efficiency.
+III
+Experimental Setup
+III-A
+Dataset
+We conduct experiments on the large-scale real-world EV battery dataset released by Zhang et al.
+[
+7
+]
+. This publicly available benchmark was specifically constructed to facilitate the development and validation of fault detection algorithms under realistic operating conditions.
+The dataset comprises over 690,000 charging segments collected from 347 distinct vehicles, including 292 vehicles labeled as “Normal” and 55 vehicles with confirmed battery faults labeled as “Abnormal.”
+Each charging segment contains time-series measurements from the Battery Management System (BMS), including voltage, current, and temperature sampled at 10-second intervals. This established benchmark enables direct comparison with state-of-the-art methods evaluated on the same dataset.
+III-B
+Experimental Design
+III-B
+1
+Data Partitioning Strategy
+Data partitioning is performed at the
+vehicle level
+, where all charging segments from a given vehicle are exclusively assigned to either the training or validation set. This strategy strictly prevents data leakage and ensures that evaluation metrics reflect generalization capability to previously unseen vehicles rather than memorization of vehicle-specific patterns.
+III-B
+2
+Model Configuration
+We employ LightGBM as the GBDT implementation with default hyperparameters. For LLM-based refinement, samples with prediction confidence below 0.05 are selected for probability calibration, and the top-
+k
+k
+SHAP contributors (
+k
+=
+8
+k=8
+) are extracted to construct the reasoning prompt, balancing diagnostic informativeness with prompt conciseness.
+III-C
+Evaluation Metrics
+III-C
+1
+Area Under ROC Curve (AUROC)
+AUROC quantifies the model’s ability to discriminate between normal and abnormal samples across all classification thresholds, providing a comprehensive and threshold-independent measure of detection performance.
+III-C
+2
+Average Direct Cost
+Following the cost-sensitive evaluation framework proposed by Zhang et al.
+[
+7
+]
+, we compute the expected operational cost as:
+C
+=
+p
+⁡
+(
+1
+−
+q
+TP
+)
+​
+c
+f
++
+[
+p
+​
+q
+TP
++
+(
+1
+−
+p
+)
+​
+q
+FP
+]
+​
+c
+r
+C=p(1-q_{\text{TP}})c_{f}+[pq_{\text{TP}}+(1-p)q_{\text{FP}}]c_{r}
+(6)
+where
+q
+TP
+q_{\text{TP}}
+and
+q
+FP
+q_{\text{FP}}
+denote the true positive rate and false positive rate, respectively;
+p
+=
+0.038
+%
+p=0.038\%
+represents the empirical fault prevalence in the dataset;
+c
+f
+=
+5
+c_{f}=5
+million CNY is the estimated cost of an undetected fault (including vehicle damage, potential injuries, and liability); and
+c
+r
+=
+8
+c_{r}=8
+thousand CNY is the inspection cost per flagged vehicle. This metric captures the practical trade-off between missed detections and false alarms in real-world deployment scenarios.
+IV
+Results and Analysis
+This section presents a comprehensive evaluation of BatteryAgent through three complementary experiments: (1) quantitative comparison with state-of-the-art methods, (2) ablation study to analyze individual component contributions, and (3) case study demonstrating fine-grained diagnostic capabilities.
+IV-A
+Comparison with State-of-the-Art Methods
+Table
+III
+summarizes the performance comparison between BatteryAgent and representative baseline methods spanning four categories: specialized deep learning models for battery diagnostics (BatteryBERT
+[
+16
+]
+, DyAD
+[
+7
+]
+), general-purpose anomaly detection methods (AE, GDN, SVDD), time-series foundation models (TimesFM
+[
+17
+]
+, Chronos
+[
+18
+]
+, Time-LLM
+[
+19
+]
+), and traditional statistical approaches (Gaussian Process (GP), Variation Evaluation (VE)).
+TABLE III:
+Comparison with State-of-the-Art Methods
+Algorithm
+AUROC (%)
+Avg. Cost (CNY)
+BatteryAgent
+98.6
+93
+BatteryBERT
+94.5
+229
+DyAD
+88.6
+850
+TimesFM
+79.4
+1050
+Chronos
+78.7
+1090
+AE
+72.8
+1330
+Time-LLM
+72.5
+1240
+GDN
+70.3
+1260
+GP
+66.6
+1620
+VE
+55.6
+1690
+SVDD
+51.5
+1520
+BatteryAgent achieves an AUROC of 98.6%, representing a 4.1 percentage point improvement over the second-best method (BatteryBERT). More notably, the average direct cost is reduced to 93 CNY, corresponding to a 59.4% reduction compared to BatteryBERT (229 CNY) and exceeding 94% reduction relative to classical methods. Among the baselines, specialized battery diagnostic models (BatteryBERT, DyAD) outperform general-purpose methods, confirming the importance of domain-specific design. However, time-series foundation models (TimesFM, Chronos, Time-LLM), despite their strong performance on general temporal tasks, achieve only moderate AUROC on battery fault detection, indicating that domain-agnostic representations are insufficient for this task. These results validate the effectiveness of integrating domain knowledge injection with LLM-based reasoning: the physics-informed features provide discriminative representations, while the LLM reasoning layer refines predictions on ambiguous boundary cases.
+IV-B
+Ablation Study
+To quantify the contribution of each architectural component, we conduct systematic ablation experiments on a balanced subset comprising 100 abnormal and 100 normal samples. It is worth noting that the original dataset employs coarse-grained binary labels, where all cycles of a faulty vehicle are marked as “abnormal” regardless of the degradation stage. Consequently, the “warning” category inferred by the LLM is considered a valid intermediate classification. It captures the transitional phase of fault evolution—where early anomalies exist but have not reached critical thresholds—effectively addressing the temporal granularity mismatch in the ground truth labels.
+Fig.
+2
+illustrates the classification distribution under different configurations.
+Fig. 2:
+Ablation study results showing classification distributions. (a) Ground truth: Abnormal samples (
+N
+=
+100
+N=100
+). (b) Ground truth: Healthy samples (
+N
+=
+100
+N=100
+). The “warning” category represents cases where the model expresses uncertainty.
+The ablation results reveal several key findings. First, removing SHAP attribution increases false negatives from 1 to 11 on abnormal samples and introduces 3 false positives on normal samples, demonstrating that quantitative attribution anchoring is essential for grounding LLM reasoning in empirical evidence. Second, excluding the mechanism-driven knowledge base results in a substantial increase in false negatives (from 1 to 27), confirming that domain knowledge injection plays a critical role in accurate fault identification. Third, the complete BatteryAgent framework achieves near-optimal performance with only 1 false negative and 0 false positives, whereas the LGBM-only baseline exhibits 49 false negatives and 16 false positives, underscoring the synergistic benefit of the hierarchical architecture. Notably, BatteryBERT, despite being a domain-specific deep learning model, yields 35 false negatives and 19 false positives, indicating that end-to-end learning without explicit physical grounding remains inferior to our hybrid approach. Finally, general-purpose LLMs without domain-specific grounding exhibit significantly degraded performance (Gemini: 29% false negative rate, 42% false positive rate; DeepSeek: 44% false negative rate, 30% false positive rate), highlighting the necessity of the numeric-to-semantic bridge for reliable diagnostics.
+IV-C
+Fine-Grained Diagnostic Capability
+Beyond binary classification, we evaluate BatteryAgent’s ability to provide multi-dimensional fault characterization, which is essential for enabling targeted maintenance rather than generic alerts. The six diagnostic dimensions correspond to the fault types defined in the knowledge base (Table
+II
+). We analyze 50 consecutive charging segments from vehicle ID 405 (labeled “Abnormal” in the ground truth) and examine the consistency of predicted fault severity across these dimensions.
+Fig. 3:
+Fault severity profile of vehicle 405 over 50 charging segments. Solid line: mean rating; shaded region: standard deviation. Higher values indicate greater fault severity (scale: 0–5).
+As shown in Fig.
+3
+, BatteryAgent consistently identifies Internal Short Circuit (mean severity = 3.68,
+σ
+\sigma
+= 0.72) and Thermal Runaway risk (mean = 2.79,
+σ
+\sigma
+= 0.86) as the dominant fault indicators, while Capacity Fade (mean = 1.09) and BMS Fault (mean = 0.96) remain at low severity levels. This pattern aligns with electrochemical principles: internal short circuits often elevate local heat generation, thereby increasing thermal runaway risk as a correlated secondary effect. The small standard deviations across all dimensions (ranging from 0.48 to 0.86) demonstrate high diagnostic consistency across multiple charging cycles. Beyond severity assessment, the LLM agent traces anomalies to physical root causes via SHAP attributions and provides actionable maintenance recommendations. This capability enables targeted maintenance prioritization and represents a significant advancement from binary anomaly detection toward comprehensive battery health profiling—achieved without requiring fine-grained fault annotations in the training data.
+V
+Conclusion
+This paper presents BatteryAgent, a hierarchical diagnostic framework that addresses the fundamental limitations of existing battery fault detection methods by synergizing physics-informed feature engineering with large language model reasoning. The proposed framework introduces three key innovations: (1) a domain knowledge injection mechanism that encodes electrochemical principles into interpretable features, (2) a SHAP-based attribution layer that provides quantitative grounding for downstream reasoning, and (3) a numeric-to-semantic bridge that enables LLMs to perform physically meaningful root cause analysis.
+Extensive experiments on a large-scale real-world EV battery dataset demonstrate that BatteryAgent achieves state-of-the-art detection performance with an AUROC of 98.6%, while reducing average operational costs by 59.4% compared to the best baseline. The ablation study confirms the synergistic contribution of each component, and the case study validates the framework’s capability to provide consistent, multi-dimensional fault characterization without requiring fine-grained annotations.
+The proposed approach represents a methodological advancement from reactive binary fault detection toward proactive, interpretable diagnostics. Future work will explore the integration of additional sensor modalities and the extension to predictive maintenance applications in industrial battery energy storage systems.
+References
+[1]
+R. Cao, Z. Zhang, R. Shi, et al. “Model-constrained deep learning for online fault diagnosis in Li-ion batteries over stochastic conditions,”
+Nature Communications
+16
+, 1651 (2025).
+[2]
+H. Yang, J. Tian, W. Mai, et al. “Privacy-preserving collaborative battery fault warning for massive electric vehicles by heterogeneous data from charging stations,”
+Nature Communications
+, in press (2025).
+[3]
+M. Borah, Q. Wang, S. Moura, et al. “Synergizing physics and machine learning for advanced battery management,”
+Communications Engineering
+3
+, 134 (2024).
+[4]
+Y. Xu, X. Ge, R. Guo, et al. “Recent advances in model-based fault diagnosis for lithium-ion batteries: a comprehensive review,”
+Renewable & Sustainable Energy Reviews
+(2025).
+[5]
+G. Jiang, et al. Fault mitigation and diagnosis for lithium-ion batteries: challenges and perspectives.
+Frontiers in Energy Research
+(2025).
+[6]
+W. Zhang, N. Ouyang, X. Yin, et al. “Data-driven early warning strategy for thermal runaway propagation in Lithium-ion battery modules with variable state of charge,”
+Applied Energy
+323
+, 119614 (2022).
+[7]
+J. Zhang, Y. Wang, B. Jiang, et al. “Realistic fault detection of li-ion battery via dynamical deep learning,”
+Nature Communications
+14
+, 5940 (2023).
+[8]
+F. Wang, Z. Zhai, Z. Zhao, et al. “Physics-informed neural network for lithium-ion battery degradation stable modelling and prognosis,”
+Nature Communications
+15
+, 3691 (2024).
+[9]
+Y. Zhang, Q. Tang, Y. Zhang, et al. “Identifying degradation patterns of lithium-ion batteries from impedance spectroscopy using machine learning,”
+Nature Communications
+11
+, 1706 (2020).
+[10]
+H. Li, Z. Liu, M. B. Kaleem, et al., “Fault detection for lithium-ion batteries of electric vehicles with spatio-temporal autoencoder,”
+Applied Energy
+, vol. 392, p. 125933, 2025.
+[11]
+C.Zhang, S.Li, J.Du, et al. “Graph-guided fault detection for multi-type lithium-ion batteries in realistic electric vehicles optimized by ensemble learning,”
+Journal of Energy Chemistry
+106
+, 507–522 (2025).
+[12]
+T. Savage, A. Nayak, R. Gallo, et al. “Diagnostic reasoning prompts reveal the potential for large language model interpretability in medicine,”
+npj Digital Medicine
+7
+, 20 (2024).
+[13]
+M. Arai, T.Ishigaki, M. Kawarada, et al. “Evaluating LLMs’ ability to understand numerical time series for text generation,” In
+Proceedings of the 18th International Natural Language Generation Conference
+, 232–248 (2025).
+[14]
+Y. Kawashima, S. Sun, D. Sumiya, et al. “Aging-driven mechanical degradation of lithium-ion battery cathodes,”
+Journal of Power Sources
+, 663, 238949 (2026).
+[15]
+V. Hemakumar, V. Chakravarthy, S. Surendranath, et al. “A multi-scale modeling approach for predicting and mitigating thermal runaway in electric vehicle batteries,”
+Thermal Science and Engineering Progress
+, 56, 103029 (2024).
+[16]
+S. Zhou, R. Liu, Y. Wang, et al. “BatteryBERT for realistic battery fault detection using point-masked signal modeling,” In
+2025 7th International Conference on Industrial Artificial Intelligence (IAI)
+, 1–6 (2025).
+[17]
+A. Das, W. Kong, R. Sen, et al. “A decoder-only foundation model for time-series forecasting,” In
+Forty-first International Conference on Machine Learning
+(2024).
+[18]
+A. F. Ansari, L. Stella, C. Turkmen, et al. “Chronos: Learning the language of time series,”
+arXiv preprint arXiv:2403.07815
+(2024).
+[19]
+M. Jin, S. Wang, L. Ma, et al. “Time-LLM: Time Series Forecasting by Reprogramming Large Language Models,” In
+Forty-first International Conference on Machine Learning
+(2024).
+Experimental support, please
+view the build logs
+for errors. Generated by
+L
+A
+T
+E
+xml
+.
+Instructions for reporting errors
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below:
+Click the "Report Issue"
+(
+)
+button, located in the page header.
+Tip:
+You can select the relevant text first, to include it in your report.
+Our team has already identified
+the following issues
+. We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all.
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a
+list of packages that need conversion
+, and welcome
+developer contributions
+.
+We gratefully acknowledge support from our
+major funders
+,
+member institutions
+,
+,
+        and all contributors.
+About
+·
+Help
+·
+Contact
+·
+Subscribe
+·
+Copyright
+·
+Privacy
+·
+Accessibility
+·
+Operational Status
+(opens in new tab)

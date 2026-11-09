@@ -1,0 +1,689 @@
+{
+  "queries": [
+    "large language model cyber physical falsification",
+    "large language model time series anomaly diagnosis",
+    "large language model active fault diagnosis"
+  ],
+  "start_year": 2023,
+  "end_date": "2026-11-09",
+  "results": {
+    "arxiv": [],
+    "dblp": [],
+    "open_alex": [],
+    "openreview": [],
+    "semantic_scholar": [],
+    "crossref": [
+      {
+        "title": "Generative-Agent Modeling of Protest Mobilization and Preference Falsification with Large Language Models",
+        "authors": [
+          "Lingyi Wang"
+        ],
+        "year": null,
+        "abstract": "<jats:p>This paper presents a generative-agent architecture for agent-based modeling (ABM) of protest mobilization and preference falsification under authoritarian repression, motivated by recent social-media-mediated uprisings in South and Southeast Asia. Unlike classical threshold and spatial models, each of 1,000 agents interprets its situation through a large language model (LLM) utilizing memories of past events, and produces a natural-language justification for whether to mobilize. Preference falsification is formalized as a deterministic coefficient ω gating the divergence between internal grievance and expressed stance, and the adversarial state is a network-altering algorithm performing eigenvector-centrality-based suspension and an edge-removal shutdown (not triggered at these parameters). The identical architecture is run across three backbones: GPT-4.1-mini, DeepSeek-V4-Flash, and Llama-4-Maverick-over three seeds each. The central observation is that the emergent LLM-driven layer diverges sharply despite fixed imposed dynamics: peak mobilization ranges from 23.3% (GPT-4.1-mini) to 14.8% (DeepSeek-V4-Flash) to 3.2% (Llama-4-Maverick). This ordering inverts the hidden-transcript gap, which is largest for Llama-4-Maverick (0.268). Logged justifications from high-grievance inactive agents confirm the mechanism is analogous to preference falsification: agents reach maximal internal grievance while declining public action on grounds of personal and familial risk. A control probe rules out simple incapacity, and no meaningful content-refusal effect appears in any backbone. The contribution is an architecture and observations, not a validated model of real dissent, distinguishing emergent from imposed results.</jats:p>",
+        "url": "https://doi.org/10.2139/ssrn.7338838",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.7338838",
+        "arxiv_id": null
+      },
+      {
+        "title": "Enhancing Information Sensing of Load Forecasting in Cyber-Physical-Social Systems: An Approach with Large Language Model",
+        "authors": [],
+        "year": 2026,
+        "abstract": "",
+        "url": "https://doi.org/10.17775/cseejpes.2025.02460",
+        "venue": "CSEE Journal of Power and Energy Systems",
+        "citation_count": 1,
+        "publication_date": "2026",
+        "source": "crossref",
+        "doi": "10.17775/cseejpes.2025.02460",
+        "arxiv_id": null
+      },
+      {
+        "title": "Large Language Model Driven Reinforcement Learning based Intelligent Control Method for Industrial Cyber-Physical Systems",
+        "authors": [
+          "Qinghua Wang"
+        ],
+        "year": 2026,
+        "abstract": "<jats:p>Controllers which can interpret and react to high-dimensional process state and perturbations without loss of stability are needed for industrial cyber-physical systems. In this paper, we propose a large language model driven reinforcement learning approach based on semantic state augmentation using the Llama-3-8B model and a Proximal Policy Optimization controller. Process numerical values are converted to structured operation descriptions and concatenated with normalized feature vectors from sensors to provide the policy with both dynamics of the process and relationships between its components. We create an environment for experiments using Siemens Process Simulate software and Python 3.11 with Tennessee Eastman Process data. As a result, we demonstrate that the proposed controller achieves the normalized control RMSE of 0.158 ± 0.014 versus 0.223 ± 0.018 for classical PPO and a settling time of 8.47 ± 0.71 s versus 11.36 ± 0.94 s. Under combined disturbances, the proposed controller achieves a recovery time of 12.8 ± 1.1 s and a cumulative reward of 846.7 ± 25.8, demonstrating improved control accuracy and disturbance adaptability while maintaining computational feasibility.</jats:p>",
+        "url": "https://doi.org/10.54254/2755-2721/2026.38452",
+        "venue": "Applied and Computational Engineering",
+        "citation_count": 0,
+        "publication_date": "2026-11-03",
+        "source": "crossref",
+        "doi": "10.54254/2755-2721/2026.38452",
+        "arxiv_id": null
+      },
+      {
+        "title": "Semantic De-Duplication of Shared Cyber Threat Indicators using Large Language Model Embeddings",
+        "authors": [
+          "Abolaji Adebayo",
+          "Chukwunenye Amadi",
+          "Ayokunle Olamide Ijagbemi"
+        ],
+        "year": 2026,
+        "abstract": "<jats:p>As defence agencies, allied partners, and cybersecurity firms exchange threat intelligence, the same indicator is frequently reported many times in slightly altered form, producing large-scale duplication across intelligence repositories. Traditional de-duplication relies on exact matching using hashes or literal text comparison and fails when information is reworded, paraphrased, or contextually recast. This paper proposes a semantic de-duplication approach that uses Large Language Model (LLM) embeddings to identify duplicate threat indicators on the basis of meaning rather than form. The method encodes each report into a contextual vector, measures pairwise similarity, clusters semantically equivalent reports, and retains a single representative entry per cluster. Situated within the literature on record linkage, entity resolution, and near-duplicate detection, the paper specifies an evaluation protocol based on precision, recall, F1-score, cluster-level agreement, and latency over open-source and synthetic corpora, together with the baselines and reproducibility requirements against which the design should be tested. That protocol is defined here but has not yet been executed: no dataset has been processed and no numerical results are reported. The behaviour described in the discussion is the behaviour the design is expected to exhibit, offered as hypotheses to be tested rather than as measured findings, and the anticipated benefits of consolidation, namely reduced noise, less exaggerated risk assessment, and lower computational and storage cost, are stated in those terms throughout. The paper contributes a meaning-based de-duplication design for defence CTI, an evaluation protocol for validating it, and a discussion of the accuracy, efficiency, and governance implications of deploying it.</jats:p>",
+        "url": "https://doi.org/10.65150/ep-gjetr/v2e9/2026-07",
+        "venue": "Global Journal of Engineering and Technology Research",
+        "citation_count": 0,
+        "publication_date": "2026-09-05",
+        "source": "crossref",
+        "doi": "10.65150/ep-gjetr/v2e9/2026-07",
+        "arxiv_id": null
+      },
+      {
+        "title": "The Large Language Model Pilot: Generative Artificial Intelligence for Cyber-Physical Flight Simulations",
+        "authors": [
+          "Jorge Lovaco"
+        ],
+        "year": 2025,
+        "abstract": "",
+        "url": "https://doi.org/10.3384/ecp215.1196",
+        "venue": "Linköping Electronic Conference Proceedings FT2025: Proceedings of the 12th Swedish Aerospace Technology Congress",
+        "citation_count": 1,
+        "publication_date": "2025-10-28",
+        "source": "crossref",
+        "doi": "10.3384/ecp215.1196",
+        "arxiv_id": null
+      },
+      {
+        "title": "The Large Language Model Pilot: Generative Artificial Intelligence for Cyber-Physical Flight Simulations",
+        "authors": [
+          "Jorge Lovaco"
+        ],
+        "year": 2025,
+        "abstract": "",
+        "url": "https://doi.org/10.3384/wcc215.1196",
+        "venue": "Linköping Electronic Conference Proceedings FT2025: Proceedings of the 12th Swedish Aerospace Technology Congress",
+        "citation_count": 0,
+        "publication_date": "2025-10-28",
+        "source": "crossref",
+        "doi": "10.3384/wcc215.1196",
+        "arxiv_id": null
+      },
+      {
+        "title": "Large Language Model Guided Knowledge Distillation for Time Series Anomaly Detection",
+        "authors": [
+          "Chen Liu",
+          "Shibo He",
+          "Qihang Zhou",
+          "Shizhong Li",
+          "Wenchao Meng"
+        ],
+        "year": 2024,
+        "abstract": "<jats:p>Self-supervised methods have gained prominence in time series anomaly detection due to the scarcity of available annotations. Nevertheless, they typically demand extensive training data to acquire a generalizable representation map, which conflicts with scenarios of a few available samples, thereby limiting their performance. To overcome the limitation, we propose AnomalyLLM, a knowledge distillation-based time series anomaly detection approach where the student network is trained to mimic the features of the large language model (LLM)-based teacher network that is pretrained on large-scale datasets. During the testing phase, anomalies are detected when the discrepancy between the features of the teacher and student networks is large. To circumvent the student network from learning the teacher network’s feature of anomalous samples, we devise two key strategies. 1) Prototypical signals are incorporated into the student network to consolidate the normal feature extraction. 2) We use synthetic anomalies to enlarge the representation gap between the two networks. AnomalyLLM demonstrates state-of-the-art performance on 15 datasets, improving accuracy by at least 14.5% in the UCR dataset.</jats:p>",
+        "url": "https://doi.org/10.24963/ijcai.2024/239",
+        "venue": "Proceedings of the Thirty-ThirdInternational Joint Conference on Artificial Intelligence",
+        "citation_count": 23,
+        "publication_date": "2024-08",
+        "source": "crossref",
+        "doi": "10.24963/ijcai.2024/239",
+        "arxiv_id": null
+      },
+      {
+        "title": "TriP-LLM: A Tri-Branch Patch-Wise Large Language Model Framework for Time-Series Anomaly Detection",
+        "authors": [
+          "Yuan-Cheng Yu",
+          "Yen-Chieh Ouyang",
+          "Chun-An Lin"
+        ],
+        "year": 2025,
+        "abstract": "",
+        "url": "https://doi.org/10.1109/access.2025.3613663",
+        "venue": "IEEE Access",
+        "citation_count": 3,
+        "publication_date": "2025",
+        "source": "crossref",
+        "doi": "10.1109/access.2025.3613663",
+        "arxiv_id": null
+      },
+      {
+        "title": "Large-Model-Based Smart Agent for Time Series Anomaly Detection in Power Systems",
+        "authors": [
+          "Bingrui Wang",
+          "Yuan Zhou",
+          "Leijiao Ge",
+          "Sun-Yuan Kung"
+        ],
+        "year": null,
+        "abstract": "",
+        "url": "https://doi.org/10.2139/ssrn.5243041",
+        "venue": "",
+        "citation_count": 1,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.5243041",
+        "arxiv_id": null
+      },
+      {
+        "title": "A Survey of Large Language Models for Time Series Anomaly Detection: Methods, Challenges, and Future Directions",
+        "authors": [
+          "Kunqi Li",
+          "Thomas Pitts",
+          "Bin Liang",
+          "Chenya Huang",
+          "Yuxi Lu"
+        ],
+        "year": null,
+        "abstract": "",
+        "url": "https://doi.org/10.2139/ssrn.6033215",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.6033215",
+        "arxiv_id": null
+      },
+      {
+        "title": "CP-LLM: Conformal Calibration for Time Series Interval Forecasting with Frozen Large Language Model",
+        "authors": [
+          "Ke Li"
+        ],
+        "year": null,
+        "abstract": "<title>Abstract</title>\n                <p>Reliable prediction intervals are essential for deploying time-series forecasting systems in high-stakes domains, yet uncertainty estimates from frozen large language models (LLMs) often deviate from nominal confidence levels. This paper studies interval calibration for multi-step forecasting with frozen LLMs and proposes CP-LLM, a fine-tuning-free two-stage post-hoc framework. In Stage 1, base intervals are constructed from sampled LLM forecasts and augmented with three complementary uncertainty signals: sampling dispersion, temperature sensitivity, and serialization perturbation sensitivity. In Stage 2, base intervals are calibrated on a held-out calibration segment using either Conformalized Quantile Regression (CQR) for relatively stable regimes or Adaptive Conformal Inference (ACI) under temporal distribution shift. Experiments on five public univariate datasets with four API-accessed frozen LLMs show that CP-LLM substantially reduces coverage bias while maintaining competitive interval sharpness. Additional comparisons with traditional forecasting methods, together with ablation and parameter-sensitivity analyses, provide further evidence for the effectiveness of the proposed framework.</p>",
+        "url": "https://doi.org/10.21203/rs.3.rs-9291769/v1",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.21203/rs.3.rs-9291769/v1",
+        "arxiv_id": null
+      },
+      {
+        "title": "Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis",
+        "authors": [
+          "Novanto Yudistira",
+          "Yanuar Putra Kharisma Adhiyasa"
+        ],
+        "year": null,
+        "abstract": "<title>Abstract</title>\n                <p>Time-series foundation models and retrieval-based augmentation have recently emerged as relevant tools for financial forecasting, yet it remains unclear when explicit historical retrieval helps a pre-trained probabilistic forecaster in noisy equity settings. This study evaluates that question through Cross-Market Retrieval-Augmented Lag-Llama (CM-RAF-Lag-Llama), a controlled framework for comparing Lag-Llama-only forecasts with retrieval-augmented forecasts across emerging and developed market panels. The main validation uses three balanced seven-asset panels, IDX7, US7, and JP7, producing a 48-configuration panel-context-horizon grid across four context lengths and four prediction horizons. The hybrid system retrieves analogous historical windows from an indexed memory and blends the retrieved continuation with the Lag-Llama forecast while preserving the same forecasting backbone. In the same-backbone return validation, at least one retrieval variant reduces Lag-Llama MSE in all 48 configurations, with aggregate lower-error retrieval MSE reductions of 28.85\\% for IDX7, 27.27\\% for US7, and 33.60\\% for JP7. A second OHLCV-derived stock-feature experiment evaluates log-price, log-volume, range-volatility, and 20-day realized-volatility targets across 72 matched configurations. In that experiment, validation-selected RAF reduces MSE relative to Lag-Llama-only in 68 of 72 configurations and records the lowest MSE among the compared systems in 22 configurations, including 17 of 18 non-log-price US7 settings. A mechanism-level single-series ablation further compares Lag-Llama-only against Lag-Llama + RAF under zero-shot and scheduler-based inference, showing that retrieval effects are horizon-sensitive. The results indicate that retrieval can serve as an external-memory correction for Lag-Llama under selected equity targets, especially when volatility or volume structure provides reusable historical analogs.</p>",
+        "url": "https://doi.org/10.21203/rs.3.rs-10178277/v1",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.21203/rs.3.rs-10178277/v1",
+        "arxiv_id": null
+      },
+      {
+        "title": "Intelligent Fault Diagnosis for Overhead Lines with Covered Conductors: Using Large Language Model",
+        "authors": [
+          "Genghong Lu",
+          "Siqi Bu"
+        ],
+        "year": null,
+        "abstract": "",
+        "url": "https://doi.org/10.46855/energy-proceedings-11484",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.46855/energy-proceedings-11484",
+        "arxiv_id": null
+      },
+      {
+        "title": "Large Language Model-Augmented Machine Learning For Intelligent Fault Diagnosis in Process Systems",
+        "authors": [
+          "Kyle Territo",
+          "José A. Romagnoli"
+        ],
+        "year": null,
+        "abstract": "",
+        "url": "https://doi.org/10.2139/ssrn.5352663",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.5352663",
+        "arxiv_id": null
+      },
+      {
+        "title": "A large language model-guided machinery fault diagnosis model based on multi-task prompt tuning and adaptive adversarial distillation",
+        "authors": [
+          "Ziyue Jiang",
+          "Jianbo Yu"
+        ],
+        "year": null,
+        "abstract": "<jats:p>The large language model (LLM) has achieved significant success in artificial intelligence, which demonstrates its powerful ability and the potential for application in other fields. It is feasible to train or fine-tune an LLM for machinery fault diagnosis, which offers new possibilities for improving the generalization of models. However, there is a significant requirement for computing power and data for training and fine-tuning LLM. Thus, it is challenging to propose a general industrial large model for machinery fault diagnosis, which has efficient processing capability in big sensor data. In this study, an LLM-guided machinery fault diagnosis model (LGMFD) is proposed for fault diagnosis of multiple machines. Firstly, a prompt-tuning module is proposed in LGMFD, which is used to enable the pre-trained LLM to learn fault diagnosis knowledge. Then, a multitask learning module is constructed to identify the faulty machines and their fault types, which enables the model to extract knowledge from the data of different machines. Secondly, an adaptive adversarial distillation module is proposed to improve the feature learning performance of the student model, which guides deep neural networks (DNNs) for fault diagnosis by the fine-tuned LLM. Finally, the experimental results on six datasets show that LGMFD has a good performance on feature extraction and machinery fault diagnosis.</jats:p>",
+        "url": "https://doi.org/10.2139/ssrn.6293248",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.6293248",
+        "arxiv_id": null
+      },
+      {
+        "title": "Multimodal Large Language Model-Based Fault Detection and Diagnosis in Context of Industry 4.0",
+        "authors": [
+          "Khalid Alsaif",
+          "Aiiad Albeshri",
+          "Maher Khemakhem",
+          "Fathy Eassa"
+        ],
+        "year": null,
+        "abstract": "<jats:p>In this paper, a novel multimodal large language model&amp;ndash;based fault detection and diagnosis framework that addresses the limitations of traditional fault detection and diagnosis approaches is proposed. The proposed framework leverages the Generative Pre-trained Transformer-4-Preview model to improve its scalability, generalizability, and efficiency in handling complex systems and various fault scenarios. Moreover, synthetic datasets generated via large language models augment the knowledge base and enhance the accuracy of fault detection and diagnosis of imbalanced scenarios. In the framework, a hybrid architecture that integrates online and offline processing, combining real-time data streams with fine-tuned large language models for dynamic, accurate, and context-aware fault detection suited to industrial settings, particularly focusing on security concerns, is introduced. This comprehensive approach aims to address traditional fault detection and diagnosis challenges and advance the field toward more adaptive and efficient fault diagnosis systems. In this paper, a detailed literature review, including a detailed taxonomy of fault detection and diagnosis methods and their applications across various industrial domains is presented. This study discusses case study results and model comparisons, exploring the implications for future developments in industrial fault detection and diagnosis systems within Industry 4.0 technologies.</jats:p>",
+        "url": "https://doi.org/10.20944/preprints202411.1036.v1",
+        "venue": "",
+        "citation_count": 22,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.20944/preprints202411.1036.v1",
+        "arxiv_id": null
+      },
+      {
+        "title": "Large language model-driven automated modelling paradigm for marine diesel engine fault diagnosis",
+        "authors": [
+          "Zeyu Shi",
+          "Zhongwei Wang",
+          "Chunlin Zhao",
+          "Jiajun Li",
+          "Qike Chen",
+          "Jingzhou Fei"
+        ],
+        "year": null,
+        "abstract": "<jats:p>Marine diesel engines operate under complex variable loads, necessitating efficient fault diagnosis model development. Conventional approaches depend heavily on expert knowledge. Despite large language models&amp;apos; (LLMs) proficiency in code generation, their potential as software engineering agents for automated diagnostic modelling remains untapped in marine diesel engine diagnosis. To address these challenges, this paper proposes an LLM-driven automated machine learning (AutoML) paradigm for marine diesel engine fault diagnosis. the paradigm redefines the role of LLMs as an automated modeling engine, transforming the diagnostic model development process into a sequence of software engineering tasks, including requirement understanding, code generation, model construction and parameter optimization. A structured prompting strategy integrating role anchoring, domain knowledge injection, task workflow constraints, and technical specifications is designed to encode diagnostic knowledge into executable semantic constraints. Furthermore, a dual-channel closed-loop optimization mechanism, combining code debugging feedback and model performance feedback, is developed to iteratively improve both engineering executability and diagnostic performance. Extensive experiments are conducted on multiple marine diesel engine diagnostic modeling tasks, including supervised diagnosis and cross-condition transfer diagnosis. The results demonstrate that the proposed framework can automatically generate high-quality diagnostic code with superior engineering quality, while the iterative optimization mechanism further improves diagnostic performance and model robustness. This work establishes a new paradigm for practical engineering deployment by enabling LLMs to automate the complete lifecycle of diagnostic model development rather than merely performing diagnostic inference.</jats:p>",
+        "url": "https://doi.org/10.2139/ssrn.7283958",
+        "venue": "",
+        "citation_count": 0,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.7283958",
+        "arxiv_id": null
+      },
+      {
+        "title": "LLM-YOLOMS: Large Language Model-based Semantic Interpretation and Fault Diagnosis for Wind Turbine Components",
+        "authors": [
+          "Yaru Li",
+          "Yanxue Wang",
+          "Meng Li",
+          "Xinming Li",
+          "Jianbo Feng"
+        ],
+        "year": null,
+        "abstract": "",
+        "url": "https://doi.org/10.2139/ssrn.5886005",
+        "venue": "",
+        "citation_count": 3,
+        "publication_date": null,
+        "source": "crossref",
+        "doi": "10.2139/ssrn.5886005",
+        "arxiv_id": null
+      }
+    ]
+  },
+  "ranked": [
+    {
+      "title": "Large Language Model Guided Knowledge Distillation for Time Series Anomaly Detection",
+      "authors": [
+        "Chen Liu",
+        "Shibo He",
+        "Qihang Zhou",
+        "Shizhong Li",
+        "Wenchao Meng"
+      ],
+      "year": 2024,
+      "abstract": "<jats:p>Self-supervised methods have gained prominence in time series anomaly detection due to the scarcity of available annotations. Nevertheless, they typically demand extensive training data to acquire a generalizable representation map, which conflicts with scenarios of a few available samples, thereby limiting their performance. To overcome the limitation, we propose AnomalyLLM, a knowledge distillation-based time series anomaly detection approach where the student network is trained to mimic the features of the large language model (LLM)-based teacher network that is pretrained on large-scale datasets. During the testing phase, anomalies are detected when the discrepancy between the features of the teacher and student networks is large. To circumvent the student network from learning the teacher network’s feature of anomalous samples, we devise two key strategies. 1) Prototypical signals are incorporated into the student network to consolidate the normal feature extraction. 2) We use synthetic anomalies to enlarge the representation gap between the two networks. AnomalyLLM demonstrates state-of-the-art performance on 15 datasets, improving accuracy by at least 14.5% in the UCR dataset.</jats:p>",
+      "url": "https://doi.org/10.24963/ijcai.2024/239",
+      "venue": "Proceedings of the Thirty-ThirdInternational Joint Conference on Artificial Intelligence",
+      "citation_count": 23,
+      "publication_date": "2024-08",
+      "source": "crossref",
+      "doi": "10.24963/ijcai.2024/239",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 6,
+      "is_survey": false
+    },
+    {
+      "title": "Multimodal Large Language Model-Based Fault Detection and Diagnosis in Context of Industry 4.0",
+      "authors": [
+        "Khalid Alsaif",
+        "Aiiad Albeshri",
+        "Maher Khemakhem",
+        "Fathy Eassa"
+      ],
+      "year": null,
+      "abstract": "<jats:p>In this paper, a novel multimodal large language model&amp;ndash;based fault detection and diagnosis framework that addresses the limitations of traditional fault detection and diagnosis approaches is proposed. The proposed framework leverages the Generative Pre-trained Transformer-4-Preview model to improve its scalability, generalizability, and efficiency in handling complex systems and various fault scenarios. Moreover, synthetic datasets generated via large language models augment the knowledge base and enhance the accuracy of fault detection and diagnosis of imbalanced scenarios. In the framework, a hybrid architecture that integrates online and offline processing, combining real-time data streams with fine-tuned large language models for dynamic, accurate, and context-aware fault detection suited to industrial settings, particularly focusing on security concerns, is introduced. This comprehensive approach aims to address traditional fault detection and diagnosis challenges and advance the field toward more adaptive and efficient fault diagnosis systems. In this paper, a detailed literature review, including a detailed taxonomy of fault detection and diagnosis methods and their applications across various industrial domains is presented. This study discusses case study results and model comparisons, exploring the implications for future developments in industrial fault detection and diagnosis systems within Industry 4.0 technologies.</jats:p>",
+      "url": "https://doi.org/10.20944/preprints202411.1036.v1",
+      "venue": "",
+      "citation_count": 22,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.20944/preprints202411.1036.v1",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 6,
+      "is_survey": false
+    },
+    {
+      "title": "TriP-LLM: A Tri-Branch Patch-Wise Large Language Model Framework for Time-Series Anomaly Detection",
+      "authors": [
+        "Yuan-Cheng Yu",
+        "Yen-Chieh Ouyang",
+        "Chun-An Lin"
+      ],
+      "year": 2025,
+      "abstract": "",
+      "url": "https://doi.org/10.1109/access.2025.3613663",
+      "venue": "IEEE Access",
+      "citation_count": 3,
+      "publication_date": "2025",
+      "source": "crossref",
+      "doi": "10.1109/access.2025.3613663",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 6,
+      "is_survey": false
+    },
+    {
+      "title": "Large Language Model Driven Reinforcement Learning based Intelligent Control Method for Industrial Cyber-Physical Systems",
+      "authors": [
+        "Qinghua Wang"
+      ],
+      "year": 2026,
+      "abstract": "<jats:p>Controllers which can interpret and react to high-dimensional process state and perturbations without loss of stability are needed for industrial cyber-physical systems. In this paper, we propose a large language model driven reinforcement learning approach based on semantic state augmentation using the Llama-3-8B model and a Proximal Policy Optimization controller. Process numerical values are converted to structured operation descriptions and concatenated with normalized feature vectors from sensors to provide the policy with both dynamics of the process and relationships between its components. We create an environment for experiments using Siemens Process Simulate software and Python 3.11 with Tennessee Eastman Process data. As a result, we demonstrate that the proposed controller achieves the normalized control RMSE of 0.158 ± 0.014 versus 0.223 ± 0.018 for classical PPO and a settling time of 8.47 ± 0.71 s versus 11.36 ± 0.94 s. Under combined disturbances, the proposed controller achieves a recovery time of 12.8 ± 1.1 s and a cumulative reward of 846.7 ± 25.8, demonstrating improved control accuracy and disturbance adaptability while maintaining computational feasibility.</jats:p>",
+      "url": "https://doi.org/10.54254/2755-2721/2026.38452",
+      "venue": "Applied and Computational Engineering",
+      "citation_count": 0,
+      "publication_date": "2026-11-03",
+      "source": "crossref",
+      "doi": "10.54254/2755-2721/2026.38452",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 6,
+      "is_survey": false
+    },
+    {
+      "title": "LLM-YOLOMS: Large Language Model-based Semantic Interpretation and Fault Diagnosis for Wind Turbine Components",
+      "authors": [
+        "Yaru Li",
+        "Yanxue Wang",
+        "Meng Li",
+        "Xinming Li",
+        "Jianbo Feng"
+      ],
+      "year": null,
+      "abstract": "",
+      "url": "https://doi.org/10.2139/ssrn.5886005",
+      "venue": "",
+      "citation_count": 3,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.5886005",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Enhancing Information Sensing of Load Forecasting in Cyber-Physical-Social Systems: An Approach with Large Language Model",
+      "authors": [],
+      "year": 2026,
+      "abstract": "",
+      "url": "https://doi.org/10.17775/cseejpes.2025.02460",
+      "venue": "CSEE Journal of Power and Energy Systems",
+      "citation_count": 1,
+      "publication_date": "2026",
+      "source": "crossref",
+      "doi": "10.17775/cseejpes.2025.02460",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "The Large Language Model Pilot: Generative Artificial Intelligence for Cyber-Physical Flight Simulations",
+      "authors": [
+        "Jorge Lovaco"
+      ],
+      "year": 2025,
+      "abstract": "",
+      "url": "https://doi.org/10.3384/ecp215.1196",
+      "venue": "Linköping Electronic Conference Proceedings FT2025: Proceedings of the 12th Swedish Aerospace Technology Congress",
+      "citation_count": 1,
+      "publication_date": "2025-10-28",
+      "source": "crossref",
+      "doi": "10.3384/ecp215.1196",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Large-Model-Based Smart Agent for Time Series Anomaly Detection in Power Systems",
+      "authors": [
+        "Bingrui Wang",
+        "Yuan Zhou",
+        "Leijiao Ge",
+        "Sun-Yuan Kung"
+      ],
+      "year": null,
+      "abstract": "",
+      "url": "https://doi.org/10.2139/ssrn.5243041",
+      "venue": "",
+      "citation_count": 1,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.5243041",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Semantic De-Duplication of Shared Cyber Threat Indicators using Large Language Model Embeddings",
+      "authors": [
+        "Abolaji Adebayo",
+        "Chukwunenye Amadi",
+        "Ayokunle Olamide Ijagbemi"
+      ],
+      "year": 2026,
+      "abstract": "<jats:p>As defence agencies, allied partners, and cybersecurity firms exchange threat intelligence, the same indicator is frequently reported many times in slightly altered form, producing large-scale duplication across intelligence repositories. Traditional de-duplication relies on exact matching using hashes or literal text comparison and fails when information is reworded, paraphrased, or contextually recast. This paper proposes a semantic de-duplication approach that uses Large Language Model (LLM) embeddings to identify duplicate threat indicators on the basis of meaning rather than form. The method encodes each report into a contextual vector, measures pairwise similarity, clusters semantically equivalent reports, and retains a single representative entry per cluster. Situated within the literature on record linkage, entity resolution, and near-duplicate detection, the paper specifies an evaluation protocol based on precision, recall, F1-score, cluster-level agreement, and latency over open-source and synthetic corpora, together with the baselines and reproducibility requirements against which the design should be tested. That protocol is defined here but has not yet been executed: no dataset has been processed and no numerical results are reported. The behaviour described in the discussion is the behaviour the design is expected to exhibit, offered as hypotheses to be tested rather than as measured findings, and the anticipated benefits of consolidation, namely reduced noise, less exaggerated risk assessment, and lower computational and storage cost, are stated in those terms throughout. The paper contributes a meaning-based de-duplication design for defence CTI, an evaluation protocol for validating it, and a discussion of the accuracy, efficiency, and governance implications of deploying it.</jats:p>",
+      "url": "https://doi.org/10.65150/ep-gjetr/v2e9/2026-07",
+      "venue": "Global Journal of Engineering and Technology Research",
+      "citation_count": 0,
+      "publication_date": "2026-09-05",
+      "source": "crossref",
+      "doi": "10.65150/ep-gjetr/v2e9/2026-07",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "CP-LLM: Conformal Calibration for Time Series Interval Forecasting with Frozen Large Language Model",
+      "authors": [
+        "Ke Li"
+      ],
+      "year": null,
+      "abstract": "<title>Abstract</title>\n                <p>Reliable prediction intervals are essential for deploying time-series forecasting systems in high-stakes domains, yet uncertainty estimates from frozen large language models (LLMs) often deviate from nominal confidence levels. This paper studies interval calibration for multi-step forecasting with frozen LLMs and proposes CP-LLM, a fine-tuning-free two-stage post-hoc framework. In Stage 1, base intervals are constructed from sampled LLM forecasts and augmented with three complementary uncertainty signals: sampling dispersion, temperature sensitivity, and serialization perturbation sensitivity. In Stage 2, base intervals are calibrated on a held-out calibration segment using either Conformalized Quantile Regression (CQR) for relatively stable regimes or Adaptive Conformal Inference (ACI) under temporal distribution shift. Experiments on five public univariate datasets with four API-accessed frozen LLMs show that CP-LLM substantially reduces coverage bias while maintaining competitive interval sharpness. Additional comparisons with traditional forecasting methods, together with ablation and parameter-sensitivity analyses, provide further evidence for the effectiveness of the proposed framework.</p>",
+      "url": "https://doi.org/10.21203/rs.3.rs-9291769/v1",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.21203/rs.3.rs-9291769/v1",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis",
+      "authors": [
+        "Novanto Yudistira",
+        "Yanuar Putra Kharisma Adhiyasa"
+      ],
+      "year": null,
+      "abstract": "<title>Abstract</title>\n                <p>Time-series foundation models and retrieval-based augmentation have recently emerged as relevant tools for financial forecasting, yet it remains unclear when explicit historical retrieval helps a pre-trained probabilistic forecaster in noisy equity settings. This study evaluates that question through Cross-Market Retrieval-Augmented Lag-Llama (CM-RAF-Lag-Llama), a controlled framework for comparing Lag-Llama-only forecasts with retrieval-augmented forecasts across emerging and developed market panels. The main validation uses three balanced seven-asset panels, IDX7, US7, and JP7, producing a 48-configuration panel-context-horizon grid across four context lengths and four prediction horizons. The hybrid system retrieves analogous historical windows from an indexed memory and blends the retrieved continuation with the Lag-Llama forecast while preserving the same forecasting backbone. In the same-backbone return validation, at least one retrieval variant reduces Lag-Llama MSE in all 48 configurations, with aggregate lower-error retrieval MSE reductions of 28.85\\% for IDX7, 27.27\\% for US7, and 33.60\\% for JP7. A second OHLCV-derived stock-feature experiment evaluates log-price, log-volume, range-volatility, and 20-day realized-volatility targets across 72 matched configurations. In that experiment, validation-selected RAF reduces MSE relative to Lag-Llama-only in 68 of 72 configurations and records the lowest MSE among the compared systems in 22 configurations, including 17 of 18 non-log-price US7 settings. A mechanism-level single-series ablation further compares Lag-Llama-only against Lag-Llama + RAF under zero-shot and scheduler-based inference, showing that retrieval effects are horizon-sensitive. The results indicate that retrieval can serve as an external-memory correction for Lag-Llama under selected equity targets, especially when volatility or volume structure provides reusable historical analogs.</p>",
+      "url": "https://doi.org/10.21203/rs.3.rs-10178277/v1",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.21203/rs.3.rs-10178277/v1",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Intelligent Fault Diagnosis for Overhead Lines with Covered Conductors: Using Large Language Model",
+      "authors": [
+        "Genghong Lu",
+        "Siqi Bu"
+      ],
+      "year": null,
+      "abstract": "",
+      "url": "https://doi.org/10.46855/energy-proceedings-11484",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.46855/energy-proceedings-11484",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Large Language Model-Augmented Machine Learning For Intelligent Fault Diagnosis in Process Systems",
+      "authors": [
+        "Kyle Territo",
+        "José A. Romagnoli"
+      ],
+      "year": null,
+      "abstract": "",
+      "url": "https://doi.org/10.2139/ssrn.5352663",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.5352663",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "A large language model-guided machinery fault diagnosis model based on multi-task prompt tuning and adaptive adversarial distillation",
+      "authors": [
+        "Ziyue Jiang",
+        "Jianbo Yu"
+      ],
+      "year": null,
+      "abstract": "<jats:p>The large language model (LLM) has achieved significant success in artificial intelligence, which demonstrates its powerful ability and the potential for application in other fields. It is feasible to train or fine-tune an LLM for machinery fault diagnosis, which offers new possibilities for improving the generalization of models. However, there is a significant requirement for computing power and data for training and fine-tuning LLM. Thus, it is challenging to propose a general industrial large model for machinery fault diagnosis, which has efficient processing capability in big sensor data. In this study, an LLM-guided machinery fault diagnosis model (LGMFD) is proposed for fault diagnosis of multiple machines. Firstly, a prompt-tuning module is proposed in LGMFD, which is used to enable the pre-trained LLM to learn fault diagnosis knowledge. Then, a multitask learning module is constructed to identify the faulty machines and their fault types, which enables the model to extract knowledge from the data of different machines. Secondly, an adaptive adversarial distillation module is proposed to improve the feature learning performance of the student model, which guides deep neural networks (DNNs) for fault diagnosis by the fine-tuned LLM. Finally, the experimental results on six datasets show that LGMFD has a good performance on feature extraction and machinery fault diagnosis.</jats:p>",
+      "url": "https://doi.org/10.2139/ssrn.6293248",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.6293248",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Large language model-driven automated modelling paradigm for marine diesel engine fault diagnosis",
+      "authors": [
+        "Zeyu Shi",
+        "Zhongwei Wang",
+        "Chunlin Zhao",
+        "Jiajun Li",
+        "Qike Chen",
+        "Jingzhou Fei"
+      ],
+      "year": null,
+      "abstract": "<jats:p>Marine diesel engines operate under complex variable loads, necessitating efficient fault diagnosis model development. Conventional approaches depend heavily on expert knowledge. Despite large language models&amp;apos; (LLMs) proficiency in code generation, their potential as software engineering agents for automated diagnostic modelling remains untapped in marine diesel engine diagnosis. To address these challenges, this paper proposes an LLM-driven automated machine learning (AutoML) paradigm for marine diesel engine fault diagnosis. the paradigm redefines the role of LLMs as an automated modeling engine, transforming the diagnostic model development process into a sequence of software engineering tasks, including requirement understanding, code generation, model construction and parameter optimization. A structured prompting strategy integrating role anchoring, domain knowledge injection, task workflow constraints, and technical specifications is designed to encode diagnostic knowledge into executable semantic constraints. Furthermore, a dual-channel closed-loop optimization mechanism, combining code debugging feedback and model performance feedback, is developed to iteratively improve both engineering executability and diagnostic performance. Extensive experiments are conducted on multiple marine diesel engine diagnostic modeling tasks, including supervised diagnosis and cross-condition transfer diagnosis. The results demonstrate that the proposed framework can automatically generate high-quality diagnostic code with superior engineering quality, while the iterative optimization mechanism further improves diagnostic performance and model robustness. This work establishes a new paradigm for practical engineering deployment by enabling LLMs to automate the complete lifecycle of diagnostic model development rather than merely performing diagnostic inference.</jats:p>",
+      "url": "https://doi.org/10.2139/ssrn.7283958",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.7283958",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 5,
+      "is_survey": false
+    },
+    {
+      "title": "Generative-Agent Modeling of Protest Mobilization and Preference Falsification with Large Language Models",
+      "authors": [
+        "Lingyi Wang"
+      ],
+      "year": null,
+      "abstract": "<jats:p>This paper presents a generative-agent architecture for agent-based modeling (ABM) of protest mobilization and preference falsification under authoritarian repression, motivated by recent social-media-mediated uprisings in South and Southeast Asia. Unlike classical threshold and spatial models, each of 1,000 agents interprets its situation through a large language model (LLM) utilizing memories of past events, and produces a natural-language justification for whether to mobilize. Preference falsification is formalized as a deterministic coefficient ω gating the divergence between internal grievance and expressed stance, and the adversarial state is a network-altering algorithm performing eigenvector-centrality-based suspension and an edge-removal shutdown (not triggered at these parameters). The identical architecture is run across three backbones: GPT-4.1-mini, DeepSeek-V4-Flash, and Llama-4-Maverick-over three seeds each. The central observation is that the emergent LLM-driven layer diverges sharply despite fixed imposed dynamics: peak mobilization ranges from 23.3% (GPT-4.1-mini) to 14.8% (DeepSeek-V4-Flash) to 3.2% (Llama-4-Maverick). This ordering inverts the hidden-transcript gap, which is largest for Llama-4-Maverick (0.268). Logged justifications from high-grievance inactive agents confirm the mechanism is analogous to preference falsification: agents reach maximal internal grievance while declining public action on grounds of personal and familial risk. A control probe rules out simple incapacity, and no meaningful content-refusal effect appears in any backbone. The contribution is an architecture and observations, not a validated model of real dissent, distinguishing emergent from imposed results.</jats:p>",
+      "url": "https://doi.org/10.2139/ssrn.7338838",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.7338838",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 4,
+      "is_survey": false
+    },
+    {
+      "title": "A Survey of Large Language Models for Time Series Anomaly Detection: Methods, Challenges, and Future Directions",
+      "authors": [
+        "Kunqi Li",
+        "Thomas Pitts",
+        "Bin Liang",
+        "Chenya Huang",
+        "Yuxi Lu"
+      ],
+      "year": null,
+      "abstract": "",
+      "url": "https://doi.org/10.2139/ssrn.6033215",
+      "venue": "",
+      "citation_count": 0,
+      "publication_date": null,
+      "source": "crossref",
+      "doi": "10.2139/ssrn.6033215",
+      "arxiv_id": null,
+      "found_in": [
+        "crossref"
+      ],
+      "relevance_score": 6,
+      "is_survey": true
+    }
+  ],
+  "duplicate_count": 1
+}

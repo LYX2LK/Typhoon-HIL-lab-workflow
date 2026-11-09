@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<!-- Global Site Tag (gtag.js) - Google Analytics -->
+	<!--<script async src="js/gtag.js"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments)};
+  		gtag('js', new Date());
+
+		gtag('config', 'UA-106738125-1');
+	</script>-->
+
+	<!-- Basic Page Needs
+	================================================== -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <title>Bihuan Chen - Fudan University</title>
+
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Favicon -->
+	<!--<link rel="shortcut icon" type="image/jpg" href="img/favicon.jpg"/>-->
+
+	<!-- CSS
+	================================================== -->
+	<!-- Bootstrap css file-->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font awesome css file-->
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<!-- Superslide css file-->
+	<link rel="stylesheet" href="css/superslides.css">
+	<!-- Slick slider css file -->
+	<link href="css/slick.css" rel="stylesheet">
+	<!-- smooth animate css file -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Elastic grid css file -->
+	<link rel="stylesheet" href="css/elastic_grid.css">
+	<!-- Circle counter cdn css file -->
+	<link rel='stylesheet prefetch' href='css/jquery.circliful.css'>
+	<!-- Default Theme css file -->
+	<link id="orginal" href="css/themes/default-theme.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/imagehover.min.css">
+	<!-- Main structure css file -->
+	<link href="style.css" rel="stylesheet">
+
+
+
+
+    <!-- Google fonts -->
+    <link href='css/opensans.css' rel='stylesheet'>
+    <link href='css/varela.css' rel='stylesheet'>
+    <link href='css/montserrat.css' rel='stylesheet'>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- BEGAIN PRELOADER -->
+    <div id="preloader">
+      <div id="status">&nbsp;</div>
+    </div>
+    <!-- END PRELOADER -->
+
+    <!-- SCROLL TOP BUTTON -->
+    <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+    <!-- END SCROLL TOP BUTTON -->
+
+    <!--=========== BEGIN HEADER SECTION ================-->
+    <header id="header">
+      <!-- BEGIN MENU -->
+      <div class="menu_area">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div class="container">
+          <div class="navbar-header">
+            <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            <!-- LOGO -->
+
+            <!-- TEXT BASED LOGO -->
+            <a class="navbar-brand" href="#">Dr. <span>Bihuan Chen</span></a>
+
+            <!-- IMG BASED LOGO  -->
+            <!--  <a class="navbar-brand" href="#"><img src="img/logo.png" alt="logo"></a> -->
+
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul id="top-menu" class="nav navbar-nav navbar-right main_nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#pricing">Research</a></li>
+              <li><a href="#works">Publications</a></li>
+              <li><a href="#team">Team</a></li>
+              <li><a href="#service">Services</a></li>
+              <!--<li><a href="#courses">Life</a></li>-->
+              <li><a href="#contact">Contacts</a></li>
+              <!--<li><a href="resource/cv-chen.pdf" target="_blank">CV</a></li>-->
+            </ul>
+          </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+      </div>
+      <!-- END MENU -->
+​
+      <!-- BEGIN SLIDER AREA-->
+      <div class="slider_area">
+        <!-- BEGIN SLIDER-->
+        <div id="slides">
+          <ul class="slides-container">
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2027</h2>
+    	 		      <p><i class="fa fa-calendar"></i> October 21, 2026</p>
+                <p><i class="fa fa-tags"></i> CoSafe: Cooperative Runtime Safety Assurance for Mixed-Traffic  Autonomous Driving</p>
+    	 		      <p><i class="fa fa-user"></i> Dingji Wang, You Lu, Haowen Jiang, Yanggang Chen, Yuyang Bi, Bihuan Chen, Shenglin Bao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by TOSEM</h2>
+    	 		      <p><i class="fa fa-calendar"></i> August 26, 2026</p>
+                <p><i class="fa fa-tags"></i> VulWeaver: Weaving Broken Semantics for Grounded Vulnerability Detection</p>
+    	 		      <p><i class="fa fa-user"></i> Yiheng Cao, Yihao Chen, Xin Hu, Bihuan Chen, Jiayi Deng, Zhuotong Zhou, Susheng Wu, Yiheng Huang, Xueying Du, Xingman Chen, Miaohua Li, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ISSTA 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> June 25, 2026</p>
+                <p><i class="fa fa-tags"></i> SyzDiversity: Diversity-Guided Linux Kernel Fuzzing</p>
+    	 		      <p><i class="fa fa-user"></i> Kun Hu, Jiaji Qin, Chaofeng Sha, Bihuan Chen, Shuoran Bai, Qicai Chen, Chenglin Wang, Xin Peng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by TOSEM</h2>
+    	 		      <p><i class="fa fa-calendar"></i> June 16, 2026</p>
+                <p><i class="fa fa-tags"></i> Lifting the Veil on Composition, Risks, and Mitigations of the Large Language Model Supply Chain</p>
+    	 		      <p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, You Lu, Susheng Wu, Dingji Wang, Yiheng Huang, Haowen Jiang, Zhuotong Zhou, Junming Cao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by TOSEM</h2>
+    	 		      <p><i class="fa fa-calendar"></i> June 9, 2026</p>
+                <p><i class="fa fa-tags"></i> DynNPC: Finding More Violations Induced by ADS in Simulation Testing via Dynamic NPC Behavior Generation</p>
+    	 		      <p><i class="fa fa-user"></i> You Lu, Yifan Tian, Kun Zhang, Dingji Wang, Bihuan Chen, Haowen Jiang, Qicai Chen, Kun Hu, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by TOSEM</h2>
+    	 		      <p><i class="fa fa-calendar"></i> May 12, 2026</p>
+                <p><i class="fa fa-tags"></i> CoCoPat: Identifying Critical Changes in Vulnerability Patches</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Yiheng Cao, Xin Hu, Zhuotong Zhou, Yijian Wu, Bihuan Chen, Ruisi Wang, Yiheng Huang, Kaifeng Huang, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Four Papers Accepted by ISSTA 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> April 16, 2026</p>
+                <p><i class="fa fa-tags"></i> TensorLock: Recovering Model Dependency for Model Supply Chain</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Ziqian Chen, Chengyuan Li, Kaifeng Huang, Zekai Chen, Yijian Wu, Bihuan Chen, Yiheng Cao, Zhuotong Zhou, Yiheng Huang, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> The Fix is Right at Hand: Fixing Incompatibility Errors Guided by Library Knowledge for Automatic Library Upgrade</p>
+    	 		      <p><i class="fa fa-user"></i> Zhuotong Zhou, Susheng Wu, Junpeng Zhao, Bihuan Chen, YenQin Hoo, Yiheng Huang, Yiheng Cao, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> AutoHIL: LLM-Based ECU Functional Test Generation through Domain Knowledge Augmentation</p>
+    	 		      <p><i class="fa fa-user"></i> Sichen Gong, Qicai Chen, Bihuan Chen, Wenzhuo Zhang, Yukun Gao, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> Poirot: Automatic Root Cause Analysis of Safety Violations in ADS Simulation Testing via Hypothetical Reasoning</p>
+    	 		      <p><i class="fa fa-user"></i> You Lu, Dingji Wang, Kun Zhang, Bihuan Chen, Jiyan Zhang, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by FSE 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> March 25, 2026</p>
+                <p><i class="fa fa-tags"></i> It Takes Two: Option-Aware Directed Greybox Fuzzing for Vulnerability PoC Generation</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Xin Hu, Yiheng Cao, Zhuotong Zhou, Yiheng Huang, Yijian Wu, Bihuan Chen, Zhijia Zhao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by TOSEM</h2>
+    	 		      <p><i class="fa fa-calendar"></i> January 21, 2026</p>
+                <p><i class="fa fa-tags"></i> Vul-RAG: Enhancing LLM-based Vulnerability Detection via Knowledge-level RAG</p>
+    	 		      <p><i class="fa fa-user"></i> Xueying Du, Geng Zheng, Kaixin Wang, Yi Zou, Yujia Wang, Wentai Deng, Jiayi Feng, Mingwei Liu, Bihuan Chen, Xin Peng, Tao Ma, and Yiling Lou</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by FSE 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> December 22, 2025</p>
+                <p><i class="fa fa-tags"></i> Understanding Performance Problems in CUDA Programs</p>
+    	 		      <p><i class="fa fa-user"></i> Yuyang Bi, Junming Cao, You Lu, Bihuan Chen, Tianwei Gan, Dingji Wang, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Empirical Software Engineering</h2>
+    	 		      <p><i class="fa fa-calendar"></i> December 19, 2025</p>
+                <p><i class="fa fa-tags"></i> A Large-Scale Empirical Study of Configurations, Errors, and Warnings for Compilation in Continuous Integration</p>
+    	 		      <p><i class="fa fa-user"></i> Chen Zhang, Bihuan Chen, Siqi Wu, Lei Zhao, Xin Peng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by AAAI 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> November 8, 2025</p>
+                <p><i class="fa fa-tags"></i> ExpertAD: Enhancing Autonomous Driving Systems with Mixture of Experts</p>
+    	 		      <p><i class="fa fa-user"></i> Haowen Jiang, Xinyu Huang, You Lu, Yuheng Cao, Chaofeng Sha, Bihuan Chen, Dingji Wang, Keyu Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ICSE 2026</h2>
+    	 		      <p><i class="fa fa-calendar"></i> October 17, 2025</p>
+                <p><i class="fa fa-tags"></i> Characterizing Regression Bug‑Inducing Changes and Improving LLM‑Based Regression Bug Detection</p>
+    	 		      <p><i class="fa fa-user"></i> Xuezhi Song, Yijian Wu, Bihuan Chen, Zhengjie Lu, Shuning Liu, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> A First Look at Model Supply Chain: From the Risk Perspective</p>
+    	 		      <p><i class="fa fa-user"></i> Ziqian Chen, Zekai Chen, Susheng Wu, Bihuan Chen, Wenyan Song, Yiheng Huang, Zhuotong Zhou, Yiheng Cao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ASE 2025</h2>
+    	 		      <p><i class="fa fa-calendar"></i> September 26, 2025</p>
+                <p><i class="fa fa-tags"></i> Argus: Resilience-Oriented Safety Assurance Framework for End-to-End ADSs</p>
+    	 		      <p><i class="fa fa-user"></i> Dingji Wang, You Lu, Bihuan Chen, Shuo Hao, Haowen Jiang, Yifan Tian, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ASE 2025</h2>
+    	 		      <p><i class="fa fa-calendar"></i> August 14, 2025</p>
+                <p><i class="fa fa-tags"></i> ProfMal: Detecting Malicious NPM Packages by the Synergy between Static and Dynamic Analysis</p>
+    	 		      <p><i class="fa fa-user"></i> Yiheng Huang, Wen Zheng, Susheng Wu, Bihuan Chen, You Lu, Zhuotong Zhou, Yiheng Cao, Xiaoyu Li, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award</h2>
+    	 		<p><i class="fa fa-calendar"></i> May 1, 2025</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Vulnerability Patch Porting Received the ACM SIGSOFT Distinguished Paper Award at FSE 2025!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by FSE 2025</h2>
+    	 		      <p><i class="fa fa-calendar"></i> April 2, 2025</p>
+                <p><i class="fa fa-tags"></i> RegTrieve: Reducing System-Level Regression Errors for Machine Learning Systems via Retrieval-Enhanced Ensemble</p>
+    	 		      <p><i class="fa fa-user"></i> Junming Cao, Xuwen Xiang, Mingfei Cheng, Bihuan Chen, Xinyan Wang, You Lu, Chaofeng Sha, Xiaofei Xie, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ISSTA 2025</h2>
+    	 		      <p><i class="fa fa-calendar"></i> March 30, 2025</p>
+                <p><i class="fa fa-tags"></i> Recurring Vulnerability Detection: How Far Are We?</p>
+    	 		      <p><i class="fa fa-user"></i> Yiheng Cao, Susheng Wu, Ruisi Wang, Bihuan Chen, Yiheng Huang, Chenhao Lu, Zhuotong Zhou, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> Structure-Aware, Diagnosis-Guided ECU Firmware Fuzzing</p>
+    	 		      <p><i class="fa fa-user"></i> Qicai Chen, Kun Hu, Sichen Gong, Bihuan Chen, Zikui Kong, Haowen Jiang, Bingkun Sun, You Lu, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by FSE 2025</h2>
+    	 		      <p><i class="fa fa-calendar"></i> January 15, 2025</p>
+                <p><i class="fa fa-tags"></i> Mystique: Automated Vulnerability Patch Porting with Semantic and Syntactic-Enhanced LLM</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Ruisi Wang, Yiheng Cao, Bihuan Chen, Zhuotong Zhou, Yiheng Huang, Junpeng Zhao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ACM Transactions on Software Engineering and Methodology</h2>
+    	 		      <p><i class="fa fa-calendar"></i> October 24, 2024</p>
+                <p><i class="fa fa-tags"></i> Killing Two Birds with One Stone: Malicious Package Detection in NPM and PyPI using a Single Model of Malicious Behavior Sequence</p>
+    	 		      <p><i class="fa fa-user"></i> Junan Zhang, Kaifeng Huang, Yiheng Huang, Bihuan Chen, Ruisi Wang, Chong Wang, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by CCS 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> Auguest 24, 2024</p>
+                <p><i class="fa fa-tags"></i> VMUD: Detecting Recurring Vulnerabilities with Multiple Fixing Functions via Function Selection and Semantic Equivalent Statement Matching</p>
+    	 		      <p><i class="fa fa-user"></i> Kaifeng Huang, Chenhao Lu, Yiheng Cao, Bihuan Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Three Papers Accepted by ASE 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> August 7, 2024</p>
+                <p><i class="fa fa-tags"></i> Magneto: A Step-Wise Approach to Exploit Vulnerabilities in Dependent Libraries via LLM-Empowered Directed Fuzzing</p>
+    	 		      <p><i class="fa fa-user"></i> Zhuotong Zhou, Yongzhuo Yang, Susheng Wu, Yiheng Huang, Bihuan Chen, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> SpiderScan: Practical Detection of Malicious NPM Packages Based on Graph-Based Behavior Modeling and Matching</p>
+    	 		      <p><i class="fa fa-user"></i> Yiheng Huang, Ruisi Wang, Wen Zheng, Zhuotong Zhou, Susheng Wu, Shulin Ke, Bihuan Chen, Shan Gao, and Xin Peng</p>
+                <p><i class="fa fa-tags"></i> Vision: Identifying Affected Library Versions for Open Source Software Vulnerabilities</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Ruisi Wang, Kaifeng Huang, Yiheng Cao, Wenyan Song, Zhuotong Zhou, Yiheng Huang, Bihuan Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ISSTA 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> July 3, 2024</p>
+                <p><i class="fa fa-tags"></i> Your "Notice" is Missing: Detecting and Fixing Violations of  Modification Terms in Open Source Licenses during Forking</p>
+    	 		      <p><i class="fa fa-user"></i> Kaifeng Huang, Yingfeng Xia, Bihuan Chen, Siyang He, Huazheng Zeng, Zhuotong Zhou, Jin Guo, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ISSTA 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> March 2, 2024</p>
+                <p><i class="fa fa-tags"></i> DiaVio: LLM-Empowered Diagnosis of Safety Violations in ADS Simulation Testing</p>
+    	 		      <p><i class="fa fa-user"></i> You Lu, Yifan Tian, Yuyang Bi, Bihuan Chen, and Xin Peng</p>
+                 <p><i class="fa fa-tags"></i> C2D2: Extracting Critical Changes for Real-World Bugs with Dependency-Sensitive Delta Debugging</p>
+    	 		      <p><i class="fa fa-user"></i> Xuezhi Song, Yijian Wu, Shuning Liu, Bihuan Chen, Yun Lin, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by SANER 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> December 17, 2023</p>
+                <p><i class="fa fa-tags"></i> Enhancing Field Tracking and Interprocedural Analysis to Find More Null Pointer Exceptions</p>
+    	 		      <p><i class="fa fa-user"></i> Dongfang Xie, Bihuan Chen, Kaifeng Huang, Yu Wang, Linghao Pan, Zhicheng Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> December 15, 2023</p>
+                <p><i class="fa fa-tags"></i> Identifying Affected Libraries and Their Ecosystems for Open Source Software Vulnerabilities</p>
+    	 		      <p><i class="fa fa-user"></i> Susheng Wu, Wenyan Song, Kaifeng Huang, Bihuan Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2024</h2>
+    	 		      <p><i class="fa fa-calendar"></i> August 24, 2023</p>
+                <p><i class="fa fa-tags"></i> Exploring the Potential of ChatGPT in Automated Code  Refinement: An Empirical Study</p>
+    	 		      <p><i class="fa fa-user"></i> Qi Guo, Junming Cao, Xiaofei Xie, Shangqing Liu, Xiaohong Li, Bihuan Chen, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ESEC/FSE 2023</h2>
+    	 		      <p><i class="fa fa-calendar"></i> July 28, 2023</p>
+                <p><i class="fa fa-tags"></i> Demystifying Dependency Bugs in Deep Learning Stack</p>
+    	 		      <p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, Susheng Wu, Junming Cao, Lei Ma, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSME 2023</h2>
+    	 		      <p><i class="fa fa-calendar"></i> June 24, 2023</p>
+                <p><i class="fa fa-tags"></i> Characterizing the Complexity and Its Impact on Testing in ML-Enabled Systems - A Case Study on Rasa</p>
+    	 		      <p><i class="fa fa-user"></i> Junming Cao, Bihuan Chen, Longjie Hu, Jie Gao, Kaifeng Huang, Xuezhi Song, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>fuxi platform released</h2>
+    	 		      <p><i class="fa fa-calendar"></i> April 17, 2023</p>
+                <p><i class="fa fa-tags"></i> Our software supply chain audit platform <a href="http://www.se.fudan.edu.cn/fuxi/">fuxi v0.1</a> is released!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ISSTA 2023</h2>
+    	 		<p><i class="fa fa-calendar"></i> April 7, 2023</p>
+                <p><i class="fa fa-tags"></i> In Defense of Simple Techniques for Neural Network Test Case Selection</p>
+    	 		<p><i class="fa fa-user"></i> Shenglin Bao, Chaofeng Sha, Bihuan Chen, Xin Peng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award</h2>
+    	 		<p><i class="fa fa-calendar"></i> March 22, 2023</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Code Change Representation Learning Received the IEEE TCSE Distinguished Paper Award at SANER 2023!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+            
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by SANER 2023</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 16, 2022</p>
+                <p><i class="fa fa-tags"></i> Slice-Based Code Change Representation Learning</p>
+    	 		<p><i class="fa fa-user"></i> Fengyi Zhang, Bihuan Chen, Yufei Zhao, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award</h2>
+    	 		<p><i class="fa fa-calendar"></i> October 4, 2022</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Third-Party Library Compatibility Analysis Received the ACM SIGSOFT Distinguished Paper Award at ASE 2022!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ASE 2022</h2>
+            <p><i class="fa fa-calendar"></i> July 21, 2022</p>
+            <p><i class="fa fa-tags"></i> BuildSonic: Detecting and Repairing Performance-Related Configuration Smells for Continuous Integration Builds</p>
+            <p><i class="fa fa-user"></i> Chen Zhang, Bihuan Chen, Junhao Hu, Xin Peng, and Wenyun Zhao</p>
+            <p><i class="fa fa-tags"></i> Has My Release Disobeyed Semantic Versioning? Static Detection Based On Semantic Differencing</p>
+            <p><i class="fa fa-user"></i> Lyuye Zhang, Chengwei Liu, Zhengzi Xu, Sen Chen, Lingling Fan, Bihuan Chen, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+            </li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ESEC/FSE 2022</h2>
+            <p><i class="fa fa-calendar"></i> June 15, 2022</p>
+            <p><i class="fa fa-tags"></i> Understanding Performance Problems in Deep Learning Systems</p>
+            <p><i class="fa fa-user"></i> Junming Cao, Bihuan Chen, Chao Sun, Longjie Hu, Shuaihong Wu, and Xin Peng</p>
+            <p><i class="fa fa-tags"></i> Tracking Patches for Open Source Software Vulnerabilities</p>
+            <p><i class="fa fa-user"></i> Congying Xu, Bihuan Chen, Chenhao Lu, Kaifeng Huang, Xin Peng, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+            </li>
+
+          <li>
+​              <!-- FIRST SLIDE OVERLAY -->
+​              <div class="slider_overlay"></div>
+​              <!-- FIRST SLIDE MAIN IMAGE -->
+​              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+​              <!-- FIRST SLIDE CAPTION-->
+​              <div class="slider_caption">
+​                <h2>Paper Accepted by IEEE Transactions on Software Engineering</h2>
+​    	 		    <p><i class="fa fa-calendar"></i> April 11, 2022</p>
+​             <p><i class="fa fa-tags"></i> A Large-Scale Empirical Study of Real-Life Performance Issues in Open Source Projects</p>
+             <p><i class="fa fa-user"></i> Yutong Zhao, Lu Xiao, Andre B. Bondi, Bihuan Chen, and Yang Liu</p>
+​                <!--<a href="#" class="slider_btn">Who We are</a>-->
+​              </div>
+​           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Empirical Software Engineering</h2>
+    	 		<p><i class="fa fa-calendar"></i> February 11, 2022</p>
+                <p><i class="fa fa-tags"></i> Characterizing Usages, Updates and Risks of Third-Party Libraries in Java Projects</p>
+    	 		<p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, Congying Xu, Ying Wang, Bowen Shi, Xin Peng, Yijian Wu, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by SCIENCE CHINA Information Sciences</h2>
+    	 		<p><i class="fa fa-calendar"></i> January 05, 2022</p>
+                <p><i class="fa fa-tags"></i> Baton: Symphony of Random Testing and Concolic Testing through Machine Learning and Taint Analysis</p>
+    	 		<p><i class="fa fa-user"></i> Bihuan Chen, Yang Liu, Xin Peng, Yijian Wu, and Shengchao Qin</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by SANER 2022</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 17, 2021</p>
+                <p><i class="fa fa-tags"></i> Detecting Runtime Exceptions by Deep Code Representation Learning with Attention-Based Graph Neural Networks</p>
+    	 		<p><i class="fa fa-user"></i> Rongfan Li, Bihuan Chen, Fengyi Zhang, Chao Sun, and Xin Peng</p>
+    	 		<p><i class="fa fa-tags"></i> DeepAnna: Deep Learning based Java Annotation Recommendation and Misuse Detection</p>
+    	 		<p><i class="fa fa-user"></i> Yi Liu, Yadong Yan, Chaofeng Sha, Xin Peng, Bihuan Chen, and Chong Wang</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ICSE 2022</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 03, 2021</p>
+                <p><i class="fa fa-tags"></i> BuildSheriff: Change-Aware Test Failure Triage for Continuous Integration Builds</p>
+    	 		<p><i class="fa fa-user"></i> Chen Zhang, Bihuan Chen, Xin Peng, and Wenyun Zhao</p>
+    	 		<p><i class="fa fa-tags"></i> Demystifying the Vulnerability Propagation and Its Evolution via Dependency Trees in the NPM Ecosystem</p>
+    	 		<p><i class="fa fa-user"></i> Chengwei Liu, Sen Chen, Lingling Fan, Bihuan Chen, Yang Liu, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Empirical Software Engineering</h2>
+    	 		<p><i class="fa fa-calendar"></i> August 16, 2021</p>
+                <p><i class="fa fa-tags"></i> "More Than Deep Learning": Post-Processing for API Sequence Recommendation</p>
+    	 		<p><i class="fa fa-user"></i> Chi Chen, Xin Peng, Bihuan Chen, Jun Sun, Zhenchang Xing, Xin Wang, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ASE 2021</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 08, 2021</p>
+                <p><i class="fa fa-tags"></i> RepFinder: Finding Replacements for Missing APIs in Library Update</p>
+    	 		<p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, Linghao Pan, Shuai Wu, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Journal of Systems and Software</h2>
+    	 		<p><i class="fa fa-calendar"></i> May 20, 2021</p>
+                <p><i class="fa fa-tags"></i> A Hybrid Code Representation Learning Approach for Predicting Method Names</p>
+    	 		<p><i class="fa fa-user"></i> Fengyi Zhang, Bihuan Chen, Rongfan Li, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award</h2>
+    	 		<p><i class="fa fa-calendar"></i> September 23, 2020</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Third-Party Library Analysis Received the IEEE TCSE Distinguished Paper Award at ICSME 2020!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by IEEE Transactions on Computers</h2>
+    	 		<p><i class="fa fa-calendar"></i> August 6, 2020</p>
+                <p><i class="fa fa-tags"></i> Guardauto: A Decentralized Runtime Protection System for Autonomous Driving</p>
+    	 		<p><i class="fa fa-user"></i> Kun Cheng, Yuan Zhou, Bihuan Chen, Rui Wang, Yuebin Bai, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSME 2020</h2>
+    	 		<p><i class="fa fa-calendar"></i> August 4, 2020</p>
+                <p><i class="fa fa-tags"></i> An Empirical Study of Usages, Updates and Risks of Third-Party Libraries in Java Projects</p>
+    	 		<p><i class="fa fa-user"></i> Ying Wang, Bihuan Chen, Kaifeng Huang, Bowen Shi, Congying Xu, Xin Peng, Yijian Wu and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ASE 2020</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 30, 2020</p>
+                <p><i class="fa fa-tags"></i> BuildFast: History-Aware Build Outcome Prediction for Fast Feedback and Reduced Cost in Continuous Integration</p>
+    	 		<p><i class="fa fa-user"></i> Bihuan Chen, Linlin Chen, Chen Zhang, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ESEC/FSE 2020</h2>
+    	 		<p><i class="fa fa-calendar"></i> May 20, 2020</p>
+                <p><i class="fa fa-tags"></i> Interactive, Effort-Aware Library Version Harmonization</p>
+    	 		<p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, Bowen Shi, Ying Wang, Congying Xu, and Xin Peng</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ISSTA 2020</h2>
+    	 		<p><i class="fa fa-calendar"></i> April 16, 2020</p>
+                <p><i class="fa fa-tags"></i> Patch Based Vulnerability Matching for Binary Programs</p>
+    	 		<p><i class="fa fa-user"></i> Yifei Xu, Zhengzi Xu, Bihuan Chen, Fu Song, Yang Liu, and Ting Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by USENIX Security 2020</h2>
+    	 		<p><i class="fa fa-calendar"></i> February 20, 2020</p>
+                <p><i class="fa fa-tags"></i> MVP: Detecting Vulnerabilities using Patch-Enhanced Vulnerability Signatures</p>
+    	 		<p><i class="fa fa-user"></i> Yang Xiao, Bihuan Chen, Chendong Yu, Zhengzi Xu, Zimu Yuan, Feng Li, Binghong Liu, Yang Liu, Wei Huo, Wei Zou, and Wenchang Shi</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by SCIENCE CHINA Information Sciences</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 26, 2019</p>
+                <p><i class="fa fa-tags"></i> Identifying Change Patterns of API Misuses from Code Changes</p>
+    	 		<p><i class="fa fa-user"></i> Wenjian Liu, Bihuan Chen, Xin Peng, Qinghao Sun, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Journal of Systems and Software</h2>
+    	 		<p><i class="fa fa-calendar"></i> September 3, 2019</p>
+                <p><i class="fa fa-tags"></i> DeepLink: Recovering Issue-Commit Links based on Deep Learning</p>
+    	 		<p><i class="fa fa-user"></i> Hang Ruan, Bihuan Chen, Xin Peng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ESEC/FSE 2019</h2>
+    	 		<p><i class="fa fa-calendar"></i> May 24, 2019</p>
+                <p><i class="fa fa-tags"></i> A Large-Scale Empirical Study of Compiler Errors in Continuous Integration</p>
+    	 		<p><i class="fa fa-user"></i> Chen Zhang, Bihuan Chen, Linlin Chen, Xin Peng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ICSE 2019</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 12, 2018</p>
+                <p><i class="fa fa-tags"></i> LEOPARD: Identifying Vulnerable Code for Vulnerability Assessment through Program Metrics</p>
+    	 		<p><i class="fa fa-user"></i> Xiaoning Du, Bihuan Chen, Yuekang Li, Jianmin Guo, Yaqin Zhou, Yang Liu, and Yu Jiang</p>
+    	 		<p><i class="fa fa-tags"></i> Superion: Grammar-Aware Greybox Fuzzing</p>
+    	 		<p><i class="fa fa-user"></i> Junjie Wang, Bihuan Chen, Lei Wei, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award </h2>
+    	 		<p><i class="fa fa-calendar"></i> August 24, 2018</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Code Differences Analysis Received the ACM SIGSOFT Distinguished Paper Award at ASE 2018!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by CCS 2018</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 24, 2018</p>
+                <p><i class="fa fa-tags"></i> Hawkeye: Towards a Desired Directed Grey-box Fuzzer</p>
+    	 		<p><i class="fa fa-user"></i> Hongxu Chen, Yinxing Xue, Yuekang Li, Bihuan Chen, Xiaofei Xie, Xiuheng Wu, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Read More</a>  -->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ASE 2018</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 4, 2018</p>
+                <p><i class="fa fa-tags"></i> CLDIFF: Generating Concise Linked Code Differences</p>
+    	 		<p><i class="fa fa-user"></i> Kaifeng Huang, Bihuan Chen, Xin Peng, Daihong Zhou, Ying Wang, Yang Liu, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Read More</a>  -->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by IEEE Transactions on Information Forensics and Security</h2>
+    	 		<p><i class="fa fa-calendar"></i> June 23, 2018</p>
+                <p><i class="fa fa-tags"></i> Layered Object Oriented Programming: Advanced VTable Reuse Attacks on Binary-Level Defense</p>
+    	 		<p><i class="fa fa-user"></i> Chenyu Wang, Bihuan Chen, Yang Liu, and Hongjun Wu</p>
+                <!--<a href="#" class="slider_btn">Read More</a>  -->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2018</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 14, 2017</p>
+                <p><i class="fa fa-tags"></i> Speedoo: Prioritizing Performance Optimization Opportunities</p>
+    	 		<p><i class="fa fa-user"></i> Zhifei Chen, Bihuan Chen, Lu Xiao, Xiao Wang, Lin Chen, Yang Liu, and Baowen Xu</p>
+                <!--<a href="#" class="slider_btn">Read More</a>  -->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by IEEE Transactions on Software Engineering</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 08, 2017</p>
+                <p><i class="fa fa-tags"></i> Automatic Loop Summarization via Path Dependency Analysis</p>
+    	 		<p><i class="fa fa-user"></i> Xiaofei Xie, Bihuan Chen, Liang Zou, Yang Liu, Wei Le, and Xiaohong Li</p>
+                <!--<a href="#" class="slider_btn">Who We are</a> -->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Computers & Security</h2>
+    	 		<p><i class="fa fa-calendar"></i> November 12, 2017</p>
+                <p><i class="fa fa-tags"></i> ROPSentry: Runtime Defense against ROP Attacks using Hardware Performance Counters</p>
+    	 		<p><i class="fa fa-user"></i> Sanjeev Das, Bihuan Chen, Mahinthan Chandramohan, Yang Liu, and Wei Zhang</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Joined Fudan University, Shanghai, China</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 16, 2017</p>
+    	 		<p><i class="fa fa-trophy"></i> I Joined Fudan University as a Pre-Tenure Associate Professor!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Two Papers Accepted by ESEC/FSE 2017</h2>
+    	 		<p><i class="fa fa-calendar"></i> June 2, 2017</p>
+                <p><i class="fa fa-tags"></i> Steelix: Program-State Based Binary Fuzzing</p>
+    	 		<p><i class="fa fa-user"></i> Yuekang Li, Bihuan Chen, Mahinthan Chandramohan, Shang-Wei Lin, Yang Liu, and Alwen Tiu</p>
+    	 		<p><i class="fa fa-tags"></i> Loopster: Static Loop Termination Analysis</p>
+    	 		<p><i class="fa fa-user"></i> Xiaofei Xie, Bihuan Chen, Liang Zou, Shang-Wei Lin, Yang Liu, and Xiaohong Li</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by Oakland 2017</h2>
+    	 		<p><i class="fa fa-calendar"></i> February 10, 2017</p>
+                <p><i class="fa fa-tags"></i> Skyfire: Data-Driven Seed Generation for Fuzzing</p>
+    	 		<p><i class="fa fa-user"></i> Junjie Wang, Bihuan Chen, Lei Wei, and Yang Liu</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2017</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 13, 2016</p>
+                <p><i class="fa fa-tags"></i> SPAIN: Security Patch Analysis for Binaries Towards Understanding the Pain and Pills</p>
+    	 		<p><i class="fa fa-user"></i> Zhengzi Xu, Bihuan Chen, Mahinthan Chandramohan, Yang Liu, and Fu Song</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+          	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Distinguished Paper Award </h2>
+    	 		<p><i class="fa fa-calendar"></i> October 21, 2016</p>
+                <p><i class="fa fa-trophy"></i> Our Work on Program Loop Summarization Received the ACM SIGSOFT Distinguished Paper Award at FSE 2016!</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by IEEE Transactions on Services Computing</h2>
+    	 		<p><i class="fa fa-calendar"></i> July 13, 2016</p>
+                <p><i class="fa fa-tags"></i> Architecture-Based Behavioral Adaptation with Generated Alternatives and Relaxed Constraints</p>
+    	 		<p><i class="fa fa-user"></i> Bihuan Chen, Xin Peng, Yang Liu, Songzheng Song, Jiahuan Zheng, and Wenyun Zhao</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+           	</li>
+
+           	<li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by FSE 2016</h2>
+    	 		<p><i class="fa fa-calendar"></i> May 27, 2016</p>
+                <p><i class="fa fa-tags"></i> Proteus: Computing Disjunctive Loop Summary via Path Dependency Analysis</p>
+    	 		<p><i class="fa fa-user"></i> Xiaofei Xie, Bihuan Chen, Yang Liu, Wei Le, and Xiaohong Li</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+            </li>
+
+            <li>
+              <!-- FIRST SLIDE OVERLAY -->
+              <div class="slider_overlay"></div>
+              <!-- FIRST SLIDE MAIN IMAGE -->
+              <!--<img src="img/full-slider/full-slide7.jpg" alt="img">-->
+              <!-- FIRST SLIDE CAPTION-->
+              <div class="slider_caption">
+                <h2>Paper Accepted by ICSE 2016</h2>
+    	 		<p><i class="fa fa-calendar"></i> December 15, 2015</p>
+                <p><i class="fa fa-tags"></i> Generating Performance Distributions via Probabilistic Symbolic Execution</p>
+    	 		<p><i class="fa fa-user"></i> Bihuan Chen, Yang Liu, and Wei Le</p>
+                <!--<a href="#" class="slider_btn">Who We are</a>-->
+              </div>
+            </li>
+
+          </ul>
+          <!-- BEGAIN SLIDER NAVIGATION -->
+          <nav class="slides-navigation">
+            <!-- PREV IN THE SLIDE -->
+            <a class="prev" href="/item1">
+              <span class="icon-wrap"></span>
+              <h3><strong>Prev</strong></h3>
+            </a>
+            <!-- NEXT IN THE SLIDE -->
+            <a class="next" href="/item3">
+              <span class="icon-wrap"></span>
+              <h3><strong>Next</strong></h3>
+            </a>
+          </nav>
+        </div>
+        <!-- END SLIDER-->
+      </div>
+      <!-- END SLIDER AREA -->
+    </header>
+    <!--=========== End HEADER SECTION ================-->
+
+
+    <!--=========== BEGIN ABOUT SECTION ================-->
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="about_area">
+
+              <!-- START ABOUT HEADING -->
+              <div class="heading">
+                <h2 class="wow fadeInLeftBig">About Me</h2>
+    			<div class="row">
+
+    			  <div class="col-lg-6 col-md-6 col-sm-12">
+    			    <p>Bihuan Chen is an associate professor at the College of Computer Science and Artificial Intelligence in Fudan University. He received his B.Sc. and Ph.D. degrees in Computer Science from Fudan University in 2009 and 2014, respectively. He was a postdoctoral research fellow at the School of Computer Science and Engineering in Nanyang Technological University from 2014 to 2017. His research interests lie in software engineering, focusing on software supply chain and AI system engineering. He received four ACM SIGSOFT Distinguished Paper Awards at FSE 2016, ASE 2018, ASE 2022 and FSE 2025, and two IEEE TCSE Distinguished Paper Awards at ICSME 2020 and SANER 2023.</p>
+    			  </div>
+
+    			  <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="about_slider">
+                      <!-- BEGAIN FEATURED SLIDER -->
+                      <div class="featured_slider">
+                        <!-- SINGLE SLIDE IN THE SLIDER -->
+                        <div class="single_iteam">
+                          <img src="img/chen.jpeg" height="250" alt="img" style='border:0px solid #000000'>
+                        </div>
+                        <!-- SINGLE SLIDE IN THE SLIDER -->
+                        <!--<div class="single_iteam">
+                          <img src="img/feature_img2.jpg" alt="img">
+                        </div>
+                      </div>-->
+                      <!-- END FEATURED SLIDER -->
+                    </div>
+                  </div>
+
+    			</div>
+              </div>
+
+    		  
+    		  <!-- END ABOUT HEADING -->
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+    <!--=========== END ABOUT SECTION ================-->
+
+    <!--=========== BEGAIN RESEARCH SECTION ================-->
+    <section id="pricing">
+      <div class="container">
+        <div class="row col-lg-12 col-md-12">
+          <!-- START ABOUT HEADING -->
+          <div class="heading">
+            <h2 class="wow fadeInLeftBig">Research Interests</h2>
+
+            <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-12">
+            <img src="img/research/ssc.png" height="140" alt="img">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-12">
+            <h4>Software Supply Chain</h4>
+            <p>Our <a href="http://www.se.fudan.edu.cn/fuxi/">fuxi (伏羲)</a> platform aims to assess and mitigate security, legal and maintenance risks of software supply chain across multiple programming languages (e.g., Java, Go, Python, JavaScript and C/C++) and across multiple application domains (e.g., application systems and AI systems).</p>
+            </div>
+            </div>
+            <br>
+
+            <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-12">
+            <img src="img/research/xai.jpeg" height="140" alt="img">
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-12">
+            <h4>AI System Engineering</h4>
+            <p>Assure the high quality and trustworthy evolution of complex AI systems (e.g., ADSs and agents) at the application level, and investigate LLM inference acceleration and high-performance operator generation at the system level.</p>
+            </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--=========== END RESEARCH SECTION ================-->
+
+    <!--=========== BEGAIN PUBLICATIONS SECTION ================-->
+    <section id="works">
+      <!-- BEGAIN FORTFOLIO WORSK SECTION -->
+      <div class="row">
+        <div class="portfolio_area">
+          <!-- BEGAIN PORTFOLIO HEADER -->
+          <div class="row">
+            <div class="col-lg-12 col-md-12">
+             <div class="container">
+                <div class="heading">
+                  <h2 class="wow fadeInLeftBig">Pulications</h2>
+                  <p>See also at <a href="https://dblp.uni-trier.de/pers/hd/c/Chen_0001:Bihuan" target="_blank">DBLP</a> and <a href="http://scholar.google.com/citations?hl=en&amp;user=Cz-4wl0AAAAJ" target="_blank">Google Scholar</a>.</p>
+                </div>
+    		  </div>
+            </div>
+          </div>
+          <!-- END PORTFOLIO HEADER -->
+        </div>
+      </div>
+      <!-- END FORTFOLIO WORSK SECTION -->
+
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <div class="counter_section">
+            <!-- SKILLS COUNTER OVERLAY -->
+            <div class="container">
+              <div class="counter_area">
+                <div class="heading">
+                  <h3 class="wow fadeInLeft">Journals</h3>
+    				<p>
+    				<ol>
+            <!--<li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Junpeng Zhao, Zhuotong Zhou, <span style="text-decoration: underline">Bihuan Chen</span>, Yen Qin Hoo, Yiheng Huang, Susheng Wu, Yiheng Cao, and Xin Peng.<br>
+            <a href="" target="_blank">FerryMan: LLM-Driven Library Migration via API Mapping.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, accepted, 2026. (Impact factor: 6.200)<br>
+            </li>-->
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Yifan Tian, You Lu, Dingji Wang, Kun Zhang, Yufei Zhao, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+            <a href="" target="_blank">Online Simulation Data Augmentation for Testing and Optimizing Autonomous Driving Systems.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, accepted, 2026. (Impact factor: 2.756)
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Yiheng Cao, Yihao Chen, Xin Hu, <span style="text-decoration: underline">Bihuan Chen</span>, Jiayi Deng, Zhuotong Zhou, Susheng Wu, Yiheng Huang, Xueying Du, Xingman Chen, Miaohua Li, and Xin Peng.<br>
+            <a href="" target="_blank">VulWeaver: Weaving Broken Semantics for Grounded Vulnerability Detection.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, accepted, 2026. (Impact factor: 6.200)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, You Lu, Susheng Wu, Dingji Wang, Yiheng Huang, Haowen Jiang, Zhuotong Zhou, Junming Cao, and Xin Peng.<br>
+            <a href="" target="_blank">Lifting the Veil on Composition, Risks, and Mitigations of the Large Language Model Supply Chain.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, accepted, 2026. (Impact factor: 6.200)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> You Lu, Yifan Tian, Kun Zhang, Dingji Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Haowen Jiang, Qicai Chen, Kun Hu, and Xin Peng.<br>
+            <a href="" target="_blank">DynNPC: Finding More Violations Induced by ADS in Simulation Testing via Dynamic NPC Behavior Generation.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, accepted, 2026. (Impact factor: 6.200)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Yiheng Huang, Ruisi Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Susheng Wu, Zhuotong Zhou, Yiheng Cao, Weixin Lin, and Xin Peng.<br>
+            <a href="" target="_blank">Hierarchical Summarization-Based Malware Detection for C/C++ Source Code by Integrating Large Language Model and Static Analysis.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, accepted, 2026. (Impact factor: 2.756)
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Susheng Wu, Yiheng Cao, Xin Hu, Zhuotong Zhou, Yijian Wu, <span style="text-decoration: underline">Bihuan Chen</span>, Ruisi Wang, Yiheng Huang, Kaifeng Huang, and Xin Peng.<br>
+            <a href="" target="_blank">CoCoPat: Identifying Critical Changes in Vulnerability Patches.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, accepted, 2026. (Impact factor: 6.200)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Xueying Du, Geng Zheng, Kaixin Wang, Yi Zou, Yujia Wang, Wentai Deng, Jiayi Feng, Mingwei Liu, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Tao Ma, and Yiling Lou.<br>
+            <a href="https://dl.acm.org/doi/full/10.1145/3797277" target="_blank">Vul-RAG: Enhancing LLM-based Vulnerability Detection via Knowledge-level RAG.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, vol. 35, no. 10, 2026. (Impact factor: 6.200)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Chen Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Siqi Wu, Lei Zhao, Xin Peng, and Wenyun Zhao.<br>
+            <a href="https://link.springer.com/article/10.1007/s10664-025-10798-9" target="_blank">A Large-Scale Empirical Study of Configurations, Errors, and Warnings for Compilation in Continuous Integration.</a><br>
+            <a href="https://link.springer.com/journal/10664" target="_blank"><i>Empirical Software Engineering</i></a>, vol. 31, no. 3, 2026. (An extended version of the ESEC/FSE'19 paper; Impact factor: 3.600)<br>
+            </li>
+            <li style="margin-bottom:10px">
+            <img src="img/new.gif" alt="" /> Shuning Liu, Yijian Wu, Xuezhi Song, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+            <a href="https://www.jos.org.cn/jos/article/abstract/7510" target="_blank">Defect Isolation Method Based on Semantic Analysis of Code Changes.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, vol. 37, no. 5, pages 2151-2166, 2026. (Impact factor: 2.756)
+            </li>
+            <li style="margin-bottom:10px">
+            Junan Zhang, Kaifeng Huang, Yiheng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Ruisi Wang, Chong Wang, and Xin Peng.<br>
+            <a href="https://dl.acm.org/doi/abs/10.1145/3705304" target="_blank">Killing Two Birds with One Stone: Malicious Package Detection in NPM and PyPI using a Single Model of Malicious Behavior Sequence.</a><br>
+            <a href="https://dl.acm.org/journal/tosem" target="_blank"><i>ACM Transactions on Software Engineering and Methodology</i></a>, vol. 34, no. 4, 2025. (Impact factor: 6.600)<br>
+            <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (3nd Prize)&nbsp;</span>
+            </li>
+            <li style="margin-bottom:10px">
+            Kan Shen, Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+            <a href="https://jos.org.cn/jos/article/abstract/7224" target="_blank">Detecting Incompatible Third-Party Library APIs in Python Based on Static Analysis.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, vol. 36, no. 4, pages 1435-1460, 2025. (Impact factor: 3.120)
+            </li>
+            <li style="margin-bottom:10px">
+    				Yutong Zhao, Lu Xiao, Andre B. Bondi, <span style="text-decoration: underline">Bihuan Chen</span>, and Yang Liu.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9757842" target="_blank">A Large-Scale Empirical Study of Real-Life Performance Issues in Open Source Projects.</a><br>
+    				<a href="https://www.computer.org/web/tse" target="_blank"><i>IEEE Transactions on Software Engineering</i></a>, vol. 49, no. 2, pages 924-946, 2023. (An extended version of the ICPE'20 paper; Impact factor: 6.226)
+    				</li>
+            <li style="margin-bottom:10px">
+            <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, Xin Peng, Yijian Wu, and Shengchao Qin.<br>
+            <a href="http://scis.scichina.com/en/2023/132101.pdf" target="_blank">Baton: Symphony of Random Testing and Concolic Testing through Machine Learning and Taint Analysis.</a><br>
+            <a href="http://engine.scichina.com/publisher/scp/journal/SCIS" target="_blank"><i>SCIENCE CHINA Information Sciences</i></a>, vol. 66, 2023. (Impact factor: 4.380)
+            </li>
+    				<li style="margin-bottom:10px">
+    				Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Congying Xu, Ying Wang, Bowen Shi, Xin Peng, Yijian Wu, and Yang Liu.<br>
+    				<a href="https://link.springer.com/article/10.1007/s10664-022-10131-8" target="_blank">Characterizing Usages, Updates and Risks of Third-Party Libraries in Java Projects.</a><br>
+    				<a href="https://www.springer.com/journal/10664" target="_blank"><i>Empirical Software Engineering</i></a>, vol. 27, no. 4, 2022. (An invited extended version of the ICSME'20 paper; Impact factor: 2.522)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Chi Chen, Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, Jun Sun, Zhenchang Xing, Xin Wang, and Wenyun Zhao.<br>
+    				<a href="https://link.springer.com/article/10.1007/s10664-021-10040-2" target="_blank">"More Than Deep Learning": Post-Processing for API Sequence Recommendation.</a>  <br>
+    				<a href="https://www.springer.com/journal/10664/" target="_blank"><i>Empirical Software Engineering</i></a>, vol. 27, no. 1, 2022. (Impact factor: 2.522)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Fengyi Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Rongfan Li, and Xin Peng.<br>
+    				<a href="https://www.sciencedirect.com/science/article/pii/S0164121221001084" target="_blank">A Hybrid Code Representation Learning Approach for Predicting Method Names.</a><br>
+    				<a href="https://www.journals.elsevier.com/journal-of-systems-and-software" target="_blank"><i>Journal of Systems and Software</i></a>, vol. 180, 2021. (Impact factor: 2.450)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Wenjian Liu, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Qinghao Sun, and Wenyun Zhao.<br>
+    				<a href="http://engine.scichina.com/doi/10.1007/s11432-019-2745-5" target="_blank">Identifying Change Patterns of API Misuses from Code Changes.</a><br>
+    				<a href="http://engine.scichina.com/publisher/scp/journal/SCIS" target="_blank"><i>SCIENCE CHINA Information Sciences</i></a>, vol. 64, no. 3, 2021. (Impact factor: 2.731)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Kun Cheng, Yuan Zhou, <span style="text-decoration: underline">Bihuan Chen</span>, Rui Wang, Yuebin Bai, and Yang Liu.<br>
+    				<a href="https://ieeexplore.ieee.org/abstract/document/9172045" target="_blank">Guardauto: A Decentralized Runtime Protection System for Autonomous Driving.</a><br>
+    				<a href="https://www.computer.org/csdl/journal/tc" target="_blank"><i>IEEE Transactions on Computers</i></a>, vol. 70, no. 10, pages 1569-1581, 2021. (Impact factor: 3.131)
+    				</li>
+            <li style="margin-bottom:10px">
+            Yu Wang, Fengjuan Gao, Kexin Ma, Lingyun Situ, Linzhang Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, Jianhua Zhao, and Xuandong Li.<br>
+            <a href="https://www.jos.org.cn/jos/article/abstract/5994" target="_blank">Detecting and Preventing Dangling Pointers.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, vol. 31, no. 6, pages 1600-1618, 2020. (Impact factor: 2.446)
+            </li>
+    				<li style="margin-bottom:10px">
+    				Hang Ruan, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="https://www.sciencedirect.com/science/article/pii/S0164121219301803" target="_blank">DeepLink: Recovering Issue-Commit Links based on Deep Learning.</a><br>
+    				<a href="https://www.journals.elsevier.com/journal-of-systems-and-software" target="_blank"><i>Journal of Systems and Software</i></a>, vol. 158, 2019. (Impact factor: 2.559)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Chenyu Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, and Hongjun Wu.<br>
+    				<a href="https://ieeexplore.ieee.org/document/8410568/" target="_blank">Layered Object Oriented Programming: Advanced VTable Reuse Attacks on Binary-Level Defense.</a><br>
+    				<a href="https://signalprocessingsociety.org/publications-resources/ieee-transactions-information-forensics-and-security" target="_blank"><i>IEEE Transactions on Information Forensics and Security</i></a>, vol. 14, no. 3, pages 693-708, 2019. (Impact factor: 4.332)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xiaofei Xie, <span style="text-decoration: underline">Bihuan Chen</span>, Liang Zou, Yang Liu, Wei Le, and Xiaohong Li.<br>
+    				<a href="http://ieeexplore.ieee.org/document/8241837/" target="_blank">Automatic Loop Summarization via Path Dependency Analysis.</a><br>
+    				<a href="https://www.computer.org/web/tse" target="_blank"><i>IEEE Transactions on Software Engineering</i></a>, vol. 45, no. 6, pages 537-557, 2019. (An extended version of the FSE'16 paper; Impact factor: 3.272)
+    				</li>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yang Liu, Songzheng Song, Jiahuan Zheng, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=7517402" target="_blank">Architecture-Based Behavioral Adaptation with Generated Alternatives and Relaxed Constraints.</a><br>
+    				<a href="http://www.computer.org/web/tsc" target="_blank"><i>IEEE Transactions on Services Computing</i></a>, vol. 12, no. 1, pages 73-87, 2019. (Impact factor: 2.365)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Sanjeev Das, <span style="text-decoration: underline">Bihuan Chen</span>, Mahinthan Chandramohan, Yang Liu, and Wei Zhang.<br>
+    				<a href="https://www.sciencedirect.com/science/article/pii/S0167404817302481" target="_blank">ROPSentry: Runtime Defense against ROP Attacks using Hardware Performance Counters.</a><br>
+    				<a href="https://www.journals.elsevier.com/computers-and-security" target="_blank"><i>Computers & Security</i></a>, vol. 73, pages 374–388, 2018. (Impact factor: 2.849)
+    				<li style="margin-bottom:10px">
+    				Wenyi Qian, Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, John Mylopoulos, Huanhuan Wang, and Wenyun Zhao.<br>
+    				<a href="http://link.springer.com/article/10.1007%2Fs00766-015-0227-1" target="_blank">Rationalism with a Dose of Empiricism: Combining Goal Reasoning and Case-Based Reasoning for Self-Adaptive Software Systems.</a><br>
+    				<a href="http://link.springer.com/journal/766" target="_blank"><i>Requirements Engineering</i></a>, vol. 20, no. 3, pages 233–252, 2015. (An invited extended version of the RE'14 paper; Impact factor: 0.882)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yijun Yu, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6705644" target="_blank">Requirements-Driven Self-Optimization of Composite Services using Feedback Control.</a><br>
+    				<a href="http://www.computer.org/web/tsc" target="_blank"><i>IEEE Transactions on Services Computing</i></a>, vol. 8, no. 1, pages 107-120, 2015. (Impact factor: 3.049)
+    				</li>            
+            <li style="margin-bottom:10px">
+            Ling Yu, Yi Xie, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+            <a href="https://crad.ict.ac.cn/cn/article/doi/10.7544/issn1000-1239.2015.20131908" target="_blank">Towards Runtime Dynamic Provision of Virtual Resources Using Fedforward and Fedback Control.</a><br>
+            <a href="https://crad.ict.ac.cn" target="_blank"><i>Journal of Computer Research and Development</i> (in Chinese)</a>, vol. 52, no. 4, pages 889-897, 2015. (Impact factor: 2.649)
+            </li>
+            <li style="margin-bottom:10px">
+            Mingliang Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Gang Huang, and Wenyun Zhao.<br>
+            <a href="https://jos.org.cn/jos/article/abstract/4754" target="_blank">Personal Service Publishing and Composition in Mobile Computing Environment.</a><br>
+            <a href="https://jos.org.cn/jos/home" target="_blank"><i>Journal of Software</i> (in Chinese)</a>, vol. 26, no. 4, pages 802-818, 2015. (Impact factor: 2.669)
+            </li>
+    				<li style="margin-bottom:10px">
+            <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yijun Yu, and Wenyun Zhao.<br>
+            <a href="http://www.sciencedirect.com/science/article/pii/S0164121214000065" target="_blank">Uncertainty Handling in Goal-Driven Self-Optimization - Limiting the Negative Effect on Adaptation.</a><br>
+            <a href="http://www.journals.elsevier.com/journal-of-systems-and-software/" target="_blank"><i>Journal of Systems and Software</i></a>, vol. 90, pages 114-127, 2014. (Impact factor: 1.352)
+            </li>
+            <li style="margin-bottom:10px">
+    				Richang Lin, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="https://www.sciengine.com/SSI/doi/10.1360/N112013-00099" target="_blank">Dynamic Web Service Composition Approach Supporting Different Risk Appetites.</a><br>
+    				<a href="https://www.sciengine.com" target="_blank"><i>SCIENCE CHINA Information Sciences</i> (in Chinese)</a>, vol. 44, no. 1, pages 130-141, 2014. (Impact factor: 0.670)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, Yijun Yu, and Wenyun Zhao.<br>
+    				<a href="http://www.sciencedirect.com/science/article/pii/S016412121200132X" target="_blank">Self-Tuning of Software Systems through Dynamic Quality Tradeoff and Value-Based Feedback Control Loop.</a><br>
+    				<a href="http://www.journals.elsevier.com/journal-of-systems-and-software/" target="_blank"><i>Journal of Systems and Software</i></a>, vol. 85, no. 12, pages 2707-2719, 2012. (An extended version of the RE'10 paper; Impact factor: 1.135)
+    				</li>
+    				</ol>
+    				</p>
+    			</div>
+    			<div class="heading">
+                  <h3 class="wow fadeInLeft">Conferences</h3>
+    			  <p>
+    				<ol>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Dingji Wang, You Lu, Haowen Jiang, Yanggang Chen, Yuyang Bi, <span style="text-decoration: underline">Bihuan Chen</span>, Shenglin Bao, and Xin Peng.<br>
+                <a href="" target="_blank">CoSafe: Cooperative Runtime Safety Assurance for Mixed-Traffic  Autonomous Driving.</a> <br>
+                In <i>Proceedings of the 49th IEEE/ACM International Conference on Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/icse-2027" target="_blank">ICSE 2027</a>), Dublin, Ireland, accepted, 2027. (Direct acceptance rate: 119/2375 = 5.0%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Kun Hu, Jiaji Qin, Chaofeng Sha, <span style="text-decoration: underline">Bihuan Chen</span>, Shuoran Bai, Qicai Chen, Chenglin Wang, Xin Peng, and Wenyun Zhao.<br>
+                <a href="" target="_blank">SyzDiversity: Diversity-Guided Linux Kernel Fuzzing.</a> [ <a href="paper/issta26-hu-syzdiversity.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2026" target="_blank">ISSTA 2026</a>), Oakland, California, United States, accepted, 2026. (Acceptance rate: 210/888 = 23.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Susheng Wu, Ziqian Chen, Chengyuan Li, Kaifeng Huang, Zekai Chen, Yijian Wu, <span style="text-decoration: underline">Bihuan Chen</span>, Yiheng Cao, Zhuotong Zhou, Yiheng Huang, Xin Peng.<br>
+                <a href="" target="_blank">TensorLock: Recovering Model Dependency for Model Supply Chain.</a> [ <a href="paper/issta26-wu-tensorlock.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2026" target="_blank">ISSTA 2026</a>), Oakland, California, United States, accepted, 2026. (Direct acceptance rate: 90/888 = 10.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Zhuotong Zhou, Susheng Wu, Junpeng Zhao, <span style="text-decoration: underline">Bihuan Chen</span>, YenQin Hoo, Yiheng Huang, Yiheng Cao, and Xin Peng.<br>
+                <a href="" target="_blank">The Fix is Right at Hand: Fixing Incompatibility Errors Guided by Library Knowledge for Automatic Library Upgrade.</a> [ <a href="paper/issta26-zhou-librarian.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2026" target="_blank">ISSTA 2026</a>), Oakland, California, United States, accepted, 2026. (Direct acceptance rate: 90/888 = 10.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Sichen Gong, Qicai Chen, <span style="text-decoration: underline">Bihuan Chen</span>, Wenzhuo Zhang, Yukun Gao, and Xin Peng.<br>
+                <a href="" target="_blank">AutoHIL: LLM-Based ECU Functional Test Generation through Domain Knowledge Augmentation.</a> [ <a href="paper/issta26-gong-autohil.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2026" target="_blank">ISSTA 2026</a>), Oakland, California, United States, accepted, 2026. (Direct acceptance rate: 90/888 = 10.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> You Lu, Dingji Wang, Kun Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Jiyan Zhang, and Xin Peng.<br>
+                <a href="" target="_blank">Poirot: Automatic Root Cause Analysis of Safety Violations in ADS Simulation Testing via Hypothetical Reasoning.</a> [ <a href="paper/issta26-lu-poirot.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2026" target="_blank">ISSTA 2026</a>), Oakland, California, United States, accepted, 2026. (Direct acceptance rate: 90/888 = 10.1%)<br>
+                <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;ACM SIGSOFT Distinguished Paper Award&nbsp;</span>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Susheng Wu, Xin Hu, Yiheng Cao, Zhuotong Zhou, Yiheng Huang, Yijian Wu, <span style="text-decoration: underline">Bihuan Chen</span>, Zhijia Zhao, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">It Takes Two: Option-Aware Directed Greybox Fuzzing for Vulnerability PoC Generation.</a> [ <a href="paper/fse26-wu-couplefuzz.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM International Conference on the Foundations of Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/fse-2026" target="_blank">FSE 2026</a>), Montreal, Canada, pages 2189-2210, 2026. (Acceptance rate: 210/920 = 23.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Yuyang Bi, Junming Cao, You Lu, <span style="text-decoration: underline">Bihuan Chen</span>, Tianwei Gan, Dingji Wang, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">Understanding Performance Problems in CUDA Programs.</a> [ <a href="paper/fse26-bi-cuda-performance.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM International Conference on the Foundations of Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/fse-2026" target="_blank">FSE 2026</a>), Montreal, Canada, pages 344-365, 2026. (Direct acceptance rate: 87/920 = 9.5%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Haowen Jiang, Xinyu Huang, You Lu, Yuheng Cao, Chaofeng Sha, <span style="text-decoration: underline">Bihuan Chen</span>, Dingji Wang, Keyu Chen, and Xin Peng.<br>
+                <a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">ExpertAD: Enhancing Autonomous Driving Systems with Mixture of Experts.</a> [ <a href="paper/aaai26-jiang-expertad.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 40th Annual AAAI Conference on Artificial Intelligence</i><br>
+                (<a href="https://aaai.org/conference/aaai/aaai-26/" target="_blank">AAAI 2026</a>), Singapore, pages 5378-5387, 2026. (Oral, Acceptance rate: 4167/23680 = 17.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Ziqian Chen, Zekai Chen, Susheng Wu, <span style="text-decoration: underline">Bihuan Chen</span>, Wenyan Song, Yiheng Huang, Zhuotong Zhou, Yiheng Cao, and Xin Peng.<br>
+                <a href="" target="_blank">A First Look at Model Supply Chain: From the Risk Perspective.</a> [ <a href="paper/icse26-chen-model-supply-chain.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the IEEE/ACM International Conference on Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/icse-2026" target="_blank">ICSE 2026</a>), Rio de Janeiro, Brazil, accepted, 2026. (Direct acceptance rate at Cycle 2: 72/795 = 9.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                <img src="img/new.gif" alt="" /> Xuezhi Song, Yijian Wu, <span style="text-decoration: underline">Bihuan Chen</span>, Zhengjie Lu, Shuning Liu, and Xin Peng.<br>
+                <a href="" target="_blank">Characterizing Regression Bug‑Inducing Changes and Improving LLM‑Based Regression Bug Detection.</a> [ <a href="paper/icse26-song-regression-bug.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the IEEE/ACM International Conference on Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/icse-2026" target="_blank">ICSE 2026</a>), Rio de Janeiro, Brazil, accepted, 2026. (Direct acceptance rate at Cycle 2: 72/795 = 9.1%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Dingji Wang, You Lu, <span style="text-decoration: underline">Bihuan Chen</span>, Shuo Hao, Haowen Jiang, Yifan Tian, and Xin Peng.<br>
+                <a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">Argus: Resilience-Oriented Safety Assurance Framework for End-to-End ADSs.</a> [ <a href="paper/ase25-wang-argus.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 40th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/ase-2025" target="_blank">ASE 2025</a>), Seoul, South Korea, pages 13-15, 2025. (Acceptance rate: 245/1136 = 21.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Yiheng Huang, Wen Zheng, Susheng Wu, <span style="text-decoration: underline">Bihuan Chen</span>, You Lu, Zhuotong Zhou, Yiheng Cao, Xiaoyu Li, and Xin Peng.<br>
+                <a href="https://ieeexplore.ieee.org/document/11334642/" target="_blank">ProfMal: Detecting Malicious NPM Packages by the Synergy between Static and Dynamic Analysis.</a> [ <a href="paper/ase25-huang-profmal.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 40th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/ase-2025" target="_blank">ASE 2025</a>), Seoul, South Korea, pages 419-431, 2025. (Direct acceptance rate: 113/1136 = 9.9%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Qicai Chen, Kun Hu, Sichen Gong, <span style="text-decoration: underline">Bihuan Chen</span>, Zikui Kong, Haowen Jiang, Bingkun Sun, You Lu, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">Structure-Aware, Diagnosis-Guided ECU Firmware Fuzzing.</a> [ <a href="paper/issta25-chen-ecufuzz.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2025" target="_blank">ISSTA 2025</a>), Trondheim, Norway, pages 871-893, 2025. (Acceptance rate: 107/500 = 21.4%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Yiheng Cao, Susheng Wu, Ruisi Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Yiheng Huang, Chenhao Lu, Zhuotong Zhou, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">Recurring Vulnerability Detection: How Far Are We?</a> [ <a href="paper/issta25-cao-antman.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2025" target="_blank">ISSTA 2025</a>), Trondheim, Norway, pages 573-595, 2025. (Acceptance rate: 107/500 = 21.4%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Junming Cao, Xuwen Xiang, Mingfei Cheng, <span style="text-decoration: underline">Bihuan Chen</span>, Xinyan Wang, You Lu, Chaofeng Sha, Xiaofei Xie, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3729358" target="_blank">RegTrieve: Reducing System-Level Regression Errors for Machine Learning Systems via Retrieval-Enhanced Ensemble.</a> [ <a href="paper/fse25-cao-regtrieve.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM International Conference on the Foundations of Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/fse-2025" target="_blank">FSE 2025</a>), Trondheim, Norway, pages 1960-1982, 2025. (Acceptance rate: 135/607 = 22.2%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Susheng Wu, Ruisi Wang, Yiheng Cao, <span style="text-decoration: underline">Bihuan Chen</span>, Zhuotong Zhou, Yiheng Huang, Junpeng Zhao, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">Mystique: Automated Vulnerability Patch Porting with Semantic and Syntactic-Enhanced LLM.</a> [ <a href="paper/fse25-wu-mystique.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM International Conference on the Foundations of Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/fse-2025" target="_blank">FSE 2025</a>), Trondheim, Norway, Pages 130-152, 2025. (Direct acceptance rate: 70/607 = 11.5%)<br>
+                <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;ACM SIGSOFT Distinguished Paper Award&nbsp;</span> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (2nd Prize)&nbsp;</span>
+              </li>
+              <li style="margin-bottom:10px">
+                Kaifeng Huang, Chenhao Lu, Yiheng Cao, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3658644.3690372" target="_blank">VMUD: Detecting Recurring Vulnerabilities with Multiple Fixing Functions via Function Selection and Semantic Equivalent Statement Matching.</a> [ <a href="paper/ccs24-huang-vmud.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 31st ACM Conference on Computer and Communications Security</i><br>
+                (<a href="https://www.sigsac.org/ccs/CCS2024/" target="_blank">CCS 2024</a>), Salt Lake City, United States, pages 3958-3972, 2024. (Acceptance rate: 328/1964 = 16.7%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Susheng Wu, Ruisi Wang, Kaifeng Huang, Yiheng Cao, Wenyan Song, Zhuotong Zhou, Yiheng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3691620.3695516" target="_blank">Vision: Identifying Affected Library Versions for Open Source Software Vulnerabilities.</a> [ <a href="paper/ase24-wu-vision.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/ase-2024" target="_blank">ASE 2024</a>), Sacramento, California, United States, pages 1447-1459, 2024. (Acceptance rate: 155/568 = 27.3%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Yiheng Huang, Ruisi Wang, Wen Zheng, Zhuotong Zhou, Susheng Wu, Shulin Ke, <span style="text-decoration: underline">Bihuan Chen</span>, Shan Gao, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3691620.3695492" target="_blank">SpiderScan: Practical Detection of Malicious NPM Packages Based on Graph-Based Behavior Modeling and Matching.</a> [ <a href="paper/ase24-huang-spiderscan.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/ase-2024" target="_blank">ASE 2024</a>), Sacramento, California, United States, pages 1146-1158, 2024. (Acceptance rate: 155/568 = 27.3%)<br>
+                <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (2nd Prize)&nbsp;</span>
+              </li>
+              <li style="margin-bottom:10px">
+                Zhuotong Zhou, Yongzhuo Yang, Susheng Wu, Yiheng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3691620.3695531" target="_blank">Magneto: A Step-Wise Approach to Exploit Vulnerabilities in Dependent Libraries via LLM-Empowered Directed Fuzzing.</a> [ <a href="paper/ase24-zhou-magneto.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/ase-2024" target="_blank">ASE 2024</a>), Sacramento, California, United States, pages 1633-1644, 2024. (Acceptance rate: 155/568 = 27.3%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Kaifeng Huang, Yingfeng Xia, <span style="text-decoration: underline">Bihuan Chen</span>, Siyang He, Huazheng Zeng, Zhuotong Zhou, Jin Guo, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3650212.3680339" target="_blank">Your "Notice" is Missing: Detecting and Fixing Violations of  Modification Terms in Open Source Licenses during Forking.</a> [ <a href="paper/issta24-huang-livo.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://2024.issta.org" target="_blank">ISSTA 2024</a>), Vienna, Austria, pages 1022-1034, 2024. (Acceptance rate: 143/694 = 20.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                You Lu, Yifan Tian, Yuyang Bi, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3650212.3652135" target="_blank">DiaVio: LLM-Empowered Diagnosis of Safety Violations in ADS Simulation Testing.</a> [ <a href="paper/issta24-lu-diavio.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://2024.issta.org" target="_blank">ISSTA 2024</a>), Vienna, Austria, pages 376-388, 2024. (First round acceptance rate: 42/471 = 8.9%)<br>
+                <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (3nd Prize)&nbsp;</span>
+              </li>
+              <li style="margin-bottom:10px">
+                Xuezhi Song, Yijian Wu, Shuning Liu, <span style="text-decoration: underline">Bihuan Chen</span>, Yun Lin, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3650212.3652129" target="_blank">C2D2: Extracting Critical Changes for Real-World Bugs with Dependency-Sensitive Delta Debugging.</a> [ <a href="paper/issta24-song-c2d2.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://2024.issta.org" target="_blank">ISSTA 2024</a>), Vienna, Austria, pages 300-312, 2024. (First round acceptance rate: 42/471 = 8.9%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Dongfang Xie, <span style="text-decoration: underline">Bihuan Chen</span>, Kaifeng Huang, Yu Wang, Linghao Pan, Zhicheng Chen, and Xin Peng.<br>
+                <a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">Enhancing Field Tracking and Interprocedural Analysis to Find More Null Pointer Exceptions.</a> [ <a href="paper/saner24-xie-wheeljack.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 31st IEEE International Conference on Software Analysis, Evolution and Reengineering</i><br>
+                (<a href="https://conf.researchr.org/home/saner-2024" target="_blank">SANER 2024</a>), Rovaniemi , Finland, pages 849-859, 2024. (Acceptance rate: 62/242 = 25.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Susheng Wu, Wenyan Song, Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/abs/10.1145/3597503.3639582" target="_blank">Identifying Affected Libraries and Their Ecosystems for Open Source Software Vulnerabilities.</a> [ <a href="paper/icse24-wu-holmes.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the International Conference on Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/icse-2024" target="_blank">ICSE 2024</a>), Lisbon, Portugal, pages 1-12, 2024. (Acceptance rate: 234/1051 = 22.3%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Qi Guo, Junming Cao, Xiaofei Xie, Shangqing Liu, Xiaohong Li, <span style="text-decoration: underline">Bihuan Chen</span>, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/10.1145/3597503.3623306" target="_blank">Exploring the Potential of ChatGPT in Automated Code  Refinement: An Empirical Study.</a> [ <a href="https://arxiv.org/abs/2309.08221" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the International Conference on Software Engineering</i><br>
+                (<a href="https://conf.researchr.org/home/icse-2024" target="_blank">ICSE 2024</a>), Lisbon, Portugal, pages 379-391, 2024. (Acceptance rate: 234/1051 = 22.3%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Susheng Wu, Junming Cao, Lei Ma, and Xin Peng.<br>
+                <a href="https://dl.acm.org/doi/abs/10.1145/3611643.3616325" target="_blank">Demystifying Dependency Bugs in Deep Learning Stack.</a> [ <a href="paper/fse23-huang-dl-dep.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+                (<a href="https://2023.esec-fse.org" target="_blank">ESEC/FSE 2023</a>), San Francisco, California, United States, pages 450-462, 2023. (Acceptance rate: 124/467 = 26.6%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Junming Cao, <span style="text-decoration: underline">Bihuan Chen</span>, Longjie Hu, Jie Gao, Kaifeng Huang, Xuezhi Song, and Xin Peng.<br>
+                <a href="https://ieeexplore.ieee.org/abstract/document/10336332" target="_blank">Characterizing the Complexity and Its Impact on Testing in ML-Enabled Systems - A Case Study on Rasa.</a> [ <a href="paper/icsme23-cao-ml-system.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 39th IEEE International Conference on Software Maintenance and Evolution</i><br>
+                (<a href="https://conf.researchr.org/home/icsme-2023" target="_blank">ICSME 2023</a>), Bogotá, Colombia, pages 258-270, 2023. (Acceptance rate: 27/119 = 22.7%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+                Shenglin Bao, Chaofeng Sha, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+                <a href="https://dl.acm.org/doi/abs/10.1145/3597926.3598073" target="_blank">In Defense of Simple Techniques for Neural Network Test Case Selection.</a> [ <a href="paper/issta23-bao-test-selection.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+                In <i>Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+                (<a href="https://conf.researchr.org/home/issta-2023" target="_blank">ISSTA 2023</a>), Seattle, Washington, United States, pages 501-513, 2023. (Acceptance rate: 117/372 = 31.5%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+      				Fengyi Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Yufei Zhao, and Xin Peng.<br>
+      				<a href="https://ieeexplore.ieee.org/document/10123586/" target="_blank">Slice-Based Code Change Representation Learning.</a> [ <a href="paper/saner23-zhang-ccs2vec.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+      				In <i>Proceedings of the 30th IEEE International Conference on Software Analysis, Evolution and Reengineering</i><br>
+      				(<a href="https://saner2023.must.edu.mo" target="_blank">SANER 2023</a>), Macao SAR, China, pages 319-330, 2023. (Acceptance rate: 56/207 = 27.1%)<br>
+              <i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;IEEE TCSE Distinguished Paper Award&nbsp;</span>
+      				</li>
+              <li style="margin-bottom:10px">
+              Chen Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Junhao Hu, Xin Peng, and Wenyun Zhao.<br>
+              <a href="https://dl.acm.org/doi/10.1145/3551349.3556923" target="_blank">BuildSonic: Detecting and Repairing Performance-Related Configuration Smells for Continuous Integration Builds.</a> [ <a href="paper/ase22-zhang-buildsonic.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+              In <i>Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+              (<a href="https://conf.researchr.org/home/ase-2022" target="_blank">ASE 2022</a>), Ann Arbor, Michigan, United States, pages 18:1-18:13, 2022. (Acceptance rate: 116/527 = 22.0%)<br>
+              </li>
+              <li style="margin-bottom:10px">
+      				Lyuye Zhang, Chengwei Liu, Zhengzi Xu, Sen Chen, Lingling Fan, <span style="text-decoration: underline">Bihuan Chen</span>, and Yang Liu.<br>
+      				<a href="https://dl.acm.org/doi/10.1145/3551349.3556956" target="_blank">Has My Release Disobeyed Semantic Versioning? Static Detection Based On Semantic Differencing.</a> [ <a href="https://arxiv.org/pdf/2209.00393.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+      				In <i>Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+      				(<a href="https://conf.researchr.org/home/ase-2022" target="_blank">ASE 2022</a>), Ann Arbor, Michigan, United States, pages 51:1-51:12, 2022. (Acceptance rate: 116/527 = 22.0%)<br>
+      				<i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;ACM SIGSOFT Distinguished Paper Award&nbsp;</span>
+              </li>
+              <li style="margin-bottom:10px">
+      				Junming Cao, <span style="text-decoration: underline">Bihuan Chen</span>, Chao Sun, Longjie Hu, Shuaihong Wu, and Xin Peng.<br>
+      				<a href="https://dl.acm.org/doi/abs/10.1145/3540250.3549123" target="_blank">Understanding Performance Problems in Deep Learning Systems.</a> [ <a href="paper/fse22-cao-deepperf.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+      				In <i>Proceedings of the ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+      				(<a href="https://2022.esec-fse.org" target="_blank">ESEC/FSE 2022</a>), Singapore, pages 357-369, 2022. (Acceptance rate: 99/449 = 22.0%)<br>
+      				</li>
+              <li style="margin-bottom:10px">
+      				Congying Xu, <span style="text-decoration: underline">Bihuan Chen</span>, Chenhao Lu, Kaifeng Huang, Xin Peng, and Yang Liu.<br>
+      				<a href="https://dl.acm.org/doi/10.1145/3540250.3549125" target="_blank">Tracking Patches for Open Source Software Vulnerabilities.</a> [ <a href="paper/fse22-xu-tracer.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+      				In <i>Proceedings of the ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+      				(<a href="https://2022.esec-fse.org" target="_blank">ESEC/FSE 2022</a>), Singapore, pages 860-871, 2022. (Acceptance rate: 99/449 = 22.0%)<br>
+      				</li>
+            <li style="margin-bottom:10px">
+    				Rongfan Li, <span style="text-decoration: underline">Bihuan Chen</span>, Fengyi Zhang, Chao Sun, and Xin Peng.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9825827/" target="_blank">Detecting Runtime Exceptions by Deep Code Representation Learning with Attention-Based Graph Neural Networks.</a> [ <a href="paper/saner22-li-drex.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 29th IEEE International Conference on Software Analysis, Evolution and Reengineering</i><br>
+    				(<a href="https://saner2022.uom.gr" target="_blank">SANER 2022</a>), Hawaii, USA, pages 373-384, 2022. (Acceptance rate: 48/199 = 24.1%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yi Liu, Yadong Yan, Chaofeng Sha, Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, and Chong Wang.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9825847" target="_blank">DeepAnna: Deep Learning based Java Annotation Recommendation and Misuse Detection.</a> [ <a href="paper/saner22-liu-deepanna.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 29th IEEE International Conference on Software Analysis, Evolution and Reengineering</i><br>
+    				(<a href="https://saner2022.uom.gr" target="_blank">SANER 2022</a>), Hawaii, USA, pages 685-696, 2022. (Acceptance rate: 48/199 = 24.1%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Chen Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9793896" target="_blank">BuildSheriff: Change-Aware Test Failure Triage for Continuous Integration Builds.</a> [ <a href="paper/icse22-zhang-buildsheriff.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 44th International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2022" target="_blank">ICSE 2022</a>), Pittsburgh, PA, USA, pages 312-324, 2022. (Acceptance rate: 197/751 = 26.2%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Chengwei Liu, Sen Chen, Lingling Fan, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, and Xin Peng.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9794026" target="_blank">Demystifying the Vulnerability Propagation and Its Evolution via Dependency Trees in the NPM Ecosystem.</a> [ <a href="https://arxiv.org/pdf/2201.03981.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 44th International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2022" target="_blank">ICSE 2022</a>), Pittsburgh, PA, USA, pages 672-684, 2022. (Acceptance rate: 197/751 = 26.2%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Linghao Pan, Shuai Wu, and Xin Peng.<br>
+    				<a href="https://ieeexplore.ieee.org/abstract/document/9678905" target="_blank">RepFinder: Finding Replacements for Missing APIs in Library Update.</a> [ <a href="paper/ase21-huang-repfinder.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the 36th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/ase-2021" target="_blank">ASE 2021</a>), Melbourne, Australia, pages 266-278, 2021. (Acceptance rate: 82/427 = 19.2%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Ying Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Kaifeng Huang, Bowen Shi, Congying Xu, Xin Peng, Yijian Wu and Yang Liu.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9240619" target="_blank">An Empirical Study of Usages, Updates and Risks of Third-Party Libraries in Java Projects.</a> [ <a href="paper/icsme20-wang-lib-empirical.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the 36th IEEE International Conference on Software Maintenance and Evolution</i><br>
+    				(<a href="https://icsme2020.github.io" target="_blank">ICSME 2020</a>), Adelaide, Australia, pages 35-45, 2020. (Acceptance rate: 58/201 = 28.9%)<br>
+    				<i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;IEEE TCSE Distinguished Paper Award&nbsp;</span> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (2nd Prize)&nbsp;</span>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Linlin Chen, Chen Zhang, and Xin Peng.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9286064" target="_blank">BuildFast: History-Aware Build Outcome Prediction for Fast Feedback and Reduced Cost in Continuous Integration.</a> [ <a href="paper/ase20-chen-buildfast.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the 35th IEEE/ACM International Conference on Automated Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/ase-2020" target="_blank">ASE 2020</a>), Melbourne, Australia, pages 42-53, 2020. (Acceptance rate: 93/414 = 22.5%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Bowen Shi, Ying Wang, Congying Xu, and Xin Peng.<br>
+    				<a href="https://dl.acm.org/doi/abs/10.1145/3368089.3409689" target="_blank">Interactive, Effort-Aware Library Version Harmonization.</a> [ <a href="paper/fse20-huang-libharmo.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="https://2020.esec-fse.org" target="_blank">ESEC/FSE 2020</a>), Sacramento, California, United States, pages 518-529, 2020. (Acceptance rate: 101/360 = 28.1%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yifei Xu, Zhengzi Xu, <span style="text-decoration: underline">Bihuan Chen</span>, Fu Song, Yang Liu, and Ting Liu.<br>
+    				<a href="https://dl.acm.org/doi/abs/10.1145/3395363.3397361" target="_blank">Patch Based Vulnerability Matching for Binary Programs.</a> [ <a href="paper/issta20-xu-binxray.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the 29th ACM SIGSOFT International Symposium on Software Testing and Analysis</i><br>
+    				(<a href="https://conf.researchr.org/home/issta-2020" target="_blank">ISSTA 2020</a>), Los Angeles, California, United States, pages 376-387, 2020. (Acceptance rate: 43/162 = 26.5%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yang Xiao, <span style="text-decoration: underline">Bihuan Chen</span>, Chendong Yu, Zhengzi Xu, Zimu Yuan, Feng Li, Binghong Liu, Yang Liu, Wei Huo, Wei Zou, and Wenchang Shi.<br>
+    				<a href="https://www.usenix.org/conference/usenixsecurity20/presentation/xiao" target="_blank">MVP: Detecting Vulnerabilities using Patch-Enhanced Vulnerability Signatures.</a> [ <a href="paper/sec20-xiao-mvp.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ] <br>
+    				In <i>Proceedings of the 29th USENIX Security Symposium</i><br>
+    				(<a href="https://www.usenix.org/conference/usenixsecurity20" target="_blank">SEC 2020</a>), Boston, MA, USA, pages 1165-1182, 2020. (Acceptance rate: NA)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Zhifei Chen, Yanhui Li, <span style="text-decoration: underline">Bihuan Chen</span>, Wanwangying Ma, Lin Chen, and Baowen Xu.<br>
+    				<a href="https://dl.acm.org/doi/10.1145/3387904.3389253" target="_blank">An Empirical Study on Dynamic Typing Related Practices in Python Systems.</a> <br>
+    				In <i>Proceedings of the 28th ACM/IEEE International Conference on Program Comprehension</i><br>
+    				(<a href="https://conf.researchr.org/home/icpc-2020" target="_blank">ICPC 2020</a>), Seoul, South Korea, pages 83-93, 2020. (Acceptance rate: 32/84 = 38.1%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xiao Wang, Lu Xiao, Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Yutong Zhao, and Yang Liu.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9101195" target="_blank">DesignDiff: Continuously Modeling Software Design Difference from Code Revisions.</a> <br>
+    				In <i>Proceedings of the IEEE International Conference on Software Architecture</i><br>
+    				(<a href="http://icsa-conferences.org/2020/" target="_blank">ICSA 2020</a>), Salvador, Bahia, Brazil, pages 179-190, 2020. (Acceptance rate: 19/87 = 21.8%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yutong Zhao, Lu Xiao, Xiao Wang, Zhifei Chen, <span style="text-decoration: underline">Bihuan Chen</span>, and Yang Liu.<br>
+    				<a href="https://ieeexplore.ieee.org/document/9101223" target="_blank">Butterfly Space: An Architectural Approach for Investigating Performance Issues.</a> <br>
+    				In <i>Proceedings of the IEEE International Conference on Software Architecture</i><br>
+    				(<a href="http://icsa-conferences.org/2020/" target="_blank">ICSA 2020</a>), Salvador, Bahia, Brazil, pages 202-213, 2020. (Acceptance rate: 19/87 = 21.8%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yutong Zhao, Lu Xiao, Xiao Wang, Lei Sun, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, and Andre Bondi.<br>
+    				<a href="https://dl.acm.org/doi/10.1145/3358960.3379130" target="_blank">How Are Performance Issues Caused and Resolved? An Empirical Study from a Design Perspective.</a> <br>
+    				In <i>Proceedings of the 11th ACM/SPEC International Conference on Performance Engineering</i><br>
+    				(<a href="https://icpe2020.spec.org" target="_blank">ICPE 2020</a>), Edmonton, Canada, pages 181-192, 2020. (Acceptance rate: 15/62 = 24.2%)<br>
+    				<span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;Nominated for Best Paper Award&nbsp;</span>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Chen Zhang, <span style="text-decoration: underline">Bihuan Chen</span>, Linlin Chen, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3338917" target="_blank">A Large-Scale Empirical Study of Compiler Errors in Continuous Integration.</a> [ <a href="paper/fse19-zhang-compiler-error.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> , <a href="https://zenodo.org/record/3539803" target="_blank"><i class="fa fa-database" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 27th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="https://esec-fse19.ut.ee" target="_blank">ESEC/FSE 2019</a>), Tallinn, Estonia, pages 176-187, 2019. (Acceptance rate: 74/303 = 24.4%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xiaoning Du, <span style="text-decoration: underline">Bihuan Chen</span>, Yuekang Li, Jianmin Guo, Yaqin Zhou, Yang Liu, and Yu Jiang.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3339514" target="_blank">LEOPARD: Identifying Vulnerable Code for Vulnerability Assessment through Program Metrics.</a> [ <a href="paper/icse19-du-leopard.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 41st International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2019" target="_blank">ICSE 2019</a>), Montréal, QC, Canada, pages 60-71, 2019. (Acceptance rate: 109/529 = 20.6%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Junjie Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Lei Wei, and Yang Liu.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3339598" target="_blank">Superion: Grammar-Aware Greybox Fuzzing.</a> [ <a href="https://github.com/zhunki/Superion" target="_blank"><i class="fa fa-home" style="color:FireBrick"></i></a> , <a href="paper/icse19-wang-superion.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 41st International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2019" target="_blank">ICSE 2019</a>), Montréal, QC, Canada, pages 724-735, 2019. (Acceptance rate: 109/529 = 20.6%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yu Wang, Fengjuan Gao, Lingyun Situ, Lingzhang Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, Jianhua Zhao, and Xuandong Li.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3275231" target="_blank">DangDone: Eliminating Dangling Pointers via Intermediate Pointers.</a><br>
+    				In <i>Proceedings of the Tenth Asia-Pacific Symposium on Internetware</i><br>
+    				(<a href="https://internetware2018.github.io" target="_blank">Internetware 2018</a>), Beijing, China, pages 6:1-6:10, 2018. (Acceptance rate: NA)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Hongxu Chen, Yinxing Xue, Yuekang Li, <span style="text-decoration: underline">Bihuan Chen</span>, Xiaofei Xie, Xiuheng Wu, and Yang Liu.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3243849" target="_blank">Hawkeye: Towards a Desired Directed Grey-box Fuzzer.</a> [ <a href="paper/ccs18-chen-hawkeye.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 25th ACM Conference on Computer and Communications Security</i><br>
+    				(<a href="https://www.sigsac.org/ccs/CCS2018/" target="_blank">CCS 2018</a>), Toronto, Canada, pages 2095-2108, 2018. (Acceptance rate: 134/809 = 16.6%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Kaifeng Huang, <span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Daihong Zhou, Ying Wang, Yang Liu, and Wenyun Zhao.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3238219" target="_blank">CLDIFF: Generating Concise Linked Code Differences.</a> [ <a href="https://github.com/FudanSELab/CLDIFF" target="_blank"><i class="fa fa-home" style="color:FireBrick"></i></a> , <a href="paper/ase18-huang-cldiff.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 33rd IEEE/ACM International Conference on Automated Software Engineering</i><br>
+    				(<a href="http://www.ase2018.com" target="_blank">ASE 2018</a>), Montpellier, France, pages 679-690, 2018. (Acceptance rate: 83/346 = 24.0%)<br>
+    				<i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;ACM SIGSOFT Distinguished Paper Award&nbsp;</span> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;CCF Prototype Competition Award (2nd Prize)&nbsp;</span>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Zhifei Chen, <span style="text-decoration: underline">Bihuan Chen</span>, Lu Xiao, Xiao Wang, Lin Chen, Yang Liu, and Baowen Xu.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3180229" target="_blank">Speedoo: Prioritizing Performance Optimization Opportunities.</a> [ <a href="paper/icse18-chen-speedoo.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="color:FireBrick"></i></a> ]<br>
+    				In <i>Proceedings of the 40th International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2018" target="_blank">ICSE 2018</a>), Gothenburg, Sweden, pages 811-821, 2018. (Acceptance rate: 105/502 = 20.9%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Yuekang Li, <span style="text-decoration: underline">Bihuan Chen</span>, Mahinthan Chandramohan, Shang-Wei Lin, Yang Liu, and Alwen Tiu.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=3106295" target="_blank">Steelix: Program-State Based Binary Fuzzing.</a><br>
+    				In <i>Proceedings of the 11th joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="http://esec-fse17.uni-paderborn.de" target="_blank">ESEC/FSE 2017</a>), Paderborn, Germany, pages 627-637, 2017. (Acceptance rate: 72/295 = 24.4%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xiaofei Xie, <span style="text-decoration: underline">Bihuan Chen</span>, Liang Zou, Shang-Wei Lin, Yang Liu, and Xiaohong Li.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=3106260" target="_blank">Loopster: Static Loop Termination Analysis.</a><br>
+    				In <i>Proceedings of the 11th joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="http://esec-fse17.uni-paderborn.de" target="_blank">ESEC/FSE 2017</a>), Paderborn, Germany, pages 84-94, 2017. (Acceptance rate: 72/295 = 24.4%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Junjie Wang, <span style="text-decoration: underline">Bihuan Chen</span>, Lei Wei, and Yang Liu.<br>
+    				<a href="http://ieeexplore.ieee.org/document/7958599/" target="_blank">Skyfire: Data-Driven Seed Generation for Fuzzing.</a><br>
+    				In <i>Proceedings of the 38th IEEE Symposium on Security and Privacy</i><br>
+    				(<a href="http://www.ieee-security.org/TC/SP2017/" target="_blank">S&P 2017</a>), SAN JOSE, CA, pages 579-594, 2017. (Acceptance rate: 60/450 = 13.3%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Zhengzi Xu, <span style="text-decoration: underline">Bihuan Chen</span>, Mahinthan Chandramohan, Yang Liu, and Fu Song.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=3097424" target="_blank">SPAIN: Security Patch Analysis for Binaries Towards Understanding the Pain and Pills.</a><br>
+    				In <i>Proceedings of the 39th International Conference on Software Engineering</i><br>
+    				(<a href="http://icse2017.gatech.edu" target="_blank">ICSE 2017</a>), Buenos Aires, Argentina, pages 462-472, 2017. (Acceptance rate: 68/415 = 16.4%)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xiaofei Xie, <span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, Wei Le, and Xiaohong Li.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=2950340" target="_blank">Proteus: Computing Disjunctive Loop Summary via Path Dependency Analysis.</a><br>
+    				In <i>Proceedings of the 24th ACM SIGSOFT International Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="http://www.cs.ucdavis.edu/fse2016/" target="_blank">FSE 2016</a>), Seattle, WA, USA, pages 61-72, 2016. (Acceptance rate: 74/273 = 27.1%)<br>
+    				<i class="fa fa-trophy" style="color:FireBrick"></i> <span style="font-weight:bold; background:#2da2c8; border-radio:10px; border-radius:10px; vertical-align:middle;">&nbsp;ACM SIGSOFT Distinguished Paper Award&nbsp;</span>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Yang Liu, and Wei Le.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=2884794" target="_blank">Generating Performance Distributions via Probabilistic Symbolic Execution.</a><br>
+    				In <i>Proceedings of the 38th International Conference on Software Engineering</i><br>
+    				(<a href="http://2016.icse.cs.txstate.edu" target="_blank">ICSE 2016</a>), Austin, TX, USA, pages 49-60, 2016. (Acceptance rate: 101/530 = 19.1%)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Wenyi Qian, Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, John Mylopoulos, Huanhuan Wang, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6912253" target="_blank">Rationalism with a Dose of Empiricism: Case-Based Reasoning for Requirements-Driven Self-Adaptation.</a><br>
+    				In <i>Proceedings of the 22th IEEE International Requirements Engineering Conference</i><br>
+    				(<a href="http://webhotel.bth.se/re14/" target="_blank">RE 2014</a>), Karlskrona, Sweden, pages 113-122, 2014. (Invited to submit to <a href="http://link.springer.com/journal/766" target="_blank">REJ</a>; Acceptance rate: 31/115 = 27.0%)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yijun Yu, Bashar Nuseibeh, and Wenyun Zhao.<br>
+    				<a href="http://dl.acm.org/citation.cfm?doid=2568225.2568310" target="_blank">Self-Adaptation through Incremental Generative Model Transformations at Runtime.</a><br>
+    				In <i>Proceedings of the 36th International Conference on Software Engineering</i><br>
+    				(<a href="http://2014.icse-conferences.org" target="_blank">ICSE 2014</a>), Hyderabad, India, pages 676-687, 2014. (Acceptance rate: 99/495 = 20.0%)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yijun Yu, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6051650" target="_blank">Are Your Sites Down? Requirements-Driven Self-Tuning for the Survivability of Web Systems.</a><br>
+    				In <i>Proceedings of the 19th IEEE International Requirements Engineering Conference</i><br>
+    				(<a href="http://re11.fbk.eu" target="_blank">RE 2011</a>), Trento, Italy, pages 219-228, 2011. (An extended version of the WWW'10 poster; Acceptance rate: 23/138 = 16.7%)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				Xin Peng, <span style="text-decoration: underline">Bihuan Chen</span>, Yijun Yu, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=5636884" target="_blank">Self-Tuning of Software Systems through Goal-Based Feedback Loop Control.</a><br>
+    				In <i>Proceedings of the 18th IEEE International Requirements Engineering Conference</i><br>
+    				(<a href="http://attend.it.uts.edu.au/re10/" target="_blank">RE 2010</a>), Sydney, Australia, pages 104-107, 2010. (Short paper; Acceptance rate: 24+3/151 = 15.9%)
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=1640216" target="_blank">Towards Runtime Optimization of Software Quality Based on Feedback Control Theory.</a><br>
+    				In <i>Proceedings of the First Asia-Pacific Symposium on Internetware</i><br>
+    				(<a href="http://www.sweg.org.cn/Internetware2009.html" target="_blank">Internetware 2009</a>), Beijing, China, pages 10:1-10:8, 2009. (Acceptance rate: NA)
+    				</li>
+    				</ol>
+    			  </p>
+    			</div>
+    			<div class="heading">
+                  <h3 class="wow fadeInLeft">Demonstrations</h3>
+    			  <p>
+    			    <ol>
+    				<li style="margin-bottom:10px">
+    				Hongxu Chen, Yuekang Li, <span style="text-decoration: underline">Bihuan Chen</span>, Yinxing Xue, and Yang Liu.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3264593" target="_blank">FOT: A Versatile, Configurable, Extensible Fuzzing Framework.</a><br>
+    				In <i>Proceedings of the 26th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/fse-2018" target="_blank">ESEC/FSE 2018</a>), Lake Buena Vista, Florida, United States, pages 867-870, 2018. (Acceptance rate: 14/36 = 38.9%)
+    				</li>
+    				</ol>
+    			  </p>
+    			</div>
+    			<div class="heading">
+                  <h3 class="wow fadeInLeft">Workshops</h3>
+    			  <p>
+    			    <ol>
+    				<li style="margin-bottom:10px">
+    				Richang Lin, <span style="text-decoration: underline">Bihuan Chen</span>, Yi Xie, Xin Peng, and Wenyun Zhao.<br>
+    				<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6341569" target="_blank">Learning-Based Multi-Controller Coordination for Self-Optimization.</a><br>
+    				In <i>Proceedings of the 36th Annual IEEE Computer Software and Applications Conference Workshops</i><br>
+    				(<a href="http://compsac-2012.cs.iastate.edu/workshop_details.php?id=57&y=" target="_blank">COMPSACW 2012</a>), Izmir, Turkey, pages 164-169, 2012. (Acceptance rate: NA)
+    				</li>
+    				</ol>
+    			  </p>
+    			</div>
+    			<div class="heading">
+                  <h3 class="wow fadeInLeft">Posters</h3>
+    			  <p>
+    			  <ol>
+    			    <li style="margin-bottom:10px">
+    				Yutong Zhao, Lu Xiao, Xiao Wang, <span style="text-decoration: underline">Bihuan Chen</span>, and Yang Liu.<br>
+    				<a href="https://dl.acm.org/citation.cfm?id=3339802" target="_blank">Localized or Architectural: An Empirical Study of Performance Issues Dichotomy.</a><br>
+    				In <i>Proceedings of the 41st International Conference on Software Engineering</i><br>
+    				(<a href="https://conf.researchr.org/home/icse-2019" target="_blank">ICSE 2019</a>), Montréal, QC, Canada, pages 316-317, 2019. (Acceptance rate: NA)<br>
+    				</li>
+    				<li style="margin-bottom:10px">
+    				<span style="text-decoration: underline">Bihuan Chen</span>, Xin Peng, Yijun Yu and Wenyun Zhao.<br>
+    				<a href="http://dl.acm.org/citation.cfm?id=1963205" target="_blank">Survivability-Oriented Self-Tuning of Web Systems.</a><br>
+    				In <i>Proceedings of the 20th International Conference on World Wide Web</i><br>
+    				(<a href="http://wwwconference.org/www2011/" target="_blank">WWW 2011</a>), Hyderabad, India, pages 23-24, 2011. (Acceptance rate: NA)
+    				</li>
+    				</ol>
+    			  </p>
+    			</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--=========== END PUBLICATIONS SECTION ================-->
+
+    <!--=========== BEGIN TEAM SECTION ================-->
+
+    <section id="team">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="heading">
+              <h2 class="wow fadeInLeftBig">Research Team</h2>
+            </div>
+            <div class="team_area">
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/xrduan.jpeg" alt="img">
+                    </div>
+                    <h5>Xinran Duan</h5>
+                    <span>PhD Student 2022</span>
+                    <p>&nbsp <br> &nbsp <br> &nbsp <br> &nbsp <br> &nbsp <br> &nbsp </p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/sswu.jpeg" alt="img">
+                    </div>
+                    <h5>Susheng Wu</h5>
+                    <span>PhD Student 2022</span>
+                    <p><a href="https://dl.acm.org/doi/abs/10.1145/3611643.3616325" target="_blank">FSE'23</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3597503.3639582" target="_blank">ICSE'24</a>, <a href="https://dl.acm.org/doi/10.1145/3691620.3695516" target="_blank">ASE'24</a>*3, <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25, <a href="https://ieeexplore.ieee.org/document/11334642" target="_blank">ASE'25</a>, <a href="" target="_blank">ICSE'26</a>, <a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>*2, <a href="" target="_blank">TOSEM'26</a>*4</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/ylu.jpeg" alt="img">
+                    </div>
+                    <h5>You Lu</h5>
+                    <span>PhD Student 2022</span>
+                    <p><a href="https://dl.acm.org/doi/10.1145/3650212.3652135" target="_blank">ISSTA'24</a>, <a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">ISSTA'25</a>, <a href="https://dl.acm.org/doi/10.1145/3729358" target="_blank">FSE'25</a>, <a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">ASE'25</a>*2, <a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">AAAI'26</a>, <a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>, <a href="" target="_blank">TOSEM'26</a>*2, <a href="" target="_blank">ICSE'27</a> &nbsp <br> &nbsp </p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/yhhuang.jpg" alt="img">
+                    </div>
+                    <h5>Yiheng Huang</h5>
+                    <span>PhD Student 2023</span>
+                    <p><a href="https://dl.acm.org/doi/10.1145/3691620.3695492" target="_blank">ASE'24</a>*3, <a href="https://dl.acm.org/doi/abs/10.1145/3705304" target="_blank">TOSEM'24</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25</a>, <a href="https://ieeexplore.ieee.org/document/11334642" target="_blank">ASE'25</a>, <a href="" target="_blank">ICSE'26</a>, <a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>*2, <a href="" target="_blank">TOSEM'26</a>*4 <br> &nbsp </p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/ztzhou.jpg" alt="img">
+                    </div>
+                    <h5>Zhuotong Zhou</h5>
+                    <span>PhD Student 2023</span>
+                    <p><a href="https://dl.acm.org/doi/10.1145/3650212.3680339" target="_blank">ISSTA'24</a>, <a href="https://dl.acm.org/doi/10.1145/3691620.3695531" target="_blank">ASE'24</a>*3, <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25</a>, <a href="https://ieeexplore.ieee.org/document/11334642" target="_blank">ASE'25</a>, <a href="" target="_blank">ICSE'26</a>, <a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>*2, <a href="" target="_blank">TOSEM'26</a>*4 <br> &nbsp </p>
+                  </div>
+                </div>
+
+              </div>
+
+            <div class="team_area">
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/khu.jpg" alt="img">
+                  </div>
+                  <h5>Kun Hu</h5>
+                  <span>PhD Student 2023</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">ISSTA'25</a>, <a href="" target="_blank">TOSEM'26</a>, <a href="" target="_blank">ISSTA'26</a> <br><br><br> &nbsp</p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/qcchen.jpg" alt="img">
+                  </div>
+                  <h5>Qicai Chen</h5>
+                  <span>PhD Student 2023</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">ISSTA'25</a>, <a href="" target="_blank">ISSTA'26</a>*2, <a href="" target="_blank">TOSEM'26</a> <br><br><br> &nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/hwjiang.jpeg" alt="img">
+                  </div>
+                  <h5>Haowen Jiang</h5>
+                  <span>PhD Student 2023</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">ISSTA'25</a>, <a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">ASE'25</a>, <a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">AAAI'26</a>, <a href="" target="_blank">TOSEM'26</a>*2, <a href="" target="_blank">ICSE'27</a> <br><br> &nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/yhcao.jpg" alt="img">
+                  </div>
+                  <h5>Yiheng Cao</h5>
+                  <span>PhD Student 2023</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3691620.3695516" target="_blank">ASE'24</a>, <a href="https://dl.acm.org/doi/10.1145/3658644.3690372" target="_blank">CCS'24</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25</a>, <a href="https://ieeexplore.ieee.org/document/11334642" target="_blank">ASE'25</a>, <a href="" target="_blank">ICSE'26</a>, <a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>*2, <a href="" target="_blank">TOSEM'26*3</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                  <div class="single_team wow fadeInUp">
+                    <div class="team_img">
+                      <img src="img/student/djwang.jpg" alt="img">
+                    </div>
+                    <h5>Dingji Wang</h5>
+                    <span>PhD Student 2023</span>
+                    <p><a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">ASE'25</a>, <a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">AAAI'26</a>, <a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">FSE'26</a>, <a href="" target="_blank">ISSTA'26</a>, <a href="" target="_blank">TOSEM'26</a>*2, <a href="" target="_blank">ICSE'27</a> <br><br> &nbsp</p>
+                  </div>
+                </div>
+                
+            
+            </div>
+
+            <div class="team_area">
+  
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/yybi.jpg" alt="img">
+                  </div>
+                  <h5>Yuyang Bi</h5>
+                  <span>PhD Student 2024</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3650212.3652135" target="_blank">ISSTA'24</a>, <a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">FSE'26</a>, <a href="" target="_blank">ICSE'27</a>  &nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/wzzhang.jpg" alt="img">
+                  </div>
+                  <h5>Wenzhuo Zhang</h5>
+                  <span>PhD Student 2024</span>
+                  <p><a href="" target="_blank">ISSTA'26</a> <br><br></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/xhu.jpg" alt="img">
+                  </div>
+                  <h5>Xin Hu</h5>
+                  <span>PhD Student 2024</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a>, <a href="" target="_blank">TOSEM'26*2</a> <br><br></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/btyang.jpg" alt="img">
+                  </div>
+                  <h5>Botao Yang</h5>
+                  <span>PhD Student 2025</span>
+                  <p> &nbsp <br><br></p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/nyang.jpg" alt="img">
+                  </div>
+                  <h5>Nan Yang</h5>
+                  <span>PhD Student 2026</span>
+                  <p> &nbsp <br><br></p>
+                </div>
+              </div>
+
+            </div>
+
+          <div class="team_area">
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/jfwang.jpg" alt="img">
+                  </div>
+                  <h5>Junfei Wang</h5>
+                  <span>Master Student 2024</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/zqchen.jpg" alt="img">
+                  </div>
+                  <h5>Ziqian Chen</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="" target="_blank">ICSE'26</a>, <a href="" target="_blank">ISSTA'26</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/zkchen.jpeg" alt="img">
+                  </div>
+                  <h5>Zekai Chen</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="" target="_blank">ICSE'26</a>, <a href="" target="_blank">ISSTA'26</a></p>
+                </div>
+              </div>     
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/yhchen.jpg" alt="img">
+                  </div>
+                  <h5>Yihao Chen</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="" target="_blank">TOSEM'26</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/zjzhao.jpeg" alt="img">
+                  </div>
+                  <h5>Zhijia Zhao</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3808105" target="_blank">FSE'26</a></p>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="team_area">
+
+               <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/shao.jpeg" alt="img">
+                  </div>
+                  <h5>Shuo Hao</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">ASE'25</a></p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/twgan.jpeg" alt="img">
+                  </div>
+                  <h5>Tianwei Gan</h5>
+                  <span>Master Student 2025</span>
+                  <p><a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">FSE'26</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/hrwang.jpg" alt="img">
+                  </div>
+                  <h5>Haoran Wang</h5>
+                  <span>Master Student 2025</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/xdli.jpeg" alt="img">
+                  </div>
+                  <h5>Xuandi Li</h5>
+                  <span>Master Student 2025</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/kyshen.png" alt="img">
+                  </div>
+                  <h5>Keyu Shen</h5>
+                  <span>Master Student 2025</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="team_area">
+
+               <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/xlzhu.jpeg" alt="img">
+                  </div>
+                  <h5>Xilei Zhu</h5>
+                  <span>Master Student 2025</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/xcmeng.jpeg" alt="img">
+                  </div>
+                  <h5>Xucheng Meng</h5>
+                  <span>Master Student 2025</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/yqhe.jpeg" alt="img">
+                  </div>
+                  <h5>Yen Qin Hoo</h5>
+                  <span>Master Student 2026</span>
+                  <p><a href="" target="_blank">TOSEM'26</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/cyli.jpeg" alt="img">
+                  </div>
+                  <h5>Chengyuan Li</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/sxtan.jpeg" alt="img">
+                  </div>
+                  <h5>Shixin Tan</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="team_area">
+
+               <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/fhyang.jpeg" alt="img">
+                  </div>
+                  <h5>Fuhui Yang</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+              
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/kychen.jpeg" alt="img">
+                  </div>
+                  <h5>Keyu Chen</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/sqliang.jpeg" alt="img">
+                  </div>
+                  <h5>Siqi Liang</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/ygchen.jpeg" alt="img">
+                  </div>
+                  <h5>Yanggang Chen</h5>
+                  <span>Master Student 2026</span>
+                  <p><a href="" target="_blank">ICSE'27</a></p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single_team wow fadeInUp">
+                  <div class="team_img">
+                    <img src="img/student/yqzhang.jpeg" alt="img">
+                  </div>
+                  <h5>Yuqing Zhang</h5>
+                  <span>Master Student 2026</span>
+                  <p>&nbsp</p>
+                </div>
+              </div>
+
+          </div>
+
+            <!--<div class="heading">
+          		<h3 class="wow fadeInLeftBig">Team Life</h3>
+          	</div>
+            <div class="blog_content">
+              <div class="blog_slider">
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div class="single_post wow fadeInUp">
+                    <div class="blog_img">
+                      <img src="img/group/2019-12-27.jpeg" alt="img">
+                    </div>
+                    <h3>New Year's Dinner @ 2020</h3>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div class="single_post wow fadeInUp">
+                    <div class="blog_img">
+                      <img src="img/group/2019-01-18.jpeg" alt="img">
+                    </div>
+                    <h3>New Year's Dinner @ 2019</h3>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div class="single_post wow fadeInUp">
+                    <div class="blog_img">
+                      <img src="img/group/2018-09-07.jpg" alt="img">
+                    </div>
+                    <h3>ACM SIGSOFT Distinguished Paper Award @ 2018</h3>
+                  </div>
+                </div>
+
+              </div>
+            </div>-->
+
+    		<div class="heading">
+              <h3 class="wow fadeInLeftBig">Alumni</h2>
+              <ul>
+              <li>Jiaji Qin (Sep 2024 - June 2027, Master): [], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Sichen Gong (Sep 2024 - June 2027, Master): [<a href="https://dl.acm.org/doi/10.1145/3728914" target="_blank">ISSTA'25</a>, <a href="" target="_blank">ISSTA'26</a>], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Kun Zhang (Sep 2024 - June 2027, Master): [<a href="" target="_blank">ISSTA'26</a>, <a href="" target="_blank">TOSEM'26</a>], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Jiyan Zhang (Sep 2024 - June 2027, Master): [<a href="" target="_blank">ISSTA'26</a>], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Xinyu Huang (Sep 2024 - June 2027, Master): [<a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">AAAI'26</a>], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Xiaoyu Li (Sep 2024 - June 2027, Master): [<a href="https://ieeexplore.ieee.org/document/11334642" target="_blank">ASE'25</a>], First Employment at <span style="color:#2da2c8"></span></li>
+              <li>Junpeng Zhao (Sep 2024 - June 2027, Master): [<a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="" target="_blank">ISSTA'26</a>, <a href="" target="_blank">TOSEM'26</a>], First Employment at <span style="color:#2da2c8"></span></li>  
+              <li>Shulin Ke (Sep 2024 - June 2027, Master): [<a href="https://dl.acm.org/doi/10.1145/3691620.3695492" target="_blank">ASE'24</a>], First Employment at <span style="color:#2da2c8"></span></li>  
+              <li>Ruisi Wang (Sep 2023 - Jun 2026, Master): [<a href="https://dl.acm.org/doi/10.1145/3691620.3695516" target="_blank">ASE'24</a>*2, <a href="https://dl.acm.org/doi/abs/10.1145/3705304" target="_blank">TOSEM'24</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3715718" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25</a>, <a href="" target="_blank">TOSEM'26</a>], First Employment at <span style="color:#2da2c8">DiDi</span></li>
+              <li>Yifan Tian (Sep 2023 - Jun 2026, Master): [<a href="https://dl.acm.org/doi/10.1145/3650212.3652135" target="_blank">ISSTA'24</a>, <a href="https://ieeexplore.ieee.org/document/11334287/" target="_blank">ASE'25</a>, <a href="" target="_blank">TOSEM'26</a>, <a href="" target="_blank">JOS'26</a>], First Employment at <span style="color:#2da2c8">Meituan</span></li>
+              <li>Xiaoye Guan (Sep 2023 - Jun 2026, Master): First Employment at <span style="color:#2da2c8">NPIC</span></li>
+              <li>Yuheng Cao (Sep 2023 - Jun 2026, Master): [<a href="https://ojs.aaai.org/index.php/AAAI/article/view/37454" target="_blank">AAAI'26</a>], First Employment at <span style="color:#2da2c8">Suzhou Scientific Service Center</span></li>
+              <li>Yufei Zhao (Sep 2022 - Jun 2026, Master): [Talent Project, <a href="https://ieeexplore.ieee.org/document/10123586/" target="_blank">SANER'23</a>], First Employment at <span style="color:#2da2c8">CQFUNDS</span></li>
+              <li>Junming Cao (Sep 2021 - Jun 2025, PhD)
+              <ul>
+              <li>[<a href="https://dl.acm.org/doi/abs/10.1145/3540250.3549123" target="_blank">FSE'22</a>, <a href="https://ieeexplore.ieee.org/abstract/document/10336332" target="_blank">ICSME'23</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3611643.3616325" target="_blank">FSE'23</a>, <a href="https://dl.acm.org/doi/10.1145/3597503.3623306" target="_blank">ICSE'24</a>, <a href="https://dl.acm.org/doi/10.1145/3729358" target="_blank">FSE'25</a>, <a href="https://dl.acm.org/doi/10.1145/3797143" target="_blank">FSE'26</a>]</li>
+              <li>Thesis: Regression and Performance Bug Detection and Repairing for Intelligent Software Systems</li>
+              <li>First Employment: <span style="color:#2da2c8">Huawei</span></li>
+              </ul>
+              <li>Zixin Tao (Sep 2022 - Jun 2025, Master): First Employment at <span style="color:#2da2c8">JQ INVESTMENT</span></li>
+              <li>Chenhao Lu (Sep 2022 - Jun 2025, Master): [<a href="https://dl.acm.org/doi/10.1145/3540250.3549125" target="_blank">FSE'22</a>, <a href="https://dl.acm.org/doi/10.1145/3658644.3690372" target="_blank">CCS'24</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3728901" target="_blank">ISSTA'25</a>], First Employment at <span style="color:#2da2c8">ByteDance</span></li>
+              <li>Rulei Wei (Sep 2022 - Jun 2025, Master): First Employment at <span style="color:#2da2c8">Horizon</span></li>
+              <li>Jin Guo (Sep 2022 - Jun 2025, Master): [<a href="https://dl.acm.org/doi/10.1145/3650212.3680339" target="_blank">ISSTA'24</a>], First Employment at <span style="color:#2da2c8">Meituan</span></li>
+              <li>Jiahui Pan (Sep 2022 - Jun 2025, Master): First Employment at <span style="color:#2da2c8">Duxiaoman</span></li>
+              <li>Anchen Xu (Sep 2022 - Jun 2025, Master): First Employment at <span style="color:#2da2c8">Ele.me</span></li>
+              <li>Fan Yang (Sep 2020 - Jun 2024, Master): [Talent Project], First Employment at <span style="color:#2da2c8">Selected Graduates</span></li>
+              <li>Kan Shen (Sep 2021 - Jun 2024, Master): [<a href="https://jos.org.cn/jos/article/abstract/7224" target="_blank">JOS'24</a>], First Employment at <span style="color:#2da2c8">Selected Graduates</span></li>
+              <li>Yixuan Yan (Sep 2021 - Jun 2024, Master): First Employment at <span style="color:#2da2c8">ByteDance</span></li>
+              <li>Longjie Hu (Sep 2021 - Jan 2024, Master): [<a href="https://dl.acm.org/doi/abs/10.1145/3540250.3549123" target="_blank">FSE'22</a>, <a href="https://ieeexplore.ieee.org/abstract/document/10336332" target="_blank">ICSME'23</a>], First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Shuaihong Wu (Sep 2021 - Jan 2024, Master): [<a href="https://dl.acm.org/doi/abs/10.1145/3540250.3549123" target="_blank">FSE'22</a>], First Employment at <span style="color:#2da2c8">ZTCAPITAL</span></li>
+              <li>Yingfeng Xia (Sep 2021 - Jan 2024, Master): [<a href="https://dl.acm.org/doi/10.1145/3650212.3680339" target="_blank">ISSTA'24</a>], First Employment at <span style="color:#2da2c8">BYD</span></li>
+              <li>Xiyu Wang (Sep 2021 - Jan 2024, Master): First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Junhao Hu (Sep 2021 - Jan 2024, Master): [<a href="https://dl.acm.org/doi/10.1145/3551349.3556923" target="_blank">ASE'22</a>], First Employment at <span style="color:#2da2c8">Baidu</span></li>
+              <li>Weiye Liang (Sep 2021 - Jan 2024, Master): First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Fengyi Zhang (Sep 2018 - Jun 2023, PhD)
+              <ul>
+              <li>[<a href="https://www.sciencedirect.com/science/article/pii/S0164121221001084" target="_blank">JSS'21</a>, <a href="https://ieeexplore.ieee.org/document/9825827/" target="_blank">SANER'22</a>, <a href="https://ieeexplore.ieee.org/document/10123586/" target="_blank">SANER'23</a>]</li>
+              <li>IEEE TCSE Distinguished Paper Award</li>
+              <li>Thesis: A Code Representation Learning Method for Program Understanding and Defect Predicttion</li>
+              <li>First Employment: <span style="color:#2da2c8">Huawei</span></li>
+              </ul>
+              <li>Dongfang Xie (Sep 2020 - Jun 2023, Master) [<a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">SANER'24</a>]: First Employment at <span style="color:#2da2c8">COMAC</span></li>
+              <li>Bingxiang Niu (Sep 2020 - Jun 2023, Master): First Employment at <span style="color:#2da2c8">ABC FINTECH</span></li>
+              <li>Zhicheng Chen (Sep 2020 - Jun 2023, Master) [<a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">SANER'24</a>]: First Employment at <span style="color:#2da2c8">Unity</span></li>  
+              <li>Chao Sun (Sep 2020 - Jan 2023, Master): [<a href="https://ieeexplore.ieee.org/document/9825827/" target="_blank">SANER'22</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3540250.3549123" target="_blank">FSE'22</a>], First Employment at <span style="color:#2da2c8">Mingshi</span></li>
+              <li>Li Wang (Sep 2020 - Jan 2023, Master): First Employment at <span style="color:#2da2c8">Baidu</span></li>
+              <li>Linghao Pan (Sep 2020 - Jan 2023, Master) [<a href="https://ieeexplore.ieee.org/abstract/document/9678905" target="_blank">ASE'21</a>, <a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">SANER'24</a>, National Scholarship], First Employment at <span style="color:#2da2c8">TaiLong</span></li>
+              <li>Yu Wang (Sep 2020 - Jan 2023, Master) [<a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">SANER'24</a>]: First Employment at <span style="color:#2da2c8">Unity</span></li>
+              <li><a href="https://chenzhang22.github.io" target="_blank">Chen Zhang</a> (Sep 2017 - Jun 2022, Co-Supervised PhD)
+              <ul>
+              <li>[<a href="https://dl.acm.org/citation.cfm?id=3338917" target="_blank">FSE'19</a>, <a href="https://ieeexplore.ieee.org/document/9286064" target="_blank">ASE'20</a>, <a href="https://ieeexplore.ieee.org/document/9793896" target="_blank">ICSE'22</a>, <a href="https://dl.acm.org/doi/10.1145/3551349.3556923" target="_blank">ASE'22</a>]</li>
+              <li>Thesis: Build Failure and Performance Analysis for Continuous Integration</li>
+              <li>First Employment: Lecturer at <span style="color:#2da2c8">Soochow University</span></li>
+              </ul>
+              <li>Congying Xu (Sep 2019 - Jun 2022, Master): [<a href="https://dl.acm.org/doi/abs/10.1145/3368089.3409689" target="_blank">FSE'20</a>, <a href="https://ieeexplore.ieee.org/document/9240619" target="_blank">ICSME'20</a>, <a href="https://link.springer.com/article/10.1007/s10664-022-10131-8" target="_blank">EMSE'22</a>, <a href="https://dl.acm.org/doi/10.1145/3540250.3549125" target="_blank">FSE'22</a>], First Employment at <span style="color:#2da2c8">HKUST</span> as PhD Student</li>
+              <li>Shuyi Wu (Sep 2019 - Jun 2022, Master): First Employment at <span style="color:#2da2c8">Intel</span></li>
+              <li><a href="https://kaifeng-h.github.io" target="_blank">Kaifeng Huang</a> (Sep 2016 - Jan 2022, Co-Supervised PhD)
+              <ul>
+              <li>[<a href="https://dl.acm.org/citation.cfm?id=3238219" target="_blank">ASE'18</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3368089.3409689" target="_blank">FSE'20</a>, <a href="https://ieeexplore.ieee.org/document/9240619" target="_blank">ICSME'20</a>, <a href="https://ieeexplore.ieee.org/abstract/document/9678905" target="_blank">ASE'21</a>, <a href="https://link.springer.com/article/10.1007/s10664-022-10131-8" target="_blank">EMSE'22</a>, <a href="https://dl.acm.org/doi/10.1145/3540250.3549125" target="_blank">FSE'22</a>]</li>
+              <li>ACM SIGSOFT Distinguished Paper Award, IEEE TCSE Distinguished Paper Award, National Scholarship</li>
+              <li>Thesis: Third-Party Library Harmonization and Update Recommendation based on API Analysis</li>
+              <li>First Employment: Postdoctoral Research Fellow at <span style="color:#2da2c8">Fudan University</span> [<a href="https://ieeexplore.ieee.org/abstract/document/10336332" target="_blank">ICSME'23</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3611643.3616325" target="_blank">FSE'23</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3597503.3639582" target="_blank">ICSE'24</a>, <a href="https://ieeexplore.ieee.org/document/10589821" target="_blank">SANER'24</a>, <a href="https://dl.acm.org/doi/10.1145/3650212.3680339" target="_blank">ISSTA'24</a>, <a href="https://dl.acm.org/doi/10.1145/3691620.3695516" target="_blank">ASE'24</a>, <a href="https://dl.acm.org/doi/10.1145/3658644.3690372" target="_blank">CCS'24</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3705304" target="_blank">TOSEM'24</a>]</li>
+              </ul>
+              <li>Junfeng Xie (Sep 2019 - Jan 2022, Master): First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Shuai Wu (Sep 2019 - Jan 2022, Master): [<a href="https://ieeexplore.ieee.org/abstract/document/9678905" target="_blank">ASE'21</a>], First Employment at <span style="color:#2da2c8">Ant Group</span></li>
+              <li>Tongyuan He (Sep 2019 - Jan 2022, Master): First Employment at <span style="color:#2da2c8">Archosaur Games</span></li>
+              <li>Ying Wang (Sep 2018 - Jun 2021, Master): [<a href="https://dl.acm.org/citation.cfm?id=3238219" target="_blank">ASE'18</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3368089.3409689" target="_blank">FSE'20</a>, <a href="https://ieeexplore.ieee.org/document/9240619" target="_blank">ICSME'20</a>, <a href="https://link.springer.com/article/10.1007/s10664-022-10131-8" target="_blank">EMSE'22</a>], First Employment at <span style="color:#2da2c8">State Grid</span></li>
+              <li>Rongfan Li (Sep 2018 - Jun 2021, Master): [<a href="https://www.sciencedirect.com/science/article/pii/S0164121221001084" target="_blank">JSS'21</a>, <a href="https://ieeexplore.ieee.org/document/9825827/" target="_blank">SANER'22</a>], First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Qinghao Sun (Sep 2018 - Jun 2021, Master): [<a href="http://engine.scichina.com/doi/10.1007/s11432-019-2745-5" target="_blank">SCIS'20</a>], First Employment at <span style="color:#2da2c8">ByteDance</span></li>
+              <li>Xuanhan Tu (Sep 2018 - Jun 2021, Master): First Employment at <span style="color:#2da2c8">Tencent</span></li>
+              <li>Bowen Shi (Sep 2018 - Jan 2021, Master): [<a href="https://dl.acm.org/doi/abs/10.1145/3368089.3409689" target="_blank">FSE'20</a>, <a href="https://ieeexplore.ieee.org/document/9240619" target="_blank">ICSME'20</a>, <a href="https://link.springer.com/article/10.1007/s10664-022-10131-8" target="_blank">EMSE'22</a>], First Employment at <span style="color:#2da2c8">Kuaishou</span></li>
+              <li>LinLin Chen (Sep 2018 - Jan 2021, Master): [<a href="https://dl.acm.org/citation.cfm?id=3338917" target="_blank">FSE'19</a>, <a href="https://ieeexplore.ieee.org/document/9286064" target="_blank">ASE'20</a>, National Scholarship], First Employment at <span style="color:#2da2c8">China Construction Bank</span></li>
+    		      <li>Junyi Li (Sep 2016 - Jun 2020, Co-Supervised Master): [Talent Project], First Employment at <span style="color:#2da2c8">Baidu</span></li>
+    		      <li>Wenjian Liu (Sep 2014 - Jan 2020, Co-Supervised PhD): [<a href="http://engine.scichina.com/doi/10.1007/s11432-019-2745-5" target="_blank">SCIS'20</a>], First Employment at <span style="color:#2da2c8">Huawei</span></li>
+              <li>Wenbo Song (Sep 2017 - Jan 2020, Co-Supervised Master): First Employment at <span style="color:#2da2c8">Tencent</span></li>
+              <li>Hang Ruan (Sep 2016 - Jun 2019, Co-Supervised Master): [<a href="https://www.sciencedirect.com/science/article/pii/S0164121219301803" target="_blank">JSS'19</a>], First Employment at <span style="color:#2da2c8">iQIYI</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--=========== BEGIN TEAM SECTION ================-->
+
+    <!--=========== BEGIN SERVICES SECTION ================-->
+    <section id="service">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <!-- BEGAIN SERVICE HEADING -->
+            <div class="heading">
+              <h2 class="wow fadeInLeftBig">Services</h2>
+              </br>
+          <h3 class="wow fadeInLeft">Editorship</h3>
+              <ul>
+              <li>Associate Editor, IEEE Transactions on Software Engineering (<a href="https://xplorestaging.ieee.org/xpl/RecentIssue.jsp?punumber=32" target="_blank">TSE</a>): 2026 - present</li>
+              <li>Associate Editor, Journal of Software: Evolution and Process (<a href="https://onlinelibrary.wiley.com/journal/20477481" target="_blank">JSEP</a>): 2024 - present</li>
+              </ul>
+          <h3 class="wow fadeInLeft">PC Members</h3>
+    		  	<ul>
+            <li>USENIX Security Symposium (SEC): <a href="https://www.usenix.org/conference/usenixsecurity27" target="_blank">2027</a></li>
+    		  	<li>International Conference on Software Engineering (ICSE): <a href="https://conf.researchr.org/home/icse-2023" target="_blank">2023 (NIER)</a>, <a href="https://conf.researchr.org/home/icse-2024" target="_blank">2024 (NIER)</a>, <a href="https://conf.researchr.org/home/icse-2025" target="_blank">2025 (NIER), <a href="https://conf.researchr.org/home/icse-2026" target="_blank">2026</a></li>
+    		  	<li>ACM International Conference on the Foundations of Software Engineering (FSE): <a href="https://conf.researchr.org/home/fse-2026" target="_blank">2026</a></li>
+            <li>IEEE/ACM International Conference on Automated Software Engineering (ASE): <a href="https://conf.researchr.org/home/ase-2020" target="_blank">2020</a>, <a href="https://conf.researchr.org/home/ase-2021" target="_blank">2021</a>, <a href="https://conf.researchr.org/home/ase-2025" target="_blank">2025</a>, <a href="https://conf.researchr.org/home/ase-2026" target="_blank">2026</a></li>
+    		  	<li>ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA): <a href="https://2024.issta.org" target="_blank">2024</a>, <a href="https://conf.researchr.org/home/issta-2025" target="_blank">2025</a>, <a href="https://conf.researchr.org/home/issta-2026" target="_blank">2026</a></li>
+            <li>IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER): <a href="https://saner2022.uom.gr" target="_blank">2022</a>, <a href="https://saner2023.must.edu.mo" target="_blank">2023</a>, <a href="https://conf.researchr.org/home/saner-2024" target="_blank">2024</a></li>
+    		  	<li>Asia-Pacific Symposium on Internetware (Internetware): <a href="https://conf.researchr.org/home/internetware-2023" target="_blank">2023</a></li>
+            <li>IEEE Annual Computers, Software, and Applications Conference (COMPSAC): <a href="https://ieeecompsac.computer.org/2018/seta/" target="_blank">2018</a>, <a href="https://ieeecompsac.computer.org/2019/seta/" target="_blank">2019</a>, <a href="https://ieeecompsac.computer.org/2020/seta/" target="_blank">2020</a>, <a href="https://ieeecompsac.computer.org/2021/seta/" target="_blank">2021</a>, <a href="https://ieeecompsac.computer.org/2022/seta/" target="_blank">2022</a></li>
+    		  	<li>International Symposium on Theoretical Aspects of Software Engineering (TASE): <a href="http://www.se.gxnu.edu.cn/tase2019/" target="_blank">2019</a>, <a href="https://sei.ecnu.edu.cn/tase2020/" target="_blank">2020</a></li>
+            <li>Asia-Pacific Software Engineering Conference (APSEC): <a href="https://formal-analysis.com/apsec/2020/" target="_blank">2020</a></li>
+    		  	<li>International Conference on Software and Systems Reuse (ICSR): <a href="https://www.uc.edu/eventservices/ICSR2019.html" target="_blank">2019</a></li>
+            </ul>
+    		  <h3 class="wow fadeInLeft">Reviewers</h3>
+                <ul>
+                <li>IEEE Transactions on Software Engineering (TSE): 2019, 2021, 2022, 2023, 2024, 2025</li>
+                <li>ACM Transactions on Software Engineering and Methodology (TOSEM): 2020, 2022, 2023, 2024, 2025, 2026</li>
+                <li>IEEE Transactions on Dependable and Secure Computing (TDSC): 2019, 2020, 2022</li>
+                <li>IEEE Transactions on Information Forensics & Security (TIFS): 2023</li>
+                <li>Empirical Software Engineering (EMSE): 2020, 2021, 2022, 2023, 2024</li>
+                <li>IEEE Transactions on Reliability (TR): 2019, 2021</li>
+                <li>Journal of Systems and Software (JSS): 2019, 2020, 2021, 2022, 2023</li>
+                <li>Science of Computer Programming (SCP): 2019</li>
+                <li>Frontiers of Computer Science (FCS): 2019, 2020, 2022</li>
+                <li>SCIENCE CHINA Information Sciences (SCIS): 2020</li>
+                <li>Journal of Computer Science and Technology (JCST): 2020, 2021, 2022</li>
+                <li>Software Testing, Verification and Reliability (STVR): 2018</li>
+                </ul>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--=========== END SERVICES SECTION ================-->
+
+  <!--Courses-->
+  <!--<section id="courses">
+    <div class="container">
+      <div class="row">
+      	<div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="heading">
+          <h2 class="wow fadeInLeftBig">Wonderful Life</h2>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 padleft-right">
+          <figure class="imghvr-fold-up">
+            <img src="img/life/2011-05-24.jpg" class="img-responsive">
+            <figcaption>
+              <h3></h3>
+              <p>The Champion of the Zhangjiang Champions League at Fudan University</p>
+              <p>May 24, 2011</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 padleft-right">
+          <figure class="imghvr-fold-up">
+            <img src="img/life/2016-05-01.jpeg" class="img-responsive">
+            <figcaption>
+              <h3></h3>
+              <p>Baby Girl at 45 Days Old</p>
+              <p>May 15, 2016</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>-->
+  <!--/ Courses-->
+
+    <!--=========== BEGAIN CONTACT SECTION ================-->
+    <section id="contact">
+      <div class="container">
+        <div class="row">
+
+    	  <div class="col-lg-12 col-md-12 col-sm-12">
+            <!-- START CONTACT HEADING -->
+            <div class="heading">
+              <h2 class="wow fadeInLeftBig">Contacts</h2>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-md-12 col-sm-12">
+
+          <div class="contact_feature">
+            <!-- BEGAIN CALL US FEATURE -->
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="single_contact_feaured wow fadeInUp">
+                <i class="fa fa-envelope-o"></i>
+                <h4>Email Address</h4>
+                <p>bhchen AT fudan DOT edu DOT cn<br>&nbsp</p>
+              </div>
+            </div>
+    		<!-- BEGAIN CALL US FEATURE -->
+            <!--<div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="single_contact_feaured wow fadeInUp">
+                <i class="fa fa-phone"></i>
+                <h4>Office Telephone</h4>
+                <p>86-21-51355343<br>&nbsp</p>
+              </div>
+            </div>-->
+            <!-- BEGAIN CALL US FEATURE -->
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="single_contact_feaured wow fadeInUp">
+                <i class="fa fa-map-marker"></i>
+                <h4>Office Location</h4>
+                <p>D2014-1, Interdisciplinary Building No. 2, Jiangwan Campus</p>
+              </div>
+            </div>
+            <!-- BEGAIN CALL US FEATURE -->
+            <!--<div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="single_contact_feaured wow fadeInUp">
+                <i class="fa fa-clock-o"></i>
+                <h4>Working Hours</h4>
+                <p>Monday-Friday<br>9:00-17:00</p>
+              </div>
+            </div>-->
+          </div>
+
+    	  </div>
+
+        </div>
+      </div>
+    </section>
+    <!--=========== END CONTACT SECTION ================-->
+
+     <!--=========== BEGAIN FOOTER ================-->
+     <footer id="footer">
+       <div class="container">
+         <div class="row">
+           <div class="col-lg-6 col-md-6 col-sm-6">
+             <div class="footer_left">
+    			<!--=========== Designed By WpFreeware Team ================-->
+               <p>&copy; 2016 All Rights Reserved. Designed by <a href="http://www.wpfreeware.com" target="_blank">WpFreeware</a>.</p>
+    		   <!--=========== Designed By WpFreeware Team ================-->
+             </div>
+           </div>
+           <div class="col-lg-6 col-md-6 col-sm-6">
+             <div class="footer_right">
+               <ul class="social_nav">
+                 <p>Last Updated: November 3, 2026</p>
+               </ul>
+             </div8
+           </div>
+         </div>
+       </div>
+      </footer>
+      <!--=========== END FOOTER ================-->
+
+     <!-- Javascript Files
+     ================================================== -->
+
+     <!-- initialize jQuery Library -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Google map -->
+    <!--<script src="js/js.js"></script>
+    <script src="js/jquery.ui.map.js"></script>-->
+     <!-- For smooth animatin  -->
+    <script src="js/wow.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- superslides slider -->
+    <script src="js/jquery.superslides.min.js" type="text/javascript"></script>
+    <!-- slick slider -->
+    <script src="js/slick.min.js"></script>
+    <!-- for circle counter -->
+    <script src='js/jquery.circliful.min.js'></script>
+    <!-- for portfolio filter gallery -->
+    <script src="js/modernizr.custom.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/elastic_grid.min.js"></script>
+    <!--<script src="js/portfolio_slider.js"></script>-->
+
+    <!-- Custom js-->
+    <script src="js/custom.js"></script>
+  </body>
+</html>

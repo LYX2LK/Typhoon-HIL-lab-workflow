@@ -1,0 +1,7 @@
+usage: search_papers.py [-h] [--query QUERY] [--queries QUERIES]
+                        --start-year START_YEAR --end-year END_YEAR
+                        [--max-papers MAX_PAPERS]
+                        [--sources {arxiv,dblp,open_alex,openreview,semantic_scholar,crossref} [{arxiv,dblp,open_alex,openreview,semantic_scholar,crossref} ...]]
+                        [--no-parallel] [--start-date START_DATE]
+                        [--end-date END_DATE] [--raw] [--min-score MIN_SCORE]
+search_papers.py: error: unrecognized arguments: --json D:/Typhoon/lab-workflow/docs/research/2026-11-09-llm-core-methods/evidence/paper-search-results.json
