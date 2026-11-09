@@ -114,6 +114,24 @@
       "source_sha256": "ab08b216f97a101cf7545ec9aae8f52d9eeca296fef59a1689c427c33a95b6d1",
       "renderer": "pdftoppm",
       "scale_to_px": 2200
+    },
+    {
+      "asset": "docs/beginner/assets/ti-chil-inverter-official.jpg",
+      "source": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\typhoon\\help\\t-an001\\Images\\ti_pmsm_torque_control_02.jpg",
+      "source_url": "https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html",
+      "source_figure": 2,
+      "sha256": "066a5c1011ce3a20a29c5f7c1247840a239ab786cf5537bf60ebf52d6ddea125",
+      "operation": "byte_copy",
+      "scope": "official_reference_screenshot_not_current_run"
+    },
+    {
+      "asset": "docs/beginner/assets/ti-chil-scada-official.jpg",
+      "source": "D:\\Typhoon\\Typhoon HIL Control Center 2026.3\\typhoon\\help\\t-an001\\Images\\ti_pmsm_torque_control_03.jpg",
+      "source_url": "https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html",
+      "source_figure": 3,
+      "sha256": "883ba48f3ebf7b0517911d95c9bcdb52231d82e17b712ced7d84c26c60279081",
+      "operation": "byte_copy",
+      "scope": "official_reference_screenshot_not_current_run"
     }
   ],
   "conceptual_diagrams": [
@@ -134,6 +152,18 @@
       "source": "author_generated",
       "scope": "conceptual_function_diagram",
       "sha256": "da1b2355263a7433e97a8cd5deb1829f8a5221636f75b7d751e4105332ca42af"
+    },
+    {
+      "asset": "docs/beginner/assets/ti-chil-loop.svg",
+      "source": "author_generated",
+      "scope": "conceptual_function_diagram",
+      "sha256": "2c75f8f8edbd685904ae947892bb58dfc54f1d50de0483e8b2b0e504c283a8e3"
+    },
+    {
+      "asset": "docs/beginner/assets/tle9877-shunt-path.svg",
+      "source": "author_generated",
+      "scope": "conceptual_function_diagram",
+      "sha256": "67292767e403f62bae484cddd70fa812a0e3b9773e474c4ce124b95c11207c72"
     }
   ]
 }

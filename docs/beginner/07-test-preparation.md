@@ -1,6 +1,6 @@
 # 7. 把学习变成样机测试准备
 
-上一章：[Typhoon 预演](06-typhoon-walkthrough.md) · [学习入口](README.md) · [术语与资料索引](reference.md)
+上一章：[Typhoon 预演](06-typhoon-walkthrough.md) · [学习入口](README.md) · 下一章：[TI 真实控制器实训](08-ti-launchpad-chil.md)
 
 本章目标：学完概念后，能拿出具体笔记、接口问题和测试记录，并参与联调沟通。这里按你当前的知识起点安排任务，实物步骤由实际设备与负责人落实。
 
@@ -160,3 +160,5 @@
 </details>
 
 对某一题仍不确定，就沿[术语和资料索引](reference.md)回到对应章节。你可以把尚未理解的一小段原图、字段或波形位置记录下来，再逐项补齐。
+
+继续读[第 8 章：TI LaunchPad 中文实训](08-ti-launchpad-chil.md)，把这里画出的闭环对应到一个真实控制器案例；再用[第 9 章](09-pmsm-to-tle9877-chil.md)整理 TLE9877 实体接入路线。

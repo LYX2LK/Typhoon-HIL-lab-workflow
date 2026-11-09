@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><link rel="icon" href="data:,"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从零理解样机测试 · Typhoon 图文教程</title><meta name="description" content="面向零基础读者的样机测试教程：电路、芯片、电机控制、电流反馈、LIN/PWM、Typhoon 预演和测试准备。"><style>
+<!doctype html><html lang="zh-CN"><head><link rel="icon" href="data:,"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从零理解样机测试 · Typhoon 图文教程</title><meta name="description" content="面向初学者的样机测试教程：电路、芯片、电机控制、LIN/PWM、PMSM 软件预演、TI LaunchPad 中文实训与 TLE9877 实体 C-HIL 准备。"><style>
 :root{--paper:#fbfaf6;--ink:#253b42;--muted:#60757b;--accent:#276a62;--line:#dbe4df;--reader-size:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:34px}body{margin:0;background:var(--paper);color:var(--ink);font:var(--reader-size)/1.85 'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif}
 a{color:#21665f;text-underline-offset:4px}a:hover{color:#954b28}button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #ba7b43;outline-offset:4px}
@@ -10,7 +10,7 @@ nav a{display:flex;align-items:center;gap:12px;padding:10px 9px;margin:3px -9px;
 #search-results{display:grid;gap:7px;font-size:13px;margin-top:8px}#search-results a{line-height:1.5}#search-status{font-size:12px;color:var(--muted)}
 .tools{display:flex;gap:8px;margin-top:18px}.tools button{border:1px solid #bdcec5;border-radius:6px;background:transparent;color:#355b50;padding:4px 10px;font-size:14px}.image-note{font-size:12px;color:var(--muted);margin-top:15px}
 main{margin-left:280px;max-width:1320px;padding:58px 76px 100px}.course-label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#8f5d35;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:26px}
-article{margin-bottom:90px;padding-bottom:65px;border-bottom:1px solid var(--line);scroll-margin-top:30px}h1{font-size:34px;line-height:1.4;letter-spacing:-.6px;margin:16px 0 20px}h2{font-size:25px;line-height:1.5;margin:48px 0 17px}h3{font-size:20px;line-height:1.5;margin:32px 0 12px}p{margin:16px 0}strong{font-weight:700;color:#1d524c}li{padding-left:3px;margin:7px 0}ul,ol{padding-left:27px}
+article{margin-bottom:90px;padding-bottom:65px;border-bottom:1px solid var(--line);scroll-margin-top:30px;overflow-wrap:anywhere}h1{font-size:34px;line-height:1.4;letter-spacing:-.6px;margin:16px 0 20px}h2{font-size:25px;line-height:1.5;margin:48px 0 17px}h3{font-size:20px;line-height:1.5;margin:32px 0 12px}p{margin:16px 0}strong{font-weight:700;color:#1d524c}li{padding-left:3px;margin:7px 0}ul,ol{padding-left:27px}
 .table-wrap{overflow:auto;margin:24px 0;border:1px solid var(--line);border-radius:9px;background:#fff}table{border-collapse:collapse;width:100%;font-size:.88em;line-height:1.7}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #e4ebe6;min-width:110px}th{background:#ecf1ed;font-weight:650;color:#36584d}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfa}
 pre{background:#22373e;color:#edf6f4;overflow:auto;border-radius:9px;padding:22px 24px;font-size:14px;line-height:1.8;margin:24px 0;tab-size:4}code{font-family:Consolas,'Cascadia Code',monospace}p code,td code,li code{background:#e8eee9;border-radius:4px;padding:2px 5px;color:#234b43;font-size:.9em}
 img{display:block;max-width:100%;height:auto;margin:0 auto}.image-button{display:block;width:100%;padding:18px;border:1px solid #dbe3df;border-radius:10px;background:white;margin:26px 0 10px;text-align:center;cursor:zoom-in}.image-button img{max-height:540px;object-fit:contain}.image-button::after{content:'点击放大原图';display:block;color:#677c75;font-size:12px;margin-top:9px}.concept-diagram{margin:28px 0}.concept-diagram .image-button{padding:5px}.concept-diagram img{width:100%;max-height:none}figcaption{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
@@ -22,10 +22,10 @@ footer{font-size:14px;color:var(--muted)}
 @media print{aside,.course-label,.skip{display:none}main{margin:0;padding:0;max-width:none}body{font-size:11pt;background:white}article{page-break-before:always;margin:0;border:0;padding:0}article:first-of-type{page-break-before:auto}h1,h2,h3{break-after:avoid}pre,figure,.image-button{break-inside:avoid}.image-button{border:0;cursor:default}.image-button::after{display:none}a{color:inherit}details{background:white}pre{white-space:pre-wrap;background:#f2f3f2;color:#222}}
 </style></head><body>
 <a class="skip" href="#content">跳到正文</a>
-<aside><div class="eyebrow">TYPHOON · LEARNING NOTES</div><div class="brand">从零理解<br>样机测试</div><p class="intro-note">从电压与电流开始，读懂这块板、这套模型和一次测试。</p><nav aria-label="章节导航"><a href="#start" data-chapter="start"><span>开始</span>学习路线</a><a href="#electricity" data-chapter="electricity"><span>01</span>电与整套系统</a><a href="#board" data-chapter="board"><span>02</span>芯片、控制板与引线</a><a href="#motor" data-chapter="motor"><span>03</span>电机与控制</a><a href="#feedback" data-chapter="feedback"><span>04</span>反馈与 HIL</a><a href="#communication" data-chapter="communication"><span>05</span>LIN 与 PWM 练习</a><a href="#practice" data-chapter="practice"><span>06</span>Typhoon 预演导读</a><a href="#preparation" data-chapter="preparation"><span>07</span>样机测试准备</a><a href="#reference" data-chapter="reference"><span>查阅</span>术语、资料与原图</a></nav>
+<aside><div class="eyebrow">TYPHOON · LEARNING NOTES</div><div class="brand">从零理解<br>样机测试</div><p class="intro-note">从电压与电流开始，读懂这块板、这套模型和一次测试。</p><nav aria-label="章节导航"><a href="#start" data-chapter="start"><span>开始</span>学习路线</a><a href="#electricity" data-chapter="electricity"><span>01</span>电与整套系统</a><a href="#board" data-chapter="board"><span>02</span>芯片、控制板与引线</a><a href="#motor" data-chapter="motor"><span>03</span>电机与控制</a><a href="#feedback" data-chapter="feedback"><span>04</span>反馈与 HIL</a><a href="#communication" data-chapter="communication"><span>05</span>LIN 与 PWM 练习</a><a href="#practice" data-chapter="practice"><span>06</span>Typhoon 预演导读</a><a href="#preparation" data-chapter="preparation"><span>07</span>样机测试准备</a><a href="#ti-chil" data-chapter="ti-chil"><span>08</span>TI 真实控制器实训</a><a href="#tle-chil" data-chapter="tle-chil"><span>09</span>走向 TLE9877 实体测试</a><a href="#reference" data-chapter="reference"><span>查阅</span>术语、资料与原图</a></nav>
 <div class="searchbox"><label for="course-search">查一个术语或问题</label><input id="course-search" type="search" placeholder="例如：分流、2240、无感" autocomplete="off"><div id="search-status" role="status"></div><div id="search-results"></div></div>
 <div class="tools" aria-label="阅读工具"><button type="button" data-size="-1" aria-label="缩小正文字号">A−</button><button type="button" data-size="1" aria-label="放大正文字号">A＋</button><button type="button" id="print-reader">打印</button></div><p class="image-note">图片可点击放大，按 Esc 返回。<br>本页可离线阅读；官方外链需联网。</p></aside>
-<main id="content"><div class="course-label">零基础图文教程 · 七章学习与动手练习</div><article id="start" data-chapter-title="学习路线"><h1 id="start--从零理解这次样机测试">从零理解这次样机测试</h1>
+<main id="content"><div class="course-label">零基础图文教程 · 9 章学习与动手练习</div><article id="start" data-chapter-title="学习路线"><h1 id="start--从零理解这次样机测试">从零理解这次样机测试</h1>
 <p>这套教程写给<strong>此前没有学过芯片、电路和电机控制，最近才熟悉 Typhoon 操作的你</strong>。目的是让你能读懂本次样机资料、理解联调人员在检查什么，并独立完成电脑上的学习练习。先从一条完整的工作过程建立认识，再逐步认识里面的器件、信号和软件。</p>
 <p>贯穿全套教程的问题是：<strong>我们要求电机转到某个速度，这个要求怎样变成电机动作，又怎样知道动作是否正确？</strong></p>
 <p>阅读方式：<a href="index.html">离线图文阅读页</a>适合在浏览器中按章节阅读、查词和放大图片；本目录 Markdown 保存可编辑正文。离线页直接打开即可使用。</p>
@@ -92,6 +92,18 @@ footer{font-size:14px;color:var(--muted)}
 <td>45～60 分钟</td>
 </tr>
 <tr>
+<td>8</td>
+<td><a href="#ti-chil">TI LaunchPad PMSM C-HIL 中文实训</a></td>
+<td>真实 MCU 怎样控制虚拟电机？六路 DI、电流 AO 和编码器 DO 怎样配合？</td>
+<td>60～120 分钟</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="#tle-chil">从 PMSM 软件预演到 TLE9877 实体 C-HIL</a></td>
+<td>怎样迁移模型、适配单分流与无感反馈，并准备首个实体用例？</td>
+<td>60～120 分钟</td>
+</tr>
+<tr>
 <td>随时查</td>
 <td><a href="#reference">术语、资料与图片索引</a></td>
 <td>缩写是什么意思？原图和手册关键页在哪里？</td>
@@ -100,6 +112,7 @@ footer{font-size:14px;color:var(--muted)}
 </tbody>
 </table>
 <p>第一轮先读正文和算例，英文官方链接留到第二轮按需查阅。电机控制中的矩阵推导、寄存器逐位配置和控制器整定，等碰到具体问题时再深入。</p>
+<p>已经完成 <a href="../tle9877-gui-practice.md">GUI 练习</a>时，可以从<a href="#ti-chil">第 8 章</a>继续：先阅读官方 TI 外部控制器案例，再按第 9 章把驱动入口、采样反馈、LIN 命令和首轮判据落实到本板。两章的电脑读图练习可先完成；实体复现按各自设备与接口条件安排。</p>
 <h2 id="start--学习时准备什么">学习时准备什么</h2>
 <p>一台能打开项目文件的电脑、现有 Typhoon 环境、PowerShell，以及一个记录问题的笔记即可。第 1～5 章的练习主要是画图、计算和离线命令。第 6 章先读已有报告，需要自己运行时再使用 Virtual HIL。</p>
 <p>本教程中的命令均明确标注用途。离线编解码只处理数字；Virtual HIL 预演运行电脑内模型。真实板卡的供电、信号测量和反馈注入，需要按实际设备、改装接线图和实验负责人确定的步骤开展。</p>
@@ -1265,7 +1278,7 @@ raw 是一个字节里的原始码，常规有效范围 0～254
 </details>
 <p>下一章把学到的内容整理成可以用于联调的准备成果。</p>
 </article><article id="preparation" data-chapter-title="样机测试准备"><h1 id="preparation--7-把学习变成样机测试准备">7. 把学习变成样机测试准备</h1>
-<p>上一章：<a href="#practice">Typhoon 预演</a> · <a href="#start">学习入口</a> · <a href="#reference">术语与资料索引</a></p>
+<p>上一章：<a href="#practice">Typhoon 预演</a> · <a href="#start">学习入口</a> · 下一章：<a href="#ti-chil">TI 真实控制器实训</a></p>
 <p>本章目标：学完概念后，能拿出具体笔记、接口问题和测试记录，并参与联调沟通。这里按你当前的知识起点安排任务，实物步骤由实际设备与负责人落实。</p>
 <h2 id="preparation--71-先把准备好了说具体">7.1 先把“准备好了”说具体</h2>
 <p>样机测试准备可以逐层完成：</p>
@@ -1530,6 +1543,929 @@ raw 是一个字节里的原始码，常规有效范围 0～254
 </ol>
 </details>
 <p>对某一题仍不确定，就沿<a href="#reference">术语和资料索引</a>回到对应章节。你可以把尚未理解的一小段原图、字段或波形位置记录下来，再逐项补齐。</p>
+<p>继续读<a href="#ti-chil">第 8 章：TI LaunchPad 中文实训</a>，把这里画出的闭环对应到一个真实控制器案例；再用<a href="#tle-chil">第 9 章</a>整理 TLE9877 实体接入路线。</p>
+</article><article id="ti-chil" data-chapter-title="TI 真实控制器实训"><h1 id="ti-chil--8-中文实训真实-ti-控制器怎样控制虚拟-pmsm">8. 中文实训：真实 TI 控制器怎样控制虚拟 PMSM</h1>
+<p>上一章：<a href="#preparation">样机测试准备</a> · <a href="#start">学习入口</a> · 下一章：<a href="#tle-chil">从 PMSM 软件预演到 TLE9877 实体 C-HIL</a></p>
+<p>本章写给已经做过 <a href="../tle9877-gui-practice.md">Typhoon 图形界面预演</a>、准备接触真实控制板的组员。目标是读懂一个完整的外部控制器案例，能在模型中找到驱动入口、反馈出口和测试判据，再把这些位置对应到自己的项目。</p>
+<p>本章依据 Typhoon 官方 <a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">PMSM torque control using TI LaunchPad 应用说明</a>，结合本机 THCC 2026.3 的模型、面板和测试脚本编写，是按学习任务组织的中文教学改编。图中的真实控制器是 <strong>TI LAUNCHXL-F28379D</strong>；第 9 章再讨论 TLE9877。</p>
+<h2 id="ti-chil--81-先抓住这件事控制算法搬到了真实芯片上">8.1 先抓住这件事：控制算法搬到了真实芯片上</h2>
+<p>在之前的软件预演中，模型里的控制器算出 PWM，模型里的逆变器和电机作出响应。在本案例中，执行 FOC 和 PWM 调制的是 TI 微控制器，HIL 实时仿真逆变器、电机及相关电路。真实控制器和虚拟对象通过电气信号交换信息，构成控制器硬件在环，即 <strong>C-HIL</strong>。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方案例</a></p>
+<p><img src="assets/ti-chil-loop.svg" alt="TI 控制器与 HIL 的三条信号路径" /></p>
+<p>图为本教程绘制的功能示意。顺着它区分三条路径：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>谁发给谁</th>
+<th>承担什么任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命令</td>
+<td>电脑 → TI 控制器，USB 串口</td>
+<td>设置使能和转矩要求</td>
+</tr>
+<tr>
+<td>驱动</td>
+<td>TI 控制器 → HIL 数字输入 DI</td>
+<td>告诉模型的六个功率开关何时开、何时关</td>
+</tr>
+<tr>
+<td>反馈</td>
+<td>HIL → TI 控制器，AO 和 DO</td>
+<td>用模拟电压表示电流，用数字脉冲表示编码器信号</td>
+</tr>
+</tbody>
+</table>
+<p>电脑负责安排实验和观察；快速闭环沿“TI → HIL → TI”运行。PC 串口的每次更新只改变要求，实时对象仍持续响应控制器输出的开关动作。</p>
+<p>这里的电机和主功率电路由仿真器计算。模型中出现 400 V 电机，并不意味着要把 400 V 功率接到 LaunchPad；真实接口传递的是经过适配的信号。</p>
+<h2 id="ti-chil--82-为什么案例叫转矩控制而原来的练习是调速">8.2 为什么案例叫“转矩控制”，而原来的练习是调速？</h2>
+<p>之前的 GUI 练习修改 <code>w_ref</code>，要求模型维持某个转速。本案例修改 <code>T ref</code>，直接提出电磁转矩要求。其 FOC 设定 d 轴电流参考为 0，通过 q 轴电流调节转矩。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方案例</a></p>
+<p>可以把它理解为：调速是在问“保持多快”，转矩控制是在问“用多大的劲”。电机最后转多快，还受负载和惯量影响。</p>
+<p>用机械平衡理解这个区别：</p>
+<pre><code class="language-text">惯量 × 转速变化率 = 电磁转矩 − 负载转矩 − 摩擦转矩
+</code></pre>
+<p>当驱动力矩大于阻力矩，速度上升；二者平衡时，速度可能稳定。因而，判断这个案例先看转矩是否跟随 <code>T ref</code>，再看电流控制和速度响应。不能把原来软件预演的“转速误差小于 50 rpm”直接当作它的判据。</p>
+<p>官方示例采用 <code>T_load = 0.001 × ω_mech²</code> 的负载关系，其中机械角速度按 rad/s、负载转矩按 N·m 表示，系数属于该示例。它使负载随转速增大；本次水泵的负载模型还需取得自己的依据。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方负载定义</a></p>
+<p><strong>动手题：</strong> 假如转矩已经跟随要求，而速度仍在增加，能否立刻判为控制失败？</p>
+<details>
+<summary>核对思路</summary>
+<p>先看测试要求、负载和观察窗口。转矩跟随与恒速是不同的目标；速度仍增加可能来自尚未建立的机械平衡。还需核对电流、限幅和模型条件，才能判断是否异常。</p>
+</details>
+<h2 id="ti-chil--83-拿到哪些文件就能开始学习">8.3 拿到哪些文件，就能开始学习？</h2>
+<p>在 Control Center 的 <strong>Example Explorer</strong> 中搜索 <code>ti pmsm torque control</code> 或 <code>PMSM torque</code>。本机安装位置为：</p>
+<pre><code class="language-text">D:\Typhoon\Typhoon HIL Control Center 2026.3\
+  examples\models\hardware in the loop\ti pmsm torque control\
+    ti pmsm torque control.tse       电路与对象模型
+    ti pmsm torque control.cus       SCADA 面板
+    ti pmsm torque control.out       TI 控制器固件映像
+    f28379d.ccxml                    TI 烧录目标配置
+    generated.ufsettings            TI 烧录设置
+    5SNG 0150Q170300_*.xml           功率器件损耗资料
+  examples\tests\119_ti_pmsm_torque_control\
+    test_ti_pmsm_torque_control.py   自动化测试脚本
+</code></pre>
+<p>先认识两个“程序”去哪里：<code>.tse</code> 编译后加载到 HIL；<code>.out</code> 用 UniFlash 烧录到 TI 控制器。它们服务于不同的硬件，不能互换。</p>
+<p>学习时可以直接打开官方模型阅读。需要改动时，将<strong>整个模型目录</strong>复制到项目自己的学习目录，保留配套文件，再修改副本。测试脚本按相对目录查找模型；复制测试时需保留相同层级，或在副本中明确改好路径。</p>
+<table>
+<thead>
+<tr>
+<th>手头条件</th>
+<th>现在可以完成的任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只有电脑和 THCC</td>
+<td>阅读原理图、组件属性、SCADA 配置与测试代码，填写信号表</td>
+</tr>
+<tr>
+<td>有实体 HIL，缺 TI 控制器或接口板</td>
+<td>确认模型与设备配置，准备通道；完整 TI 闭环仍缺外部控制器</td>
+</tr>
+<tr>
+<td>TI 控制器、适配接口和实体 HIL 都齐备</td>
+<td>按对应版本接线、固件与实验方案进行实体复现</td>
+</tr>
+</tbody>
+</table>
+<p>官方在线要求表列出的最低配置是 <strong>1 台 HIL101、Pro 1</strong>；本机模型也保存为 HIL101、1 μs 电气步长。具体设备的编译配置和资源占用要重新核对。汉象方案中的 HIL404 是另一项设备选择依据，不能由这个示例推定其实际接入已经就绪。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方案例要求表</a></p>
+<h2 id="ti-chil--84-电脑练习一沿原理图找出被仿真的对象">8.4 电脑练习一：沿原理图找出“被仿真的对象”</h2>
+<p>本节只阅读模型，不需要连接板卡或启动仿真。</p>
+<ol>
+<li>在 Example Explorer 打开模型，在 Schematic Editor 中缩放到能看清主电路。</li>
+<li>沿电能路径找到交流电源、三相整流器、直流母线、三相逆变器和 PMSM。</li>
+<li>找到负载计算、电流测量、编码器输出及 <code>Output Settings</code>。</li>
+<li>对照下面的表，给每个部分写一句用途。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>模型部分</th>
+<th>阅读时要理解的作用</th>
+<th>迁移到水泵时先问什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交流电源与整流器</td>
+<td>给示例建立直流母线</td>
+<td>水泵的直流供电应怎样建模？</td>
+</tr>
+<tr>
+<td>母线与制动支路</td>
+<td>表示储能与发电时的能量处理</td>
+<td>实板保留哪些供电、功率与诊断电路？</td>
+</tr>
+<tr>
+<td>三相逆变器</td>
+<td>把六路开关动作变为三相电压</td>
+<td>开关动作来自哪个真实节点？</td>
+</tr>
+<tr>
+<td>PMSM 与负载</td>
+<td>计算电流、转矩、速度及机械响应</td>
+<td>参数定义和负载规律是否对应本次电机？</td>
+</tr>
+<tr>
+<td>电流／位置输出</td>
+<td>为真实控制器提供运行信息</td>
+<td>本固件实际需要哪些反馈？</td>
+</tr>
+<tr>
+<td>损耗与热模型</td>
+<td>演示如何扩展观察对象</td>
+<td>首轮闭环是否需要这部分复杂度？</td>
+</tr>
+</tbody>
+</table>
+<p>官方示例的 PMSM 为 19.8 kW、400 V、8 极，编码器为 4096 脉冲／转；这些都是 TI 案例条件。迁移时保留“驱动输入—对象计算—反馈输出”的结构，再重新选择水泵的电路、参数和反馈。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方模型说明</a></p>
+<p><strong>本节产出：</strong> 一张圈出主电路、驱动入口和反馈出口的模型截图，以及一份五行以内的对象说明。</p>
+<h2 id="ti-chil--85-电脑练习二找到真实-pwm-进入模型的位置">8.5 电脑练习二：找到真实 PWM 进入模型的位置</h2>
+<p>双击 <code>Three Phase Inverter</code>，查看 <code>Control</code>。本案例使用 <strong>Digital input per switch</strong>，即每个功率开关分别接收一个数字输入。这个设置让外部控制器的六路信号直接决定模型开关状态。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three-phase_two-level_inverter_rectifier.html">三相逆变器组件说明</a></p>
+<p><img src="assets/ti-chil-inverter-official.jpg" alt="官方案例的六路数字输入配置" /></p>
+<p>图源：Typhoon 官方案例 Figure 2，本机安装帮助的原图字节副本。图中 DI1～DI6 和 <code>active high</code> 属于这个 TI 案例。</p>
+<table>
+<thead>
+<tr>
+<th>图中的项目</th>
+<th>中文含义</th>
+<th>检查动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Phase A/B/C S1</code></td>
+<td>A/B/C 相上桥开关</td>
+<td>查每一路对应哪个 DI</td>
+</tr>
+<tr>
+<td><code>Phase A/B/C S2</code></td>
+<td>A/B/C 相下桥开关</td>
+<td>查每一路对应哪个 DI</td>
+</tr>
+<tr>
+<td><code>active high/low</code></td>
+<td>调理后的高／低电平表示开通</td>
+<td>对照接口是否反相</td>
+</tr>
+<tr>
+<td><code>Digital input per switch</code></td>
+<td>六个开关各有独立输入</td>
+<td>逐路核对开关状态与通道</td>
+</tr>
+</tbody>
+</table>
+<p>再比较三个容易混淆的选项：</p>
+<ul>
+<li><strong>Internal modulator：</strong> 模型内部产生 PWM，用于相应的软件控制结构。</li>
+<li><strong>Digital input per switch：</strong> 捕获每个外部开关信号，保留实际六路时序。</li>
+<li><strong>Digital input per leg：</strong> 每桥臂一个输入，由模型内部死区模块生成两路开关动作。</li>
+</ul>
+<p>这些模式观察到的控制行为不同。若目标是验证真实六路输出及其死区，不应为了少接线就改成每桥臂一个输入。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three-phase_two-level_inverter_rectifier.html">控制模式定义</a></p>
+<p><strong>本节产出：</strong> 在笔记中填完 <code>控制器信号 → 接口板 → HIL DI → 模型开关 → 有效极性</code> 六行表。TLE9877 的通道号留待其自己的 I/O 合同确认。</p>
+<h2 id="ti-chil--86-电脑练习三找到电流和编码器怎样返回-ti">8.6 电脑练习三：找到电流和编码器怎样返回 TI</h2>
+<p>打开模型中的 <code>Output Settings</code>，它使用 <strong>Initial Settings</strong> 组件集中配置输出。先读 <code>Signal</code> 和 <code>Channel</code>，再读比例、偏置与限幅。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/initial_settings.html">Initial Settings 说明</a></p>
+<p>本机 THCC 2026.3 示例保存的输出关系是：</p>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>模型信号</th>
+<th>真实控制器得到什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AO1、AO2、AO3</td>
+<td>Ia、Ib、Ic 对应的电流测量信号</td>
+<td>用电压编码的三相电流信息</td>
+</tr>
+<tr>
+<td>DO17、DO18、DO19</td>
+<td>编码器 A、B、Z</td>
+<td>位置／速度计算所需的脉冲</td>
+</tr>
+</tbody>
+</table>
+<p>其中三路 AO 保存了 1.5 V 偏置及 0～3 V 限幅。它们表达的是该 TI 固件约定的采样接口；本板 SHP/SHN 的毫伏级差分接口另行设计。</p>
+<p>编码器通过适配板连接到 TI 的 eQEP 接口。官方应用说明要求：接口板 <strong>1.2 及更新版本</strong>按 eQEP1 与 QEP_A 的对应方式接线；1.1 及更早版本按专门 FAQ 处理。实际插针方向和引脚对应应对照相同版本图纸。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_ti_launchpad_interface/References/detailed_description.html">接口板说明</a>、<a href="https://ticket.typhoon-hil.com/kb/faq.php?id=296">旧版本 FAQ</a></p>
+<h3 id="ti-chil--用一组自己能算清的数理解输出比例">用一组自己能算清的数理解输出比例</h3>
+<p>下面是<strong>独立教学算例</strong>，用于理解转换关系：假设希望把 −20～+20 A 表示为 0.5～2.5 V，且中间接口单位增益、无额外偏置，则：</p>
+<pre><code class="language-text">目标关系：V_AO = 0.05 × I_model + 1.5
+−20 A → 0.5 V
+  0 A → 1.5 V
++20 A → 2.5 V
+</code></pre>
+<p>写成这个关系后，再确定软件输入框采用的单位。如果填的是乘法增益，数值是 <code>0.05 V/A</code>；若采用“每伏代表多少安培”的比例，数值是其倒数 <code>20 A/V</code>。这组数不作为 TI 或 TLE9877 的接线设定。</p>
+<details>
+<summary>为什么这里要先写转换关系，再填写 Scaling？</summary>
+<p>官方信号缩放应用说明使用“物理量跨度／输出电压跨度”的比例；Initial Settings 和 Analog Outputs 帮助则用乘法因子描述缩放。本机 TI 示例的 Initial Settings 还保存了旧格式标记 <code>model_load_legacy=1</code>。因此，不能仅凭都叫 <code>Scaling</code> 就把一个资料中的数字填入另一个界面。</p>
+<p>实际配置时对照所用版本帮助及回读值，先在与板卡隔离的测试条件下核对零点和正、负测试点，再检查动态范围与限幅。接入控制器前还要把中间调理电路的增益、偏置和极性计入整条链路。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/how_to_signal_scaling.html">缩放应用说明</a>、<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/analog_outputs_settings.html">AO 设置定义</a></p>
+</details>
+<p><strong>本节产出：</strong> 一张输出表，写明物理量、输出通道、目标转换关系、接口增益／偏置、允许范围，以及需要什么测量来核对。</p>
+<h2 id="ti-chil--87-有齐套硬件时一次-ti-案例复现怎样安排">8.7 有齐套硬件时：一次 TI 案例复现怎样安排？</h2>
+<p>本节供实验负责人组织 TI 台架复现。只有电脑时，完成前面的阅读练习即可；Virtual HIL 的内部 I/O 回环不会连接真实 LaunchPad。<a href="https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html">Virtual HIL 回环说明</a></p>
+<h3 id="ti-chil--开始前先把对象和资源对上">开始前，先把对象和资源对上</h3>
+<p>记录 HIL 型号、设备标识与配置，LaunchPad 型号、接口板版本、THCC 版本和固件来源。使用匹配的接口板文档核对供电选择、编码器排线与数字／模拟通道。接口板可以采用不同供电方式，USB 与 HIL 供电选择应按板级文档落实。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_ti_launchpad_interface/References/detailed_description.html">接口板供电说明</a></p>
+<h3 id="ti-chil--按阶段操作并留下对应证据">按阶段操作，并留下对应证据</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>操作</th>
+<th>应取得的证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 准备 TI 固件</td>
+<td>核对 <code>.out</code> 和目标配置，用 UniFlash 烧录到匹配的 TI 控制器并运行代码</td>
+<td>目标型号、文件摘要、烧录成功记录</td>
+</tr>
+<tr>
+<td>2. 核对 HIL 模型</td>
+<td>在学习副本中确认设备配置、六路 DI、AO/DO 映射和依赖文件；编译并加载到所选实体 HIL</td>
+<td>编译结果、设备标识、模型与输出配置</td>
+</tr>
+<tr>
+<td>3. 建立命令连接</td>
+<td>打开配套 <code>.cus</code>，在设备管理器确认串口，选择 COM 后点击 <code>Connect</code></td>
+<td>实际串口和连接状态</td>
+</tr>
+<tr>
+<td>4. 进入初始状态</td>
+<td>按台架方案设置初始转矩、使能状态和采集窗口；开始实时仿真</td>
+<td>初始条件、HIL 运行状态、输出检查</td>
+</tr>
+<tr>
+<td>5. 改变要求</td>
+<td>在已确认的范围内将 <code>Inverter Mode</code> 置 <code>Enable</code>，改变 <code>T ref</code></td>
+<td>命令记录、六路驱动、对象响应</td>
+</tr>
+<tr>
+<td>6. 捕获与退出</td>
+<td>捕获暂态；按台架停机流程退出使能并确认状态，再停止仿真和释放串口</td>
+<td>原始波形、停止及资源释放记录</td>
+</tr>
+</tbody>
+</table>
+<p>UniFlash 的基本流程是识别／选择目标、载入匹配配置、选择 <code>.out</code> 并执行烧录。串口应从 Windows 设备管理器中的 TI 设备核对，截图里的 COM4 只是演示值。<a href="https://ticket.typhoon-hil.com/kb/faq.php?id=96">官方烧录与串口教程</a></p>
+<p><img src="assets/ti-chil-scada-official.jpg" alt="官方案例的 SCADA 面板" /></p>
+<p>图源：Typhoon 官方案例 Figure 3，本机安装帮助原图。先看左上角 COM、Connect、Inverter Mode 和 T ref，再看右侧转矩、速度及 Id/Iq。截图中的滑块值和仪表状态是官方界面示意。</p>
+<p>零转矩命令、退出使能、停止 HIL 和断开串口是不同动作。退出时应按匹配固件与台架流程确认实际状态；HIL 停止后的 AO/DO 状态也要单独核对。本机示例配置包含停仿真时将 AO 复位到偏置值的设置，不能把“停止”一概理解为全部端口输出 0 V。</p>
+<h2 id="ti-chil--88-看哪些波形才能说清控制效果">8.8 看哪些波形，才能说清控制效果？</h2>
+<p>先按问题选信号，再设置 Capture/Scope。具体可选名称以当前模型的信号列表为准。</p>
+<table>
+<thead>
+<tr>
+<th>想回答的问题</th>
+<th>需要一起看什么</th>
+<th>阅读顺序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>转矩是否跟随？</td>
+<td><code>T ref</code> 的实际发送记录、电磁转矩</td>
+<td>看命令时刻，再看暂态与稳态窗口</td>
+</tr>
+<tr>
+<td>电流控制是否符合设计？</td>
+<td>Id、Iq、对应参考及三相电流</td>
+<td>看目标关系、偏差、饱和或异常尖峰</td>
+</tr>
+<tr>
+<td>速度为何改变？</td>
+<td>机械速度、转矩、负载</td>
+<td>联系加减速过程和机械平衡</td>
+</tr>
+<tr>
+<td>模型是否收到真实驱动？</td>
+<td>控制器输出、调理后信号、模型开关状态</td>
+<td>从真实引脚逐段追到模型</td>
+</tr>
+<tr>
+<td>反馈是否送对？</td>
+<td>模型电流、AO 实测值、控制器采样</td>
+<td>对照比例、偏置、极性和时序</td>
+</tr>
+</tbody>
+</table>
+<p>本机测试脚本实际捕获的信号包括 <code>3 ph PMSM VBR.electrical torque</code> 和 <code>3 ph PMSM VBR.i_ds</code>。这些是模型内部可观察量；如果需要评价 MCU 自己算出的 Id/Iq，还要取得固件侧观测，记录其来源。</p>
+<p>整流器和逆变器子面板展示损耗与温度计算。它们可用于学习模型扩展；计算值的适用性取决于所用器件数据和热参数，实板温度需要对应测量。</p>
+<h2 id="ti-chil--89-阅读官方自动化脚本把看起来正常变成判据">8.9 阅读官方自动化脚本：把“看起来正常”变成判据</h2>
+<p>在 Example Explorer 中用 <code>Open Test</code> 打开脚本，<strong>先阅读，不启动测试</strong>。本机 THCC 2026.3 脚本的关键条件如下：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>代码中的条件</th>
+<th>学习重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>转矩调节测试点</td>
+<td>8、12 N·m</td>
+<td>每个点分别运行并评价</td>
+</tr>
+<tr>
+<td>转矩允许区间</td>
+<td>参考值 ±1.5 N·m</td>
+<td>允许带必须来自明确要求</td>
+</tr>
+<tr>
+<td>d 轴电流允许区间</td>
+<td>−0.8～+0.8 A</td>
+<td>“零电流目标”不等于数值必须逐点等于 0</td>
+</tr>
+<tr>
+<td>采集</td>
+<td>3 s、1 MSa/s</td>
+<td>采集范围与评价范围分别设置</td>
+</tr>
+<tr>
+<td>评价窗口</td>
+<td><code>ranges.after(1)</code></td>
+<td>评价采集时间轴上 1 s 后的区段</td>
+</tr>
+<tr>
+<td>断言严格度</td>
+<td><code>strictness=0.9</code></td>
+<td>与当前测试库定义一起阅读，不能解释成所有点都在范围内</td>
+</tr>
+<tr>
+<td>热响应演示点</td>
+<td>5、15 N·m</td>
+<td>绘图与性能断言分别查看</td>
+</tr>
+</tbody>
+</table>
+<p>以上数值来自本机 <code>examples/tests/119_ti_pmsm_torque_control/test_ti_pmsm_torque_control.py</code> 的静态阅读，仅用于解释 TI 案例。</p>
+<p>阅读代码时按这个顺序找：连接资源 → 编译／加载 → 下发使能与参考 → 采集 → 选择窗口 → 执行断言 → 保存报告 → 清理资源。这套顺序可以迁移到水泵测试，具体命令、数值和数据来源则重新定义。</p>
+<p>脚本默认 <code>auto_flashing = 'yes'</code>，可能通过 UniFlash 改写 TI 控制器固件；它还会连接设备、操作串口并启动 HIL。若台架采用已确认的现有固件，应先在测试副本中按计划设置 <code>auto_flashing = 'no'</code>，同时核对模型路径和设备选择。<code>Open Test</code> 用来读代码，<code>Run</code> 才执行这些动作。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">官方自动化说明</a></p>
+<h2 id="ti-chil--810-遇到问题怎样逐段定位">8.10 遇到问题，怎样逐段定位？</h2>
+<p>下面是检查顺序。每一项都需要本次记录支持，再形成结论。</p>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>下一项检查</th>
+<th>有用的证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>找不到示例</td>
+<td>本机安装版本、Example Explorer 搜索词、安装文件</td>
+<td>实际文件路径与版本</td>
+</tr>
+<tr>
+<td>模型编译失败</td>
+<td>目标设备与配置、依赖文件和具体错误</td>
+<td>完整错误信息及失败组件</td>
+</tr>
+<tr>
+<td>COM 无法连接</td>
+<td>设备管理器端口、驱动、其他程序占用</td>
+<td>设备枚举、连接日志</td>
+</tr>
+<tr>
+<td>使能后没有驱动</td>
+<td>固件是否运行、命令是否正确、接口路由</td>
+<td>命令与控制器输出捕获</td>
+</tr>
+<tr>
+<td>有驱动但对象不响应</td>
+<td>DI 映射、极性、母线与模型开关状态</td>
+<td>调理后输入及模型侧波形</td>
+</tr>
+<tr>
+<td>电流／转矩明显异常</td>
+<td>相序、反馈比例、偏置、编码器方向与初始化</td>
+<td>模型量、端口测量、固件状态</td>
+</tr>
+<tr>
+<td>GUI 有响应而自动测试失败</td>
+<td>固件、命令、采集窗口与判据是否一致</td>
+<td>原始波形及具体失败断言</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ti-chil--811-学完后交出一页-ti-案例读图记录">8.11 学完后，交出一页 TI 案例读图记录</h2>
+<pre><code class="language-text">案例／THCC 版本：
+模型、面板、测试脚本位置：
+控制算法运行在哪个芯片：
+要求控制的是转矩还是转速：
+
+六路驱动：控制器端 → 接口 → HIL DI → 模型开关／极性
+电流反馈：模型量 → AO → 接口 → 控制器采样
+位置反馈：模型编码器 → DO → eQEP
+PC 命令：端口、协议、使能和参考
+
+软件阅读中已经找到的依据：
+还缺哪些实体设备与版本资料：
+若实际运行，要采什么、按什么窗口和阈值判断：
+停止、恢复和输出复位需要核对什么：
+</code></pre>
+<p>完成后，应该能回答：<strong>真实芯片控制的虽然是虚拟电机，但驱动、采样、控制程序和实时交互都能成为被测试的对象。</strong> 下一章把这个结构落到本次水泵板卡。</p>
+<h2 id="ti-chil--812-按问题查官方资料">8.12 按问题查官方资料</h2>
+<table>
+<thead>
+<tr>
+<th>想继续查什么</th>
+<th>官方资料</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>案例完整结构、演示视频与硬件要求</td>
+<td><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">TI LaunchPad PMSM C-HIL 应用说明</a></td>
+</tr>
+<tr>
+<td>输入模式、开关逻辑与死区</td>
+<td><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three-phase_two-level_inverter_rectifier.html">Three Phase Inverter</a></td>
+</tr>
+<tr>
+<td>输出集中配置</td>
+<td><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/initial_settings.html">Initial Settings</a></td>
+</tr>
+<tr>
+<td>电气量怎样变成端口电压</td>
+<td><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/how_to_signal_scaling.html">信号缩放应用说明</a>、<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/analog_outputs_settings.html">Analog Outputs</a></td>
+</tr>
+<tr>
+<td>TI 接口板路由与供电</td>
+<td><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_ti_launchpad_interface/References/detailed_description.html">HIL TI Launchpad Interface</a></td>
+</tr>
+<tr>
+<td>TI 固件烧录与串口设置</td>
+<td><a href="https://ticket.typhoon-hil.com/kb/faq.php?id=96">UniFlash 和 Serial port widget 教程</a></td>
+</tr>
+</tbody>
+</table>
+<p>本机安装帮助中的对应页面位于 <code>typhoon/help/t-an001/References/ti_pmsm_torque_control.html</code> 等目录，可离线对照。官方页面可能随版本更新；复现实验时保留实际使用版本和文件摘要。</p>
+</article><article id="tle-chil" data-chapter-title="走向 TLE9877 实体测试"><h1 id="tle-chil--9-从-pmsm-软件预演到-tle9877-实体-c-hil-测试">9. 从 PMSM 软件预演到 TLE9877 实体 C-HIL 测试</h1>
+<p>上一章：<a href="#ti-chil">TI LaunchPad 中文实训</a> · <a href="#start">学习入口</a> · <a href="../tle9877-field-commissioning.md">现场联调操作与记录</a></p>
+<p>本章面向准备参与样机联调的组员。目标是把已有软件预演、TI 官方案例和本次板卡资料接成一条可执行的准备路线：知道模型要改哪里、接口要确认什么、首个实体用例怎样留下证据。</p>
+<p><strong>本次要建立的闭环：LIN／已确认命令源 → 真实板卡与固件 → 六路驱动的调理与捕获 → HIL 逆变器及 PMSM → 固件所需的电气反馈 → 真实板卡。</strong></p>
+<p>案例名称沿用 TLE9877，实物完整型号、板号和固件以确认记录为准。板级事实集中查<a href="../tle9877-hil-intake.md">样机接入记录</a>，实际接线填写 <a href="../../configs/tle9877_hil_contract.json">I/O 合同</a>。</p>
+<h2 id="tle-chil--91-三个系统放在一起变化发生在哪里">9.1 三个系统放在一起，变化发生在哪里？</h2>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>现有 PMSM 软件预演／GUI 练习</th>
+<th>官方 TI C-HIL</th>
+<th>本次 TLE9877 实体 C-HIL 目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制算法</td>
+<td>Typhoon 模型内部控制器</td>
+<td>TI F28379D 固件</td>
+<td>实际交付板卡上的固件</td>
+</tr>
+<tr>
+<td>被控对象</td>
+<td>模型逆变器、电机、负载</td>
+<td>HIL 实时电气与机械模型</td>
+<td>按功率级边界建立的实时模型</td>
+</tr>
+<tr>
+<td>上位机命令</td>
+<td>直接修改模型参考</td>
+<td>串口发送转矩与使能</td>
+<td>LIN／确认后的 PWM-IN 等命令</td>
+</tr>
+<tr>
+<td>功率开关输入</td>
+<td>内部控制器产生</td>
+<td>TI 输出经接口送 DI</td>
+<td>GH/GL 引出信号经专用调理送 DI</td>
+</tr>
+<tr>
+<td>电流反馈</td>
+<td>模型内部理想反馈</td>
+<td>模型相电流经 AO 返回</td>
+<td>对应实际采样链和窗口的反馈注入</td>
+</tr>
+<tr>
+<td>位置／速度</td>
+<td>理想模型角度</td>
+<td>编码器 A/B/Z 返回 TI</td>
+<td>无感固件按其实际输入估计；模型量用于独立观察</td>
+</tr>
+<tr>
+<td>运行平台</td>
+<td>电脑 Virtual HIL</td>
+<td>实体 HIL</td>
+<td>实体 HIL 与匹配接口</td>
+</tr>
+<tr>
+<td>本项目已有入口</td>
+<td>GUI 教程、<code>pmsm_software_preview</code></td>
+<td>官方安装示例</td>
+<td>接入资料、工作表和 smoke 计划</td>
+</tr>
+</tbody>
+</table>
+<p>TI 案例适合学习“外部控制器怎样接入”，而水泵的命令、反馈与功率级要按本板重新设计。特别是无感控制，不能把模型的理想角度直接送给算法后，就据此评价其估计与启动能力。</p>
+<p>Virtual HIL 的 I/O 回环在软件内部传递信号。它可以帮助理解输入／输出配置；实体控制板需要真实的接口和实时仿真硬件。<a href="https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html">官方回环说明</a></p>
+<h2 id="tle-chil--92-第一步保留软件预演把它作为对照">9.2 第一步：保留软件预演，把它作为对照</h2>
+<p>先复习 <a href="../tle9877-gui-practice.md">GUI 练习</a>或<a href="#practice">软件预演导读</a>，确认自己能找到控制器、逆变器、电机、负载和观察量。</p>
+<p>然后查 <a href="../../configs/pmsm_software_preview.json">pmsm_software_preview.json</a> 的 <code>assumptions</code>。现有练习采用等效星形口径、理想模型角度及明确列出的控制和电机参数假设；这些设定支持软件学习，实际电机参数另填实体参数表。</p>
+<p>准备三个独立的材料位置：</p>
+<table>
+<thead>
+<tr>
+<th>材料</th>
+<th>应保存什么</th>
+<th>本项目位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>软件基线</td>
+<td>原有模型、配置与已完成波形</td>
+<td><a href="../../cases/pmsm_software_preview/README.md">软件预演案例</a></td>
+</tr>
+<tr>
+<td>实体对象参数</td>
+<td>已确认的参数定义、单位、来源与待补项</td>
+<td><a href="../../configs/tle9877_motor_pending.json">motor_pending 工作表</a></td>
+</tr>
+<tr>
+<td>实体接入方案</td>
+<td>节点、通道、参考、电平、调理、时序与确认依据</td>
+<td><a href="../../configs/tle9877_hil_contract.json">hil_contract 工作表</a></td>
+</tr>
+</tbody>
+</table>
+<p>后续新建实体模型副本，保留这些材料的对应关系。这样发现差异时，可以区分是控制器改变、参数改变，还是接口改变。</p>
+<p><strong>本步完成标志：</strong> 能指出软件预演中哪些参数已有资料，哪些是学习假设，哪些实体模型必需项仍为空白。</p>
+<h2 id="tle-chil--93-第二步先画功率级边界再画接线">9.3 第二步：先画功率级边界，再画接线</h2>
+<p>一个 C-HIL 模型要替代实物系统的哪一部分，决定了接口需要传递什么。把实际改装图上的器件标成三类：<strong>保留、断开、由模型替代</strong>。</p>
+<p>本次六路 GH/GL 引线取自 MOSFET 栅极；U/V/W、VM、SL 和 SHP/SHN 也都有实际电路位置。应沿原理图确认它们与驱动诊断、电流采样和参考电位的关系。<a href="../tle9877-hil-intake.md#2-%E5%BC%95%E7%BA%BF%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3">本板引线记录</a></p>
+<table>
+<thead>
+<tr>
+<th>要确定的边界</th>
+<th>需要拿到的具体答复</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>真实功率 MOS</td>
+<td>是否保留、怎样处理能量通路、会影响哪些驱动诊断</td>
+</tr>
+<tr>
+<td>三相节点 U/V/W</td>
+<td>哪些由真实电路决定，哪些需要模型反馈，接在哪个节点</td>
+</tr>
+<tr>
+<td>VM／SL</td>
+<td>功能、参考点、保留电路和允许范围</td>
+</tr>
+<tr>
+<td>栅极取出</td>
+<td>取的是 G 对哪个参考的电压，调理前后怎样表示开关状态</td>
+</tr>
+<tr>
+<td>电流反馈</td>
+<td>注入在 SHP/SHN、放大器后或其他确认节点，原采样路径怎样处理</td>
+</tr>
+<tr>
+<td>停止与恢复</td>
+<td>固件状态、输出状态、电源与通信如何配合</td>
+</tr>
+</tbody>
+</table>
+<p>这里尤其要区分：<strong>HIL 数字输入接收开关信号；普通 AO/DI 接口承担信号交互。</strong> 如果真实功率级仍参与能量交换，需要平台方明确相应接口和设备。不能只根据“电机用模型替代”推导出 U/V/W 的接法。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_interfacing_guide/topics/abstract.html">硬件接口指南</a></p>
+<p><strong>本步完成标志：</strong> 一张标注实板版本、保留／断开部分、反馈注入点和参考电位的改装接线图。</p>
+<h2 id="tle-chil--94-第三步让真实六路驱动接管模型逆变器">9.4 第三步：让真实六路驱动接管模型逆变器</h2>
+<p>迁移时，按以下顺序修改自己的实体模型副本：</p>
+<ol>
+<li>保留所需的直流供电、三相桥、PMSM 与机械负载结构，参数按本次边界重新配置。</li>
+<li>停用或移除模型内部控制器对该逆变器的驱动，明确唯一的控制来源。</li>
+<li>将逆变器控制方式设为 <code>Digital input per switch</code>。</li>
+<li>按已确认接线，为六个模型开关分别分配 HIL DI，填写各路调理后的有效极性。</li>
+<li>保留开关状态、电流、电压、转矩和速度的观察位置，供后续逐段核对。</li>
+</ol>
+<p><code>Digital input per switch</code> 的含义与属性以<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three-phase_two-level_inverter_rectifier.html">逆变器组件说明</a>为准。下面只列功能对应，实际 DI 号由合同填写：</p>
+<table>
+<thead>
+<tr>
+<th>本板引线</th>
+<th>已给出的取出位置</th>
+<th>经调理后拟对应的模型开关</th>
+<th>仍要填写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GH1／GL1</td>
+<td>U 相上／下 MOS 的 G 脚</td>
+<td>Phase A S1／S2</td>
+<td>DI、极性、参考点、延迟</td>
+</tr>
+<tr>
+<td>GH2／GL2</td>
+<td>V 相上／下 MOS 的 G 脚</td>
+<td>Phase B S1／S2</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>GH3／GL3</td>
+<td>W 相上／下 MOS 的 G 脚</td>
+<td>Phase C S1／S2</td>
+<td>同上</td>
+</tr>
+</tbody>
+</table>
+<p>这里将 U/V/W 暂对应模型 A/B/C 以说明关系，最终相序和方向一起确认。TI 示例的 DI1～DI6 只属于其自身通道配置。</p>
+<p>上桥栅极与对应源极之间的驱动电压，和相对于系统地的电位，是两个不同问题。引线材料写的“18V/2=9V”还缺实际分压位置、共模与参考说明；按这些信息选择差分／隔离等调理，再核对 HIL 输入规格。<a href="../tle9877-hil-intake.md#%E5%85%AD%E8%B7%AF%E9%A9%B1%E5%8A%A8%E7%9A%8418v29v%E8%BF%98%E4%B8%8D%E6%98%AF%E5%AE%8C%E6%95%B4%E6%8E%A5%E7%BA%BF%E8%A7%84%E6%A0%BC">本板驱动接口待确认项</a></p>
+<p><strong>本步完成标志：</strong> 六路通道表完整，并能用实测或平台已验证记录说明每路输入如何对应模型开关。</p>
+<h2 id="tle-chil--95-第四步把三相电流反馈改成固件真正需要的采样链">9.5 第四步：把“三相电流反馈”改成固件真正需要的采样链</h2>
+<p>TI 案例通过三路 AO 提供相电流。本板资料给出单分流采样电阻 <strong>0.5 mΩ</strong>，并引出 SHP/SHN；反馈模型需要表示对应分流支路在正确时刻的电流，再按实际采样电路生成输入。</p>
+<p><img src="assets/tle9877-shunt-path.svg" alt="从桥臂状态到分流反馈的功能链" /></p>
+<p>图为本教程绘制的设计关系。具体分流支路、极性、滤波、共模与注入位置按改装图和固件配置落实。</p>
+<h3 id="tle-chil--为什么不能把三相电流平均后送回去">为什么不能把三相电流平均后送回去？</h3>
+<p>用一个理想三线制三相桥算例理解：定义 <code>i_u、i_v、i_w</code> 为由桥流向电机的线电流，<code>S_u、S_v、S_w</code> 为三个上桥的理想开关状态，直流侧电流满足：</p>
+<pre><code class="language-text">i_u + i_v + i_w = 0
+i_dc = S_u × i_u + S_v × i_v + S_w × i_w
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>理想开关状态 <code>(S_u,S_v,S_w)</code></th>
+<th>由式子得到的 <code>i_dc</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1,0,0)</td>
+<td>i_u</td>
+</tr>
+<tr>
+<td>(1,1,0)</td>
+<td>i_u + i_v = −i_w</td>
+</tr>
+<tr>
+<td>(0,1,0)</td>
+<td>i_v</td>
+</tr>
+<tr>
+<td>(0,0,0) 或 (1,1,1)</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>这是教学推导，假定理想互补开关、忽略死区和器件换流。它说明：<strong>同一分流测量在不同开关状态下代表不同相电流信息。</strong> 实体模型应优先在对应电路支路测量，并核对方向；真实采样还受二极管续流、死区、消隐、滤波和最小有效窗口影响。</p>
+<p>Infineon 的 TLE987x 无感 FOC 应用说明给出一种单 PWM 周期内两次分流采样并重构相电流的实现，可重点读第 2.4 节和第 4.1 节。其演示平台是 TLE9879 EvalKit；本次实际固件是否采用相同算法与采样时刻，需要固件侧说明。<a href="https://community.infineon.com/gfawx74859/attachments/gfawx74859/jpmotixmcu/1578/1/Infineon-TLE987x-Sensorless-Field-Oriented-Control-ApplicationNotes-v01_00-EN.pdf">Infineon 单分流与无感 FOC 应用说明</a></p>
+<h3 id="tle-chil--数值正确还要保证反馈在采样时已经稳定">数值正确，还要保证反馈在采样时已经稳定</h3>
+<p>以分流电流 10 A 为教学例子：</p>
+<pre><code class="language-text">理想分流差分电压 = 10 A × 0.0005 Ω = 0.005 V = 5 mV
+</code></pre>
+<p><code>5 mV</code> 表示分流两端的差值。若注入在放大器之后，还需计入增益和偏置；若注入在 SHP/SHN，还需满足两个端点各自的共模、输入范围和参考要求。实际输出命令不能只由这一个乘法得出。</p>
+<p>以 HIL404 手册为例，AO 表列分辨率为 0.3 mV、偏移误差为 0.5 mV。对 0.5 mΩ 换算，0.5 mV 相当于 1 A 的分流电流量级。这只是量级比较，说明需要对调理、校准和误差预算作判断；整条链路精度仍需按实际设备、量程和测试条件验证。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_voltage_levels.html">HIL404 电压与模拟接口规格</a></p>
+<p>按下面顺序整理反馈时间链：</p>
+<pre><code class="language-text">真实栅极变化 → 调理与 DI 捕获 → 对象求解
+→ AO 更新 → 外部反馈调理与建立 → 固件 ADC 采样
+</code></pre>
+<p>为每一段取得更新率、延迟、滤波和建立时间，再与 ADC 有效采样窗口对照。HIL404 的数字输入捕获速率和模拟量更新节拍分别定义；手册中的数字捕获速率不能直接当作模拟反馈带宽。<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_timing.html">HIL404 I/O 时序</a></p>
+<p><strong>本步完成标志：</strong> 一张带节点、方向、单位、参考、传递关系、延迟和有效窗口的反馈链图，以及静态测试点和动态时序的核对记录。</p>
+<h2 id="tle-chil--96-第五步按真实固件建立无感运行所需条件">9.6 第五步：按真实固件建立无感运行所需条件</h2>
+<p>无位置传感器表示位置／速度由固件根据所需信息估计，仍然需要电气测量和相应的启动过程。先向固件方取得下面四项说明：</p>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>要落实的内容</th>
+<th>模型与采集怎样配合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运行算法</td>
+<td>实际算法、使用的电流／电压／诊断输入</td>
+<td>建立对应反馈，列明当前覆盖范围</td>
+</tr>
+<tr>
+<td>启动过程</td>
+<td>初始定位、开环阶段、切换条件及超时</td>
+<td>从使能前开始采集并观察状态转换</td>
+</tr>
+<tr>
+<td>采样配置</td>
+<td>ADC 触发、增益、偏置、滤波、消隐和有效窗口</td>
+<td>反馈链与当前固件配置对应</td>
+</tr>
+<tr>
+<td>驱动诊断</td>
+<td>依赖哪些相节点、母线和 MOS 状态</td>
+<td>保留或模拟对应物理条件</td>
+</tr>
+</tbody>
+</table>
+<p>HIL 模型的真实角度／速度可以作为评估固件估计值的参考观察量。若测试目标包含无感估计，把理想角度接入算法会改变被测问题，应在模型和报告中明确采用何种反馈。</p>
+<p>电机参数使用<a href="../../configs/tle9877_motor_pending.json">实体参数工作表</a>。已有资料是 12 槽 10 极、Δ 接法、5 极对，以及原文的 5 mΩ 相电阻、11 μH 相电感；先确认参数属于绕组支路、线间测量还是模型等效量，再取得目标模型的 Rs、Ld、Lq、磁链、惯量和负载。</p>
+<p>供电也要分列：板卡引线资料建议 9 V、上限 10 V；电机方案额定点为 13.5 V。实体模型母线取值及固件在该条件下的启动行为，由本次方案确认。<a href="../tle9877-hil-intake.md">本板电机与供电资料</a></p>
+<p><strong>本步完成标志：</strong> 反馈需求和参数定义能对应到这块实物、这份固件及选定的模型。</p>
+<h2 id="tle-chil--97-第六步把上位机串口命令换成本板的-lin-业务">9.7 第六步：把上位机串口命令换成本板的 LIN 业务</h2>
+<p>从 TI 案例可以迁移的是“上位机发要求，真实固件控制对象”的分工。本板的命令接口按 LDF 与固件实现，不能使用 TI 的串口命令或转矩值。</p>
+<p>在项目根目录做一次<strong>离线练习</strong>：</p>
+<pre><code class="language-powershell">Set-Location 'D:\Typhoon\lab-workflow'
+.\lab.ps1 check-tle9877 --current-a 10 --json
+.\lab.ps1 lin-encode --rpm 2240 --post-set 0 --json
+.\lab.ps1 lin-decode --frame control --data &quot;64 00&quot; --identifier 0xA6 --identifier-kind pid --checksum 0xF4 --json
+</code></pre>
+<p>应能解释这些结果：</p>
+<ul>
+<li>请求 2240 rpm，按 22.4 rpm/code 编为 raw=100，即 <code>0x64</code>。</li>
+<li>控制帧数据为 <code>64 00</code>，6 位 ID 为 <code>0x26</code>，PID 为 <code>0xA6</code>，工具按当前政策算出的增强校验和为 <code>0xF4</code>。</li>
+<li>编码结果中的 <code>sent_to_hardware=false</code>；固件实际采用的目标转速仍需状态／固件证据。</li>
+<li>准备检查中的 <code>hardware_ready</code> 和 <code>sample_model_ready</code> 分别表示实体条件和样机模型准备状态。</li>
+</ul>
+<p>这些命令及字段定义见<a href="../tle9877-software-preparation.md">软件准备说明</a>。实际发送需要 LIN 主节点设备与适配驱动；当前 <code>lin-mock</code> 使用模拟响应和模拟时钟。</p>
+<p>正式接入时，采用“请求转速、编码转速、板卡目标回读、板卡实际转速、模型转速”五列记录。前两列说明发了什么，后面三列分别说明固件和对象怎样响应。各列保留有效性、来源与时间戳。</p>
+<p>LDF 的 EWPTEST 包含两个连续 10 ms 时隙，因此同一业务帧名义上每 20 ms 重复。LIN 状态适合监视和记录，快速电流反馈由 HIL 与板卡的实时链路承担。<a href="../tle9877-hil-intake.md#44-%E8%B0%83%E5%BA%A6%E8%A1%A8%E7%9A%84-10ms-%E6%98%AF%E6%97%B6%E9%9A%99%E4%B8%8D%E6%98%AF%E6%AF%8F%E4%B8%AA%E5%B8%A7%E7%9A%84%E9%87%8D%E5%A4%8D%E5%91%A8%E6%9C%9F">LIN 调度与状态定义</a></p>
+<p><strong>本步完成标志：</strong> 离线样帧核对一致，已选择的实体 LIN 工具能按确认调度保存原始发送、响应和设备时间戳。</p>
+<h2 id="tle-chil--98-第七步用一个正常工况建立实体证据">9.8 第七步：用一个正常工况建立实体证据</h2>
+<p>采用已有 <a href="../../cases/tle9877_hil_smoke/plan.json">tle9877_hil_smoke 计划</a>，把目标、范围与判据填具体。这个计划当前 <code>execution_enabled=false</code>，还不是现有 <code>run-case</code> 可以执行的实体案例；需要完成实体后端、LIN 驱动与反馈集成。</p>
+<p>首轮用例可以写成：<strong>从已确认初始状态，发送一个允许范围内的正常转速命令，观察闭环建立，按指定方式停止并恢复。</strong> 命令值由固件和现场条件确定。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>要回答的问题</th>
+<th>最低记录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接入复核</td>
+<td>板卡、设备、模型和接线是否对应？</td>
+<td>版本、改装图、I/O 合同、文件摘要</td>
+</tr>
+<tr>
+<td>信号核对</td>
+<td>六路驱动和反馈的数值／时序是否对应？</td>
+<td>调理后波形、反馈测试点、采样窗口</td>
+</tr>
+<tr>
+<td>版本与状态</td>
+<td>主节点能否取得有效响应？</td>
+<td>ID/PID、数据、校验、方向与设备时间戳</td>
+</tr>
+<tr>
+<td>正常闭环</td>
+<td>实际驱动、模型响应和板卡状态是否一致？</td>
+<td>五列转速、门极／开关状态、反馈和模型波形</td>
+</tr>
+<tr>
+<td>停止与后运行</td>
+<td>是否按规定进入结束状态？</td>
+<td>实际停止命令、状态、驱动、电流及速度</td>
+</tr>
+<tr>
+<td>恢复</td>
+<td>能否按步骤回到初始条件？</td>
+<td>恢复操作和最终状态</td>
+</tr>
+</tbody>
+</table>
+<p>运行前写清以下项目，填写到计划和<a href="../templates/tle9877-field-record.md">现场记录模板</a>：</p>
+<ol>
+<li>采用的命令和允许范围、初始状态、母线与负载。</li>
+<li>响应超时、运行时间、评价起点与有效数据要求。</li>
+<li>模型转速和板卡估计转速分别采用的误差定义与阈值。</li>
+<li>电流限制、异常退出动作、停止速度与截止时间。</li>
+<li>LIN／PWM 优先级、超时和后运行退出方式。</li>
+</ol>
+<p>软件预演的 50 rpm 判据、TI 案例的 8/12 N·m 以及 <code>Id≈0</code> 都有各自对象和条件。首轮 TLE9877 用例按实际要求重新固定。</p>
+<h3 id="tle-chil--把三个结束动作分开记录">把三个结束动作分开记录</h3>
+<p>给零转速、执行固件停止流程、停止 HIL 是不同事件。还要记录后运行是否激活，以及停仿真后的输出状态。释放 LIN 设备只说明通信资源已释放，不能据此推定板卡已经停机。具体动作顺序使用<a href="../tle9877-field-commissioning.md">现场联调流程</a>。</p>
+<p><strong>本步完成标志：</strong> 同一用例内有命令、真实驱动、对象反馈、停止和恢复的可追溯记录。</p>
+<h2 id="tle-chil--99-第八步用时间和证据评价结果">9.9 第八步：用时间和证据评价结果</h2>
+<p>HIL 捕获、示波器和 LIN 设备可能有不同的时间起点。先记录每份文件的时钟域、单位、触发方式及采样／导出关系，再判断能否对齐。</p>
+<table>
+<thead>
+<tr>
+<th>已有依据</th>
+<th>可以做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>共享触发或已确认的时钟转换</td>
+<td>按有依据的关系比较事件和响应时刻，保留同步误差</td>
+</tr>
+<tr>
+<td>只有各自时间轴</td>
+<td>分别观察形态、状态与各自域内的事件</td>
+</tr>
+<tr>
+<td>停止事件没有被捕获</td>
+<td>保留该项缺证据或未评估，安排针对性的重采</td>
+</tr>
+</tbody>
+</table>
+<p>文件交接按<a href="../tle9877-data-collection.md">数据采集说明</a>，离线整理和评价使用<a href="../field-data.md">现场数据工具</a>。这些工具处理已有文件；原始数据、LDF 和来源信息保留。</p>
+<p>形成报告时，把结论分列：</p>
+<table>
+<thead>
+<tr>
+<th>结论层面</th>
+<th>示例问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据质量</td>
+<td>通道、单位、有效码、采样范围和时钟依据是否足够？</td>
+</tr>
+<tr>
+<td>分析完成情况</td>
+<td>哪些指标已计算，哪些因缺证据未计算？</td>
+</tr>
+<tr>
+<td>判据结果</td>
+<td>在哪个窗口，哪些已定义要求通过／失败／未评估？</td>
+</tr>
+<tr>
+<td>样机行为</td>
+<td>本块板、该固件和本组工况下观察到了什么？</td>
+</tr>
+<tr>
+<td>记录复核</td>
+<td>文件来源、摘要及复算是否一致？</td>
+</tr>
+</tbody>
+</table>
+<p>首次正常闭环和停止过程有了记录后，再逐项增加调速、负载变化、供电变化或明确的故障测试。每次扩展都先定义目标、扰动方式、实际生效证据和判据。</p>
+<h2 id="tle-chil--910-现在就能完成的学习任务">9.10 现在就能完成的学习任务</h2>
+<table>
+<thead>
+<tr>
+<th>次序</th>
+<th>任务</th>
+<th>交付物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>做完已有 GUI 预演导读</td>
+<td>一张能解释控制器、对象与反馈的图</td>
+</tr>
+<tr>
+<td>2</td>
+<td>完成第 8 章的三个电脑读图练习</td>
+<td>TI 模型结构、六路 DI 表、AO/DO 表</td>
+</tr>
+<tr>
+<td>3</td>
+<td>对比 TI 与本板</td>
+<td>一张命令、驱动、采样、无感条件的差异表</td>
+</tr>
+<tr>
+<td>4</td>
+<td>在现有工作表中整理已有资料与问题</td>
+<td>I/O 合同、实体参数表中的来源和待补项</td>
+</tr>
+<tr>
+<td>5</td>
+<td>与负责人明确第一个正常用例</td>
+<td>填好目标与判据的 smoke 计划和记录草稿</td>
+</tr>
+</tbody>
+</table>
+<p><strong>本阶段的学习终点：</strong> 能说明每条真实信号为什么接、模型怎样使用它、固件需要怎样的反馈，以及要用哪些实际记录判断闭环成立。</p>
+<h2 id="tle-chil--911-自检可以把方案讲给另一个组员吗">9.11 自检：可以把方案讲给另一个组员吗？</h2>
+<ol>
+<li>把内部控制器换成真实板卡，需要修改哪些模型入口与出口？</li>
+<li>为什么 TI 的编码器反馈不能直接变成本板的无感方案？</li>
+<li>为什么三相电流相加接近 0，单分流电流仍可能明显不为 0？</li>
+<li>为什么 SHP/SHN 的 5 mV 计算不能直接当作 AO 命令？</li>
+<li>LIN 解码成功之后，还要用什么证明模型收到了板卡驱动？</li>
+<li><code>run-case</code> 能运行软件预演，为什么还不能据此执行实体 smoke？</li>
+</ol>
+<details>
+<summary>核对要点</summary>
+<ol>
+<li>驱动来源改为真实 DI，反馈改为真实 AO/DO 或已确认接口，命令送真实板卡；同时配置对象参数与观察量。</li>
+<li>编码器直接提供位置信息，无感算法依赖自己的输入和估计；本板所需的电气与诊断条件要逐项落实。</li>
+<li>分流电流反映特定支路和开关状态，其与各相电流的关系随状态变化。</li>
+<li>还缺注入节点、增益、偏置、共模、极性、量程、动态误差和采样窗口等条件。</li>
+<li>真实栅极／调理后输入与模型开关状态、对象波形的对应证据。</li>
+<li>现有执行器的设备、通信和实时反馈能力不同；实体计划仍有明确待集成项。</li>
+</ol>
+</details>
+<p>继续工作时，用<a href="../tle9877-field-commissioning.md">现场联调说明</a>执行具体流程，用<a href="../tle9877-hil-intake.md">样机接入记录</a>查事实与缺口，用<a href="../validation.md">验证状态</a>查已经完成的验证范围。</p>
 </article><article id="reference" data-chapter-title="术语、资料与原图"><h1 id="reference--术语资料与图片索引">术语、资料与图片索引</h1>
 <p><a href="#start">学习入口</a></p>
 <p>本页用于读图和查词。第一次学习时优先跟随各章，遇到缩写再回来。</p>
@@ -1699,6 +2635,21 @@ raw 是一个字节里的原始码，常规有效范围 0～254
 <td><a href="#feedback">4</a></td>
 </tr>
 <tr>
+<td>C-HIL / DUT</td>
+<td>控制器硬件在环／被测设备，本案例为真实控制板及固件</td>
+<td><a href="#ti-chil">8</a>、<a href="#tle-chil">9</a></td>
+</tr>
+<tr>
+<td>eQEP / A、B、Z</td>
+<td>TI 编码器接口／编码器的两路正交信号与索引信号</td>
+<td><a href="#ti-chil">8</a></td>
+</tr>
+<tr>
+<td>UniFlash / .out</td>
+<td>TI 烧录工具／本案例供 TI 控制器使用的固件映像</td>
+<td><a href="#ti-chil">8</a></td>
+</tr>
+<tr>
 <td>Virtual HIL</td>
 <td>在电脑中运行的虚拟仿真环境</td>
 <td><a href="#feedback">4</a>、<a href="#practice">6</a></td>
@@ -1863,16 +2814,29 @@ raw 是一个字节里的原始码，常规有效范围 0～254
 <td>已留存预演记录</td>
 <td>学习调速、负载变化与零速响应</td>
 </tr>
+<tr>
+<td><a href="assets/ti-chil-inverter-official.jpg">TI 逆变器输入配置</a></td>
+<td>官方 TI PMSM 应用说明 Figure 2，本机帮助原图</td>
+<td>对照六路 DI 与有效极性</td>
+</tr>
+<tr>
+<td><a href="assets/ti-chil-scada-official.jpg">TI SCADA 面板</a></td>
+<td>同案例 Figure 3，本机帮助原图</td>
+<td>找到串口、使能、转矩和观察量</td>
+</tr>
 </tbody>
 </table>
 <p>具体来源、文件摘要和手册页序见<a href="assets/sources.json">图片来源清单</a>。</p>
-<p>离线阅读页另配三张本教程绘制的简化示意图：<a href="assets/system-loop.svg">要求与反馈</a>、<a href="assets/control-loops.svg">转速环与电流环</a>、<a href="assets/hil-loop.svg">拟接入 HIL 闭环</a>。它们解释功能关系，实际接口以对应方案为准。</p>
+<p>离线阅读页另配五张本教程绘制的简化示意图：<a href="assets/system-loop.svg">要求与反馈</a>、<a href="assets/control-loops.svg">转速环与电流环</a>、<a href="assets/hil-loop.svg">拟接入 HIL 闭环</a>、<a href="assets/ti-chil-loop.svg">TI C-HIL 三条路径</a>、<a href="assets/tle9877-shunt-path.svg">单分流反馈链</a>。它们解释功能关系，实际接口以对应方案为准。</p>
 <h2 id="reference--官方补充资料">官方补充资料</h2>
 <p>按需要阅读即可，第一遍无需把英文材料从头读完。</p>
 <ul>
 <li><a href="https://www.infineon.com/part/TLE9877QXA40">Infineon TLE9877QXA40</a>：核对芯片功能及外部功率级边界。</li>
 <li><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three_phase_permanent_magnet_synchronous_machine.html">Typhoon PMSM 组件</a>：对照模型参数、星形／三角形连接及机械量。</li>
 <li><a href="https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html">Typhoon 虚拟 I/O 回环</a>：理解 Virtual HIL 的软件回环方式。</li>
+<li><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html">TI LaunchPad PMSM C-HIL</a>：配合<a href="#ti-chil">第 8 章中文实训</a>阅读，学习真实控制器接入结构。</li>
+<li><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_interfacing_guide/topics/abstract.html">Typhoon 硬件接口指南</a>：按实际控制器和转接电路选择接口方案。</li>
+<li><a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_voltage_levels.html">HIL404 电压规格</a>、<a href="https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_timing.html">I/O 时序</a>：对应实际设备查量程、精度、更新率与延迟。</li>
 <li><a href="https://www.ti.com/lit/pdf/spract7">TI 单分流无感 FOC 应用说明</a>：先看第 2 节框图，需要时再看采样时间和重构。</li>
 <li><a href="https://onlinedocs.microchip.com/oxy/GUID-686B08E8-FD18-4AAD-87B9-32B527406A88-en-US-3/GUID-942885A0-341F-425F-94BD-714A4351EF12.html">Microchip 单分流 PMSM 示例</a>：理解一种实际无感启动、估计与采样实现。</li>
 <li><a href="https://www.st.com/resource/en/application_note/an3055-getting-started-with-stm8a-lin-package-stswstm8alin-stmicroelectronics.pdf">ST AN3055 LIN 介绍</a>：优先读第 2 节，认识帧头、响应、校验与调度。</li>

@@ -4,6 +4,8 @@
 
 零基础学习从[图文教程](beginner/README.md)开始；需要逐步解释命令和波形时，阅读其中的 [LIN/PWM 练习](beginner/05-lin-and-pwm.md)和 [Typhoon 预演导读](beginner/06-typhoon-walkthrough.md)。
 
+准备从软件预演进入实体测试时，先读 [TI LaunchPad 中文实训](beginner/08-ti-launchpad-chil.md)，再按 [TLE9877 实体 C-HIL 路线](beginner/09-pmsm-to-tle9877-chil.md)把模型接口与本板接入条件逐项对应。
+
 ## 参数与接口检查
 
 在项目根目录执行：

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" role="img" aria-labelledby="title desc">
+<title id="title">TI C-HIL：把命令、驱动与反馈分开看</title><desc id="desc">本教程绘制的功能示意；通道、电平和供电选择按匹配版本的 TI 接口板资料核对。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#48606a"/></marker></defs>
+<rect width="100%" height="100%" fill="#fcfcf9"/>
+<g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#22383d">
+<text x="34" y="40" font-size="25" font-weight="700">TI C-HIL：把命令、驱动与反馈分开看</text>
+<rect x="30" y="115" width="230" height="100" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="145.0" y="158.0" text-anchor="middle" font-size="22">电脑与 SCADA</text>
+<text x="145.0" y="188.0" text-anchor="middle" font-size="22">安排命令、采集与记录</text>
+<rect x="410" y="115" width="245" height="100" rx="12" fill="#e8f2f0" stroke="#26675f" stroke-width="2"/>
+<text x="532.5" y="158.0" text-anchor="middle" font-size="22">真实 TI F28379D</text>
+<text x="532.5" y="188.0" text-anchor="middle" font-size="22">执行 FOC 与 PWM</text>
+<rect x="800" y="115" width="270" height="100" rx="12" fill="#edf1f8" stroke="#355779" stroke-width="2"/>
+<text x="935.0" y="158.0" text-anchor="middle" font-size="22">实体 HIL 实时仿真</text>
+<text x="935.0" y="188.0" text-anchor="middle" font-size="22">逆变器、PMSM 与负载</text>
+<path d="M260 165 H410" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="335" y="145" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">USB 串口命令</text>
+<path d="M655 165 H800" fill="none" stroke="#48606a" stroke-width="2.5"  marker-end="url(#arrow)"/>
+<text x="727" y="145" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">六路驱动 → DI</text>
+<path d="M880 215 V290 H615 V215" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="740" y="273" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">AO：电流反馈</text>
+<path d="M1000 215 V355 H455 V215" fill="none" stroke="#48606a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="740" y="337" text-anchor="middle" font-size="18" paint-order="stroke" stroke="#fcfcf9" stroke-width="7">DO：编码器 A / B / Z</text>
+<text x="34" y="400" font-size="17" fill="#5e6f73">本教程绘制的功能示意；通道、电平和供电选择按匹配版本的 TI 接口板资料核对。</text></g></svg>

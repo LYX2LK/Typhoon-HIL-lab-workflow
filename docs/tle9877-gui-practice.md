@@ -83,6 +83,10 @@
 
 ![零速给定实跑。负转矩制动，转速短暂越过零，稳态仍有保持电流](assets/gui/tle9877-13-zero-response.jpg)
 
+## 继续学习：接入真实控制器
+
+完成这次 GUI 练习后，阅读 [TI LaunchPad PMSM C-HIL 中文实训](beginner/08-ti-launchpad-chil.md)，观察控制器怎样从模型内部移到真实 MCU；再按[从 PMSM 软件预演到 TLE9877 实体 C-HIL](beginner/09-pmsm-to-tle9877-chil.md)准备本板的六路驱动、单分流反馈、无感条件与首轮记录。
+
 ## 维护者准备文件
 
 练习文件由 `scripts/prepare_tle9877_gui.py` 从本机 THCC 2026.3 安装源构建。脚本核对官方 `.tse` 和 `.cus` 的 SHA-256，复用 PMSM 软件预演的模型设置，生成一对本机文件。若需要重建，先移出 `models` 中已有的同名练习文件，再从项目根目录用 THCC 配套解释器执行。构建和练习分别进行。

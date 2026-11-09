@@ -22,8 +22,11 @@ CHAPTERS = [
     ("05-lin-and-pwm.md", "communication", "05", "LIN 与 PWM 练习"),
     ("06-typhoon-walkthrough.md", "practice", "06", "Typhoon 预演导读"),
     ("07-test-preparation.md", "preparation", "07", "样机测试准备"),
+    ("08-ti-launchpad-chil.md", "ti-chil", "08", "TI 真实控制器实训"),
+    ("09-pmsm-to-tle9877-chil.md", "tle-chil", "09", "走向 TLE9877 实体测试"),
     ("reference.md", "reference", "查阅", "术语、资料与原图"),
 ]
+LESSON_COUNT = sum(number.isdigit() for _, _, number, _ in CHAPTERS)
 
 def diagram(name, title, boxes, arrows, note, height=400):
     colors = {"control": ("#e8f2f0", "#26675f"), "plant": ("#edf1f8", "#355779"),
@@ -94,6 +97,33 @@ generated.append(diagram("hil-loop.svg", "真实控制板与实时仿真对象�
     ("M530 285 V180","电气反馈",578,241,True),
 ], "功能方案示意；实际保留电路、注入节点、量程和时序按确认的改装与调理方案落实。", 430))
 
+generated.append(diagram("ti-chil-loop.svg", "TI C-HIL：把命令、驱动与反馈分开看", [
+    (30,115,230,100,["电脑与 SCADA","安排命令、采集与记录"],"control"),
+    (410,115,245,100,["真实 TI F28379D","执行 FOC 与 PWM"],"control"),
+    (800,115,270,100,["实体 HIL 实时仿真","逆变器、PMSM 与负载"],"plant"),
+], [
+    ("M260 165 H410","USB 串口命令",335,145,False),
+    ("M655 165 H800","六路驱动 → DI",727,145,False),
+    ("M880 215 V290 H615 V215","AO：电流反馈",740,273,True),
+    ("M1000 215 V355 H455 V215","DO：编码器 A / B / Z",740,337,True),
+], "本教程绘制的功能示意；通道、电平和供电选择按匹配版本的 TI 接口板资料核对。", 420))
+
+generated.append(diagram("tle9877-shunt-path.svg", "单分流反馈：支路、比例与采样时刻一起对应", [
+    (30,105,250,85,["六路开关状态","调理后捕获"],"control"),
+    (415,105,250,85,["逆变器与电机模型","计算电路响应"],"plant"),
+    (800,105,270,85,["对应分流支路电流","i_shunt(t)"],"feedback"),
+    (800,285,270,85,["分流关系与反馈调理","差分、共模与动态响应"],"feedback"),
+    (415,285,250,85,["已确认的注入节点","对应实际保留电路"],"feedback"),
+    (30,285,250,85,["真实 ADC 与固件","在有效窗口内采样"],"control"),
+], [
+    ("M280 147 H415","开关动作",348,128,False),
+    ("M665 147 H800","支路测量",732,128,False),
+    ("M935 190 V285","",0,0,True),
+    ("M800 327 H665","电气反馈",732,308,True),
+    ("M415 327 H280","输入采样链",348,308,True),
+    ("M155 285 V190","",0,0,False),
+], "功能关系示意；支路方向、注入位置、增益、偏置、延迟和采样窗口由本板方案确认。", 430))
+
 manifest_path = ASSETS / "sources.json"
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 manifest["conceptual_diagrams"] = generated
@@ -146,7 +176,7 @@ nav a{display:flex;align-items:center;gap:12px;padding:10px 9px;margin:3px -9px;
 #search-results{display:grid;gap:7px;font-size:13px;margin-top:8px}#search-results a{line-height:1.5}#search-status{font-size:12px;color:var(--muted)}
 .tools{display:flex;gap:8px;margin-top:18px}.tools button{border:1px solid #bdcec5;border-radius:6px;background:transparent;color:#355b50;padding:4px 10px;font-size:14px}.image-note{font-size:12px;color:var(--muted);margin-top:15px}
 main{margin-left:280px;max-width:1320px;padding:58px 76px 100px}.course-label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#8f5d35;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:26px}
-article{margin-bottom:90px;padding-bottom:65px;border-bottom:1px solid var(--line);scroll-margin-top:30px}h1{font-size:34px;line-height:1.4;letter-spacing:-.6px;margin:16px 0 20px}h2{font-size:25px;line-height:1.5;margin:48px 0 17px}h3{font-size:20px;line-height:1.5;margin:32px 0 12px}p{margin:16px 0}strong{font-weight:700;color:#1d524c}li{padding-left:3px;margin:7px 0}ul,ol{padding-left:27px}
+article{margin-bottom:90px;padding-bottom:65px;border-bottom:1px solid var(--line);scroll-margin-top:30px;overflow-wrap:anywhere}h1{font-size:34px;line-height:1.4;letter-spacing:-.6px;margin:16px 0 20px}h2{font-size:25px;line-height:1.5;margin:48px 0 17px}h3{font-size:20px;line-height:1.5;margin:32px 0 12px}p{margin:16px 0}strong{font-weight:700;color:#1d524c}li{padding-left:3px;margin:7px 0}ul,ol{padding-left:27px}
 .table-wrap{overflow:auto;margin:24px 0;border:1px solid var(--line);border-radius:9px;background:#fff}table{border-collapse:collapse;width:100%;font-size:.88em;line-height:1.7}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #e4ebe6;min-width:110px}th{background:#ecf1ed;font-weight:650;color:#36584d}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfa}
 pre{background:#22373e;color:#edf6f4;overflow:auto;border-radius:9px;padding:22px 24px;font-size:14px;line-height:1.8;margin:24px 0;tab-size:4}code{font-family:Consolas,'Cascadia Code',monospace}p code,td code,li code{background:#e8eee9;border-radius:4px;padding:2px 5px;color:#234b43;font-size:.9em}
 img{display:block;max-width:100%;height:auto;margin:0 auto}.image-button{display:block;width:100%;padding:18px;border:1px solid #dbe3df;border-radius:10px;background:white;margin:26px 0 10px;text-align:center;cursor:zoom-in}.image-button img{max-height:540px;object-fit:contain}.image-button::after{content:'点击放大原图';display:block;color:#677c75;font-size:12px;margin-top:9px}.concept-diagram{margin:28px 0}.concept-diagram .image-button{padding:5px}.concept-diagram img{width:100%;max-height:none}figcaption{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
@@ -172,14 +202,14 @@ const search=document.getElementById('course-search'),results=document.getElemen
 document.documentElement.dataset.readerReady='true';
 """
 
-html = ('''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从零理解样机测试 · Typhoon 图文教程</title><meta name="description" content="面向零基础读者的样机测试教程：电路、芯片、电机控制、电流反馈、LIN/PWM、Typhoon 预演和测试准备。"><style>'''+style+'''</style></head><body>
+html = ('''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从零理解样机测试 · Typhoon 图文教程</title><meta name="description" content="面向初学者的样机测试教程：电路、芯片、电机控制、LIN/PWM、PMSM 软件预演、TI LaunchPad 中文实训与 TLE9877 实体 C-HIL 准备。"><style>'''+style+'''</style></head><body>
 <a class="skip" href="#content">跳到正文</a>
 <aside><div class="eyebrow">TYPHOON · LEARNING NOTES</div><div class="brand">从零理解<br>样机测试</div><p class="intro-note">从电压与电流开始，读懂这块板、这套模型和一次测试。</p><nav aria-label="章节导航">'''+"".join(navigation)+'''</nav>
 <div class="searchbox"><label for="course-search">查一个术语或问题</label><input id="course-search" type="search" placeholder="例如：分流、2240、无感" autocomplete="off"><div id="search-status" role="status"></div><div id="search-results"></div></div>
 <div class="tools" aria-label="阅读工具"><button type="button" data-size="-1" aria-label="缩小正文字号">A−</button><button type="button" data-size="1" aria-label="放大正文字号">A＋</button><button type="button" id="print-reader">打印</button></div><p class="image-note">图片可点击放大，按 Esc 返回。<br>本页可离线阅读；官方外链需联网。</p></aside>
-<main id="content"><div class="course-label">零基础图文教程 · 七章学习与动手练习</div>'''+"".join(articles)+'''<footer>正文以同目录 Markdown 为可维护版本。板级事实、参数与实际结果沿正文链接查阅。</footer></main>
+<main id="content"><div class="course-label">零基础图文教程 · '''+str(LESSON_COUNT)+''' 章学习与动手练习</div>'''+"".join(articles)+'''<footer>正文以同目录 Markdown 为可维护版本。板级事实、参数与实际结果沿正文链接查阅。</footer></main>
 <dialog id="image-dialog" aria-label="图片放大"><div class="dialog-header"><p id="zoom-caption"></p><button type="button" id="close-image">关闭图片</button></div><img id="zoom-image" alt=""></dialog><script>'''+script+'''</script></body></html>''')
 html = html.replace("<head>", '<head><link rel="icon" href="data:,">', 1)
 (COURSE / "index.html").write_text(html, encoding="utf-8")
-print(json.dumps({"chapters": 7, "markdown_pages": len(CHAPTERS), "source_images": len(manifest["assets"]),
+print(json.dumps({"chapters": LESSON_COUNT, "markdown_pages": len(CHAPTERS), "source_images": len(manifest["assets"]),
                   "conceptual_diagrams": len(generated), "html_bytes": len(html.encode("utf-8"))}, ensure_ascii=False))

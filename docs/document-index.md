@@ -23,6 +23,8 @@
 | 接入 | [寄送控制板接口与 LIN](tle9877-hil-intake.md) | 查本次控制板引线、PMSM 参数、LIN/PWM 协议及剩余联调条件 |
 | 实验 | [样机软件准备](tle9877-software-preparation.md) | 执行参数/接口检查、LIN 离线编解码和 PMSM 软件预演 |
 | 实验 | [样机图形界面预演](tle9877-gui-practice.md) | 从 9 V 练习模型和现成面板开始，亲手调速、施加负载、触发采集和判读 |
+| 教学 | [TI LaunchPad PMSM C-HIL 中文实训](beginner/08-ti-launchpad-chil.md) | 读懂官方模型、六路外部驱动、电流与编码器反馈、SCADA 复现和自动测试判据 |
+| 教学 | [从 PMSM 软件预演到 TLE9877 实体 C-HIL](beginner/09-pmsm-to-tle9877-chil.md) | 按功率级边界、栅极调理、单分流采样、无感条件与 LIN 逐步准备首个实体用例 |
 | 接入 | [样机现场联调](tle9877-field-commissioning.md)、[LIN 设备接口与 Mock](tle9877-lin-adapter.md) | 填写 I/O 合同、电机参数及现场记录，预演设备调用与错误日志 |
 | 查找 | [学习资源与案例](resources.md) | 选择案例及查找官方资料 |
 | 环境 | [环境配置](environment.md) | 指定安装目录、准备模型和做最小检查 |

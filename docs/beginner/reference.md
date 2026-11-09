@@ -39,6 +39,9 @@
 | schedule / slot | 调度表／其中安排给一项通信的时隙 | [5](05-lin-and-pwm.md) |
 | post-run | 后运行，触发后继续执行特定动作的状态流程 | [5](05-lin-and-pwm.md) |
 | HIL / plant | 硬件在环／被仿真的对象 | [4](04-feedback-and-hil.md) |
+| C-HIL / DUT | 控制器硬件在环／被测设备，本案例为真实控制板及固件 | [8](08-ti-launchpad-chil.md)、[9](09-pmsm-to-tle9877-chil.md) |
+| eQEP / A、B、Z | TI 编码器接口／编码器的两路正交信号与索引信号 | [8](08-ti-launchpad-chil.md) |
+| UniFlash / .out | TI 烧录工具／本案例供 TI 控制器使用的固件映像 | [8](08-ti-launchpad-chil.md) |
 | Virtual HIL | 在电脑中运行的虚拟仿真环境 | [4](04-feedback-and-hil.md)、[6](06-typhoon-walkthrough.md) |
 | DI / DO / AI / AO | 从对应设备看，数字输入／数字输出／模拟输入／模拟输出 | [4](04-feedback-and-hil.md) |
 | compile / load / run | 编译／加载／运行 | [6](06-typhoon-walkthrough.md) |
@@ -88,10 +91,12 @@
 | [手册第 80 页](assets/datasheet-p080.png) | Figure 29 | 栅极驱动及参考 |
 | [手册第 82 页](assets/datasheet-p082.png) | Figure 30 | 差分放大、偏置与 ADC |
 | [PMSM 完整波形](assets/pmsm-preview-waveforms.png) | 已留存预演记录 | 学习调速、负载变化与零速响应 |
+| [TI 逆变器输入配置](assets/ti-chil-inverter-official.jpg) | 官方 TI PMSM 应用说明 Figure 2，本机帮助原图 | 对照六路 DI 与有效极性 |
+| [TI SCADA 面板](assets/ti-chil-scada-official.jpg) | 同案例 Figure 3，本机帮助原图 | 找到串口、使能、转矩和观察量 |
 
 具体来源、文件摘要和手册页序见[图片来源清单](assets/sources.json)。
 
-离线阅读页另配三张本教程绘制的简化示意图：[要求与反馈](assets/system-loop.svg)、[转速环与电流环](assets/control-loops.svg)、[拟接入 HIL 闭环](assets/hil-loop.svg)。它们解释功能关系，实际接口以对应方案为准。
+离线阅读页另配五张本教程绘制的简化示意图：[要求与反馈](assets/system-loop.svg)、[转速环与电流环](assets/control-loops.svg)、[拟接入 HIL 闭环](assets/hil-loop.svg)、[TI C-HIL 三条路径](assets/ti-chil-loop.svg)、[单分流反馈链](assets/tle9877-shunt-path.svg)。它们解释功能关系，实际接口以对应方案为准。
 
 ## 官方补充资料
 
@@ -100,6 +105,9 @@
 - [Infineon TLE9877QXA40](https://www.infineon.com/part/TLE9877QXA40)：核对芯片功能及外部功率级边界。
 - [Typhoon PMSM 组件](https://www.typhoon-hil.com/documentation/typhoon-hil-software-manual/References/three_phase_permanent_magnet_synchronous_machine.html)：对照模型参数、星形／三角形连接及机械量。
 - [Typhoon 虚拟 I/O 回环](https://typhoon-hil.com/documentation/typhoon-hil-software-manual/concepts/vhil_analog_digital_io_loopback.html)：理解 Virtual HIL 的软件回环方式。
+- [TI LaunchPad PMSM C-HIL](https://www.typhoon-hil.com/documentation/typhoon-hil-application-notes/References/ti_pmsm_torque_control.html)：配合[第 8 章中文实训](08-ti-launchpad-chil.md)阅读，学习真实控制器接入结构。
+- [Typhoon 硬件接口指南](https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil_interfacing_guide/topics/abstract.html)：按实际控制器和转接电路选择接口方案。
+- [HIL404 电压规格](https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_voltage_levels.html)、[I/O 时序](https://www.typhoon-hil.com/documentation/typhoon-hil-hardware-manual/hil404_user_guide/References/hil404_IO_timing.html)：对应实际设备查量程、精度、更新率与延迟。
 - [TI 单分流无感 FOC 应用说明](https://www.ti.com/lit/pdf/spract7)：先看第 2 节框图，需要时再看采样时间和重构。
 - [Microchip 单分流 PMSM 示例](https://onlinedocs.microchip.com/oxy/GUID-686B08E8-FD18-4AAD-87B9-32B527406A88-en-US-3/GUID-942885A0-341F-425F-94BD-714A4351EF12.html)：理解一种实际无感启动、估计与采样实现。
 - [ST AN3055 LIN 介绍](https://www.st.com/resource/en/application_note/an3055-getting-started-with-stm8a-lin-package-stswstm8alin-stmicroelectronics.pdf)：优先读第 2 节，认识帧头、响应、校验与调度。
