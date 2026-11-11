@@ -56,7 +56,7 @@ class PMSMPreviewAdapter:
         'load_torque_nm':{'value_minimum':0,'value_maximum':.1,'setting_stage':'model_copy_before_compile'}},
         'time_unit':'s','time_quantum_s':PERIOD,'time_minimum_s':.02,'time_maximum_ref':'capture.duration_s'}
     conditional_constraints = ['software_preview_scope_and_assumptions_required','validated_salient_hypothesis_lq_gt_ld',
-        'events_sorted_unique_and_on_control_grid','complete_settled_window_after_each_event','full_capture_at_most_100000_samples']
+        'events_sorted_on_control_grid_unique_per_target_and_time','settled_windows_follow_explicit_window_policy','full_capture_at_most_100000_samples']
 
     def validate(self, raw, sweep=False):
         if sweep: raise ValueError('PMSM preview uses run or run-case, not RLC sweep')
@@ -73,7 +73,12 @@ class PMSMPreviewAdapter:
                 assumptions['angle_feedback']!='ideal_model_angle' or assumptions['sample_parameter_confirmation'] is not False or \
                 not isinstance(assumptions['parameter_basis'],str) or not assumptions['parameter_basis'].strip():
             raise ValueError('preview assumptions must retain the explicit unconfirmed sample boundary')
+        policy=c['acceptance'].get('window_policy','all_segments') if isinstance(c['acceptance'],dict) else None
+        if policy not in ('all_segments','event_group'):
+            raise ValueError('window_policy must be all_segments or event_group')
         for group,rules in self.numeric_rules.items():
+            if group=='acceptance' and isinstance(c[group],dict) and 'window_policy' in c[group]:
+                c[group].pop('window_policy')
             if not isinstance(c[group],dict) or set(c[group])!=set(rules): raise ValueError(f'invalid {group} fields')
             for name,bounds in rules.items(): c[group][name]=number(c[group][name],f'{group}.{name}',*bounds)
         for group,key in [('parameters','pole_pairs'),('acceptance','min_samples'),('acceptance','min_window_samples')]:
@@ -81,22 +86,26 @@ class PMSMPreviewAdapter:
             c[group][key]=int(c[group][key])
         if c['parameters']['lq_h']<=c['parameters']['ld_h']:
             raise ValueError('current preview scope requires Lq > Ld; equal-inductance cases are not validated')
-        if not isinstance(c['events'],list) or not 1<=len(c['events'])<=3:
-            raise ValueError('preview requires 1..3 events')
+        if 'window_policy' in raw['acceptance']: c['acceptance']['window_policy']=policy
+        if not isinstance(c['events'],list) or not (0 if policy=='event_group' else 1)<=len(c['events'])<=3:
+            raise ValueError('preview requires 1..3 events (0..3 for event_group controls)')
         previous=0
+        seen=set()
         last_values={k:c['parameters'][k] for k in self.event_capabilities['targets']}
         for event in c['events']:
             if not isinstance(event,dict) or set(event)!={'at_s','target','value'} or event['target'] not in last_values:
                 raise ValueError('invalid PMSM event')
             event['at_s']=number(event['at_s'],'at_s',.02,c['capture']['duration_s'])
-            if event['at_s']<=previous or abs(event['at_s']/PERIOD-round(event['at_s']/PERIOD))>1e-7:
-                raise ValueError('event times must be strictly increasing and on the control grid')
+            invalid_order=event['at_s']<previous or (policy=='all_segments' and event['at_s']==previous)
+            key=(event['at_s'],event['target'])
+            if invalid_order or key in seen or abs(event['at_s']/PERIOD-round(event['at_s']/PERIOD))>1e-7:
+                raise ValueError('event times must be sorted, unique per target/time and on the control grid')
+            seen.add(key)
             previous=event['at_s']; spec=self.event_capabilities['targets'][event['target']]
             event['value']=number(event['value'],'event.value',spec['value_minimum'],spec['value_maximum'])
             if event['value']==last_values[event['target']]: raise ValueError('event must change its target')
             last_values[event['target']]=event['value']
-        boundaries=[0]+[e['at_s'] for e in c['events']]+[c['capture']['duration_s']]
-        for a,b in zip(boundaries,boundaries[1:]):
+        for a,b in evaluation_segments(c):
             available=b-a-c['acceptance']['settle_after_change_s']
             if available*c['capture']['sample_rate_hz']<c['acceptance']['min_window_samples']:
                 raise ValueError('each segment must contain a complete settled evaluation window')
@@ -219,6 +228,16 @@ Kiw = Kpw*wpi
     def report(self,path,manifest): return write_preview_report(path,manifest)
 
 
+def evaluation_segments(c):
+    """Legacy evaluates every segment; grouped events evaluate baseline and final recovery."""
+    times=[e['at_s'] for e in c['events']]
+    end=c['capture']['duration_s']
+    if c['acceptance'].get('window_policy','all_segments')=='event_group':
+        return [(0,times[0]),(times[-1],end)] if times else [(0,end)]
+    boundaries=[0]+times+[end]
+    return list(zip(boundaries,boundaries[1:]))
+
+
 def analyze_preview(path,c):
     import numpy as np
     from .analysis import load_waveforms
@@ -257,8 +276,8 @@ def analyze_preview(path,c):
         checks[target+'_command_levels']=bool(np.any(stable)) and bool(np.all(np.abs(signal[stable]-expected[stable])<=tolerance))
     events.sort(key=lambda e:e['at_s'])
     checks['events_applied']=all(e['status']=='passed' for e in events)
-    windows=[]; boundaries=[0]+[e['at_s'] for e in c['events']]+[c['capture']['duration_s']]
-    for left,right in zip(boundaries,boundaries[1:]):
+    windows=[]
+    for left,right in evaluation_segments(c):
         start=left+c['acceptance']['settle_after_change_s']
         mask=(t>=start)&(t<right-1/rate)
         if np.count_nonzero(mask)<c['acceptance']['min_window_samples']:
@@ -276,7 +295,9 @@ def analyze_preview(path,c):
         'max_phase_current_sum_a':maximum,'max_abs_phase_current_a':max(float(np.max(np.abs(d[k]))) for k in ('Ia_A','Ib_A','Ic_A')),
         'scope':SCOPE,'sample_performance_status':'not_evaluated','analysis':{
             'filtering':'none','speed_conversion':'mechanical_rad_s * 30/pi',
-            'speed_test':'maximum absolute speed-reference error in every settled segment',
+            'speed_test':('maximum absolute speed-reference error before the event group and after its final settling allowance'
+                          if c['acceptance'].get('window_policy')=='event_group' else
+                          'maximum absolute speed-reference error in every settled segment'),
             'current_test':'maximum absolute Ia+Ib+Ic; software circuit consistency only',
             'event_test':'captured command change and stable levels (0.001rpm / 1e-7Nm); up to four control periods plus one sample',
             'assumptions':c['assumptions']}}

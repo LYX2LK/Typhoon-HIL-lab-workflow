@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "case_id": "pmsm_boundary_dense",
+  "model_id": "pmsm_software_preview",
+  "title": "PMSM 较小恢复裕度工况的事件间隔加密",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pmsm_boundary/dense_speed_then_load_005ms.json",
+    "configs/pmsm_boundary/dense_load_then_speed_005ms.json",
+    "configs/pmsm_boundary/dense_speed_then_load_010ms.json",
+    "configs/pmsm_boundary/dense_load_then_speed_010ms.json",
+    "configs/pmsm_boundary/dense_speed_then_load_015ms.json",
+    "configs/pmsm_boundary/dense_load_then_speed_015ms.json",
+    "configs/pmsm_boundary/dense_speed_then_load_020ms.json",
+    "configs/pmsm_boundary/dense_load_then_speed_020ms.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

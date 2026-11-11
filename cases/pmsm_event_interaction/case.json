@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "case_id": "pmsm_event_interaction",
+  "model_id": "pmsm_software_preview",
+  "title": "PMSM 调速与负载事件交互",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pmsm_interaction/baseline.json",
+    "configs/pmsm_interaction/speed_only.json",
+    "configs/pmsm_interaction/load_only.json",
+    "configs/pmsm_interaction/simultaneous.json",
+    "configs/pmsm_interaction/speed_then_load_005ms.json",
+    "configs/pmsm_interaction/load_then_speed_005ms.json",
+    "configs/pmsm_interaction/speed_then_load_020ms.json",
+    "configs/pmsm_interaction/load_then_speed_020ms.json",
+    "configs/pmsm_interaction/speed_then_load_100ms.json",
+    "configs/pmsm_interaction/load_then_speed_100ms.json",
+    "configs/pmsm_interaction/speed_only_repeat.json",
+    "configs/pmsm_interaction/simultaneous_repeat.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

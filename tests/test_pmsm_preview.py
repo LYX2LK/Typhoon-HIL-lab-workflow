@@ -72,5 +72,48 @@ class PMSMPreviewTests(unittest.TestCase):
         self.data(truncate=True)
         with self.assertRaisesRegex(ValueError,'incomplete'): analyze_preview(self.path,self.c)
 
+    def test_grouped_events_allow_overlap_and_empty_control_only_explicitly(self):
+        c=deepcopy(self.c)
+        c['events']=[{'at_s':.3,'target':'reference_speed_rpm','value':2400},
+                     {'at_s':.305,'target':'load_torque_nm','value':.03}]
+        with self.assertRaises(ValueError): validate_config(c)
+        c['acceptance']['window_policy']='event_group'
+        self.assertEqual(len(validate_config(c)['events']),2)
+        c['events'][1]['at_s']=.3
+        self.assertEqual(len(validate_config(c)['events']),2)
+        c['events'][1]['target']='reference_speed_rpm'
+        with self.assertRaises(ValueError): validate_config(c)
+        c['events']=[]
+        self.assertEqual(validate_config(c)['events'],[])
+        del c['acceptance']['window_policy']
+        with self.assertRaises(ValueError): validate_config(c)
+
+    def test_group_analysis_preserves_transient_but_tests_final_window(self):
+        c=deepcopy(self.c);c['acceptance']['window_policy']='event_group'
+        c['events']=[{'at_s':.3,'target':'reference_speed_rpm','value':2400},
+                     {'at_s':.305,'target':'load_torque_nm','value':.03}]
+        c=validate_config(c)
+        t=np.arange(80000)/100000;ref=np.where(t>=.30005,2400.,1800.)
+        load=np.where(t>=.30505,.03,.01);speed=ref.copy()
+        speed[(t>=.3)&(t<.37)]-=100
+        def save():
+            y=np.column_stack([t,t,speed*math.pi/30,np.zeros((len(t),3)),load,ref*math.pi/30,load])
+            np.savetxt(self.path,y,delimiter=',',header=','.join(('t_relative_s','t_simulation_s',*PMSMPreviewAdapter.columns)),comments='')
+        save();r=analyze_preview(self.path,c)
+        self.assertEqual(r['status'],'passed');self.assertEqual(len(r['windows']),2)
+        speed[t>=.42]-=60;save();r=analyze_preview(self.path,c)
+        self.assertEqual(r['status'],'failed')
+        self.assertFalse(r['checks']['settled_speed_tracking'])
+
+    def test_group_policy_rejects_bad_policy_order_and_short_final_window(self):
+        for policy in ('invalid',None,False):
+            c=deepcopy(self.c);c['acceptance']['window_policy']=policy
+            with self.assertRaises(ValueError): validate_config(c)
+        c=deepcopy(self.c);c['acceptance']['window_policy']='event_group'
+        c['events'][1]['at_s']=.19
+        with self.assertRaises(ValueError): validate_config(c)
+        c=deepcopy(self.c);c['acceptance']['window_policy']='event_group';c['events'][-1]['at_s']=.75
+        with self.assertRaises(ValueError): validate_config(c)
+
 
 if __name__=='__main__': unittest.main()

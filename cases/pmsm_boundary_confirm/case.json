@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "case_id": "pmsm_boundary_confirm",
+  "model_id": "pmsm_software_preview",
+  "title": "PMSM 较小裕度与首轮桥接工况复跑",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pmsm_boundary/confirm_worst.json",
+    "configs/pmsm_boundary/confirm_reference.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

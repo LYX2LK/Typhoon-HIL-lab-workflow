@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "case_id": "pmsm_boundary_retry",
+  "model_id": "pmsm_software_preview",
+  "title": "PMSM 粗扫描中断后的原配置重试与续跑",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pmsm_boundary/s2700_l100_sim.json",
+    "configs/pmsm_boundary/s3000_l030_sim.json",
+    "configs/pmsm_boundary/s3000_l060_sim.json",
+    "configs/pmsm_boundary/s3000_l100_sim.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

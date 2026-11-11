@@ -3,7 +3,7 @@
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
     ('field_test_data', None): 1,
-    ("run", "pmsm_software_preview"): 1,
+    ("run", "pmsm_software_preview"): 2,
     ("agent_session", None): 1,
     ("agent_turn", None): 1,
     ("run", "three_phase_rectifier_fault"): 1,
@@ -50,6 +50,8 @@ def record_version_problems(manifest):
         problems.append("analysis_method_version must be an integer")
     elif method_version is not None:
         current = analysis_method_version(manifest.get("kind"), manifest.get("model"))
-        if current is None or method_version != current:
+        compatible_pmsm = (manifest.get('kind')=='run' and manifest.get('model')=='pmsm_software_preview'
+                           and method_version==1)
+        if current is None or (method_version != current and not compatible_pmsm):
             problems.append(f"unsupported analysis_method_version: {method_version}")
     return problems

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "model": "pmsm_software_preview",
+  "backend": "virtual_hil",
+  "scope": "software_preview",
+  "assumptions": {
+    "winding_connection": "star_equivalent_hypothesis",
+    "angle_feedback": "ideal_model_angle",
+    "sample_parameter_confirmation": false,
+    "parameter_basis": "9 V 与 5 极对参考已提供资料；Rs=5mΩ、Ld=11μH 暂按等效星形口径使用，尚未确认与样机Δ绕组的换算。Lq=13μH、磁链0.0015Wb、惯量2e-5kgm²及零摩擦为本轮自主设定的预演假设。20kHz开关频率、50μs控制周期、40A控制限幅、理想角度反馈及负载/指令均属软件工况，不是固件参数或样机性能要求。预演控制器将示例的单向电流指令改为支持正负转矩的 MTPA，未修改样机固件。"
+  },
+  "parameters": {
+    "dc_bus_v": 9,
+    "phase_resistance_ohm": 0.005,
+    "ld_h": 1.1e-05,
+    "lq_h": 1.3e-05,
+    "pm_flux_wb": 0.0015,
+    "inertia_kgm2": 2e-05,
+    "pole_pairs": 5,
+    "reference_speed_rpm": 1800,
+    "load_torque_nm": 0.01
+  },
+  "events": [
+    {
+      "at_s": 0.3,
+      "target": "reference_speed_rpm",
+      "value": 2700
+    },
+    {
+      "at_s": 0.3,
+      "target": "load_torque_nm",
+      "value": 0.1
+    }
+  ],
+  "capture": {
+    "start_s": 0,
+    "duration_s": 0.8,
+    "sample_rate_hz": 100000,
+    "wall_timeout_s": 180
+  },
+  "acceptance": {
+    "settle_after_change_s": 0.1,
+    "max_speed_error_rpm": 50,
+    "max_phase_current_sum_a": 0.01,
+    "min_samples": 50000,
+    "min_window_samples": 1000,
+    "window_policy": "event_group"
+  }
+}

@@ -2,6 +2,28 @@
 
 本页按验证日期索引已保存的实际记录，供维护者追溯当时的模型、代码、配置和结论。使用者判断现行能力时查看 [验证状态](validation.md)，实验操作从 [README](../README.md) 开始。
 
+## 2026-11-11：PMSM 幅值扩展与时序加密
+
+在保持100 ms恢复限制、±50 rpm误差带及原模型实现的条件下，完成13种幅值/单事件工况、8种时序工况和2次复跑，共23次完整运行。另只读引用首轮4条对照。最小恢复裕度62.55 ms：3000 rpm、0.03 N·m、负载先行15/20 ms的恢复均约37.45 ms。未发现已测工况违反100 ms要求，不能外推为连续参数空间通过。两组复跑及跨日参考波形逐点一致，18项PMSM相关测试通过。
+
+过程发生2次Virtual HIL进程崩溃（Windows APPCRASH），保留原error/record failed及9条原始跳过记录。恢复本任务会话后按原配置重试和续跑，剩余工况采用独立lab.ps1 run进程及逐次verify；23条完整数据分别复核passed。崩溃原因未确定，未当作电机规格失效。汇总另以标准库独立复算核心指标，运行器及首轮分析代码62个文件保持原哈希。最终案例索引关联逐条已复核记录，不将原错误批次改成passed。
+
+- [分析报告与图表](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/analysis/analysis-report.md)
+- [任务记录](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/task.md)
+- [执行异常与恢复](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/execution-incident.md)
+- [复现实验](../cases/pmsm_boundary_coarse/README.md)
+
+## 2026-11-10：PMSM 调速与负载事件交互
+
+完成10种工况、2次复跑，共12次Virtual HIL运行、960000行原始采样。固定1800→2400 rpm、0.01→0.03 N·m，比较同时及双向5/20/100 ms间隔；事件组评价支持短间隔、不同目标同时事件和空事件对照，原逐段评价保留。全部事件、稳定段和KCL检查通过，批次记录复核passed。20 ms时两个顺序IAE为3.235/4.353 rpm·s；100 ms时为4.626/4.565 rpm·s，结论不外推为固定最优顺序。未发现100 ms恢复超时；两组复跑逐点一致。
+
+320项全套测试、3项分析专项测试通过。原PMSM预演、RLC基准及三点扫描均实跑并复核通过，旧版PMSM记录只读复算兼容。峰值误差、IAE和恢复时间另由标准库循环独立复算。原始波形、图表、运行前方案和指标定义完整保存。
+
+- [任务记录](../results/agent-tasks/20261110-225847-pmsm-interaction-cb94/task.md)
+- [分析报告与图表](../results/agent-tasks/20261110-225847-pmsm-interaction-cb94/analysis/analysis-report.md)
+- [原始批次](../results/20261110-225921-case-pmsm_event_interaction-1f69bc/report.md)
+- [复现入口](../cases/pmsm_event_interaction/README.md)
+
 ## 2026-11-06：TI 中文实训与 TLE9877 实体 C-HIL 教学
 
 对照官方在线应用说明和本机 THCC 2026.3 的 TI PMSM 模型、测试代码及接口帮助，新增入门第 8、9 章，并生成 9 章离线图文页。页面的 230 个链接、22 处图片引用及 21 个图片／示意图摘要检查通过；独立浏览器检查了桌面与 390 px 窄屏、章节跳转、搜索、图片放大、字号和说明展开，并修复长文件路径造成的窄屏溢出。三条样机检查／LIN 编解码示例离线核对通过。实体接口和样机模型就绪状态仍为 false；本轮范围为教学与页面验证。[来源、检查结果及截图](../results/agent-tasks/20261106-chil-tutorial/summary.md)

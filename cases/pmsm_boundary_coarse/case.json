@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "case_id": "pmsm_boundary_coarse",
+  "model_id": "pmsm_software_preview",
+  "title": "PMSM 调速与负载幅值粗扫描",
+  "backend": "virtual_hil",
+  "model_origin_ref": "models/origin.json",
+  "configs": [
+    "configs/pmsm_boundary/speed_2700_only.json",
+    "configs/pmsm_boundary/speed_3000_only.json",
+    "configs/pmsm_boundary/load_060_only.json",
+    "configs/pmsm_boundary/load_100_only.json",
+    "configs/pmsm_boundary/s2400_l030_sim.json",
+    "configs/pmsm_boundary/s2400_l060_sim.json",
+    "configs/pmsm_boundary/s2400_l100_sim.json",
+    "configs/pmsm_boundary/s2700_l030_sim.json",
+    "configs/pmsm_boundary/s2700_l060_sim.json",
+    "configs/pmsm_boundary/s2700_l100_sim.json",
+    "configs/pmsm_boundary/s3000_l030_sim.json",
+    "configs/pmsm_boundary/s3000_l060_sim.json",
+    "configs/pmsm_boundary/s3000_l100_sim.json"
+  ],
+  "acceptance_ref": "acceptance.md"
+}

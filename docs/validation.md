@@ -1,5 +1,10 @@
 # 验证状态与实测结论
 
+**2026-11-11 PMSM 幅值扩展。** 23次完整运行（13个粗扫描/单事件工况、8个时序工况、2次复跑）均满足原软件判据；最小恢复裕度62.55 ms，尚未触及100 ms边界。18项相关测试通过，重复及跨日参考波形逐点一致。期间2次Virtual HIL进程崩溃的原始错误记录保留，恢复后同配置通过，崩溃根因未确定；完整运行与执行错误分别统计。[报告](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/analysis/analysis-report.md) · [任务记录](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/task.md) · [实验入口](../cases/pmsm_boundary_coarse/README.md)
+
+
+**2026-11-10 PMSM 调速与负载事件交互。** 10种工况及2次复跑共12次 Virtual HIL 运行，每次80000点；事件、软件稳定段判据和记录复核全部通过。20 ms间隔下，调速→负载与反向顺序的IAE分别为3.235和4.353 rpm·s；100 ms间隔下顺序差值缩小并反向。没有发现违反预设100 ms恢复要求的组合；两组复跑速度和时间采样逐点一致。320项全套测试及3项分析专项测试通过，原PMSM预演、RLC基准和三点扫描实跑回归通过。结论限于当前软件模型与固定幅值。[分析报告](../results/agent-tasks/20261110-225847-pmsm-interaction-cb94/analysis/analysis-report.md) · [任务与复核](../results/agent-tasks/20261110-225847-pmsm-interaction-cb94/task.md) · [可复用案例](../cases/pmsm_event_interaction/README.md)
+
 **2026-11-05 样机图形界面预演。** 在 THCC 2026.3 通过 Schematic Editor 和 HIL SCADA 完成编译、加载 Virtual HIL、四次手动触发、CSV 导出及停止和重启检查。四段各 40,000 点，100–200 ms 窗口的最大绝对转速误差均低于 50 rpm。该结果适用于练习模型。[操作教程](tle9877-gui-practice.md) · [原始数据与验收记录](../results/gui-practice/20261105-gui-validation/summary.md)
 
 **2026-11-03 现场数据工具：** 新增多通道 CSV、LIN JSONL/帧 CSV 导入、显式时钟变换、独立转速来源、转速/电流/停止判据、离线 HTML/Markdown/PNG 与包内复核。全套 317 项 unittest 通过，其中现场数据 25 项；最终图表及记录修订后专项 25 项复验通过。通过/失败合成样例均符合预期，失败记录仍复核 passed；既有 LIN Mock 和 80000 点 PMSM 文件导入、复核通过，二者时钟未关联、样机性能未评估。原件保持，未重跑 Virtual HIL 或操作设备。[使用说明](field-data.md)、[采集交接](tle9877-data-collection.md)、[实际证据](../results/agent-tasks/20261103-201058-field-data-preparation-a47c/summary.md)。
