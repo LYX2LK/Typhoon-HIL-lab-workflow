@@ -1,0 +1,30 @@
+{
+  "source": "../discussion-brief.md",
+  "sha256": "3d7f6a82d2447d5a430ae23b95bbf51261597fa1775b3522ab75b6eced00c1fa",
+  "date": "2026-11-13",
+  "raster_scale": 3,
+  "dpi": 600,
+  "figures": [
+    {
+      "name": "01-overall-workflow",
+      "pixels": [
+        3600,
+        3630
+      ]
+    },
+    {
+      "name": "02-test-search-feedback",
+      "pixels": [
+        3000,
+        3330
+      ]
+    },
+    {
+      "name": "03-analysis-and-diagnosis",
+      "pixels": [
+        4200,
+        4800
+      ]
+    }
+  ]
+}
