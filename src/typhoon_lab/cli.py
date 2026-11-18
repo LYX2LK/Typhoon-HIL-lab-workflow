@@ -30,6 +30,24 @@ def _run(argv=None):
     parser=argparse.ArgumentParser(description="Typhoon Virtual HIL teaching workflow")
     sub=parser.add_subparsers(dest="command",required=True)
     for name in ["doctor","smoke","prepare-models"]: sub.add_parser(name)
+    p=sub.add_parser('pmsm-measured')
+    p.add_argument('--action',choices=['prepare','query','verify'],required=True)
+    p.add_argument('--output-dir',required=True)
+    p.add_argument('--input-dir');p.add_argument('--case-id');p.add_argument('--query-file')
+    p=sub.add_parser('pmsm-research')
+    p.add_argument('--action',choices=['index','search','verify'],required=True)
+    p.add_argument('--output-dir',required=True)
+    p.add_argument('--problem',default='configs/pmsm_search_pilot.json')
+    p.add_argument('--strategy',choices=['llm','random'],default='llm')
+    p.add_argument('--service',default='configs/ai_service_research.json')
+    p=sub.add_parser('pmsm-diagnosis')
+    p.add_argument('--action',choices=['prepare','run','feedback-check','review','verify'],required=True)
+    p.add_argument('--output-dir',required=True)
+    p.add_argument('--normal-source');p.add_argument('--anomaly-source')
+    p.add_argument('--dataset-dir');p.add_argument('--case-id')
+    p.add_argument('--query-budget',type=int,default=3)
+    p.add_argument('--search-dir');p.add_argument('--service',default='configs/ai_service_research.json')
+    p.add_argument('--source-session')
     from .adapters import supported_models
     p=sub.add_parser("inspect");p.add_argument("--model",choices=supported_models(),default="rlc_filter")
     sub.add_parser("list-cases")
@@ -98,6 +116,50 @@ def _run(argv=None):
     args=parser.parse_args(argv)
     path=None;manifest=None
     try:
+        if args.command=='pmsm-measured':
+            from .pmsm_measured import prepare_measured,query_measured,verify_measured
+            output=resolve_project_file(args.output_dir)
+            if args.action=='prepare':
+                if not args.input_dir: raise ValueError('prepare requires --input-dir')
+                result=prepare_measured(output,resolve_project_file(args.input_dir))
+            elif args.action=='verify': result=verify_measured(output)
+            else:
+                if not args.case_id or not args.query_file: raise ValueError('query requires --case-id and --query-file')
+                query=json.loads(resolve_project_file(args.query_file).read_text(encoding='utf-8-sig'))
+                if set(query)!={'tool','arguments'}: raise ValueError('query requires tool and arguments')
+                observation=query_measured(output,args.case_id,query['tool'],query['arguments'])
+                result={'status':'failed' if observation['status']=='invalid_query' else 'passed',
+                        'record_status':'passed','run_dir':str(output),'query':observation}
+            _publish(result,indent=2)
+            return 0 if result['status']=='passed' else 1
+        if args.command=='pmsm-diagnosis':
+            from .pmsm_diagnosis import prepare_dataset,run_diagnosis,verify_diagnosis
+            output=resolve_project_file(args.output_dir)
+            if args.action=='prepare':
+                if not args.normal_source or not args.anomaly_source: raise ValueError('prepare requires both source records')
+                result=prepare_dataset(output,resolve_project_file(args.normal_source),resolve_project_file(args.anomaly_source))
+            elif args.action=='run':
+                if not args.dataset_dir or not args.case_id: raise ValueError('run requires dataset and case id')
+                result=run_diagnosis(output,resolve_project_file(args.dataset_dir),args.case_id,resolve_project_file(args.service),args.query_budget)
+            elif args.action=='feedback-check':
+                if not args.search_dir: raise ValueError('feedback-check requires a verified search record')
+                from .pmsm_feedback_review import run_feedback_review
+                result=run_feedback_review(output,resolve_project_file(args.search_dir),resolve_project_file(args.service))
+            elif args.action=='review':
+                if not args.source_session: raise ValueError('review requires source session')
+                from .pmsm_diagnosis import review_session
+                result=review_session(output,resolve_project_file(args.source_session))
+            else: result=verify_diagnosis(output,write=False)
+            _publish(result,indent=2)
+            return 0 if result['status']=='passed' and result['record_status']=='passed' else 1
+        if args.command=='pmsm-research':
+            from .pmsm_research import index_history, run_search, verify_research
+            output=resolve_project_file(args.output_dir)
+            if args.action=='index': result=index_history(output)
+            elif args.action=='verify': result=verify_research(output,write=False)
+            else: result=run_search(output,resolve_project_file(args.problem),args.strategy,resolve_project_file(args.service))
+            _publish(result,indent=2)
+            return 0 if result['status']=='passed' and result.get('record_status')=='passed' else 1
         if args.command=="analyze-field-data":
             from .field_records import analyze_field
             result=analyze_field(resolve_project_file(args.intake),resolve_project_file(args.input_dir),

@@ -13,6 +13,17 @@ def verify_run(run_dir,write=True):
         from .agent import verify_session
         return verify_session(run_dir,write=write)
     manifest=json.loads((run_dir/"manifest.json").read_text(encoding="utf-8"))
+    if manifest.get('kind')=='pmsm_measured':
+        from .pmsm_measured import verify_measured
+        result = verify_measured(run_dir)
+        if write: write_json(run_dir/'verification.json', result)
+        return result
+    if manifest.get('kind')=='pmsm_diagnosis':
+        from .pmsm_diagnosis import verify_diagnosis
+        return verify_diagnosis(run_dir,write=write)
+    if manifest.get('kind')=='pmsm_research':
+        from .pmsm_research import verify_research
+        return verify_research(run_dir,write=write)
     if manifest.get('kind')=='field_test_data':
         from .field_records import verify_field
         return verify_field(run_dir,write=write)

@@ -34,6 +34,8 @@
 | 验证 | [验证记录索引](validation-history.md) | 按日期查实际证据 |
 | 规划 | [路线图](roadmap.md) | 查建设方向、优先级和扩展条件 |
 | 选型 | [电机 HIL 智能测试生成与数据分析技术选型](research/2026-11-11-hil-ai-selection/technical-selection.md) | 阅读两项任务的研究路线、LLM 决策贡献、方法评价与分阶段实施 |
+| 研发 | [搜索与诊断执行安排](research/2026-11-11-hil-ai-selection/execution-plan.md)、[PMSM 搜索与诊断研究命令](pmsm-research.md) | 运行真实反馈搜索、历史索引、反馈故障核验、诊断查询更新与反馈理解复查 |
+| 数据 | [PMSM 样例来源与生成机制](pmsm-case-generation.md)、[实测通道与工况参照](pmsm-measured.md)、[公开来源状态](../configs/pmsm_case_sources.json) | 按工况、机制、来源和观测条件准备实测与仿真样例，追溯接入状态与划分依据 |
 | 讨论 | [电机 HIL 技术选型讨论稿](research/2026-11-11-hil-ai-selection/discussion-brief.md) | 快速交流研究问题、两个决策循环、增益验证与首批安排 |
 | 参考 | [HIL 选型工程与实验附录](research/2026-11-11-hil-ai-selection/implementation-reference.md) | 按需查评分、数据、接口示例、模型资源、工作量与来源 |
 | 调研 | [大模型方法深化调研（2026-11-13）](research/2026-11-13-llm-method-deepening/research-report.md) | 查 LLAMBO、BoxLM、BMD、信息增益训练和 DiagLLM 的机制、来源、适用条件与方案取舍 |

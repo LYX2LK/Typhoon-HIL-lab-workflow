@@ -1,0 +1,7 @@
+{
+  "tool": "normal_reference",
+  "arguments": {
+    "channels": ["i1_q", "i2_q", "measured_speed_rpm", "reference_speed_rpm"],
+    "window_s": [20, 20.5]
+  }
+}

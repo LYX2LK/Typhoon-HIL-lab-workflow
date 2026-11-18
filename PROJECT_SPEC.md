@@ -36,6 +36,10 @@ LIN 主节点接口与 Mock 使用 [LIN 适配约定](docs/tle9877-lin-adapter.m
 
 每次运行新建目录，保存配置、模型、CSV、采集元数据、日志、指标、代码快照、文件摘要与报告。Boost 与感应电机阶跃保存事件记录，扫描保存子工况与比较汇总；案例批次保存输入快照、子工况关联、汇总报告和最终复核；单相桥整流的独立三工况比较保存来源与趋势指标。许可不进入产物。
 
+`pmsm_research`独立保存研究搜索或历史索引，不依赖演示Agent协议。搜索保留原始模型调用、非法提案、实际配置、波形反馈和逐轮历史；复核检查输入/响应与真实运行绑定。`workflow_status`表示研究流程完成度，子运行的`experiment_status`保留固定性能判据，研究记录本身的`experiment_status`为空。命令与观测约定见[PMSM研究](docs/pmsm-research.md)。
+
+`pmsm_diagnosis`保存匿名数据包、诊断会话或搜索反馈复查。模型只接收开放观测与受限工具，真值由评价端保管；查询前预测、工具结果和后续更新分别留存。流程完成度、单例模型评价与记录一致性分别报告，解释正确性另行审核。复核从源CSV重算，绑定实际HTTP请求与响应；评价规则变化创建带原评分与来源摘要的新副本，原记录保持不变。研究记录的`experiment_status`为空。
+
 原始 CSV 保持不变，分析拒绝缺失或无效数据。图表、指标及报告指向同一次运行，记录时间包含时区偏移；缺失 UTC 触发时戳保留 null。
 
 | 状态项 | 含义 |
@@ -65,6 +69,8 @@ Agent旧版strict_tool_v1报告绑定真实present_report调用ID及生成时的
 新报告使用strict_tool_v6及markdown_refs_v3：先保留独立普通Markdown正文narrative.md，再以narrative_index段落编号及独立短标题传递控制参数；复核原始正文响应、可复算目录、参数请求绑定、wire_answer和answer投影。正文作为唯一主文，结构化依据折叠且相同段落去重，图表编排仍由模型决定。问题与选项说明独立生成短句；首轮与同事件时刻重复记录不开放默认总结/深入分支，实际时刻对照后再判断是否足以收尾。JSON语法错误与业务校验分别记录；参数失败时正文可只读展示，实验选项不可执行。无自动JSON修补或格式重发。conclude/deepen是程序定义的目标操作，无需模型提供追问；discuss需要非空正文引用。新Schema按操作种类限定message_ref及参数。旧strict_tool_v4/markdown_refs_v1和strict_tool_v5/markdown_refs_v2保持原字段与校验复核。
 
 strict_tool_v3/flat_report_v1按旧协议保留复核：wire_answer按复算事实和受控动作目录投影到answer。investigation_context保存可复算辅助观察、历史覆盖与能力范围，assessment按命题评估进展；收尾/深入由用户选择。旧v1兼容分支保留。研发中的v2草案未用于用户会话，不作为受支持的交付格式。
+
+pmsm_measured 保存发布MAT、下载回执、匿名数值投影、原生通道及工况参照，独立于本地速度偏置诊断任务。复核核对源摘要、逐点映射、阶段索引和健康参照来源；查询结果只返回开放观测，缺失项与匹配不足保持不可用。接口和单位依据见[实测映射](docs/pmsm-measured.md)。
 
 ### Agent 任务记录
 

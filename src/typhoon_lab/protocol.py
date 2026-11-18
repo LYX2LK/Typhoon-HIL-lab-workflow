@@ -11,6 +11,9 @@ COMMANDS = ('analyze-field-data', 'verify-field-data', 'check-tle9877', 'lin-enc
             'analyze-boost', 'plan-boost', 'execute-boost-plan', 'verify-boost-ai', 'demo-boost','agent','verify-agent','agent-boost','verify-boost-agent')
 
 
+COMMANDS += ('pmsm-research','pmsm-diagnosis','pmsm-measured')
+
+
 def command_name(argv):
     return next((a for a in argv if a in COMMANDS), None)
 
@@ -88,7 +91,10 @@ def decorate(command, result, argv, project, failure=None):
     for p in result.get('files', []):
         artifacts[Path(p).name] = str(p)
     error = failure
-    if command in ('analyze-boost','plan-boost','verify-boost-ai','verify-boost-agent','verify-agent') or manifest.get('kind') in ('boost_ai','boost_agent_session','agent_session'):
+    if command == 'pmsm-measured' and 'query' in result:
+        # The bounded query response must not enumerate evaluator/source filenames.
+        artifacts = {}
+    if command in ('pmsm-measured','pmsm-diagnosis','pmsm-research','analyze-boost','plan-boost','verify-boost-ai','verify-boost-agent','verify-agent') or manifest.get('kind') in ('pmsm_measured','pmsm_diagnosis','pmsm_research','boost_ai','boost_agent_session','agent_session'):
         return response(command,result,run_dir=run_dir,record_status=result.get('record_status'),
                         experiment_status=None,artifacts=artifacts,error=error)
     if command=='execute-boost-plan':

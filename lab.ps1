@@ -26,6 +26,7 @@ exit $LASTEXITCODE
 } catch {
     if (-not $jsonMode) { throw }
     $knownCommands = @('analyze-field-data','verify-field-data','check-tle9877','lin-encode','lin-decode','lin-mock','doctor','prepare-models','smoke','inspect','run','sweep','report','verify','compare-rectifier','list-cases','validate-case','run-case','practice-model','analyze-waveforms','verify-waveforms','diagnose-waveforms','explain-waveforms','verify-diagnosis','analyze-boost','plan-boost','execute-boost-plan','verify-boost-ai','demo-boost','agent','verify-agent','agent-boost','verify-boost-agent')
+    $knownCommands += 'pmsm-research','pmsm-diagnosis','pmsm-measured'
     $selectedCommand = @($LabArguments | Where-Object { $_ -in $knownCommands }) | Select-Object -First 1
     $response = [ordered]@{
         schema_version = 1; command = $selectedCommand; status = 'error'; run_dir = $null

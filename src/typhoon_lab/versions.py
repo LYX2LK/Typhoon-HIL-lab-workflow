@@ -2,6 +2,11 @@
 
 RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
+    ('pmsm_measured', None): 1,
+    ('run', 'pmsm_current_feedback_probe'): 1,
+    ('pmsm_diagnosis', None): 1,
+    ('run', 'pmsm_feedback_probe'): 1,
+    ('pmsm_research', None): 1,
     ('field_test_data', None): 1,
     ("run", "pmsm_software_preview"): 2,
     ("agent_session", None): 1,

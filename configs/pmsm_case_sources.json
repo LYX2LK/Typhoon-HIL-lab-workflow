@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-15",
+  "purpose": "样例来源与接入状态；保留原研究目标，当前开发样例仅用于流程联调。",
+  "intake_task": "results/agent-tasks/20261115-190017-pmsm-case-sources-b3c7",
+  "sources": [
+    {
+      "id": "brno_dual_three_phase_isc",
+      "url": "https://zenodo.org/records/13889418",
+      "doi": "10.5281/zenodo.13889418",
+      "license": "CC-BY-4.0",
+      "origin": "experimental_fault_emulation",
+      "role": "动态实测故障与工况变化",
+      "repository_files": 56,
+      "downloaded_files": 2,
+      "native_sample_rate_hz": 10000,
+      "pilot_samples_per_file": 415001,
+      "pilot_duration_s": 41.5,
+      "conditions": "健康与不同短路匝数、相别、负载；双三相PMSM转速扫描",
+      "status": "native_channel_and_operating_reference_mapping_verified",
+      "limits": [
+        "双三相拓扑区别于本地三相模型",
+        "同负载记录的速度给定不逐点相同",
+        "测得速度不是独立模型真值",
+        "不能由切窗扩大独立样本数",
+        "dq电压导出倍率未确认；保留原生控制量单位",
+        "当前健康参照只有一个来源记录，统计独立性未确认"
+      ],
+      "ready_for_model_comparison": false,
+      "mapped_channels": 20,
+      "mapping_doc": "docs/pmsm-measured.md",
+      "mapping_task": "results/agent-tasks/20261115-200728-pmsm-mapping-current-7c9d",
+      "reference_policy": "same_load_speed_slope_stage_step_count_and_age",
+      "voltage_unit_status": "native_control_voltage_pending_export_scaling"
+    },
+    {
+      "id": "brno_transient_isc",
+      "url": "https://zenodo.org/records/15631383",
+      "doi": "10.5281/zenodo.15631383",
+      "license": "CC-BY-4.0",
+      "origin": "experimental_fault_emulation",
+      "role": "负载与速度瞬态、不同电机和严重度",
+      "repository_archive_bytes": 91533036,
+      "downloaded_files": 0,
+      "status": "official_metadata_and_description_verified",
+      "limits": [
+        "原始MAT文件和timeseries对象尚未接入",
+        "不预设所有文件均有健康对照或独立真值"
+      ],
+      "ready_for_model_comparison": false
+    },
+    {
+      "id": "bacha_inverter_multisensor",
+      "url": "https://zenodo.org/records/14482932",
+      "doi": "10.5281/zenodo.14482932",
+      "license": "CC-BY-4.0",
+      "origin": "experimental_fault_injection",
+      "role": "逆变器多故障与慢变量多传感分析",
+      "downloaded_files": 1,
+      "raw_rows": 10892,
+      "raw_sensor_columns": 8,
+      "released_classes": 9,
+      "reported_sample_rate_hz": 10,
+      "status": "raw_archive_and_label_group_projection_verified",
+      "limits": [
+        "原始测点为ADC值",
+        "原始CSV没有采集时戳，处理版时间由行号构造",
+        "不能用于毫秒级瞬态或检出时延",
+        "标签块、重复行及派生特征缺失影响数据划分"
+      ],
+      "ready_for_model_comparison": false
+    },
+    {
+      "id": "creator_operating_cycles",
+      "url": "https://repository.tugraz.at/records/sns1d-77m43",
+      "doi": "10.3217/sns1d-77m43",
+      "license": "CC-BY-NC-4.0",
+      "origin": "derived_operating_profiles_and_experimental_power",
+      "role": "复杂工况来源、输入轮廓与正常行为参考",
+      "downloaded_archive_files": 1,
+      "operating_cycles": 6,
+      "status": "archive_and_cycle_projection_verified",
+      "limits": [
+        "速度/转矩为车辆模型缩比输入，功率是台架测量结果",
+        "无故障标签或电流波形",
+        "映射到本地电机前需核对额定值、控制能力与时间尺度"
+      ],
+      "ready_for_model_comparison": false
+    },
+    {
+      "id": "pisa_pmsm_drive_simulation",
+      "url": "https://zenodo.org/records/23367145",
+      "doi": "10.5281/zenodo.23367145",
+      "license": "CC-BY-4.0",
+      "origin": "public_simulation",
+      "role": "多作用位置与工况的可控补充",
+      "downloaded_archive_files": 1,
+      "speed_files": 14,
+      "time_reset_episodes": 126,
+      "fault_conditions_per_speed": 9,
+      "status": "archive_and_episode_projection_verified",
+      "limits": [
+        "是Simulink仿真而非真实测量",
+        "每个CSV内九次运行的时间轴重置",
+        "健康前段与故障后段不能跨训练/测试",
+        "部分电流指令量纲/缩放仍待原文确认",
+        "发行CITATION文件的DOI与当前版本不同，按实际下载记录引用"
+      ],
+      "ready_for_model_comparison": false
+    }
+  ]
+}

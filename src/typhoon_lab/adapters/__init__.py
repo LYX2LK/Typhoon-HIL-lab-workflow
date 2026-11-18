@@ -3,6 +3,8 @@ from importlib import import_module
 from copy import deepcopy
 
 ADAPTERS = {
+    "pmsm_current_feedback_probe": ("..pmsm_current_fault", "PMSMCurrentFeedbackAdapter"),
+    "pmsm_feedback_probe": ("..pmsm_fault", "PMSMFeedbackAdapter"),
     "pmsm_software_preview": ("..pmsm_preview", "PMSMPreviewAdapter"),
     "three_phase_rectifier_fault": ("..rectifier_fault", "BridgeAdapter"),
     "generic_pv_plant": (".pv", "PVAdapter"),
@@ -60,7 +62,7 @@ def describe_capabilities(adapter):
         }
     for path, spec in getattr(adapter, "fixed_fields", {}).items():
         group, name = path.split(".", 1)
-        fields[group][name] = deepcopy(spec)
+        fields.setdefault(group, {})[name] = deepcopy(spec)
     for path, dependency in getattr(adapter, "field_dependencies", {}).items():
         group, name = path.split(".", 1)
         fields[group][name]["dependency"] = deepcopy(dependency)

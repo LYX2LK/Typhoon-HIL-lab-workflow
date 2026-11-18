@@ -238,10 +238,10 @@ def evaluation_segments(c):
     return list(zip(boundaries,boundaries[1:]))
 
 
-def analyze_preview(path,c):
+def analyze_preview(path,c,columns=None):
     import numpy as np
     from .analysis import load_waveforms
-    d=load_waveforms(Path(path),('t_relative_s','t_simulation_s',*PMSMPreviewAdapter.columns))
+    d=load_waveforms(Path(path),('t_relative_s','t_simulation_s',*(columns or PMSMPreviewAdapter.columns)))
     t=np.asarray(d['t_simulation_s']); rate=1/float(np.median(np.diff(t)))
     if abs(rate/c['capture']['sample_rate_hz']-1)>.01 or len(t)<c['acceptance']['min_samples'] or \
             t[0]>2/rate or t[-1]<c['capture']['duration_s']-2/rate:
@@ -303,7 +303,7 @@ def analyze_preview(path,c):
             'assumptions':c['assumptions']}}
 
 
-def write_preview_report(path,manifest):
+def write_preview_report(path,manifest,columns=None,scope=SCOPE):
     from .reporting import _write, _image
     path=Path(path);hp=[];mp=[];outputs=[]
     if manifest.get('error'):
@@ -315,12 +315,16 @@ def write_preview_report(path,manifest):
         import matplotlib.pyplot as plt
         from .analysis import load_waveforms
         metrics=json.loads((path/'metrics.json').read_text(encoding='utf-8'))
-        d=load_waveforms(path/'waveforms.csv',('t_relative_s','t_simulation_s',*PMSMPreviewAdapter.columns))
+        d=load_waveforms(path/'waveforms.csv',('t_relative_s','t_simulation_s',*(columns or PMSMPreviewAdapter.columns)))
         t=np.asarray(d['t_simulation_s'])
         with plt.rc_context({'font.family':'DejaVu Sans','axes.grid':True,'grid.alpha':.2,'path.simplify':False}):
-            fig,axes=plt.subplots(3,1,sharex=True,figsize=(11,9),layout='constrained')
+            current_probe = 'IqFeedback_A' in d
+            fig,axes=plt.subplots(4 if current_probe else 3,1,sharex=True,
+                                  figsize=(11,11 if current_probe else 9),layout='constrained')
             axes[0].plot(t,np.asarray(d['MechanicalSpeed_rad_s'])*30/math.pi,label='Model speed',color='#0072B2')
             axes[0].plot(t,np.asarray(d['Reference_rad_s'])*30/math.pi,label='Applied reference',color='#D55E00',linestyle='--')
+            if 'SpeedFeedback_rad_s' in d:
+                axes[0].plot(t,np.asarray(d['SpeedFeedback_rad_s'])*30/math.pi,label='Controller speed feedback',color='#009E73',linestyle=':')
             axes[0].set_ylabel('Speed (rpm)')
             for key,color,style in [('Ia_A','#0072B2','-'),('Ib_A','#D55E00','--'),('Ic_A','#009E73',':')]:
                 axes[1].plot(t,d[key],label=key,color=color,linestyle=style,linewidth=.65)
@@ -328,15 +332,25 @@ def write_preview_report(path,manifest):
             axes[2].plot(t,d['ElectromagneticTorque_Nm'],label='Electromagnetic torque',color='#0072B2')
             axes[2].plot(t,d['Load_Nm'],label='Applied load',color='#D55E00',linestyle='--')
             axes[2].set_ylabel('Torque (N m)');axes[2].set_xlabel('Simulation time (s)')
+            if current_probe:
+                for key,color,style in [('IqRaw_A','#0072B2','-'),('IqFeedback_A','#D55E00','--'),('CurrentBias_A','#009E73',':')]:
+                    axes[3].plot(t,d[key],label=key,color=color,linestyle=style,linewidth=.8)
+                axes[3].set_ylabel('q-axis current (A)');axes[3].set_xlabel('Simulation time (s)')
             for ax in axes:
                 for e in metrics['events']: ax.axvline(e['at_s'],color='#555',linestyle=':',linewidth=.8)
+                fault_at=metrics.get('fault_observation',{}).get('observed_at_s')
+                if fault_at is not None:
+                    ax.axvline(fault_at,color='#CC79A7',linestyle='-.',linewidth=.9,
+                               label='Bias observed' if ax is axes[0] else None)
                 ax.legend(loc='upper right',fontsize=8)
-            fig.suptitle('PMSM software rehearsal - equivalent-star hypothesis, ideal angle feedback')
+            fig.suptitle('PMSM software rehearsal - q-current feedback probe' if current_probe else
+                         'PMSM software rehearsal - speed-feedback probe' if 'SpeedFeedback_rad_s' in d else
+                         'PMSM software rehearsal - equivalent-star hypothesis, ideal angle feedback')
             output=path/'waveforms.png';fig.savefig(output,dpi=130,facecolor='white');plt.close(fig);outputs.append(output)
         caption='完整原始采样；虚线标出请求事件，实际生效时刻由命令波形复算。电流图为此采样率下的记录。'
         hp.append(_image(output,caption));mp.append('![PMSM 软件预演](waveforms.png)\n\n'+caption)
         for title,value in [('软件检查与分段结果',metrics),('实际参数与假设',manifest.get('actual_model_parameters'))]:
             text=json.dumps(value,ensure_ascii=False,indent=2)
             hp.append('<h2>'+title+'</h2><pre>'+html.escape(text)+'</pre>');mp.append('## '+title+'\n\n```json\n'+text+'\n```')
-    outputs.extend(_write(path,'低压 PMSM 软件预演',manifest.get('status','error'),hp,mp,scope=SCOPE))
+    outputs.extend(_write(path,'低压 PMSM 软件预演',manifest.get('status','error'),hp,mp,scope=scope))
     return outputs

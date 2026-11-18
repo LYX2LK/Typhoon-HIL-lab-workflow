@@ -21,6 +21,8 @@
 | 从 PMSM 软件预演走向真实控制器测试 | [TI LaunchPad 中文实训](docs/beginner/08-ti-launchpad-chil.md)、[TLE9877 实体 C-HIL 路线](docs/beginner/09-pmsm-to-tle9877-chil.md)、[离线图文页](docs/beginner/index.html#ti-chil) |
 | 比较调速与负载事件的顺序和间隔 | [PMSM 事件交互实验](cases/pmsm_event_interaction/README.md) |
 | 扩大事件幅值并检查恢复裕度 | [PMSM 幅值扩展与时序加密](cases/pmsm_boundary_coarse/README.md) |
+| 开展真实反馈搜索、故障核验与诊断查询 | [PMSM 搜索与诊断研究命令](docs/pmsm-research.md)、[研发执行安排](docs/research/2026-11-11-hil-ai-selection/execution-plan.md) |
+| 准备复杂工况、实测故障与机理生成样例 | [PMSM 样例来源与生成机制](docs/pmsm-case-generation.md)、[实测通道与工况参照](docs/pmsm-measured.md)、[公开来源状态](configs/pmsm_case_sources.json) |
 | 准备样机现场联调 | [I/O 合同、参数与现场记录](docs/tle9877-field-commissioning.md)、[LIN Mock](docs/tle9877-lin-adapter.md) |
 | 整理样机现场数据与判定 | [多来源文件、时间关联与离线判据](docs/field-data.md)、[采集交接说明](docs/tle9877-data-collection.md) |
 | 查看验证状态与交付证据 | [当前验证状态](docs/validation.md)、[历史证据](docs/validation-history.md)、[交接验收](docs/handoff.md) |

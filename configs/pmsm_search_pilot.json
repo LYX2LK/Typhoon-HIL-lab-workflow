@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "template": "configs/pmsm_interaction/simultaneous.json",
+  "scope": "development_prototype_not_formal_comparison",
+  "first_event_s": 0.3,
+  "target_speed_rpm": [600, 3000],
+  "load_nm": [0.02, 0.1],
+  "gap_ms": [0, 100],
+  "recovery_limit_s": 0.1,
+  "error_band_rpm": 50,
+  "minimum_tail_s": 0.02,
+  "budget": 3,
+  "seed": 20261115
+}

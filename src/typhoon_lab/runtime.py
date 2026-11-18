@@ -69,7 +69,7 @@ def inspect_model(model_id="rlc_filter"):
     from .adapters import get_adapter
     adapter=get_adapter(model_id)
     api,_=api_modules()
-    path=PROJECT/"models"/f"{model_id}.tse"
+    path=PROJECT/"models"/f"{getattr(adapter, 'source_model_id', model_id)}.tse"
     require(api.load(filename=str(path)),"load model for inspection")
     result={"model":model_id,"source_model":str(path),"source_sha256":sha256(path),
             "circuit":adapter.inspect_parameters(api),
@@ -176,7 +176,7 @@ def execute_case(run_dir,config):
         manifest["environment"]=environment()
         manifest["code_sha256"]=snapshot_code(run_dir)
         no_active_simulation(hil)
-        model_path,origin=source_copy(run_dir,model_id=adapter.model_id)
+        model_path,origin=source_copy(run_dir,model_id=getattr(adapter,'source_model_id',adapter.model_id))
         manifest["model_origin"]=origin
         require(api.load(filename=str(model_path)),"load teaching model")
         manifest["actual_model_parameters"]=adapter.prepare(api,config)
