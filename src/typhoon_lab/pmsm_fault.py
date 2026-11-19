@@ -44,6 +44,12 @@ class PMSMFeedbackAdapter(PMSMPreviewAdapter):
 
     def prepare(self, api, c):
         result = super().prepare(api, c)
+        result['feedback_injection'] = self.install_bias(api, c)
+        result['scope'] = SCOPE
+        return result
+
+    @staticmethod
+    def install_bias(api, c):
         source = api.term(api.get_item('Rate Transition1'), 'out')
         dest = api.term(api.get_item('speed_regulation'), 'w')
         connections = api.find_connections(source, dest)
@@ -91,15 +97,22 @@ class PMSMFeedbackAdapter(PMSMPreviewAdapter):
                 valid = math.isclose(float(actual), float(expected), rel_tol=1e-10, abs_tol=1e-12)
             if not valid:
                 raise ValueError('bias parameter readback mismatch: ' + k)
-        result['feedback_injection'] = {'source': 'Rate Transition1.out', 'destination': 'speed_regulation.w',
+        return {'source': 'Rate Transition1.out', 'destination': 'speed_regulation.w',
                                         'fault': c['fault'], 'step_readback': api.get_property_values(bias),
                                         'adder_readback': api.get_property_values(adder)}
-        result['scope'] = SCOPE
-        return result
 
     def analyze(self, path, c):
         result = analyze_preview(path, c, self.columns)
         d = load_waveforms(path, ('t_relative_s', 't_simulation_s', *self.columns))
+        observation = self.observe_bias(d, c)
+        result['fault_observation'] = observation
+        result['checks'].update(observation['checks'])
+        result['status'] = 'passed' if all(result['checks'].values()) else 'failed'
+        result['scope'] = SCOPE
+        return result
+
+    @staticmethod
+    def observe_bias(d, c):
         t = np.asarray(d['t_simulation_s'])
         scale = 30 / math.pi
         before = np.asarray(d['MechanicalSpeed_rad_s']) * scale
@@ -120,16 +133,12 @@ class PMSMFeedbackAdapter(PMSMPreviewAdapter):
                   'feedback_steady_relation': residual <= 2.0}
         true_speed = np.asarray(d['MechanicalSpeed_rad_s']) * scale
         ref = np.asarray(d['Reference_rad_s']) * scale
-        result['fault_observation'] = {'requested': f, 'observed_at_s': observed, 'checks': checks,
+        return {'requested': f, 'observed_at_s': observed, 'checks': checks,
             'post_window_s': [f['at_s'] + .1, f['at_s'] + .2], 'bias_level_error_rpm': level,
             'feedback_relation_max_error_rpm': residual, 'feedback_relation_tolerance_rpm': 2.0,
             'true_tracking_mean_error_rpm': float(np.mean((true_speed - ref)[post])),
             'used_feedback_mean_error_rpm': float(np.mean((used - ref)[post])),
             'injection_verified': all(checks.values())}
-        result['checks'].update(checks)
-        result['status'] = 'passed' if all(result['checks'].values()) else 'failed'
-        result['scope'] = SCOPE
-        return result
 
     def report(self, path, manifest):
         return write_preview_report(path, manifest, self.columns, SCOPE)

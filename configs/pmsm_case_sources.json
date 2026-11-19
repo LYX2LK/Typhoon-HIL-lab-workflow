@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-11-15",
+  "verified_at": "2026-11-18",
   "purpose": "样例来源与接入状态；保留原研究目标，当前开发样例仅用于流程联调。",
   "intake_task": "results/agent-tasks/20261115-190017-pmsm-case-sources-b3c7",
   "sources": [
@@ -12,7 +12,7 @@
       "origin": "experimental_fault_emulation",
       "role": "动态实测故障与工况变化",
       "repository_files": 56,
-      "downloaded_files": 2,
+      "downloaded_files": 24,
       "native_sample_rate_hz": 10000,
       "pilot_samples_per_file": 415001,
       "pilot_duration_s": 41.5,
@@ -24,10 +24,12 @@
         "测得速度不是独立模型真值",
         "不能由切窗扩大独立样本数",
         "dq电压导出倍率未确认；保留原生控制量单位",
-        "当前健康参照只有一个来源记录，统计独立性未确认"
+        "各已用负载只有一份健康来源记录，同负载各对共享参照"
       ],
       "ready_for_model_comparison": false,
       "mapped_channels": 20,
+      "completed_comparison_scope": "single_model_paired_isc_evidence_and_reference_selection_on_held_out_loads",
+      "comparison_task": "results/agent-tasks/20261118-200923-brno-blind-6c42",
       "mapping_doc": "docs/pmsm-measured.md",
       "mapping_task": "results/agent-tasks/20261115-200728-pmsm-mapping-current-7c9d",
       "reference_policy": "same_load_speed_slope_stage_step_count_and_age",
@@ -41,8 +43,9 @@
       "origin": "experimental_fault_emulation",
       "role": "负载与速度瞬态、不同电机和严重度",
       "repository_archive_bytes": 91533036,
-      "downloaded_files": 0,
-      "status": "official_metadata_and_description_verified",
+      "downloaded_files": 1,
+      "archive_mat_files": 21,
+      "status": "archive_checksum_member_inventory_and_description_verified",
       "limits": [
         "原始MAT文件和timeseries对象尚未接入",
         "不预设所有文件均有健康对照或独立真值"
@@ -61,12 +64,12 @@
       "raw_sensor_columns": 8,
       "released_classes": 9,
       "reported_sample_rate_hz": 10,
-      "status": "raw_archive_and_label_group_projection_verified",
+      "status": "ordered_adc_rows_linked_to_nine_timestamped_serial_logs",
       "limits": [
         "原始测点为ADC值",
-        "原始CSV没有采集时戳，处理版时间由行号构造",
+        "汇总CSV无时戳；按场景串口日志含时刻，处理版时间由行号构造",
         "不能用于毫秒级瞬态或检出时延",
-        "标签块、重复行及派生特征缺失影响数据划分"
+        "每个细分类只有一个串口场景文件；重复行、重复时刻与采集间隔异常另行记录"
       ],
       "ready_for_model_comparison": false
     },

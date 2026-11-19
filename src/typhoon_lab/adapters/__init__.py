@@ -3,6 +3,7 @@ from importlib import import_module
 from copy import deepcopy
 
 ADAPTERS = {
+    "pmsm_feedback_comparison": ("..pmsm_feedback_comparison", "PMSMComparisonAdapter"),
     "pmsm_current_feedback_probe": ("..pmsm_current_fault", "PMSMCurrentFeedbackAdapter"),
     "pmsm_feedback_probe": ("..pmsm_fault", "PMSMFeedbackAdapter"),
     "pmsm_software_preview": ("..pmsm_preview", "PMSMPreviewAdapter"),

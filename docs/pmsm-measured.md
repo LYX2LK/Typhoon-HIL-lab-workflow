@@ -26,6 +26,8 @@
 
 `statistics`、`difference`、`availability`沿用[诊断数值查询](pmsm-research.md#诊断查询与证据更新)的参数结构，使用本页通道名和单位。`controller_knowledge`返回这套实测装置的说明。`events`仅查询`reference_speed_rpm`，按大于 0.001 rpm 的实际采样变化返回时刻和前后值，每个查询至多20项。这些事件是速度给定变化，故障投入时间没有从文件名推断。
 
+同一实测包的批量离线分析可以调用 `pmsm_measured.query_measured_batch(output, queries)`；每个查询由案例编号、工具名和参数组成。批次开始时复核整个包，然后对各条记录按相同的工具权限和匹配策略计算。批量输出保留每个窗口的匹配状态、双方统计及原始时间范围。
+
 ## 通道与单位
 
 所有投影保持原数值，比例为1、偏移为0。`Time`映射为`time_s`，单位秒；按原生10kHz时间轴检查递增、步长、样本数及有限值。

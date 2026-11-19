@@ -343,7 +343,8 @@ def write_preview_report(path,manifest,columns=None,scope=SCOPE):
                     ax.axvline(fault_at,color='#CC79A7',linestyle='-.',linewidth=.9,
                                label='Bias observed' if ax is axes[0] else None)
                 ax.legend(loc='upper right',fontsize=8)
-            fig.suptitle('PMSM software rehearsal - q-current feedback probe' if current_probe else
+            fig.suptitle('PMSM software rehearsal - speed and q-current feedback' if current_probe and 'SpeedFeedback_rad_s' in d else
+                         'PMSM software rehearsal - q-current feedback probe' if current_probe else
                          'PMSM software rehearsal - speed-feedback probe' if 'SpeedFeedback_rad_s' in d else
                          'PMSM software rehearsal - equivalent-star hypothesis, ideal angle feedback')
             output=path/'waveforms.png';fig.savefig(output,dpi=130,facecolor='white');plt.close(fig);outputs.append(output)

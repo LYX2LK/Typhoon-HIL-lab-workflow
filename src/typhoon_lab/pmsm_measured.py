@@ -3,6 +3,7 @@
 No signal is renamed to model truth. Labels and source filenames stay private.
 """
 from pathlib import Path
+from functools import lru_cache
 import hashlib
 import json
 import re
@@ -236,14 +237,28 @@ def verify_measured(output):
 
 
 def query_measured(output, case_id, name, args):
+    return query_measured_batch(output, [(case_id, name, args)])[0]
+
+
+def query_measured_batch(output, queries):
+    """Verify the package once for a batch of offline, read-only queries."""
     output = Path(output)
     check = verify_measured(output)
     if check['record_status'] != 'passed':
         raise ValueError('measured package verification failed: '+str(check['problems']))
     public = json.loads((output/'dataset.json').read_text(encoding='utf-8'))
+    @lru_cache(maxsize=2)
+    def recording(case_id):
+        return read_data(output, public['cases'][case_id])
+
+    return [_query_recording(public, recording, case_id, name, args)
+            for case_id, name, args in queries]
+
+
+def _query_recording(public, recording, case_id, name, args):
     if case_id not in public['cases']:
         raise ValueError('unknown measured case id')
-    case = public['cases'][case_id]; data = read_data(output, case)
+    case = public['cases'][case_id]; data = recording(case_id)
     tools = ObservationTools(data, UNITS, units=UNITS, knowledge=KNOWLEDGE,
                              event_channels=('reference_speed_rpm',),
                              event_thresholds={'reference_speed_rpm': POLICY['reference_change_threshold_rpm']})
@@ -288,7 +303,7 @@ def query_measured(output, case_id, name, args):
         if not candidates:
             return {'status': 'unavailable', 'reason': 'no healthy window from another recording satisfies load, phase, speed and slope policy', 'target_condition': target}
         _, ref_id, best = min(candidates, key=lambda x: (x[0], x[1], x[2]['window_s']))
-        ref_data = read_data(output, public['cases'][ref_id])
+        ref_data = recording(ref_id)
         reference = ObservationTools(ref_data, UNITS, units=UNITS).execute('statistics', {**args, 'window_s': best['window_s']})
         differences = {k: {field: current['statistics'][k][field] - reference['statistics'][k][field]
                           for field in ('mean', 'rms', 'peak_to_peak')} for k in args['channels']}

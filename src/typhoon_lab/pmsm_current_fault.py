@@ -45,6 +45,12 @@ class PMSMCurrentFeedbackAdapter(PMSMPreviewAdapter):
 
     def prepare(self, api, c):
         result = super().prepare(api, c)
+        result['current_feedback_injection'] = self.install_bias(api, c)
+        result['scope'] = SCOPE
+        return result
+
+    @staticmethod
+    def install_bias(api, c):
         source = api.get_item('From15')
         dest = api.term(api.get_item('Current_regulation'), 'iq')
         connections = api.find_connections(source, dest)
@@ -86,16 +92,23 @@ class PMSMCurrentFeedbackAdapter(PMSMPreviewAdapter):
                 raise ValueError('current fault parameter readback mismatch: ' + key)
         if len(api.find_connections(api.term(adder, 'out'), dest)) != 1:
             raise ValueError('current feedback destination not connected')
-        result['current_feedback_injection'] = {
+        return {
             'source': 'From15 (I_abc_dq1.q_axis signal tag)', 'destination': 'Current_regulation.iq',
             'fault': c['fault'], 'step_readback': api.get_property_values(step),
             'adder_readback': api.get_property_values(adder)}
-        result['scope'] = SCOPE
-        return result
 
     def analyze(self, path, c):
         result = analyze_preview(path, c, self.columns)
         d = load_waveforms(path, ('t_relative_s', 't_simulation_s', *self.columns))
+        observation = self.observe_bias(d, c)
+        result['fault_observation'] = observation
+        result['checks'].update(observation['checks'])
+        result['status'] = 'passed' if all(result['checks'].values()) else 'failed'
+        result['scope'] = SCOPE
+        return result
+
+    @staticmethod
+    def observe_bias(d, c):
         t = np.asarray(d['t_simulation_s'])
         raw, used, bias = (np.asarray(d[k]) for k in ('IqRaw_A', 'IqFeedback_A', 'CurrentBias_A'))
         f = c['fault']
@@ -113,7 +126,7 @@ class PMSMCurrentFeedbackAdapter(PMSMPreviewAdapter):
             'current_feedback_mean_relation': bool(abs(np.mean(residual)) <= .1),
             'current_feedback_rms_relation': bool(np.sqrt(np.mean(residual**2)) <= .5),
         }
-        result['fault_observation'] = {
+        return {
             'requested': f, 'observed_at_s': observed, 'checks': checks,
             'post_window_s': [f['at_s'] + .1, f['at_s'] + .2],
             'feedback_relation_mean_error_a': float(np.mean(residual)),
@@ -121,10 +134,6 @@ class PMSMCurrentFeedbackAdapter(PMSMPreviewAdapter):
             'relation_tolerances_a': {'abs_mean': .1, 'rms': .5},
             'raw_iq_mean_a': float(np.mean(raw[post])), 'used_iq_mean_a': float(np.mean(used[post])),
             'injection_verified': all(checks.values())}
-        result['checks'].update(checks)
-        result['status'] = 'passed' if all(result['checks'].values()) else 'failed'
-        result['scope'] = SCOPE
-        return result
 
     def report(self, path, manifest):
         return write_preview_report(path, manifest, self.columns, SCOPE)
