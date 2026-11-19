@@ -41,7 +41,10 @@ def _run(argv=None):
     p.add_argument('--strategy',choices=['llm','random'],default='llm')
     p.add_argument('--service',default='configs/ai_service_research.json')
     p=sub.add_parser('pmsm-diagnosis')
-    p.add_argument('--action',choices=['prepare','run','feedback-check','review','verify'],required=True)
+    p.add_argument('--action', choices=[
+        'prepare', 'run', 'feedback-check', 'review', 'verify',
+        'freeze-measured-comparison', 'compare-measured', 'qualify-measured-evidence', 'screen-pmsg-voltage',
+    ], required=True)
     p.add_argument('--output-dir',required=True)
     p.add_argument('--normal-source');p.add_argument('--anomaly-source')
     p.add_argument('--dataset-dir');p.add_argument('--case-id')
@@ -133,8 +136,30 @@ def _run(argv=None):
             _publish(result,indent=2)
             return 0 if result['status']=='passed' else 1
         if args.command=='pmsm-diagnosis':
-            from .pmsm_diagnosis import prepare_dataset,run_diagnosis,verify_diagnosis
             output=resolve_project_file(args.output_dir)
+            if args.action == 'screen-pmsg-voltage':
+                from .pmsg_voltage_screen import run_screen
+                if not args.dataset_dir:
+                    raise ValueError('voltage screening requires --dataset-dir')
+                result = run_screen(output, resolve_project_file(args.dataset_dir))
+                _publish(result, indent=2)
+                return 0 if result['status'] == 'passed' else 1
+            if args.action == 'qualify-measured-evidence':
+                from .pmsm_evidence_qualification import qualify_evidence
+                if not args.source_session:
+                    raise ValueError('evidence qualification requires --source-session')
+                result = qualify_evidence(output, resolve_project_file(args.source_session))
+                _publish(result, indent=2)
+                return 0 if result['status'] == 'passed' else 1
+            if args.action in ('freeze-measured-comparison', 'compare-measured'):
+                from .pmsm_diagnosis_comparison import freeze_comparison, run_comparison
+                if not args.dataset_dir:
+                    raise ValueError('measured comparison requires --dataset-dir')
+                operation = freeze_comparison if args.action == 'freeze-measured-comparison' else run_comparison
+                result = operation(output, resolve_project_file(args.dataset_dir), resolve_project_file(args.service))
+                _publish(result, indent=2)
+                return 0 if result['status'] == 'passed' else 1
+            from .pmsm_diagnosis import prepare_dataset,run_diagnosis,verify_diagnosis
             if args.action=='prepare':
                 if not args.normal_source or not args.anomaly_source: raise ValueError('prepare requires both source records')
                 result=prepare_dataset(output,resolve_project_file(args.normal_source),resolve_project_file(args.anomaly_source))

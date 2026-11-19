@@ -21,6 +21,15 @@ def verify_run(run_dir,write=True):
     if manifest.get('kind')=='pmsm_diagnosis':
         from .pmsm_diagnosis import verify_diagnosis
         return verify_diagnosis(run_dir,write=write)
+    if manifest.get('kind') == 'pmsm_measured_comparison':
+        from .pmsm_diagnosis_comparison import verify_comparison
+        return verify_comparison(run_dir, write=write)
+    if manifest.get('kind') == 'pmsm_evidence_qualification':
+        from .pmsm_evidence_qualification import verify_evidence
+        return verify_evidence(run_dir, write=write)
+    if manifest.get('kind') == 'pmsg_voltage_screen':
+        from .pmsg_voltage_screen import verify_screen
+        return verify_screen(run_dir, write=write)
     if manifest.get('kind')=='pmsm_research':
         from .pmsm_research import verify_research
         return verify_research(run_dir,write=write)

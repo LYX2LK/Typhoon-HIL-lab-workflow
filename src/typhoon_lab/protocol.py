@@ -94,7 +94,7 @@ def decorate(command, result, argv, project, failure=None):
     if command == 'pmsm-measured' and 'query' in result:
         # The bounded query response must not enumerate evaluator/source filenames.
         artifacts = {}
-    if command in ('pmsm-measured','pmsm-diagnosis','pmsm-research','analyze-boost','plan-boost','verify-boost-ai','verify-boost-agent','verify-agent') or manifest.get('kind') in ('pmsm_measured','pmsm_diagnosis','pmsm_research','boost_ai','boost_agent_session','agent_session'):
+    if command in ('pmsm-measured','pmsm-diagnosis','pmsm-research','analyze-boost','plan-boost','verify-boost-ai','verify-boost-agent','verify-agent') or manifest.get('kind') in ('pmsm_measured','pmsm_diagnosis','pmsm_measured_comparison','pmsm_evidence_qualification','pmsg_voltage_screen','pmsm_research','boost_ai','boost_agent_session','agent_session'):
         return response(command,result,run_dir=run_dir,record_status=result.get('record_status'),
                         experiment_status=None,artifacts=artifacts,error=error)
     if command=='execute-boost-plan':

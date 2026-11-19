@@ -76,6 +76,36 @@
 
 已下载的双三相实测数据通过独立的`pmsm-measured`入口查询，保留原生通道、单位证据和台阶工况，不转换为本地八通道数据。通道表、工况匹配规则、命令及标定缺口见[实测映射](pmsm-measured.md)。它提供诊断查询层；现有`pmsm-diagnosis run`的本地速度偏置任务与评价器继续按原协议运行，实测任务的初始证据、原因标签和正式评分需按数据特点单独冻结。
 
+## KAIST 绕组故障实测对照
+
+该入口供课题组比较三种证据选择策略。输入目录放置 [KAIST v5](https://data.mendeley.com/datasets/rgn5brrgrn/5) 的三个原始 ZIP 和发布仓库的文件元数据数组 `repository-files.json`。文件名、尺寸和 SHA-256 必须与发布清单一致。输入为两组开发电机和一组留出电机的固定台架工况，健康重复文件按内容去重。
+
+```powershell
+.\lab.ps1 pmsm-diagnosis --action freeze-measured-comparison --dataset-dir <原始归档目录> --output-dir <新结果目录> --json
+.\lab.ps1 pmsm-diagnosis --action compare-measured --dataset-dir <原始归档目录> --output-dir <同一结果目录> --json
+.\lab.ps1 verify --run-dir <同一结果目录> --json
+```
+
+冻结阶段只读取 1.0 和 1.5 kW 波形进行数值校准。3.0 kW 归档在冻结后读取波形和建立匿名查询任务。初始证据使用电流幅值摘要。额外查询可用三组证据，分别是电流不平衡与序量、电流谐波以及振动频谱。相同的测点和两次查询预算对固定顺序规则、自适应规则和模型开放。模型请求只含匿名观测和开发校准摘要。
+
+运行目录保留来源映射、冻结协议、原始模型输入输出、逐案选择、工具值、评分、主报告与统计附录。通用复核从校验过的原始 TDMS 重算窗口特征，离线重放原答复及实际动作，并重新核对对照分母和研究决策。记录通过与 LLM 是否取得增益分别判定。模型调用失败会留在分母，技术状态见 `workflow_status`。
+
+## 跨电机标定与分型证据验证
+
+```powershell
+.\lab.ps1 pmsm-diagnosis --action qualify-measured-evidence --source-session <通过复核的KAIST对照目录> --output-dir <新结果目录> --json
+.\lab.ps1 verify --run-dir <同一结果目录> --json
+```
+
+每台电机以健康记录的前两个约定窗建立幅相参考，以后两个窗检查相量符号。分型比较沿用初始摘要，逐一加入原始、试算翻号或健康参照的证据组。1.0 与 1.5 kW 互留，已曝光的 3.0 kW 用于历史回放。健康记录用于校准，两类故障用于分型。本轮六种可在一至两次补查内取得的组合均未达到开发阶段门槛。 [阶段验收](../results/agent-tasks/20261119-172756-kaist-evidence-qualification/stage-review.md)
+
+```powershell
+.\lab.ps1 pmsm-diagnosis --action screen-pmsg-voltage --dataset-dir <PMSG来源目录> --output-dir <新结果目录> --json
+.\lab.ps1 verify --run-dir <同一结果目录> --json
+```
+
+PMSG 来源目录由发布版本的 25 条固定工况原始 MAT 和 `receipt.json` 组成。该入口核对三相电流、电压、时间轴和故障支路，控制相别并按不共用抽头的组别留出。比较仅电流、加入端电压以及加入基频电压、电流复比。试评仅覆盖独立发电机台架的固定工况，PMSM 独立批次复验继续使用新 PMSM 实测。 [PMSG 数据接入与复算](../results/agent-tasks/20261119-172756-kaist-evidence-qualification/pmsg-voltage-report.md)
+
 ## 诊断查询与证据更新
 
 先将已复核的正常、故障运行投影为匿名观测包，再对一个观测条件运行模型。以下源目录是已有软件记录；数据包和会话的输出目录均须使用新路径。

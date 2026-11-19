@@ -4,6 +4,9 @@ RECORD_FORMAT_VERSION = 1
 ANALYSIS_METHOD_VERSIONS = {
     ('run', 'pmsm_feedback_comparison'): 1,
     ('pmsm_measured', None): 1,
+    ('pmsm_measured_comparison', None): 1,
+    ('pmsm_evidence_qualification', None): 1,
+    ('pmsg_voltage_screen', None): 1,
     ('run', 'pmsm_current_feedback_probe'): 1,
     ('pmsm_diagnosis', None): 1,
     ('run', 'pmsm_feedback_probe'): 1,

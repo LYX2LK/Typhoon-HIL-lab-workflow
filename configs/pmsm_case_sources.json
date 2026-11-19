@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-11-18",
+  "verified_at": "2026-11-19",
   "purpose": "样例来源与接入状态；保留原研究目标，当前开发样例仅用于流程联调。",
   "intake_task": "results/agent-tasks/20261115-190017-pmsm-case-sources-b3c7",
   "sources": [
@@ -70,6 +70,52 @@
         "汇总CSV无时戳；按场景串口日志含时刻，处理版时间由行号构造",
         "不能用于毫秒级瞬态或检出时延",
         "每个细分类只有一个串口场景文件；重复行、重复时刻与采集间隔异常另行记录"
+      ],
+      "ready_for_model_comparison": false
+    },
+    {
+      "id": "kaist_pmsm_winding_faults",
+      "url": "https://data.mendeley.com/datasets/rgn5brrgrn/5",
+      "doi": "10.17632/rgn5brrgrn.5",
+      "license": "CC-BY-4.0",
+      "origin": "experimental_fault_injection",
+      "role": "同一测点体系下两类绕组故障的整机留出比较",
+      "downloaded_archive_files": 3,
+      "verified_conditions": 45,
+      "development_motor_w": [1000, 1500],
+      "heldout_motor_w": 3000,
+      "status": "whole_motor_comparison_verified_limited_discrimination",
+      "comparison_task": "results/agent-tasks/20261119-154045-kaist-pmsm-comparison",
+      "qualification_task": "results/agent-tasks/20261119-172756-kaist-evidence-qualification/qualification",
+      "qualification_status": "evidence_screen_not_met",
+      "completed_comparison_scope": "held_out_motor_fixed_load_interturn_and_intercoil",
+      "limits": [
+        "每台电机的健康别名按原始文件摘要合并为一个采集条件",
+        "电流和振动按发布条件配对，各自使用记录的原始时基",
+        "冻结特征与开发参照在留出电机上未体现补查收益",
+        "健康记录内部复算支持相电流极性疑点，通道方向仍需物理核验",
+        "健康相对幅相的开发改善未达到跨电机和评分方法的筛选门槛"
+      ],
+      "ready_for_model_comparison": false
+    },
+    {
+      "id": "usp_pmsg_winding_faults",
+      "url": "https://zenodo.org/records/15741561",
+      "doi": "10.5281/zenodo.15741561",
+      "license": "CC-BY-4.0",
+      "origin": "experimental_fault_injection",
+      "role": "独立发电机台架的电压、电流补充证据筛选",
+      "downloaded_files": 25,
+      "verified_fault_windows": 24,
+      "diagnosis_records": 18,
+      "native_sample_rate_hz": 20000,
+      "status": "native_records_verified_voltage_screen_not_met",
+      "comparison_task": "results/agent-tasks/20261119-172756-kaist-evidence-qualification/voltage-screen-reviewed",
+      "limits": [
+        "双星形永磁同步发电机，边界为标称1800 rpm和8 Nm的单一工况",
+        "仅同相、不共用抽头的分组用于分型，端电压与电流各自的基频在原始信号确认",
+        "原生转速通道的机械或电气含义待确认，信号时间轴和工况标签分别保留",
+        "独立于KAIST采集，跨电机PMSM同工况的重复采集仍需补足"
       ],
       "ready_for_model_comparison": false
     },
