@@ -240,6 +240,43 @@ def query_measured(output, case_id, name, args):
     return query_measured_batch(output, [(case_id, name, args)])[0]
 
 
+def reference_distance(target, candidate, *, symmetric=False):
+    """Score eligible windows after the caller matches recording and load."""
+    for field in ('phase', 'stage', 'reference_change_count'):
+        if candidate[field] != target[field]:
+            return None
+    before = target['time_since_previous_change_s']
+    after = candidate['time_since_previous_change_s']
+    if (before is None) != (after is None):
+        return None
+    if before is not None and abs(before - after) > POLICY['stage_age_tolerance_s']:
+        return None
+
+    normalized = []
+    for field, absolute, relative in (
+        ('reference_mean_rpm', 'speed_abs_tolerance_rpm', 'speed_relative_tolerance'),
+        ('reference_slope_rpm_s', 'slope_abs_tolerance_rpm_s', 'slope_relative_tolerance'),
+        ('reference_step_sum_rpm', 'step_sum_abs_tolerance_rpm', 'step_sum_relative_tolerance'),
+    ):
+        left, right = target[field], candidate[field]
+        scale = min(abs(left), abs(right)) if symmetric else abs(left)
+        tolerance = max(POLICY[absolute], POLICY[relative] * scale)
+        difference = abs(left - right)
+        if difference > tolerance:
+            return None
+        normalized.append(difference / tolerance)
+    return sum(normalized[:2])
+
+
+def validate_reference_action(choice, evidence_ids, eligible_ids):
+    """Accept only the eligible observation actually cited by the structured action."""
+    if choice == 'U' and evidence_ids == []:
+        return choice
+    if not isinstance(choice, str) or choice not in eligible_ids or evidence_ids != [choice]:
+        raise ValueError('reference action must cite its eligible candidate')
+    return choice
+
+
 def query_measured_batch(output, queries):
     """Verify the package once for a batch of offline, read-only queries."""
     output = Path(output)
@@ -288,18 +325,9 @@ def _query_recording(public, recording, case_id, name, args):
             ref = public['cases'][ref_id]
             if ref_id == case_id or ref['load_setpoint_nm'] != case['load_setpoint_nm']: continue
             for regime in ref['regimes']:
-                speed_delta = abs(regime['reference_mean_rpm'] - target['reference_mean_rpm'])
-                slope_delta = abs(regime['reference_slope_rpm_s'] - target['reference_slope_rpm_s'])
-                speed_tol = max(POLICY['speed_abs_tolerance_rpm'], abs(target['reference_mean_rpm'])*POLICY['speed_relative_tolerance'])
-                slope_tol = max(POLICY['slope_abs_tolerance_rpm_s'], abs(target['reference_slope_rpm_s'])*POLICY['slope_relative_tolerance'])
-                age_a, age_b = regime['time_since_previous_change_s'], target['time_since_previous_change_s']
-                age_matches = age_a is None and age_b is None or age_a is not None and age_b is not None and abs(age_a-age_b) <= POLICY['stage_age_tolerance_s']
-                step_tol = max(POLICY['step_sum_abs_tolerance_rpm'], abs(target['reference_step_sum_rpm'])*POLICY['step_sum_relative_tolerance'])
-                if (regime['phase'] == target['phase'] and regime['stage'] == target['stage'] and
-                    regime['reference_change_count'] == target['reference_change_count'] and age_matches and
-                    abs(regime['reference_step_sum_rpm']-target['reference_step_sum_rpm']) <= step_tol and
-                    speed_delta <= speed_tol and slope_delta <= slope_tol):
-                    candidates.append((speed_delta/speed_tol+slope_delta/slope_tol, ref_id, regime))
+                distance = reference_distance(target, regime)
+                if distance is not None:
+                    candidates.append((distance, ref_id, regime))
         if not candidates:
             return {'status': 'unavailable', 'reason': 'no healthy window from another recording satisfies load, phase, speed and slope policy', 'target_condition': target}
         _, ref_id, best = min(candidates, key=lambda x: (x[0], x[1], x[2]['window_s']))

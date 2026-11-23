@@ -7,11 +7,25 @@ from scipy.io import savemat
 
 from typhoon_lab.diagnostic_tools import ObservationTools
 from typhoon_lab.pmsm_measured import (MAPPING, UNITS, condition, native_arrays,
-    prepare_measured, query_measured, verify_measured)
+    prepare_measured, query_measured, reference_distance, validate_reference_action, verify_measured)
 from typhoon_lab.records import verify_run
 
 
 class MeasuredTests(unittest.TestCase):
+    def test_reference_action_rejects_ineligible_or_conflicting_evidence(self):
+        target = {'phase': 'accelerating', 'stage': 'changing_up', 'reference_change_count': 2,
+                  'time_since_previous_change_s': None, 'reference_mean_rpm': 500,
+                  'reference_slope_rpm_s': 100, 'reference_step_sum_rpm': 10}
+        candidate = {**target, 'reference_slope_rpm_s': 90}
+        self.assertIsNotNone(reference_distance(target, candidate))
+        self.assertIsNone(reference_distance(target, candidate, symmetric=True))
+        self.assertIsNone(reference_distance(target, {**target, 'time_since_previous_change_s': 0.01}))
+        self.assertEqual(validate_reference_action('R1', ['R1'], {'R1'}), 'R1')
+        self.assertEqual(validate_reference_action('U', [], set()), 'U')
+        for choice, evidence in (('R2', ['R2']), ('R1', ['R2']), ('R1', []), ('U', ['R1'])):
+            with self.subTest(choice=choice, evidence=evidence), self.assertRaises(ValueError):
+                validate_reference_action(choice, evidence, {'R1'})
+
     def native(self, path, speed_offset=0):
         t = np.arange(10001)/10000; speed = 100+10*t+speed_offset
         d = {v['native']: np.ones(len(t)) for v in MAPPING.values()}
