@@ -79,25 +79,27 @@ class Figure:
         return self.im
 
 def overview():
-    f=Figure('01-overall-workflow',1200,1210,'总体流程与任务衔接')
-    f.line([(600,220),(600,305)])
-    f.line([(600,425),(600,520)])
-    f.line([(600,640),(600,780)])
+    f=Figure('01-overall-workflow',1200,1210,'工程知识如何进入测试与诊断')
+    f.line([(600,192),(600,236)])
+    f.line([(600,348),(600,399)])
+    f.line([(600,515),(600,585)])
+    f.line([(600,700),(600,780)])
     f.line([(600,925),(600,1020)])
-    f.line([(320,160),(75,160),(75,852),(320,852)])
-    f.line([(320,580),(225,580),(225,365),(320,365)],BLUE)
+    f.line([(320,292),(75,292),(75,852),(320,852)])
+    f.line([(320,642),(225,642),(225,457),(320,457)],BLUE)
     f.line([(880,852),(905,852),(905,1080),(940,1080)])
-    f.line([(1170,1080),(1185,1080),(1185,580),(880,580)],'#9A8358',True)
-    f.box(320,100,560,120,'工程输入',['性能需求、接口说明与机理知识'])
-    f.box(320,305,560,120,'任务一：生成工况并搜索失效',['根据需求与历史反馈选择下一工况'],'llm')
-    f.box(320,520,560,120,'Typhoon 电机控制闭环测试',['执行测试并采集波形与实际事件'],'data')
+    f.line([(1170,1080),(1185,1080),(1185,642),(880,642)],'#9A8358',True)
+    f.box(320,82,560,110,'工程人员核验资料',['需求条款、信号定义、控制结构与案例'],size=24)
+    f.box(320,236,560,112,'按对象、版本和工况检索',['取回条款、机理、适用条件及出处'],size=25)
+    f.box(320,399,560,116,'任务一：选择工况并预测响应',['结合条款和实测反馈提出下一次测试'],'llm',25)
+    f.box(320,585,560,115,'Typhoon 电机控制闭环测试',['执行合法工况，采集波形与实际事件'],'data',25)
     f.box(320,780,560,145,'任务二：数据分析与故障诊断',['分析动态行为、检测异常','识别故障并分析原因'],'llm')
     f.box(320,1020,560,150,'分析与诊断结果',['动态特征、异常与故障类别','候选原因及支持与冲突证据'],'data')
     f.box(940,1020,230,120,'复验建议',kind='future')
-    f.text(600,472,['测试提案'],25,backing=True)
-    f.text(600,710,['波形、工况与实际事件'],26,backing=True)
-    f.text(225,475,['性能指标与判定结果','响应特征'],24,color=BLUE,backing=True)
-    f.text(123,705,['机理知识','与接口说明'],24,backing=True)
+    f.text(600,550,['校验单位、范围与时序'],23,backing=True)
+    f.text(600,739,['波形、工况与实际事件'],24,backing=True)
+    f.text(205,551,['评分与','响应特征'],24,color=BLUE,backing=True)
+    f.text(100,713,['机理与','适用测点'],24,backing=True)
     f.text(1040,710,['后续扩展','执行复验'],25,color='#8B724C',backing=True)
     return f.save()
 
@@ -156,13 +158,13 @@ if __name__=='__main__':
     for i,t in enumerate(thumbs): sheet.paste(t,(10+i*580+(560-t.width)//2,20))
     sheet.save(OUT/'preview.png')
     source=OUT.parent/'discussion-brief.md'
-    meta={'source':'../discussion-brief.md','sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'date':'2026-11-13','raster_scale':S,'dpi':600,'figures':[]}
+    meta={'source':'../discussion-brief.md','sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'date':'2026-11-23','raster_scale':S,'dpi':600,'figures':[]}
     for stem,im in zip(('01-overall-workflow','02-test-search-feedback','03-analysis-and-diagnosis'),imgs):
         meta['figures'].append({'name':stem,'pixels':list(im.size)})
     (OUT/'manifest.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
     (OUT/'README.md').write_text('''# 讨论稿流程图：Word 插图
 
-来源：2026-11-13 当前 discussion-brief.md 的三张流程图及相邻正文。
+来源：2026-11-23 修订的 discussion-brief.md 及相邻正文。总流程图展示工程审核、条目检索和执行前校验。
 
 1. 01-overall-workflow：总体流程与任务衔接。
 2. 02-test-search-feedback：任务一的测试生成与真实反馈循环。

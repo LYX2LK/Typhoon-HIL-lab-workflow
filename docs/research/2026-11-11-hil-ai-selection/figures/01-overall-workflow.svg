@@ -1,31 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1210" viewBox="0 0 1200 1210">
 <rect width="100%" height="100%" fill="white"/>
-<text x="600.0" y="39.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="34" font-weight="700" fill="#243449">总体流程与任务衔接</text>
-<polyline points="600,220 600,305" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
-<polygon points="600,305 605.52,293.0 594.48,293.0" fill="#637386"/>
-<polyline points="600,425 600,520" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
-<polygon points="600,520 605.52,508.0 594.48,508.0" fill="#637386"/>
-<polyline points="600,640 600,780" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
+<text x="600.0" y="39.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="34" font-weight="700" fill="#243449">工程知识如何进入测试与诊断</text>
+<polyline points="600,192 600,236" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
+<polygon points="600,236 605.52,224.0 594.48,224.0" fill="#637386"/>
+<polyline points="600,348 600,399" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
+<polygon points="600,399 605.52,387.0 594.48,387.0" fill="#637386"/>
+<polyline points="600,515 600,585" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
+<polygon points="600,585 605.52,573.0 594.48,573.0" fill="#637386"/>
+<polyline points="600,700 600,780" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
 <polygon points="600,780 605.52,768.0 594.48,768.0" fill="#637386"/>
 <polyline points="600,925 600,1020" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
 <polygon points="600,1020 605.52,1008.0 594.48,1008.0" fill="#637386"/>
-<polyline points="320,160 75,160 75,852 320,852" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
+<polyline points="320,292 75,292 75,852 320,852" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
 <polygon points="320,852 308.0,846.48 308.0,857.52" fill="#637386"/>
-<polyline points="320,580 225,580 225,365 320,365" fill="none" stroke="#27628C" stroke-width="2.8" stroke-linejoin="round"/>
-<polygon points="320,365 308.0,359.48 308.0,370.52" fill="#27628C"/>
+<polyline points="320,642 225,642 225,457 320,457" fill="none" stroke="#27628C" stroke-width="2.8" stroke-linejoin="round"/>
+<polygon points="320,457 308.0,451.48 308.0,462.52" fill="#27628C"/>
 <polyline points="880,852 905,852 905,1080 940,1080" fill="none" stroke="#637386" stroke-width="2.8" stroke-linejoin="round"/>
 <polygon points="940,1080 928.0,1074.48 928.0,1085.52" fill="#637386"/>
-<polyline points="1170,1080 1185,1080 1185,580 880,580" fill="none" stroke="#9A8358" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="12 9"/>
-<polygon points="880,580 892.0,585.52 892.0,574.48" fill="#9A8358"/>
-<rect x="320" y="100" width="560" height="120" rx="13" fill="#F4F7FA" stroke="#74869A" stroke-width="2"/>
-<text x="600.0" y="135.01999999999998" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#243449">工程输入</text>
-<text x="600.0" y="187.19999999999996" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#243449">性能需求、接口说明与机理知识</text>
-<rect x="320" y="305" width="560" height="120" rx="13" fill="#EAF2FA" stroke="#27628C" stroke-width="2"/>
-<text x="600.0" y="340.02" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#27628C">任务一：生成工况并搜索失效</text>
-<text x="600.0" y="392.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#243449">根据需求与历史反馈选择下一工况</text>
-<rect x="320" y="520" width="560" height="120" rx="13" fill="#EDF6F1" stroke="#326C62" stroke-width="2"/>
-<text x="600.0" y="555.0200000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#326C62">Typhoon 电机控制闭环测试</text>
-<text x="600.0" y="607.2000000000002" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#243449">执行测试并采集波形与实际事件</text>
+<polyline points="1170,1080 1185,1080 1185,642 880,642" fill="none" stroke="#9A8358" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="12 9"/>
+<polygon points="880,642 892.0,647.52 892.0,636.48" fill="#9A8358"/>
+<rect x="320" y="82" width="560" height="110" rx="13" fill="#F4F7FA" stroke="#74869A" stroke-width="2"/>
+<text x="600.0" y="114.24000000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#243449">工程人员核验资料</text>
+<text x="600.0" y="164.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">需求条款、信号定义、控制结构与案例</text>
+<rect x="320" y="236" width="560" height="112" rx="13" fill="#F4F7FA" stroke="#74869A" stroke-width="2"/>
+<text x="600.0" y="268.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#243449">按对象、版本和工况检索</text>
+<text x="600.0" y="319.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">取回条款、机理、适用条件及出处</text>
+<rect x="320" y="399" width="560" height="116" rx="13" fill="#EAF2FA" stroke="#27628C" stroke-width="2"/>
+<text x="600.0" y="433.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#27628C">任务一：选择工况并预测响应</text>
+<text x="600.0" y="484.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">结合条款和实测反馈提出下一次测试</text>
+<rect x="320" y="585" width="560" height="115" rx="13" fill="#EDF6F1" stroke="#326C62" stroke-width="2"/>
+<text x="600.0" y="619.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#326C62">Typhoon 电机控制闭环测试</text>
+<text x="600.0" y="669.7" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">执行合法工况，采集波形与实际事件</text>
 <rect x="320" y="780" width="560" height="145" rx="13" fill="#EAF2FA" stroke="#27628C" stroke-width="2"/>
 <text x="600.0" y="807.5400000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#27628C">任务二：数据分析与故障诊断</text>
 <text x="600.0" y="859.7200000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#243449">分析动态行为、检测异常</text>
@@ -36,16 +41,16 @@
 <text x="600.0" y="1142.18" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#243449">候选原因及支持与冲突证据</text>
 <rect x="940" y="1020" width="230" height="120" rx="13" fill="#FAF7F0" stroke="#9A8358" stroke-width="2"/>
 <text x="1055.0" y="1080.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#9A8358">复验建议</text>
-<rect x="540.0" y="449.5" width="120.0" height="45.0" fill="white"/>
-<text x="600" y="472.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">测试提案</text>
-<rect x="460.0" y="686.76" width="280.0" height="46.48" fill="white"/>
-<text x="600" y="710.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">波形、工况与实际事件</text>
-<rect x="107.0" y="435.48" width="236.0" height="79.03999999999999" fill="white"/>
-<text x="225" y="457.24" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#27628C">性能指标与判定结果</text>
-<text x="225" y="492.76" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#27628C">响应特征</text>
-<rect x="53.0" y="665.48" width="140.0" height="79.03999999999999" fill="white"/>
-<text x="123" y="687.24" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">机理知识</text>
-<text x="123" y="722.76" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">与接口说明</text>
+<rect x="475.0" y="528.98" width="250.0" height="42.04" fill="white"/>
+<text x="600" y="550.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#243449">校验单位、范围与时序</text>
+<rect x="470.0" y="717.24" width="260.0" height="43.519999999999996" fill="white"/>
+<text x="600" y="739.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">波形、工况与实际事件</text>
+<rect x="147.0" y="511.48" width="116.0" height="79.03999999999999" fill="white"/>
+<text x="205" y="533.24" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#27628C">评分与</text>
+<text x="205" y="568.76" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#27628C">响应特征</text>
+<rect x="42.0" y="673.48" width="116.0" height="79.03999999999999" fill="white"/>
+<text x="100" y="695.24" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">机理与</text>
+<text x="100" y="730.76" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#243449">适用测点</text>
 <rect x="980.0" y="669.0" width="120.0" height="82.0" fill="white"/>
 <text x="1040" y="691.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#8B724C">后续扩展</text>
 <text x="1040" y="728.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#8B724C">执行复验</text>

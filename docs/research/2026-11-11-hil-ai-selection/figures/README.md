@@ -1,6 +1,6 @@
 # 讨论稿流程图：Word 插图
 
-来源：2026-11-13 当前 discussion-brief.md 的三张流程图及相邻正文。
+来源：2026-11-23 修订的 discussion-brief.md 及相邻正文。总流程图展示工程审核、条目检索和执行前校验。
 
 1. 01-overall-workflow：总体流程与任务衔接。
 2. 02-test-search-feedback：任务一的测试生成与真实反馈循环。
