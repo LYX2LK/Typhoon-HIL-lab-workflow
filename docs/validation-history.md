@@ -2,20 +2,51 @@
 
 ## 2026-11-22 PMSM 诊断证据选择、搜索对照及跨台架回放
 
-- Brno 原有 30 个配对窗口从原始归档复算一致。连续回放沿用冻结阈值，按两个相邻窗确认。电流和电压指令残差均检出 15/15，发生提前确认的记录由 4/15 降至 2/15，故障后确认中位数均约为 60 ms。原来的固定窗告警计数与连续回放分别记录。 [检测复核](../results/agent-tasks/20261122-101054-pmsm-method-comparison-de89/brno-closeout/report.md)
-- 双反馈软件模型新增 6 条独立配置族运行，评分含 6 道完整题、2 道缺测派生题。固定规则、自适应规则与直接 LLM 各答对 8/8，直接 LLM 用 22 次查询，两个规则各用 16 次。结构化假设检验臂答对 2/8，另有 6 次动作或预测被拒绝。Brno 实测参照的 3 次历史不合格选择均被拦截，预筛后的新流程通过 8/8。368 项测试通过。 [诊断对照](../results/agent-tasks/20261122-101054-pmsm-method-comparison-de89/diagnosis-report.md)
-- 六种搜索策略各完成 6 次 Virtual HIL，36 份波形复算通过。最小恢复余量为直接 LLM 60.00 ms、LLM 加 Dual Annealing 60.40 ms、工程规则加 Dual Annealing 62.65 ms。Sobol 的工况覆盖最高，为 6/9 格。所有测试满足 100 ms 恢复要求。 [逐点对照](../results/agent-tasks/20261122-101054-pmsm-method-comparison-de89/search/report.md)
-- Wrocław 短路与退磁原始文件均通过发布方校验。以两套固定 Brno 阈值回放三相电流指标，短路记录有 73/354 和 29/354 个窗口越限，退磁记录均为 0/201。采集缺独立故障时标和健康记录，故障窗口的检出和延时仍待验。 [接入与迁移](../results/agent-tasks/20261122-101054-pmsm-method-comparison-de89/wroclaw/report.md)
+### 减速加载搜索
+
+Virtual HIL 使用 Typhoon 2026.3。从 1800 rpm 减速至 600–1200 rpm，负载阶跃至 0.06 N·m，加载相对减速的间隔为 −40 至 +40 ms，负值表示先加载。从末次实际事件起计时，要求 100 ms 内恢复至目标 ±50 rpm，并保持至记录终点且尾段至少 20 ms。覆盖分母为三档目标转速与三种事件次序组成的 9 格。阶段冻结的数值种子为 `20261122`，模型服务标识为 `deepseek-flash`。混合策略由外层选次序和区域，每轮用相同的 Dual Annealing 细化 3 点，共两轮。
+
+| 策略 | 有效仿真/预算 | 恢复超时 | 最小恢复余量（ms） | 覆盖格 |
+|---|---:|---:|---:|---:|
+| Random | 6/6 | 0 | 65.15 | 5/9 |
+| Sobol | 6/6 | 0 | 64.35 | 6/9 |
+| Dual Annealing | 6/6 | 0 | 65.25 | 4/9 |
+| 直接 LLM | 6/6 | 0 | 60.00 | 4/9 |
+| 工程规则 + Dual Annealing | 6/6 | 0 | 62.65 | 2/9 |
+| LLM + Dual Annealing | 6/6 | 0 | 60.40 | 3/9 |
+
+36 份波形已复算。本轮仅覆盖一个场景，每种策略各执行一次搜索。最小余量和覆盖用于校准场景与预算，比较失效发现仍需可触及失效的独立场景和重复试验。
+
+### 软件诊断与 Brno 参照选择
+
+新配置族含 6 份采集，速度给定从 1550 rpm 变至 2110 rpm，覆盖正常、正常加载和正负反馈偏置。6 道完整题及 2 道缺测派生题由这些采集生成。四种方法共用知识、初始观测、工具权限和每题 3 次查询预算，两种模型方法均使用 `deepseek-flash`。
+
+| 方法 | 正确/题数 | 恰当未决 | 流程错误 | 有区分价值/实际查询 |
+|---|---:|---:|---:|---:|
+| 固定规则 | 8/8 | 2 | 0 | 16/16 |
+| 自适应规则 | 8/8 | 2 | 0 | 16/16 |
+| 直接 LLM | 8/8 | 2 | 0 | 16/22 |
+| 显式假设检验 LLM | 2/8 | 0 | 6 | 16/16 |
+
+正确数包含恰当未决。显式假设检验的 6 个失败中，4 个在候选已唯一后仍查询被排除的原因，2 个请求未开放测点。例如 T02 的候选已缩至电流反馈偏置，模型仍试图用负载事件查询比较已被排除的加载机制，校验器拒绝了该提案。直接 LLM 的额外 6 次查询均未改变判断。6 份采集均通过记录复核，其中 2 份速度反馈偏置仍保留原性能失败。
+
+Brno 的 8 道实测参照题由旧流程正确 5/8 提高到新流程 8/8。程序拦截 3 次历史不合格选择，4 道有解题各只剩 1 个候选，另 4 道由程序返回未决。此次改善来自参照资格筛选。另对 Brno 原有 30 个配对窗口复算，按连续两个相邻窗确认时，电流和电压指令残差均检出 15/15，提前确认的记录由 4/15 降至 2/15，故障后确认时间中位数均约为 60 ms。本轮 368 项项目测试通过。
+
+### Wrocław 跨台架回放
+
+短路和退磁各一份采集均通过发布方校验。以 Brno 200 W 和 20 kW 的冻结阈值回放三相电流指标，短路记录分别有 73/354 和 29/354 个窗口越限，退磁记录均为 0/201。窗口计数来自各一份长记录。该来源缺独立故障时标、健康记录和同步端电压，现有结果用于比较电流告警行为。 [数据发布库](https://repod.icm.edu.pl/dataset.xhtml?persistentId=doi%3A10.18150%2FHQ4X9V)
+
+逐次配置、波形、模型请求和复核脚本保存在本地任务 `results/agent-tasks/20261122-101054-pmsm-method-comparison-de89/`。`search/freeze.json` 与 `diagnosis-fresh-r3/freeze.json` 记录当时设置和驱动 SHA-256，前缀分别为 `89ff5d0f7988` 和 `07ad2bee9e5b`。搜索与诊断的逐次结果见 `search/summary.json` 和 `diagnosis-fresh-r3/comparison.csv`，参照动作见 `brno-reference/audit.json`。取得该批任务及其引用的运行目录后，可使用任务副本按 `task.md` 用 Typhoon 配套 Python 运行 `audit_stage.py` 的 `fresh` 与 `search` 离线复核。完整重跑还依赖对应的 Virtual HIL 模型和可用的模型服务。 [仓库研究入口](pmsm-research.md)
 
 ## 2026-11-22 Brno 独立采集记录的绕组故障检测
 
-从 Brno 归档读取 200 W 和 20 kW PMSM 的原生采样。21 条记录中 3 条用于拟合、2 条用于阈值标定，16 条按完整采集留出，其中 1 条未通过故障窗口核验。其余 15 条上，电流和电压指令残差均检出 15 个匝间短路窗口。仅用残差时，故障投入前告警由 2/15 降至 0/15，两处变化均发生在 200 W 变速案例。以电流或残差任一越限告警时，保持 2/15。该回放覆盖已知匝间短路事件的前后窗，用于筛选检测证据。两类绕组短路分型等待含同步端电压、电流及独立健康测量的 PMSM 数据。 [报告与复核](../results/agent-tasks/20261122-095412-pmsm-independent-evidence-5262/task.md)
+从 Brno 归档读取 200 W 和 20 kW PMSM 的原生采样。21 条记录中 3 条用于拟合、2 条用于阈值标定，16 条按完整采集留出，其中 1 条未通过故障窗口核验。其余 15 条上，电流和电压指令残差均检出 15 个匝间短路窗口。仅用残差时，故障投入前告警由 2/15 降至 0/15，两处变化均发生在 200 W 变速案例。以电流或残差任一越限告警时，保持 2/15。该回放覆盖已知匝间短路事件的前后窗，用于筛选检测证据。两类绕组短路分型等待含同步端电压、电流及独立健康测量的 PMSM 数据。 本地证据见任务 `20261122-095412-pmsm-independent-evidence-5262` 的 `task.md`。
 
 ## 2026-11-19 跨电机标定与分型证据
 
 KAIST 三台电机共 45 条原始电流复算通过。用健康记录的前两个约定窗决定相量符号候选，后两窗复查。1.5 与 3.0 kW 的相量和比例降至约 0.07，候选仍待物理方向确认。健康参照幅相改善开发条件下的分型，增益未达到跨两种评分的冻结门槛。3.0 kW 历史数据的困难配对仍未命中。离线复核重放 1,008 次分型判断。
 
-独立的 PMSG 发布工况组有 25 条原始记录，24 条故障窗口确认生效，18 条同相且抽头分组留出的记录用于评分。加入实测端电压或电压、电流复比均未改变逐例预测，108 次分型判断复算通过。项目测试 367 项通过。 [阶段验收](../results/agent-tasks/20261119-172756-kaist-evidence-qualification/stage-review.md)
+独立的 PMSG 发布工况组有 25 条原始记录，24 条故障窗口确认生效，18 条同相且抽头分组留出的记录用于评分。加入实测端电压或电压、电流复比均未改变逐例预测，108 次分型判断复算通过。项目测试 367 项通过。 本地证据见任务 `20261119-172756-kaist-evidence-qualification` 的 `stage-review.md`。
 
 ## 2026-11-19：KAIST 多机制实测诊断与整机留出
 
@@ -23,7 +54,7 @@ KAIST v5 三档电机归档的发布 SHA-256 校验通过。两台开发电机�
 
 复算 45 个采集条件，重放 18 个任务及 90 条方法会话，记录复核通过。事后比较未发现冻结判据在任何查询组组合下新增正确案例。复核还发现跨电机的特征偏移和电流极性疑点。本阶段交付完成，方法增益未达到独立复验条件。363 项单元测试通过。
 
-[阶段验收和后续依据](../results/agent-tasks/20261119-154045-kaist-pmsm-comparison/stage-review.md) · [全量评分](../results/agent-tasks/20261119-154045-kaist-pmsm-comparison/comparison/analysis-report.md) · [离线复核](../results/agent-tasks/20261119-154045-kaist-pmsm-comparison/comparison/verification.json)
+本地证据见任务 `20261119-154045-kaist-pmsm-comparison` 的 `stage-review.md`、`comparison/analysis-report.md` 和 `comparison/verification.json`。 [整机留出复核入口](pmsm-research.md#kaist-绕组故障实测对照)
 
 ## 2026-11-18：Brno 留出负载实测的首轮 LLM 对照
 
@@ -31,7 +62,7 @@ KAIST v5 三档电机归档的发布 SHA-256 校验通过。两台开发电机�
 
 另在 5/35 Nm 六份新记录上抽查八次参照选择，工程规则均为 8/8，DeepSeek 的结构化选择为 5/8。三个错误的解释都指出参照不满足条件，动作字段仍选了该参照。逆变器汇总 CSV 中的 10,892 行已逐行对应回九份带时刻的场景日志，每个细类一份记录。
 
-[实测对照报告](../results/agent-tasks/20261118-200923-brno-blind-6c42/analysis-report.md) · [逐案例表](../results/agent-tasks/20261118-200923-brno-blind-6c42/逐案例对照.csv) · [参照选择复核](../results/agent-tasks/20261118-200923-brno-blind-6c42/reference-verification.json) · [其他实测来源](../results/agent-tasks/20261118-200923-brno-blind-6c42/sources.md)
+本地证据见任务 `20261118-200923-brno-blind-6c42` 的 `analysis-report.md`、`逐案例对照.csv`、`reference-verification.json` 和 `sources.md`。
 
 ## 2026-11-18：减速搜索、双反馈机制与跨负载实测参照
 
@@ -61,7 +92,7 @@ KAIST v5 三档电机归档的发布 SHA-256 校验通过。两台开发电机�
 - 公开多故障仿真14个速度CSV按时间重置拆为126段，每段保持健康前段与故障后段关联。全部来源生成143份匿名数值观测资产，重新加载与源数值逐项一致；标签与来源保存在评价端，观测资产不含标签列。
 - 本轮不新增Virtual HIL或模型调用，不改执行器与诊断算法。样例池尚需通道/单位映射和按运行划分，未形成统一正式基准。后续按工程来源、实际闭环作用路径、工况覆盖和数据质量生成样例，模型表现不参与样例保留条件。
 
-[接入结果与复算证据](../results/agent-tasks/20261115-190017-pmsm-case-sources-b3c7/summary.md) · [样例来源与生成机制](pmsm-case-generation.md) · [来源状态](../configs/pmsm_case_sources.json)
+本地接入结果与复算证据见任务 `20261115-190017-pmsm-case-sources-b3c7` 的 `summary.md`。 [样例来源与生成机制](pmsm-case-generation.md) · [来源状态](../configs/pmsm_case_sources.json)
 
 ## 2026-11-15：诊断工具查询、证据更新与反馈理解复查
 
@@ -75,7 +106,7 @@ KAIST v5 三档电机归档的发布 SHA-256 校验通过。两台开发电机�
 - 对前轮搜索的数值方向、10—16ms预测与22.2ms响应冲突、相电流与指令限幅关系进行独立两次真实调用：直接复查和补充数值/知识后均正确，标记already_correct。此格式未复现连续搜索中的错误，不能宣称误解已稳定修复。
 - 共26次唯一模型调用；复核副本中的重复response_id不重复计数。10份数据包/会话/复核记录均record_status=passed，模型检查失败仍保持failed。350项unittest通过，包含工具权限、源CSV投影、预测先后、原始请求/响应绑定、等价差值及不可变复核检查。不同机制、独立留出运行、条件化正常参照、多模型比较与实体迁移仍待完成。
 
-[结果与解释审查](../results/agent-tasks/20261115-152610-pmsm-diagnosis-927a/summary.md) · [只读复核](../results/agent-tasks/20261115-152610-pmsm-diagnosis-927a/final-verification.json) · [模型负载](../results/agent-tasks/20261115-152610-pmsm-diagnosis-927a/model-load-summary.json) · [最终测试日志](../results/agent-tasks/20261115-152610-pmsm-diagnosis-927a/unittest-full-delivery.log)
+本地证据见任务 `20261115-152610-pmsm-diagnosis-927a` 的 `summary.md`、`final-verification.json`、`model-load-summary.json` 和 `unittest-full-delivery.log`。
 
 ## 2026-11-15：搜索原型、既有数据索引与速度反馈偏置
 
@@ -95,10 +126,7 @@ KAIST v5 三档电机归档的发布 SHA-256 校验通过。两台开发电机�
 
 过程发生2次Virtual HIL进程崩溃（Windows APPCRASH），保留原error/record failed及9条原始跳过记录。恢复本任务会话后按原配置重试和续跑，剩余工况采用独立lab.ps1 run进程及逐次verify；23条完整数据分别复核passed。崩溃原因未确定，未当作电机规格失效。汇总另以标准库独立复算核心指标，运行器及首轮分析代码62个文件保持原哈希。最终案例索引关联逐条已复核记录，不将原错误批次改成passed。
 
-- [分析报告与图表](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/analysis/analysis-report.md)
-- [任务记录](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/task.md)
-- [执行异常与恢复](../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/execution-incident.md)
-- [复现实验](../cases/pmsm_boundary_coarse/README.md)
+本地证据见任务 `20261111-100724-pmsm-boundary-2e9e` 的 `analysis/analysis-report.md`、`task.md` 和 `execution-incident.md`。 [复现实验](../cases/pmsm_boundary_coarse/README.md)
 
 ## 2026-11-10：PMSM 调速与负载事件交互
 

@@ -12,7 +12,7 @@
 
 新增工作包括：测试提案与历史反馈接口、搜索目标计算器、正常参照与特征工具、电机控制闭环中的故障注入及必要观测、知识检索、LLM 诊断和模型调用接口。当前七通道中尚无 dq 电流、限幅/保护状态和独立速度反馈通道；按诊断问题补充。实体接口仍需依据 [HIL 接口工作表](../../../configs/tle9877_hil_contract.json)完成确认。
 
-已有 [PMSM 幅值与时序实验（本地记录）](../../../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/analysis/analysis-report.md)完成 23 次完整运行，所测点均未违反 100 ms 恢复要求，最小恢复时间余量为 62.55 ms。该结果为预试提供基础；正式搜索问题与评分口径见本附录 A.2。该记录位于被 Git 忽略的 `results/`，共享仓库读者需另获证据材料；对外据此评审前，整理含配置、指标、运行标识及生成方法的可共享摘要，并保留原始记录的追溯入口。
+已有 [PMSM 幅值与时序实验](../../validation-history.md#2026-11-11pmsm-幅值扩展与时序加密)完成 23 次完整运行，所测点均未违反 100 ms 恢复要求，最小恢复时间余量为 62.55 ms。验证记录给出已测范围与异常记录，[复现实验](../../../cases/pmsm_boundary_coarse/README.md)提供配置和运行入口。正式搜索问题与评分口径见本附录 A.2。
 
 ### A.2 恢复评分与搜索停止
 
@@ -366,7 +366,7 @@ QLoRA 可按 [PEFT 官方量化训练说明](https://huggingface.co/docs/peft/ma
 | [LLM-TSAD](https://github.com/junwoopark92/LLM-TSAD)、[VLM4TS](https://arxiv.org/html/2506.06836v1) | 前者依据摘要与代码入口，后者已读方法：直接序列/图像检测；采用固定工作点评价 |
 | [ATTLLM](https://ieeexplore.ieee.org/abstract/document/11701917/)、[FD-LLM](https://arxiv.org/html/2412.01218v1) | 时序语言对齐及领域适配候选；ATTLLM 依据摘要，FD-LLM 依据已读相关正文 |
 | [PICT](https://github.com/microsoft/pict/blob/main/doc/pict.md)、[PSY-TaLiRo](https://github.com/cpslab-asu/psy-taliro) | 合法组合覆盖与时序规格搜索工具；按问题需要接入 |
-| [PMSM 幅值与时序实验](../../../results/agent-tasks/20261111-100724-pmsm-boundary-2e9e/analysis/analysis-report.md)、[恢复评分实现](../../../scripts/analyze_pmsm_interaction.py) | 已执行点的恢复时间余量、重复性与原评分定义，支持场景预试；未证明全空间通过或存在可触及边界 |
+| [PMSM 幅值与时序实验](../../validation-history.md#2026-11-11pmsm-幅值扩展与时序加密)、[恢复评分实现](../../../scripts/analyze_pmsm_interaction.py) | 已执行点的恢复时间余量、重复性与原评分定义，支持场景预试；未证明全空间通过或存在可触及边界 |
 | 本附录所列官方模型卡、Qwen 资源表、vLLM 与 PEFT 文档 | 候选规模、输入与工具支持、部署及适配机制；硬件预留和工作量为本项目规划估计 |
 | [Qwen3.5-9B 模型卡](https://huggingface.co/Qwen/Qwen3.5-9B)、[vLLM 内存配置](https://docs.vllm.ai/en/latest/configuration/conserving_memory/)、[混合缓存设计](https://docs.vllm.ai/en/latest/design/hybrid_kv_cache_manager/)、[基准说明](https://docs.vllm.ai/en/latest/benchmarking/cli/) | 2026-11-13 补核：思考开关、纯文本与混合层配置，上下文/活动序列/运行开销、分层缓存，以及请求时延和缓存测试口径；正文算例与门槛框架为本项目设计 |
 | [DeepSeek 模型与服务说明](https://api-docs.deepseek.com/quick_start/pricing/) | 核查日期的服务别名与版本映射；用于实验版本追踪 |
