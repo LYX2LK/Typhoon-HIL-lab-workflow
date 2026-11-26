@@ -136,8 +136,8 @@ def diagnosis():
     f.box(40,340,330,170,'行为分析结果',['恢复与振荡特征','跨工况规律'],'data',26)
     f.box(430,595,540,140,'异常检测',['定位异常区间与涉及通道','计算异常分数'],'data',26)
     f.box(1030,595,330,160,'专用故障分类',['预测类别或候选类别','作为对照或辅助'],size=25)
-    f.box(40,890,330,190,'工程知识',['控制关系与故障机制','已核验案例','适用条件与资料来源'],size=25)
-    f.box(430,890,540,190,'LLM 诊断决策',['提出原因假设与响应预测','选择能区分原因的分析工具','根据检验结果修订判断'],'llm',26)
+    f.box(40,890,330,190,'已审核的故障签名',['人工或 LLM 起草','开发记录核验','适用条件与资料来源'],size=25)
+    f.box(430,890,540,190,'依据故障签名选择证据',['程序维护候选、权限和预算','程序或 LLM 选择开放查询','按有效证据更新候选集合'],'llm',26)
     f.box(1030,890,330,190,'波形分析工具',['查询已采集的数据','计算特征、频谱','或物理残差'],'data',26)
     f.box(430,1320,540,205,'诊断结果',['故障类别、候选原因','支持与冲突证据','缺失信息及复验建议'],'data',28)
     f.text(700,552,['动态特征、正常参照对比结果','与物理残差'],23,backing=True)
@@ -158,17 +158,17 @@ if __name__=='__main__':
     for i,t in enumerate(thumbs): sheet.paste(t,(10+i*580+(560-t.width)//2,20))
     sheet.save(OUT/'preview.png')
     source=OUT.parent/'discussion-brief.md'
-    meta={'source':'../discussion-brief.md','sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'date':'2026-11-23','raster_scale':S,'dpi':600,'figures':[]}
+    meta={'source':'../discussion-brief.md','sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'date':'2026-11-25','raster_scale':S,'dpi':600,'figures':[]}
     for stem,im in zip(('01-overall-workflow','02-test-search-feedback','03-analysis-and-diagnosis'),imgs):
         meta['figures'].append({'name':stem,'pixels':list(im.size)})
     (OUT/'manifest.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
     (OUT/'README.md').write_text('''# 讨论稿流程图：Word 插图
 
-来源：2026-11-23 修订的 discussion-brief.md 及相邻正文。总流程图展示工程审核、条目检索和执行前校验。
+来源：2026-11-25 修订的 discussion-brief.md 及相邻正文。总流程图展示工程审核、条目检索和执行前校验。
 
 1. 01-overall-workflow：总体流程与任务衔接。
 2. 02-test-search-feedback：任务一的测试生成与真实反馈循环。
-3. 03-analysis-and-diagnosis：任务二的数据分析、故障识别及工具辅助诊断。
+3. 03-analysis-and-diagnosis：任务二的数据分析、故障签名和查询决策。
 
 术语与正文一致：反馈包括性能指标、判定结果及响应特征；评分计算指标与限值的差值，恢复时间示例使用正文定义的余量。图中的“闭环”专指电机控制闭环。
 

@@ -44,15 +44,15 @@
 <text x="1195.0" y="683.7" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">预测类别或候选类别</text>
 <text x="1195.0" y="720.7" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">作为对照或辅助</text>
 <rect x="40" y="890" width="330" height="190" rx="13" fill="#F4F7FA" stroke="#74869A" stroke-width="2"/>
-<text x="205.0" y="924.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#243449">工程知识</text>
-<text x="205.0" y="975.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">控制关系与故障机制</text>
-<text x="205.0" y="1012.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">已核验案例</text>
+<text x="205.0" y="924.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#243449">已审核的故障签名</text>
+<text x="205.0" y="975.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">人工或 LLM 起草</text>
+<text x="205.0" y="1012.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">开发记录核验</text>
 <text x="205.0" y="1049.2" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#243449">适用条件与资料来源</text>
 <rect x="430" y="890" width="540" height="190" rx="13" fill="#EAF2FA" stroke="#27628C" stroke-width="2"/>
-<text x="700.0" y="922.2800000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#27628C">LLM 诊断决策</text>
-<text x="700.0" y="973.7200000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">提出原因假设与响应预测</text>
-<text x="700.0" y="1012.2000000000002" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">选择能区分原因的分析工具</text>
-<text x="700.0" y="1050.68" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">根据检验结果修订判断</text>
+<text x="700.0" y="922.2800000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#27628C">依据故障签名选择证据</text>
+<text x="700.0" y="973.7200000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">程序维护候选、权限和预算</text>
+<text x="700.0" y="1012.2000000000002" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">程序或 LLM 选择开放查询</text>
+<text x="700.0" y="1050.68" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">按有效证据更新候选集合</text>
 <rect x="1030" y="890" width="330" height="190" rx="13" fill="#EDF6F1" stroke="#326C62" stroke-width="2"/>
 <text x="1195.0" y="922.2800000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#326C62">波形分析工具</text>
 <text x="1195.0" y="973.7200000000001" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#243449">查询已采集的数据</text>
